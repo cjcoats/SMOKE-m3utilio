@@ -188,8 +188,8 @@ Stuff*](https://cjcoats.github.io/optimization/efficient_models.html).
 
 It was recognized from the very beginning (and documented as such) that
 because `REAL` arithmetic is always subject to machine dependent
-round-off problems [^1](and therefore `REAL` values should **never** be
-tested for exact equality, a robust scheme was needed for the detection
+round-off problems [^1] (and therefore `REAL` values should **never** be
+tested for exact equality), a robust scheme was needed for the detection
 of "missing" for `REAL` values.  Therefore, (with over-kill) the I/O API
 provided parameters
 <pre>
