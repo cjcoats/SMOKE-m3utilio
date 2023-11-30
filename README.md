@@ -248,7 +248,7 @@ an extremely tedious task ;-( )
 
 Many constants were moved from `DATA` statements to `PARAMETER` statements.
 
-In many places, constructs involving `CHARACTER`-string lengths of the
+In many places, substring constructs involving `CHARACTER`-string lengths of the
 form `FOO( 1 : LEN_TRIM( FOO ) )` are replaced by the much-simpler but
 equivalent `TRIM( FOO )`.
 
