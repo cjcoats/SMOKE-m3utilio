@@ -294,6 +294,8 @@ command-line options:
         findent -i4 -k6 -ofree  -RR  !*
 </pre>
 
+Since SMOKE is always run in prompting-turned-off mode, the interactive-use prompt-for-a-file functions `PROMPTMFILE` and `PROMPTFFILE` should be replaced throughout by the standard, non-prompting `OPEN3` and `GETEFILE`.
+
 The whole allocation-and-sorting system can and should be simplified
 enormously, using a variant of *lib/getfline.f* that also returns the
 number of non-comment lines in ASCII files, together with a proposed
