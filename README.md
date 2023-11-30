@@ -58,11 +58,13 @@ in-fixes, e.g., *src/biog/tmpbeis4.1.f* and  *src/biog/tmpbeis4.2.f*
 
 ### M3UTILIO
 
-All relevant codes have been `M3UTILIO`-ized.  This entailed removing
-`INCLUDE` statements for the I/O API include-files `PARMS3.EXT,
-IODECL3.EXT, FDESC3.EXT` as well as external-function declarations for
-I/O API fuctions that were called.  Other external function declarations
-were put into Fortran-90 style, e.g.
+All relevant codes have been `M3UTILIO`-ized.  This entailed adding
+`USE M3UTILIO` where appropriate, removing `INCLUDE` statements for
+the I/O API include-files `PARMS3.EXT, IODECL3.EXT, FDESC3.EXT`, as
+well as external-function declarations for I/O API fuctions that were
+called.  
+
+Other external function declarations were put into Fortran-90 style, e.g.
 
         INTEGER, EXTERNAL :: GETFLINE
 
@@ -217,25 +219,27 @@ the programmer should consider himself or herself lucky if the answer
 comes out "right".  In this new edition of SMOKE, these have all been
 chased down and fixed.
 
-The I/O API version of the `FLTERR` and `DBLERR` "these `REAL`s are
-certainly unequal, up to reasonable round-off" functions were carefully
+The I/O API version of the `FLTERR` and `DBLERR` ("these `REAL`s are
+certainly unequal, up to reasonable round-off") functions were carefully
 tuned with tolerances that handle  the numerical inadequacies of all of
 the reasonable compute platforms (including WMO GRIB, which is *quite*
-bad).  In several places, the tolerances were tightened unreasonably
-by those un-knowing of the actual problems.  These have been fixed.
+bad).  In several places, the SMOKE versions had tolerances that were
+tightened unreasonably by those un-knowing of the actual problems.
+These have been fixed.
 
 In the biogenics, the photolysis process uses the tangent of the zenith
 angle.  The code from the original biogenics authors computed the cosine
 `CZEN` of the zenith angle, then took the inverse cosine
 `ZEN=ARCCOS(CZEN)`, and finally used the tangent `TAN(ZEN)` of the zenith
 angle, with the effect of both added computational costs due to the use
-of extremely-expensive inverse-trigonometric functions and additional
-round-off errorr.  The original SMOKE biogenics took advantage of the
-high-school trigonometry Pythagorean identities to compute this as
+of extremely-expensive trigopnometric and inverse-trigonometric functions
+and additional round-off errorr.  The original SMOKE biogenics took
+advantage of the high-school trigonometry Pythagorean identities to
+compute this as
 <pre>
-        TAN(ZEN) = SQRT( (1/CZEN)^2 - 1 )
+        TANZEN = SQRT( (1/CZEN)^2 - 1 )
 </pre>
-with both lower round-=off error and much-reduced computational cost.
+with both lower round-off error and much-reduced computational cost.
 Someone in the mean-time replaced the improved version with the (lower
 quality) original.  This has now been fixed.
 
@@ -243,7 +247,9 @@ quality) original.  This has now been fixed.
 
 Fortran-90 provides very simple and flexible array structure for "auto"
 local-variable arrays.  SMOKE almost throughout avoids this simplicity,
-using `ALLOCATE` and `DEALLOCATE` for what should be local-variable arrays.
+using `ALLOCATE` and `DEALLOCATE` for what should be local-variable arrays.  This creates "memory fragmentation" (another form of memory
+leak), and increases cache and TLB overhead, in addition to adding 
+considerable code-complexity.
 
 In a number of places, `ALLOCATE / DEALLOCATE` arrays were turned into
 auto arrays.  (Doing this to the maximum extent possible would have been
@@ -251,8 +257,8 @@ an extremely tedious task ;-( )
 
 Many constants were moved from `DATA` statements to `PARAMETER` statements.
 
-In many places, substring constructs involving `CHARACTER`-string lengths of the
-form `FOO( 1 : LEN_TRIM( FOO ) )` are replaced by the much-simpler but
+In many places, substring constructs involving `CHARACTER`-string lengths
+of the form `FOO( 1 : LEN_TRIM( FOO ) )` are replaced by the much-simpler but
 equivalent `TRIM( FOO )`.
 
 Numerous embedded tab-characters were found (these make code-indentation
@@ -286,7 +292,7 @@ have been replaced by the matching I/O API parameters, now obtained from
 `M3UTILIO`.  This results in the effective elimination of
 *src/inc/IOSTRG3.EXT* and *src/inc/IOPRVT3.EXT*.
 
-### Next Steps
+## Next Steps
 
 SMOKE should be converted to Fortran-90 Standard (*.f90*) free source
 format, which can be done easily and quickly as a mostly-automated
@@ -318,9 +324,9 @@ netCDF-3 supports file sizes larger than 2 GB, with a 2GB-per-timestep
 limit prior to netCDF-3.6 (2002), which does away with that limit...) Possibly (since I/O API verslon 3.2 supports up to 2048 variables and
 I/O API 3.2-large supports up to 16384 variables), all of
 *src/filesetapi* should be eliminated, using standard I/O API instead.
-(This would allow the replacement of many `ALLOCATE`d arrays by "simple"
-arrays dimensioned by I/O API `PARAMETER`s.) This replacement would be
-a straightforward but tedious task...
+(This would allow the replacement of many `ALLOCATE`d arrays by simple
+"auto" arrays dimensioned by I/O API `PARAMETER`s.) This replacement
+of *filesetapi* would be a straightforward but tedious task...
 
 In the long run, the whole `INCLUDE`-file / `MODULE` / library-function
 structure of SMOKE should be re-examined. `INCLUDE`-files should be moved into `MODULE`s, as should module-initialization routines (and to some
@@ -328,7 +334,7 @@ extent, all module-data manipulation routines).  The ideal would be to have `MOD
 routines (and polymorphic `INTERFACE`s, possibly), `PARAMETER`s, and
 `PROTECTED` variables.  This would be a major undertaking, however.
 
-### Notes
+## Notes
 
 [^1]: The Fortran Standard explicitly **refuses** to dictate the quality
 of how round-off behaves.  As an extreme example, *no two of the
