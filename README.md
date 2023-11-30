@@ -29,7 +29,7 @@ M3UTILIO`](https://cjcoats.github.io/ioapi/M3UTILIO.html) does the
 structure, and function-declarations, since I/O API 3.0 (2002).  In
 addition to the I/O routines like `WRITE3`, it also provides `INTERFACE`
 blocks for almost all the routines in the I/O API, which provides for
-compile-tme checking of argument lists, etc.:  so far, the conversion
+compile-time checking of argument lists, etc.:  so far, the conversion
 from I/O API-2 style code to `USE M3UTILIO` has found argument-list
 errors in every code to which it has been applied.  This now includes
 the current (GTitHub Oct. 28, 2023) version of SMOKE, upon which this
@@ -40,7 +40,7 @@ for a number of routines:  for example,
 [`ENVGET`](https://cjcoats.github.io/ioapi/ENVGETS.html) provides a
 type-safe name  for calling any of `ENVINT(), ENVINT8(), ENVDBLE(),
 ENVREAL(), ENVSTR(), ENVYN(), BENVINT(), BENVINT8(), BENVDBLE(),` and
-`BENVREAL()`
+`BENVREAL()`.  (These are not currently used in sMOKE.)
 
 ## Structure
 
@@ -85,7 +85,7 @@ e.g.,
         setenv IFOO dingbats
 
 then the new code now error-checks to detect this invalid value, reports
-the problem, and exit (whereas the old code would  have allowed the code
+the problem, and exits (whereas the old code would  have allowed the code
 to continue inappropriately with a potentially-bad value).
 
 I/O API routine `M3ERR` was deprecated (replaced by `M3EXIT` and `M3WARN`)
@@ -186,7 +186,7 @@ are expensive).  For example, the more-readable
 A number of loop nests (especially in biogenics) were found to be in
 nest-order as cache-hostile as possible. These have been replaced by the
 cache-friendly versions.  This should result in improved performance
-(where they occur), especially for large-grid scenarios.  See
+(where these arrays occur), especially for large-grid scenarios.  See
 [Optimizing Environmental Models for Microprocessor Based Systems
 &mdash; *The Easy
 Stuff*](https://cjcoats.github.io/optimization/efficient_models.html).
@@ -233,7 +233,7 @@ angle.  The code from the original biogenics authors computed the cosine
 `ZEN=ARCCOS(CZEN)`, and finally used the tangent `TAN(ZEN)` of the zenith
 angle, with the effect of both added computational costs due to the use
 of extremely-expensive trigopnometric and inverse-trigonometric functions
-and additional round-off errorr.  The original SMOKE biogenics took
+and additional round-off error.  The original SMOKE biogenics took
 advantage of the high-school trigonometry Pythagorean identities to
 compute this as
 <pre>
