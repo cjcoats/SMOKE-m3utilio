@@ -261,10 +261,10 @@ to a failure to understand how declaration-time initialization for
 variables works.  The following sort of thing
 <pre>
         INTEGER :: NFOUND = 0
-<pre>
+</pre>
 should almost always instead have a declaration, followed by a separate
 initialization-statement at the beginning of the body of the routine:
-</pre>
+<pre>
         INTEGER :: NFOUND
         ...
         NFOUND = 0
