@@ -122,7 +122,7 @@ are expensive).  For example, the more-readable
      &               SLAI( NCOLS, NROWS, NLAI ), STAT=IOS )
         CALL CHECKMEM( IOS, 'WSAT...SLAI', PROGNAME )
 </pre>
-replaces the far more cluttered
+(which allows one to see easily the similarities and differences of all these variables) replaces the far more cluttered
 <pre>
         ALLOCATE( WSAT( NCOLS, NROWS ), STAT=IOS )
         CALL CHECKMEM( IOS, 'WSAT', PROGNAME )
@@ -221,7 +221,7 @@ the reasonable compute platforms (including WMO GRIB, which is *quite*
 bad).  In several places, the tolerances were tightened unreasonably
 by those un-knowing of the actual problems.  These have been fixed.
 
-In the biogenics, the photolysis process needs the tangent of the zenith
+In the biogenics, the photolysis process uses the tangent of the zenith
 angle.  The code from the original biogenics authors computed the cosine
 `CZEN` of the zenith angle, then took the inverse cosine
 `ZEN=ARCCOS(CZEN)`, and finally used the tangent `TAN(ZEN)` of the zenith
@@ -310,19 +310,24 @@ temporary scratch-=arrays.  Note that this would be a major task.
 The "generate new files in a file-set" constructs ensuring that file
 sizes do not exceed the (netCDF-2, 1990's) 2GB file size limit have not
 been needed since the introduction of netCDF-3 in the late 1990's. 
-These constructs are no longer needed and should go away.  Possibly
-(since I/O API verslon 3.2 supports up to 2048 variables and I/O API
-3.2-large supports up to 16384 variables), all of *src/filesetapi*
-should be eliminated, using standard I/O API instead. (Note that
+These unnecessary constructs should go away.   (Note that
 netCDF-3 supports file sizes larger than 2 GB, with a 2GB-per-timestep
-limit prior to netCDF-3.6 (2002), which does away with that limit...)
+limit prior to netCDF-3.6 (2002), which does away with that limit...) Possibly (since I/O API verslon 3.2 supports up to 2048 variables and
+I/O API 3.2-large supports up to 16384 variables), all of
+*src/filesetapi* should be eliminated, using standard I/O API instead.
+This would be a straightforward but tedious task...
+
+In the long run, the whole `INCLUDE`-file / `MODULE` / library-function
+structure of SMOKE should be re-examined. `INCLUDE`-files should be moved into `MODULE`s, as should module-initialization routines (and to some extent, all module-data manipulation routines.  The ideal would be to have
+`MODULE`s whose only externally-visible contents are `CONTAIN`ed routines,
+`PARAMETER`s, and `PROTECTED` variables.  This would be a major undertaking, however.
 
 ### Notes
 
 [^1]: The Fortran Standard explicitly **refuses** to dictate the quality
 of how round-off behaves.  As an extreme example, *no two of the
 following* are guaranteed to be equal (a problem found especially on
-Cray vector, IBM mainfreame and POWER, Intel x86/x87, Sun, and SGI
+Cray vector, IBM mainframe and POWER, Intel x86/x87, Sun, and SGI
 platforms), although the naive impression is that they should all be
 equal:
 <pre>
