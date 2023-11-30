@@ -189,14 +189,15 @@ Stuff*](https://cjcoats.github.io/optimization/efficient_models.html).
 It was recognized from the very beginning (and documented as such) that
 because `REAL` arithmetic is always subject to machine dependent
 round-off problems [^1](and therefore `REAL` values should **never** be
-tested for exact equality_, a robust scheme was needed for the detection
+tested for exact equality, a robust scheme was needed for the detection
 of "missing" for `REAL` values.  Therefore, (with over-kill) the I/O API
 provided parameters
 <pre>
         REAL, PARAMETER :: BADVAL3 =  -9.999E36  !  for "missing"
         REAL, PARAMETER :: AMISS3  =  -9.000E36  !  for testing
 </pre>
-with the intention that the code should look like
+with the intention that the code for testing `REAL` "missing" should
+look like
 <pre>
         REAL    X
         ...
@@ -208,7 +209,7 @@ with the intention that the code should look like
 Even on systems with the most extreme round-off difficulty properties
 (e.g., IBM 360 or POWER, Intel x86/x87, early versions of SunOS or
 IRIX), this is still a robust test.  In many places in SMOKE (especially
-program `UAM2NCF`, the tests were for equality to `AMISS3`, for which
+program `UAM2NCF`), the tests were for equality to `AMISS3`, for which
 the programmer should consider himself or herself lucky if the answer
 comes out "right".  In this new edition of SMOKE, these have all been
 chased down and fixed.
@@ -284,10 +285,11 @@ have been replaced by the matching I/O API parameters, now obtained from
 
 ### Next Steps
 
-SMOKE should be converted to Fortran-90 *.f90* free source format, which
-can be done easily and quickly as a mostly-automated process using
-Willem Vermin's [*findent* program](https://github.com/wvermin/findent),
-with suggested command-line options:
+SMOKE should be converted to Fortran-90 Standard (*.f90*) free source
+format, which can be done easily and quickly as a mostly-automated
+process using Willem Vermin's [*findent*
+program](https://github.com/wvermin/findent), with suggested
+command-line options:
 <pre>
         findent -i4 -k6 -ofree  -RR  !*
 </pre>
@@ -305,13 +307,13 @@ temporary scratch-=arrays.  Note that this would be a major task.
 
 The "generate new files in a file-set" constructs ensuring that file
 sizes do not exceed the (netCDF-2, 1990's) 2GB file size limit have not
-been needed since the introduction of netCDF-3 in the mid-1990's.  This
-should go away.  Possibly (since I/O API verslon 3.2 supports up to 2048
-variables and I/O API 3.2-large supports up to 16384 variables), all of
-*src/filesetapi* should be eliminated, using standard I/O API instead.
-(Note that netCDF-3 supports file sizes larger than 2 GB, with a
-2GB-per-timestep limit prior to netCDF-3.6, which does away with that
-limit...)
+been needed since the introduction of netCDF-3 in the late 1990's. 
+These constructs are no longer needed and should go away.  Possibly
+(since I/O API verslon 3.2 supports up to 2048 variables and I/O API
+3.2-large supports up to 16384 variables), all of *src/filesetapi*
+should be eliminated, using standard I/O API instead. (Note that
+netCDF-3 supports file sizes larger than 2 GB, with a 2GB-per-timestep
+limit prior to netCDF-3.6 (2002), which does away with that limit...)
 
 ### Notes
 
