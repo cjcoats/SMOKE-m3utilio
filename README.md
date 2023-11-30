@@ -66,8 +66,10 @@ were put into Fortran-90 style, e.g.
 
         INTEGER, EXTERNAL :: GETFLINE
 
-Argument-list bugs were found for calls to `SORTI2`, `SORTR2`, and
-`INDEX1`.
+Argument-list bugs were found and fixed for calls to `SORTI2`, `SORTR2`, 
+and `INDEX1`.
+
+Header-comments were updated accordingly.
 
 
 ### ENVINT, M3ERR, TRIMLEN, etc.
@@ -75,11 +77,12 @@ Argument-list bugs were found for calls to `SORTI2`, `SORTR2`, and
 Error-checking was missing for almost all of the `ENVINT, ENVREAL,
 ENVYN` calls.  This error-checking has now been added, so if the
 user does something inappropriate in a script like assigning a
-non-integer where an environment variable should be an integer:
+non-integer where an environment variable should be an integer,
+e.g.,
 
         setenv IFOO dingbats
 
-Then the new code now error-checks to detect this invalid value, report
+then the new code now error-checks to detect this invalid value, reports
 the problem, and exit (whereas the old code would  have allowed the code
 to continue inappropriately with a potentially-bad value).
 
@@ -315,13 +318,15 @@ netCDF-3 supports file sizes larger than 2 GB, with a 2GB-per-timestep
 limit prior to netCDF-3.6 (2002), which does away with that limit...) Possibly (since I/O API verslon 3.2 supports up to 2048 variables and
 I/O API 3.2-large supports up to 16384 variables), all of
 *src/filesetapi* should be eliminated, using standard I/O API instead.
-This would be a straightforward but tedious task...
+(This would allow the replacement of many `ALLOCATE`d arrays by "simple"
+arrays dimensioned by I/O API `PARAMETER`s.) This replacement would be
+a straightforward but tedious task...
 
 In the long run, the whole `INCLUDE`-file / `MODULE` / library-function
 structure of SMOKE should be re-examined. `INCLUDE`-files should be moved into `MODULE`s, as should module-initialization routines (and to some
 extent, all module-data manipulation routines).  The ideal would be to have `MODULE`s whose only externally-visible contents are `CONTAIN`ed
-routines, `PARAMETER`s, and `PROTECTED` variables.  This would be a major
-undertaking, however.
+routines (and polymorphic `INTERFACE`s, possibly), `PARAMETER`s, and
+`PROTECTED` variables.  This would be a major undertaking, however.
 
 ### Notes
 
