@@ -318,9 +318,10 @@ I/O API 3.2-large supports up to 16384 variables), all of
 This would be a straightforward but tedious task...
 
 In the long run, the whole `INCLUDE`-file / `MODULE` / library-function
-structure of SMOKE should be re-examined. `INCLUDE`-files should be moved into `MODULE`s, as should module-initialization routines (and to some extent, all module-data manipulation routines.  The ideal would be to have
-`MODULE`s whose only externally-visible contents are `CONTAIN`ed routines,
-`PARAMETER`s, and `PROTECTED` variables.  This would be a major undertaking, however.
+structure of SMOKE should be re-examined. `INCLUDE`-files should be moved into `MODULE`s, as should module-initialization routines (and to some
+extent, all module-data manipulation routines).  The ideal would be to have `MODULE`s whose only externally-visible contents are `CONTAIN`ed
+routines, `PARAMETER`s, and `PROTECTED` variables.  This would be a major
+undertaking, however.
 
 ### Notes
 
