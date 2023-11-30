@@ -48,11 +48,19 @@ The directory structure matches that of the default *SMOKE/src* subtree
 from GitHub.
 
 There is a reference read-only `.0.f` copy of each of the original GitHub
-source files, e.g., *src/biog/czangle.0.f*.
+source files, e.g., *src/biog/czangle.0.f* (and likewise for
+*src/Makefile.0*).
 
 New codes go by the "standard" naming, e.g.,  *src/biog/czangle.f*
 Intermediate "scratch" or "improved" versions of the codes have other
 in-fixes, e.g., *src/biog/tmpbeis4.1.f* and  *src/biog/tmpbeis4.2.f*
+
+GUI-differencing tools like
+[*tkdifff*](https://sourceforge.net/projects/tkdiff/), 
+[*xxdiff*](https://github.com/blais/xxdiff), or 
+[*kompare*](https://apps.kde.org/kompare/) will be useful for comparing 
+the reference `.0.f` files with the new `.f` versions.
+
 
 ## Changes
 
