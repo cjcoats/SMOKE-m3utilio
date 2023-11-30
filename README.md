@@ -183,7 +183,7 @@ nest-order as cache-hostile as possible. These have been replaced by the
 cache-friendly versions.  This should result in improved performance
 (where they occur), especially for large-grid scenarios.  See
 [Optimizing Environmental Models for Microprocessor Based Systems
-&mdash *The Easy
+&mdash; *The Easy
 Stuff*](https://cjcoats.github.io/optimization/efficient_models.html).
 
 It was recognized from the very beginning (and documented as such) that
