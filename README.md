@@ -350,15 +350,14 @@ following* are guaranteed to be equal (a problem found especially on
 Cray vector, IBM mainframe and POWER, Intel x86/x87, Sun, and SGI
 platforms), although the naive impression is that they should all be
 equal:
-<pre>
-        INTEGER, PARAMETER :: A = 1.0 / 3.0
-        INTEGER, PARAMETER :: B = 0.333333333333333333  ! with extra-digit overkill
-        INTEGER, PARAMETER :: C = FLOAT( 1 ) / FLOAT( 3 )
-        INTEGER     D, E, F, G
-        ...
-        D = 1.0 / 3.0
-        E = FLOAT( 1 ) / FLOAT( 3 )
-        F = 0.333333333333333333
-        READ( '0.333333333333333333', * )  G
-        ...
-</pre>
+    INTEGER, PARAMETER :: A = 1.0 / 3.0
+    INTEGER, PARAMETER :: B = 0.333333333333333333  ! with extra-digit overkill
+    INTEGER, PARAMETER :: C = FLOAT( 1 ) / FLOAT( 3 )
+    INTEGER     D, E, F, G
+    ...
+    D = 1.0 / 3.0
+    E = FLOAT( 1 ) / FLOAT( 3 )
+    F = 0.333333333333333333
+    READ( '0.333333333333333333', * )  G
+    ...
+
