@@ -36,9 +36,11 @@ the current (GTitHub Oct. 28, 2023) version of SMOKE, upon which this
 code distribution is based.
 
 Note that `MODULE M3UTILIO` also provides generic/polymorphic interfaces
-for a number of routines:  for example, 'ENVGET()` provides a type-safe
-name  for calling any of `ENVINT(), ENVINT8(), ENVDBLE(), ENVREAL(),
-ENVSTR(), ENVYN(), BENVINT(), BENVINT8(), BENVDBLE(),` and `BENVREAL()`
+for a number of routines:  for example,
+[`ENVGET`](https://cjcoats.github.io/ioapi/ENVGETS.html) provides a
+type-safe name  for calling any of `ENVINT(), ENVINT8(), ENVDBLE(),
+ENVREAL(), ENVSTR(), ENVYN(), BENVINT(), BENVINT8(), BENVDBLE(),` and
+`BENVREAL()`
 
 ## Structure
 
@@ -46,11 +48,11 @@ The directory structure matches that of the default *SMOKE/src* subtree
 from GitHub.
 
 There is a reference read-only `.0.f` copy of each of the original GitHub
-source files, e.g., *biog/czangle.0.f*.
+source files, e.g., *src/biog/czangle.0.f*.
 
-New codes go by the "standard" naming, e.g.,  *biog/czangle.f*
+New codes go by the "standard" naming, e.g.,  *src/biog/czangle.f*
 Intermediate "scratch" or "improved" versions of the codes have other
-in-fixes, e.g., *biog/tmpbeis4.1.f* and  *biog/tmpbeis4.2.f*
+in-fixes, e.g., *src/biog/tmpbeis4.1.f* and  *src/biog/tmpbeis4.2.f*
 
 ## Changes
 
@@ -73,7 +75,7 @@ Argument-list bugs were found for calls to `SORTI2`, `SORTR2`, and
 Error-checking was missing for almost all of the `ENVINT, ENVREAL,
 ENVYN` calls.  This error-checking has now been added, so if the
 user does something inappropriate in a script like assigning a
-non-integer where an environment variable shoould be an integer:
+non-integer where an environment variable should be an integer:
 
         setenv IFOO dingbats
 
@@ -118,7 +120,7 @@ are expensive).  For example, the more-readable
      &          NGROWAGNO( NCOLS, NROWS ),
      &           GROWAGNO( NCOLS, NROWS ),
      &               SLAI( NCOLS, NROWS, NLAI ), STAT=IOS )
-        CALL CHECKMEM( IOS, 'AVGEMIS...SLAI', PROGNAME )
+        CALL CHECKMEM( IOS, 'WSAT...SLAI', PROGNAME )
 </pre>
 replaces the far more cluttered
 <pre>
@@ -178,8 +180,11 @@ replaces the far more cluttered
 
 A number of loop nests (especially in biogenics) were found to be in
 nest-order as cache-hostile as possible. These have been replaced by the
-cache-friendly versons.  This should result in improved performance
-(where they occur), especially for large-grid scenarios.
+cache-friendly versions.  This should result in improved performance
+(where they occur), especially for large-grid scenarios.  See
+[Optimizing Environmental Models for Microprocessor Based Systems
+\u2014 *The Easy
+Stuff*](https://cjcoats.github.io/optimization/efficient_models.html).
 
 It was recognized from the very beginning (and documented as such) that
 because `REAL` arithmetic is always subject to machine dependent
@@ -255,10 +260,10 @@ to a failure to understand how declaration-time initialization for
 variables works.  The following sort of thing
 <pre>
         INTEGER :: NFOUND = 0
-</pre>
+<pre>
 should almost always instead have a declaration, followed by a separate
 initialization-statement at the beginning of the body of the routine:
-<pre>
+</pre>
         INTEGER :: NFOUND
         ...
         NFOUND = 0
@@ -275,13 +280,13 @@ match I/O API parameters `NAMLEN3` and `MXDLEN3` (but were introduced by
 a failure to understand how to do this sort of thing properly in Fortran-90),
 have been replaced by the matching I/O API parameters, now obtained from
 `M3UTILIO`.  This results in the effective elimination of
-*inc/IOSTRG3.EXT* and *inc/IOPRVT3.EXT*.
+*src/inc/IOSTRG3.EXT* and *src/inc/IOPRVT3.EXT*.
 
 ### Next Steps
 
 SMOKE should be converted to Fortran-90 *.f90* free source format, which
 can be done easily and quickly as a mostly-automated process using
-Willem Vermin's [*findent* program][https://github.com/wvermin/findent),
+Willem Vermin's [*findent* program](https://github.com/wvermin/findent),
 with suggested command-line options:
 <pre>
         findent -i4 -k6 -ofree  -RR  !*
@@ -310,14 +315,15 @@ limit...)
 
 ### Notes
 
-[^1]  The Fortran Standard explicitly **refuses** to dictate the quality
+[^1]: The Fortran Standard explicitly **refuses** to dictate the quality
 of how round-off behaves.  As an extreme example, *no two of the
-following* are guaranteed to be equal (a difficulty found especially on
-IBM mainfreame and POWER, Intel x86/x87, Sun, and SGI platforms),
-although the naive impression is that they should all be equal:
+following* are guaranteed to be equal (a problem found especially on
+Cray vector, IBM mainfreame and POWER, Intel x86/x87, Sun, and SGI
+platforms), although the naive impression is that they should all be
+equal:
 <pre>
         INTEGER, PARAMETER :: A = 1.0 / 3.0
-        INTEGER, PARAMETER :: B = 0.333333333333333333
+        INTEGER, PARAMETER :: B = 0.333333333333333333  ! with extra-digit overkill
         INTEGER, PARAMETER :: C = FLOAT( 1 ) / FLOAT( 3 )
         INTEGER     D, E, F, G
         ...
