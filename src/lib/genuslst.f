@@ -71,12 +71,6 @@ C...........   Sorting index
 C...........   Local allocateable arrays for ORIS lists
         INTEGER, ALLOCATABLE :: FOIDXA  ( : )  ! sorting index for oris
         INTEGER, ALLOCATABLE :: OBIDXA  ( : )  ! sorting index for oris//blr
-        INTEGER, ALLOCATABLE :: OBSRCNTA( : )  ! unsrtd src count per ORIS/boiler
-
-        CHARACTER(ORSLEN3), ALLOCATABLE :: INVORISA( : )  ! ORIS
-        CHARACTER(FIPLEN3), ALLOCATABLE :: INVORFPA( : )  ! FIPS code for ORIS IDs
-        CHARACTER(OBRLEN3), ALLOCATABLE :: ORISBLRA( : )  ! ORIS // boiler
-        CHARACTER(DSCLEN3), ALLOCATABLE :: INVODSCA( : ) ! plant description from inventory
 
 C...........   Other local variables
         INTEGER          I, J, J1, L1, L2, N, NS, S
@@ -494,14 +488,19 @@ C.................  Count unique ORIS // boiler combos
             END DO
 
 C.............  Allocate memory for unsorted ORIS lists
-            ALLOCATE( FOIDXA( NINVORIS ),
+            ALLOC TE( FOIDXA( NINVORIS ),
+     &               INVORFP( NINVORIS ),
+     &               INVODSC( NINVORIS ),
+     &              IORSMTCH( NINVORIS ),
      &              INVORISA( NINVORIS ),
      &              INVORFPA( NINVORIS ),
      &              INVODSCA( NINVORIS ),
      &                OBIDXA( NORISBLR ),
-     &              ORISBLRA( NORISBLR ),
-     &              OBSRCNTA( NORISBLR ), STAT=IOS )
-            CALL CHECKMEM( IOS, 'OFOIDXA...BSRCNTA', PROGNAME )
+     &               ORISBLR( NORISBLR ),
+     &               OBSRCNT( NORISBLR ),
+     &               OBSRCBG( NORISBLR ),
+     &               OBSRCNM( NOBLRSRC ),  STAT=IOS )
+            CALL CHECKMEM( IOS, 'FOIDXA...OBSRCNM', PROGNAME )
 
 C.............  Store arrays
             INVODSCA = ' '
@@ -525,12 +524,12 @@ C.................  Unsorted ORIS arrays
 
                     IF( J <= 0 ) THEN
                         NINVORIS = NINVORIS + 1
-                        FOIDXA  ( NINVORIS ) = NINVORIS
-                        INVORISA( NINVORIS ) = CORS
-                        INVORFPA( NINVORIS ) = CFIP
-                        INVODSCA( NINVORIS ) = PDSC
+                        FOIDXA ( NINVORIS ) = NINVORIS
+                        INVORIS( NINVORIS ) = CORS
+                        INVORFP( NINVORIS ) = CFIP
+                        INVODSC( NINVORIS ) = PDSC
                     ELSE
-                        IF( INVORFPA( J ) /= CFIP ) THEN
+                        IF( INVORFP( J ) /= CFIP ) THEN
                        	    MESG = 'WARNING: Different FIPS codes ' //
      &                            'found for ORIS ID ' // CORS
      &                            // '.  Will use ' // CFIP //
@@ -556,11 +555,11 @@ C.................  Unsorted oris/boiler array
 
                 IF( J <= 0 ) THEN
                     NORISBLR = NORISBLR + 1
-                    OBIDXA  ( NORISBLR ) = NORISBLR
-                    ORISBLRA( NORISBLR ) = CORS // BLID
-                    OBSRCNTA( NORISBLR ) = 1
+                    OBIDXA ( NORISBLR ) = NORISBLR
+                    ORISBLR( NORISBLR ) = CORS // BLID
+                    OBSRCNT( NORISBLR ) = 1
                 ELSE
-                    OBSRCNTA( J ) = OBSRCNTA( J ) + 1
+                    OBSRCNT( J ) = OBSRCNT( J ) + 1
                 END IF
 
                 PCORS = CORS
@@ -574,33 +573,11 @@ C.................  Unsorted oris/boiler array
             END IF
 
 C.............  Sort arrays
-            CALL SORTIC( NINVORIS, FOIDXA, INVORISA )
-            CALL SORTIC( NORISBLR, OBIDXA, ORISBLRA )
+            CALL SORTI(   NINVORIS, FOIDXA, INVORIS )
+            CALL PERMUTI( NINVORIS, FOIDXA, INVORIS, INVORFP, INVODSC )
 
-C.............  Allocate memory for sorted ORIS, ORIS/boiler lists
-            ALLOCATE( INVORIS( NINVORIS ),
-     &                INVORFP( NINVORIS ),
-     &                INVODSC( NINVORIS ),
-     &               IORSMTCH( NINVORIS ),
-     &                ORISBLR( NORISBLR ),
-     &                OBSRCNT( NORISBLR ),
-     &                OBSRCBG( NORISBLR ), STAT=IOS )
-            CALL CHECKMEM( IOS, 'INVORIS...OBSRCBG', PROGNAME )
-
-C.............  Store sorted arrays
-            IORSMTCH = .FALSE.
-            DO I = 1, NINVORIS
-                J = FOIDXA( I )
-                INVORIS( I ) = INVORISA( J )
-                INVORFP( I ) = INVORFPA( J )
-                INVODSC( I ) = INVODSCA( J )
-            END DO
-
-            DO I = 1, NORISBLR
-                J = OBIDXA( I )
-                ORISBLR( I ) = ORISBLRA( J )
-                OBSRCNT( I ) = OBSRCNTA( J )
-            END DO
+            CALL SORTI(   NORISBLR, OBIDXA, ORISBLR )
+            CALL PERMUTI( NORISBLR, OBIDXA, ORISBLR, OBSRCNT )
 
 C.............  Build ORIS/boiler source start array
             OBSRCBG( 1 ) = 1
@@ -609,8 +586,6 @@ C.............  Build ORIS/boiler source start array
             END DO
 
 C.............  Create list of sources for each ORIS/boiler combo
-            ALLOCATE( OBSRCNM( NOBLRSRC ), STAT=IOS )
-            CALL CHECKMEM( IOS, 'OBSRCNM', PROGNAME )
             OBSRCNM = 0
 
             DO S = 1, NSRC
@@ -624,7 +599,7 @@ C.................  Skip missing ORIS or boiler IDs
 C.................  Find combination in sorted list
                 J = FINDC( CORS // BLID, NORISBLR, ORISBLR )
 
-                N = OBSRCBG( J )
+                N  = OBSRCBG( J )
                 NS = N + OBSRCNT( J )
                 DO
                     IF( OBSRCNM( N ) == 0 ) THEN
@@ -636,10 +611,6 @@ C.................  Find combination in sorted list
                 END DO
 
             END DO
-
-C.............  Deallocate unneeded unsorted arrays
-            DEALLOCATE( INVORFPA, INVORISA, ORISBLRA, INVODSCA )
-
             FIRSTORS = .FALSE.
 
         END IF   ! End boiler processing

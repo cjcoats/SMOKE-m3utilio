@@ -327,8 +327,7 @@ C.........  Allocate memory for unsorted data used in all source categories
         ALLOCATE( INDXTA( NREF ),
      &             ISPTA( NREF ),
      &            CSCCTA( NREF ),
-     &            M( IOS, 'CSCCTA', PROGNAME )
-        ALLOCATE( CSRCTA( NREF ), STAT=IOS )
+     &            CSRCTA( NREF ), STAT=IOS )
         CALL CHECKMEM( IOS, 'CSRCTA', PROGNAME )
 
 C.........  Initialize character strings
