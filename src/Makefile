@@ -21,8 +21,6 @@
 #
 #       ---------------     Definitions:   -------------------------
 
-.SUFFIXES: .m4 .c .F .f .f90 .F90 .mod
-
 include Makeinclude
 
 # find source, object, and module files here:
@@ -36,85 +34,85 @@ ${BASEDIR}/spcmat:${BASEDIR}/temporal
 #  emmod:
 
 MODSRC = \
- modar2pt.f   modbeis3.f    modbiog.f         \
- modcntrl.f   moddayhr.f    modelev.f         \
- modemfac.f   modgrid.f     modinfo.f         \
- modlists.f   modmbset.f    modmerge.f        \
- modmet.f     modmobil.f    modmvsmrg.f       \
- modrepbn.f   modreprt.f    modsourc.f        \
- modspro.f    modstcy.f     modsurg.f         \
- modtag.f     modtmprl.f    modxref.f         \
- modgrdlib.f 
+ modar2pt.f90   modbeis3.f90    modbiog.f90         \
+ modcntrl.f90   moddayhr.f90    modelev.f90         \
+ modemfac.f90   modgrid.f90     modinfo.f90         \
+ modlists.f90   modmbset.f90    modmerge.f90        \
+ modmet.f90     modmobil.f90    modmvsmrg.f90       \
+ modrepbn.f90   modreprt.f90    modsourc.f90        \
+ modspro.f90    modstcy.f90     modsurg.f90         \
+ modtag.f90     modtmprl.f90    modxref.f90         \
+ modgrdlib.f90 
 
-MOD  = $(MODSRC:.f=.mod)
+MOD  = $(MODSRC:.f90=.mod)
 
-MODOBJ = $(MODSRC:.f=.o)
+MODOBJ = $(MODSRC:.f90=.o)
 
 #  lib:
 
 LIBSRC = \
- alocatbl.f     alocchrt.f      alocctbl.f          \
- alocetbl.f     alocgtbl.f      alocmtbl.f          \
- alocptbl.f     alocstbl.f      alocttbl.f          \
- applreac.f     applumat.f      bldcsrc.f           \
- bldenams.f     blkorcmt.f      calcrelhum.f        \
- checkmem.f     chkcpvar.f      chkemepi.f          \
- chkexpscc.f    chkexpsic.f     chkgrid.f           \
- chkint.f       chkisiz.f       chkmetem.f          \
- chkptdef.f     chkreal.f       chksrcno.f          \
-                                cvtrdtype.f         \
- cvtvehtype.f   dscm3grd.f      dscm3lay.f          \
- dscsprof.f     efsetup.f       evalcrit.f          \
- fillatbl.f     fillchrt.f      fillctbl.f          \
- filletbl.f     fillgtbl.f      fillmtbl.f          \
- fillptbl.f     fillstbl.f      fillttbl.f          \
- find1first.f   flterr.f        fltrneg.f           \
- fltrxref.f     fmtcsrc.f       genptcel.f          \
- genptvcel.f    genuslst.f      getbasyr.f          \
- getcfdsc.f     getctgry.f      getdysav.f          \
- getfline.f     getformt.f      getidasz.f          \
- getifdsc.f     getiname.f      getinvyr.f          \
- getm3epi.f     getnlist.f      getntisz.f          \
- getrfdsc.f     getsinfo.f      gettzone.f          \
- grd2cnty.f     grdfips.f       hdrmiss3.f          \
- ingrid.f       initem.f        ioapi_grd_size.f    \
- rdsprofdsc.f   multunit.f                          \
- normtpro.f     openphys.f      padnzero.f          \
- padzero.f      parscsrc.f      parsline.f          \
- pdsetup.f      polmesg.f       prclinrc.f          \
- procspro.f     progdesc.f      rd3mask.f           \
- rdar2pt.f      rdascc.f        rdchrscc.f          \
- rdcodnam.f     rddates.f       rdeproc.f           \
- rdgeocodes.f   rdgmat.f        rdgref.f            \
- rdhdays.f      rdinvchr.f      rdinvmap.f          \
- rdinvpol.f     rdlines.f       rdmactdsc.f         \
- rdmapmask.f    rdmappol.f      rdnaicsdsc.f        \
- rdorsdsc.f     rdpelv.f        rdrmat.f            \
- rdsccdsc.f     rdsccmap.f      rdsconv.f           \
- rdsetmask.f    rdsicdsc.f      rdsmat.f            \
- rdspdprof.f    rdspdref.f      rdsprof.f           \
- rdsrcgrps.f    rdsref.f        rdsrg.f             \
- rdsrgdesc.f    rdsrghdr.f      rdstcy.f            \
- rdtzone.f      rdumat.f        rdmxref.f           \
- rdxclude.f     readwr3.f       rmcommnt.f          \
- setscctype.f   setsrcdy.f      srcgrpcnt.f         \
- tagtable.f                     unitfac.f           \
- unitmatch.f    useexpgeo.f     verchar.f           \
- wrchrscc.f     wrdaymsg.f      wrorlout.f          \
- wrsrcgrps.f    xfractbl.f      xreftbl.f
+ alocatbl.f90     alocchrt.f90      alocctbl.f90          \
+ alocetbl.f90     alocgtbl.f90      alocmtbl.f90          \
+ alocptbl.f90     alocstbl.f90      alocttbl.f90          \
+ applreac.f90     applumat.f90      bldcsrc.f90           \
+ bldenams.f90     blkorcmt.f90      calcrelhum.f90        \
+ checkmem.f90     chkcpvar.f90      chkemepi.f90          \
+ chkexpscc.f90    chkexpsic.f90     chkgrid.f90           \
+ chkint.f90       chkisiz.f90       chkmetem.f90          \
+ chkptdef.f90     chkreal.f90       chksrcno.f90          \
+ cvtrdtype.f90                                            \
+ cvtvehtype.f90   dscm3grd.f90      dscm3lay.f90          \
+ dscsprof.f90     efsetup.f90       evalcrit.f90          \
+ fillatbl.f90     fillchrt.f90      fillctbl.f90          \
+ filletbl.f90     fillgtbl.f90      fillmtbl.f90          \
+ fillptbl.f90     fillstbl.f90      fillttbl.f90          \
+ find1first.f90   flterr.f90        fltrneg.f90           \
+ fltrxref.f90     fmtcsrc.f90       genptcel.f90          \
+ genptvcel.f90    genuslst.f90      getbasyr.f90          \
+ getcfdsc.f90     getctgry.f90      getdysav.f90          \
+ getfline.f90     getformt.f90      getidasz.f90          \
+ getifdsc.f90     getiname.f90      getinvyr.f90          \
+ getm3epi.f90     getnlist.f90      getntisz.f90          \
+ getrfdsc.f90     getsinfo.f90      gettzone.f90          \
+ grd2cnty.f90     grdfips.f90       hdrmiss3.f90          \
+ ingrid.f90       initem.f90        ioapi_grd_size.f90    \
+ rdsprofdsc.f90   multunit.f90                            \
+ normtpro.f90     openphys.f90      padnzero.f90          \
+ padzero.f90      parscsrc.f90      parsline.f90          \
+ pdsetup.f90      polmesg.f90       prclinrc.f90          \
+ procspro.f90     progdesc.f90      rd3mask.f90           \
+ rdar2pt.f90      rdascc.f90        rdchrscc.f90          \
+ rdcodnam.f90     rddates.f90       rdeproc.f90           \
+ rdgeocodes.f90   rdgmat.f90        rdgref.f90            \
+ rdhdays.f90      rdinvchr.f90      rdinvmap.f90          \
+ rdinvpol.f90     rdlines.f90       rdmactdsc.f90         \
+ rdmapmask.f90    rdmappol.f90      rdnaicsdsc.f90        \
+ rdorsdsc.f90     rdpelv.f90        rdrmat.f90            \
+ rdsccdsc.f90     rdsccmap.f90      rdsconv.f90           \
+ rdsetmask.f90    rdsicdsc.f90      rdsmat.f90            \
+ rdspdprof.f90    rdspdref.f90      rdsprof.f90           \
+ rdsrcgrps.f90    rdsref.f90        rdsrg.f90             \
+ rdsrgdesc.f90    rdsrghdr.f90      rdstcy.f90            \
+ rdtzone.f90      rdumat.f90        rdmxref.f90           \
+ rdxclude.f90     readwr3.f90       rmcommnt.f90          \
+ setscctype.f90   setsrcdy.f90      srcgrpcnt.f90         \
+ tagtable.f90                       unitfac.f90           \
+ unitmatch.f90    useexpgeo.f90     verchar.f90           \
+ wrchrscc.f90     wrdaymsg.f90      wrorlout.f90          \
+ wrsrcgrps.f90    xfractbl.f90      xreftbl.f90
 
-LIBOBJ = $(LIBSRC:.f=.o)
+LIBOBJ = $(LIBSRC:.f90=.o)
 
-#  filesetapi:  both ".f" and ".F"
-#  special case because of both .f and .F in ${FILSRC}
+#  filesetapi:  both ".f90" and ".f90"
+#  special case because of both .f90 and .f90 in ${FILSRC}
 
 FILSRC = \
- appendname.f        chkfileset.f         \
- chksetdesc.f        cleanup.f            \
- closeset.f          createset.f          \
- descset.f           modfileset.f         \
- openset.f           promptset.f          \
- readset.F           writeset.F
+ appendname.f90        chkfileset.f90         \
+ chksetdesc.f90        cleanup.f90            \
+ closeset.f90          createset.f90          \
+ descset.f90           modfileset.f90         \
+ openset.f90           promptset.f90          \
+ readset.F90           writeset.F90
 
 FILOBJ = \
  appendname.o        chkfileset.o         \
@@ -124,150 +122,150 @@ FILOBJ = \
  openset.o           promptset.o          \
  readset.o           writeset.o
 
-FIL  = $(FILSRC:.f=.mod)
+FIL  = $(FILSRC:.f90=.mod)
 
 #  biog:
 
 BIOSRC = \
- czangle.f     getpar.f      getparb.f           \
- hrbeis3.f     hrbeis_361.f  hrbeis4.f   hrno.f  hrno_beis4.f  \
- normbeis3.f   normbeis314.f normbeis361.f  normbeis4.f      \
- prebmet.f     rdb3fac.f     rdb4fac.f   rdnormbeis4_efs.f        \
- rdb4fac_csv.f rdbpro.f      tmpbeis3.f          \
- tmpbeis314.f  tmpbeis361.f  tmpbeis4.f  normbeis370.f
+ czangle.f90     getpar.f90      getparb.f90                                \
+ hrbeis3.f90     hrbeis_361.f90  hrbeis4.f90      hrno.f90  hrno_beis4.f90  \
+ normbeis3.f90   normbeis314.f90 normbeis361.f90  normbeis4.f90             \
+ prebmet.f90     rdb3fac.f90     rdb4fac.f90      rdnormbeis4_efs.f90       \
+ rdb4fac_csv.f90 rdbpro.f90      tmpbeis3.f90                               \
+ tmpbeis314.f90  tmpbeis361.f90  tmpbeis4.f90     normbeis370.f90
  
-BIOOBJ =  $(BIOSRC:.f=.o)
+BIOOBJ =  $(BIOSRC:.f90=.o)
 
 #  cntlmat:
 
 CTLSRC = \
- alocpkts.f     asgncntl.f      cntlmat.f       \
- errpkts.f      fillcdat.f      fillcntl.f      \
- genmultc.f     genproj.f       genreact.f      \
- opencmat.f     openctmp.f      openpmat.f      \
- openrmat.f     pktloop.f       procpkts.f      \
- rdpacket.f     wcntlrep.f      wrctmp.f        \
- wrrmat.f
+ alocpkts.f90     asgncntl.f90      cntlmat.f90       \
+ errpkts.f90      fillcdat.f90      fillcntl.f90      \
+ genmultc.f90     genproj.f90       genreact.f90      \
+ opencmat.f90     openctmp.f90      openpmat.f90      \
+ openrmat.f90     pktloop.f90       procpkts.f90      \
+ rdpacket.f90     wcntlrep.f90      wrctmp.f90        \
+ wrrmat.f90
  
-CTLOBJ =  $(CTLSRC:.f=.o)
+CTLOBJ =  $(CTLSRC:.f90=.o)
 
 #  emqa (smkreport):
 
 RPTSRC = \
- asgnbins.f    bldrepidx.f    genrprt.f  \
- openrepin.f   openrepout.f   qarepin.f  \
- rdgrps.f      rdrepin.f      rdrprts.f  \
- repmrggrd.f   repunits.f     scanrepc.f \
- selectsrc.f   smkreport.f    wrrephdr.f \
- wrrepout.f    rdssup.f
+ asgnbins.f90    bldrepidx.f90    genrprt.f90  \
+ openrepin.f90   openrepout.f90   qarepin.f90  \
+ rdgrps.f90      rdrepin.f90      rdrprts.f90  \
+ repmrggrd.f90   repunits.f90     scanrepc.f90 \
+ selectsrc.f90   smkreport.f90    wrrephdr.f90 \
+ wrrepout.f90    rdssup.f90
  
-RPTOBJ =  $(RPTSRC:.f=.o)
+RPTOBJ =  $(RPTSRC:.f90=.o)
 
 #  emutil:
 
 UTISRC = \
- aggwndw.f   beld3to2.f       saregroup.f          \
- cemscan.f   extractida.f     gcntl4carb.f         \
- gentpro.f   geofac.f         invsplit.f           \
- layalloc.f  metcombine.f     metscan.f            \
- pktreduc.f  smk2emis.f       surgtool.f           \
- uam2ncf.f   inlineto2d.f     
+ aggwndw.f90   beld3to2.f90       saregroup.f90          \
+ cemscan.f90   extractida.f90     gcntl4carb.f90         \
+ gentpro.f90   geofac.f90         invsplit.f90           \
+ layalloc.f90  metcombine.f90     metscan.f90            \
+ pktreduc.f90  smk2emis.f90       surgtool.f90           \
+ uam2ncf.f90   inlineto2d.f90     
  
-UTIOBJ =  $(UTISRC:.f=.o)
+UTIOBJ =  $(UTISRC:.f90=.o)
 
 #  grdmat:
 
 GRDSRC = \
- asgnsurg.f  genagmat.f       genggmat.f    \
- genlgmat.f  genmgmat.f       genpgmat.f    \
- grdmat.f    opengmat.f       rdsrg4grd.f   \
- setfrac.f   sizgmat.f
+ asgnsurg.f90  genagmat.f90       genggmat.f90    \
+ genlgmat.f90  genmgmat.f90       genpgmat.f90    \
+ grdmat.f90    opengmat.f90       rdsrg4grd.f90   \
+ setfrac.f90   sizgmat.f90
  
-GRDOBJ =  $(GRDSRC:.f=.o)
+GRDOBJ =  $(GRDSRC:.f90=.o)
 
 #  movesmrg:
 
 MOVSRC = \
- bldprocidx.f     bldsrccell.f      hourmet.f     \
- mbldmrgidx.f     met4moves.f       mgetmrgev.f   \
- minitstcy.f      mmrgonams.f       mmrgunits.f   \
- mmrgvnams.f      mopenmrgin.f      mopenmrgout.f \
- movesmrg.f       mwrmrgrep.f       rdcfpro.f     \
- rdfmref.f        rdmrclist.f       rdspdist.f    \
- rdrpdemfacs.f    rdrphemfacs.f     rdrppemfacs.f \
- rdrpvemfacs.f    rdspdpro.f        setrefcnty.f  \
- wrtemprof.f      
+ bldprocidx.f90     bldsrccell.f90      hourmet.f90     \
+ mbldmrgidx.f90     met4moves.f90       mgetmrgev.f90   \
+ minitstcy.f90      mmrgonams.f90       mmrgunits.f90   \
+ mmrgvnams.f90      mopenmrgin.f90      mopenmrgout.f90 \
+ movesmrg.f90       mwrmrgrep.f90       rdcfpro.f90     \
+ rdfmref.f90        rdmrclist.f90       rdspdist.f90    \
+ rdrpdemfacs.f90    rdrphemfacs.f90     rdrppemfacs.f90 \
+ rdrpvemfacs.f90    rdspdpro.f90        setrefcnty.f90  \
+ wrtemprof.f90      
  
-MOVOBJ =  $(MOVSRC:.f=.o)
+MOVOBJ =  $(MOVSRC:.f90=.o)
 
 #  point:
 
 PNTSRC = \
- asgngrps.f       elevpoint.f       fire_plmris.f     \
- fire_postplm.f   fire_preplm.f     laypoint.f        \
- mxgrpemis.f      openeout.f        openlayout.f      \
- plmris.f         plsprd.f          plumesti.f        \
- postplm.f        preplm.f          rpelvcfg.f        \
- wpingstk.f
+ asgngrps.f90       elevpoint.f90       fire_plmris.f90     \
+ fire_postplm.f90   fire_preplm.f90     laypoint.f90        \
+ mxgrpemis.f90      openeout.f90        openlayout.f90      \
+ plmris.f90         plsprd.f90          plumesti.f90        \
+ postplm.f90        preplm.f90          rpelvcfg.f90        \
+ wpingstk.f90
  
-PNTOBJ =  $(PNTSRC:.f=.o)
+PNTOBJ =  $(PNTSRC:.f90=.o)
 
 #  smkinven:
 
 INVSRC = \
- adjustinv.f    asgnar2pt.f    asgnnhapx.f    chklstfl.f     \
- fixstk.f       formlist.f     genmedsout.f   \
- genpdout.f     gethdr.f       getpdinfo.f    \
- grwinven.f     initinfo.f     opengrwout.f   \
- openinvin.f    openinvout.f   openpdout.f    \
- procar2pt.f    procinven.f    procinvsrcs.f  \
- rdcempd.f      rdcemsum.f     rddataff10ar.f \
- rddataff10mb.f rddataff10pt.f rddatamedspt.f \
- rddatantiar.f  rddatantifr.f  rddatantimb.f  \
- rddatantinp.f  rddatantipt.f  rdemspd.f      \
- rdff10pd.f     rdgrdapi.f     rdgrdncf.f     \
- rdinvdata.f    rdinvsrcs.f    rdlooppd.f     \
- rdmedsinfo.f   rdmedspd.f     rdorlfr.f      \
- rdsrcff10ar.f  rdsrcff10mb.f  rdsrcff10pt.f  \
- rdsrcmedspt.f  rdsrcntiar.f   rdsrcntifr.f   \
- rdsrcntimb.f   rdsrcntinp.f   rdsrcntipt.f   \
- setnonhap.f    smkinven.f     srcmem.f       \
- wrepinven.f    wrinvchr.f     wrinvemis.f    \
- wrinvpol.f     wrpdemis.f     wrptref.f
+ adjustinv.f90    asgnar2pt.f90    asgnnhapx.f90    chklstfl.f90     \
+ fixstk.f90       formlist.f90     genmedsout.f90   \
+ genpdout.f90     gethdr.f90       getpdinfo.f90    \
+ grwinven.f90     initinfo.f90     opengrwout.f90   \
+ openinvin.f90    openinvout.f90   openpdout.f90    \
+ procar2pt.f90    procinven.f90    procinvsrcs.f90  \
+ rdcempd.f90      rdcemsum.f90     rddataff10ar.f90 \
+ rddataff10mb.f90 rddataff10pt.f90 rddatamedspt.f90 \
+ rddatantiar.f90  rddatantifr.f90  rddatantimb.f90  \
+ rddatantinp.f90  rddatantipt.f90  rdemspd.f90      \
+ rdff10pd.f90     rdgrdapi.f90     rdgrdncf.f90     \
+ rdinvdata.f90    rdinvsrcs.f90    rdlooppd.f90     \
+ rdmedsinfo.f90   rdmedspd.f90     rdorlfr.f90      \
+ rdsrcff10ar.f90  rdsrcff10mb.f90  rdsrcff10pt.f90  \
+ rdsrcmedspt.f90  rdsrcntiar.f90   rdsrcntifr.f90   \
+ rdsrcntimb.f90   rdsrcntinp.f90   rdsrcntipt.f90   \
+ setnonhap.f90    smkinven.f90     srcmem.f90       \
+ wrepinven.f90    wrinvchr.f90     wrinvemis.f90    \
+ wrinvpol.f90     wrpdemis.f90     wrptref.f90
 
-INVOBJ =  $(INVSRC:.f=.o)
+INVOBJ =  $(INVSRC:.f90=.o)
 
 #  smkmerge:
 
 MRGSRC = \
- allocmrg.f    bldmrgidx.f    getmrgev.f     \
- initstcy.f    mrgasciielev.f mrgbio.f       \
- mrgelev.f     mrggrid.f      mrgmult.f      \
- mrgonams.f    mrgunits.f     mrgvnams.f     \
- openmrgin.f   openmrgout.f   rdmrginv.f     \
- setoutdate.f  smkmerge.f     wmrgelev.f     \
- wmrgemis.f    wrmrgrep.f     mrgpt.f
+ allocmrg.f90    bldmrgidx.f90    getmrgev.f90     \
+ initstcy.f90    mrgasciielev.f90 mrgbio.f90       \
+ mrgelev.f90     mrggrid.f90      mrgmult.f90      \
+ mrgonams.f90    mrgunits.f90     mrgvnams.f90     \
+ openmrgin.f90   openmrgout.f90   rdmrginv.f90     \
+ setoutdate.f90  smkmerge.f90     wmrgelev.f90     \
+ wmrgemis.f90    wrmrgrep.f90     mrgpt.f90
 
-MRGOBJ =  $(MRGSRC:.f=.o)
+MRGOBJ =  $(MRGSRC:.f90=.o)
 
 #  spcmat:
 
 SPCSRC = \
- asgnspro.f       asgntag.f        chknonhap.f      \
- opensmat.f       rdcombo.f        rdtag.f          \
- spcmat.f
+ asgnspro.f90       asgntag.f90        chknonhap.f90      \
+ opensmat.f90       rdcombo.f90        rdtag.f90          \
+ spcmat.f90
 
-SPCOBJ =  $(SPCSRC:.f=.o)
+SPCOBJ =  $(SPCSRC:.f90=.o)
 
 #  temporal:
 
 TMPSRC = \
- asgntpro.f    genhemis.f     mktmat.f       \
- opentmp.f     opentmpin.f    proctpro.f     \
- setdaylt.f    temporal.f     tmnamunt.f     \
- updtmat.f     wrtsup.f
+ asgntpro.f90    genhemis.f90     mktmat.f90       \
+ opentmp.f90     opentmpin.f90    proctpro.f90     \
+ setdaylt.f90    temporal.f90     tmnamunt.f90     \
+ updtmat.f90     wrtsup.f90
 
-TMPOBJ =  $(TMPSRC:.f=.o)
+TMPOBJ =  $(TMPSRC:.f90=.o)
 
 OBJ  =  $(MODOBJ) $(FILOBJ) $(LIBOBJ) $(BIOOBJ) $(CTLOBJ) $(RPTOBJ) $(UTIOBJ) \
         $(GRDOBJ) $(MOVOBJ) $(PNTOBJ) $(INVOBJ) $(MRGOBJ) $(SPCOBJ) $(TMPOBJ)
@@ -302,7 +300,7 @@ exe:    ${EXE}
 
 dir:    ${OBJDIR}
 
-emmod:  ${MOD} ${MLIB}
+emmod:  ${MOD} ${MODOBJ} ${MLIB}
 
 smklib: ${SLIB}
 
@@ -345,14 +343,13 @@ install:  ${INSTDIR} ${EXE}
 #      -----------------------   RULES:   -------------------------
 
 %.o : %.mod        #  Disable "gmake"s obnoxious implicit Modula-2 rule !!
+%.o : %.f
+%.o : %.F
 
-.f.o:
+.f90.o .f90.mod:
 	cd ${OBJDIR};  ${FC} ${FFLAGS} -c $<
 
-.F.o:
-	cd ${OBJDIR};  ${FC} ${FFLAGS} -c $<
-
-.f.mod:
+.F90.o .F90.mod:
 	cd ${OBJDIR};  ${FC} ${FFLAGS} -c $<
 
 
@@ -381,7 +378,6 @@ dscsprof.o    : $(MODINFO)
 dscsprof.o    : $(MODSPRO)
 efsetup.o     : $(MODEMFAC)
 fillatbl.o    : $(MODXREF)
-fillchrt.o    : $(MODXREF)
 fillchrt.o    : $(MODINFO)
 fillctbl.o    : $(MODXREF)
 filletbl.o    : $(MODXREF)
@@ -402,6 +398,7 @@ gettzone.o    : $(MODSTCY)
 grd2cnty.o    : $(MODSTCY) $(MODSURG) $(MODGRID)
 grdfips.o     : $(MODSURG) $(MODGRID) $(MODMET)
 normtpro.o    : $(MODTMPRL)
+procar2pt.o   : $(MODSOURC) $(MODXREF) $(MODINFO) $(MODAR2PT)
 prclinrc.o    : $(MODREPRT) $(MODINFO)
 procspro.o    : $(MODSPRO)
 rdar2pt.o     : $(MODXREF) $(MODLISTS) $(MODAR2PT)
@@ -421,7 +418,7 @@ rdorsdsc.o    : $(MODSTCY)
 rdpelv.o      : $(MODELEV)
 rdsccdsc.o    : $(MODLISTS)
 rdsccmap.o    : $(MODMOBIL)
-rdsconv.o     : $(MODLISTS) $(MODSPRO) $(MODINFO)
+rdsconv.o     : $(MODLISTS) $(MODSPRO) $(MODINFO) $(MODAR2PT)
 rdsicdsc.o    : $(MODLISTS)
 rdsprofdsc.o  : $(MODSOURC) $(MODSOURC)
 rdsmat.o      : $(MODFILESET)

@@ -24,6 +24,7 @@ C  REVISION  HISTORY:
 C       Created 1/03 by C. Seppanen (based on rdinven.f)
 C
 C       Version June 2016 by Carlie Coats:  add fugitive-emissions properties
+C       Version 11/2023 by CJC:  USE M3UTILIO
 C**************************************************************************
 C
 C Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
@@ -44,6 +45,8 @@ C Pathname: $Source$
 C Last updated: $Date$
 C
 C***************************************************************************
+
+        USE M3UTILIO
 
 C...........   MODULES for public variables
 C...........   This module is the inventory arrays
@@ -77,30 +80,16 @@ C.........  This module is for mobile-specific data
 
 C...........   INCLUDES
         INCLUDE 'EMCNST3.EXT'   !  emissions constant parameters
-        INCLUDE 'CONST3.EXT'    !  physical and mathematical constants
-        INCLUDE 'PARMS3.EXT'    !  I/O API parameters
+        INCLUDE 'CONST3.EXT'    !  constants from I/O API
 
 C...........   EXTERNAL FUNCTIONS and their descriptions:
 
-        LOGICAL         BLKORCMT
-        LOGICAL         CHKINT
-        LOGICAL         CHKREAL
-        CHARACTER(2)    CRLF
-        INTEGER         ENVINT
-        LOGICAL         ENVYN
-        INTEGER         FINDC
-        INTEGER         GETINVYR
-        INTEGER         GETFLINE
-        INTEGER         INDEX1
-        INTEGER         STR2INT
-        REAL            STR2REAL
-        REAL*8          STR2DBLE
-        REAL            YR2DAY
-        INTEGER         FIND1FIRST
-
-        EXTERNAL        CHKINT, CHKREAL, CRLF, ENVINT, ENVYN, FINDC,
-     &                  GETINVYR, INDEX1, STR2INT, STR2REAL, STR3DBLE,
-     &                  YR2DAY, GETFLINE, BLKORCMT, FIND1FIRST
+        LOGICAL     , EXTERNAL :: BLKORCMT
+        LOGICAL     , EXTERNAL :: CHKINT
+        LOGICAL     , EXTERNAL :: CHKREAL
+        INTEGER     , EXTERNAL :: GETINVYR
+        INTEGER     , EXTERNAL :: GETFLINE
+        INTEGER     , EXTERNAL :: FIND1FIRST
 
 C...........   SUBROUTINE ARGUMENTS
         INTEGER,      INTENT (IN) :: FDEV         ! unit no. of inv file

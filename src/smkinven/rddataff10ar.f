@@ -15,8 +15,8 @@ C
 C  SUBROUTINES AND FUNCTIONS CALLED:
 C
 C  REVISION  HISTORY:
-C      Created by B.H. Baek (Aug, 2011)
-C
+C       Created by B.H. Baek (Aug, 2011)
+C       Version 11/2023 by CJC:  USE M3UTILIO and related changes
 C**************************************************************************
 C
 C Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
@@ -37,6 +37,7 @@ C Pathname: $Source$
 C Last updated: $Date$ 
 C
 C***************************************************************************
+        USE M3UTILIO
 
 C...........   MODULES for public variables
 C.........  This module contains the information about the source category
@@ -49,15 +50,6 @@ C.........  This module contains data for day- and hour-specific data
 
 C...........   INCLUDES
         INCLUDE 'EMCNST3.EXT'   !  emissions constant parameters
-
-C...........   EXTERNAL FUNCTIONS and their descriptions:
-        CHARACTER(2)    CRLF
-        INTEGER         FINDC, STR2INT
-        REAL            YR2DAY, STR2REAL
-        LOGICAL         CHKINT
-
-        EXTERNAL    CRLF, FINDC, STR2INT, STR2REAL, CHKINT, YR2DAY
-
 C...........   SUBROUTINE ARGUMENTS
         CHARACTER(*),       INTENT  (IN) :: LINE                  ! input line
         CHARACTER(*),       INTENT (OUT) :: READDATA( 1,NARPPOL3 )! array of data values
@@ -70,6 +62,10 @@ C...........   SUBROUTINE ARGUMENTS
         LOGICAL,            INTENT (OUT) :: HDRFLAG               ! true: line is a header line
         LOGICAL,            INTENT (OUT) :: AVEFLAG               ! true: Aveday inv is processed
         LOGICAL,            INTENT (OUT) :: EFLAG                 ! error flag
+
+C...........   EXTERNAL FUNCTIONS and their descriptions:
+        LOGICAL, EXTERNAL :: CHKINT
+
         
 C...........   Local parameters
         INTEGER, PARAMETER :: MXDATFIL = 60  ! arbitrary max no. data variables

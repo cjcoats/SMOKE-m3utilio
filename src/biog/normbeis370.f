@@ -17,7 +17,7 @@ C       8/2020  update for BELD5 and BEISFAC for BEISv3.7
 C       3/2022  fix bugs for landuse names (MODIS_14,
 C               Potatoes and Other_Crops), Vukovich
 C       10/2023 Adapted to USE M3UTILIO by Carlie J. Coats, Jr., UNCIE
-C
+C               bug-fix for bogus "missing: test
 C***********************************************************************
 C
 C Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
@@ -400,11 +400,11 @@ C.........  Allocate memory for emission factor variables
      &           SUMLAIW( NLAI ), STAT=IOS )
         CALL CHECKMEM( IOS, 'EMFAC...SUMLAIW', PNAME )
 
-        EMFAC(1:NVEG,1:NSEF) = -99.0
-        LAI(1:NVEG) = -99
-        SLW(1:NVEG) = -99.0
-        WFAC(1:NVEG) = -99.0
-        LFBIO(1:NVEG) = -99.0
+        EMFAC(1:NVEG,1:NSEF) = BADVAL3
+        LAI(1:NVEG)   = IMISS3
+        SLW(1:NVEG)   = BADVAL3
+        WFAC(1:NVEG)  = BADVAL3
+        LFBIO(1:NVEG) = BADVAL3
 
 C.........  Read emissions factor file
         MESG = 'Reading emissions factor file...'
@@ -419,26 +419,26 @@ C.........  This routine reads in emission factors
      &                BIOTYPES, LAI, LFBIO, WFAC, SLW, EMFAC)
 
         DO I = 1, NVEG
-           IF (LAI(I) .eq. -99) THEN
+           IF (LAI(I) .eq. IMISS3 ) THEN
               MESG = 'ERROR: MISSING LAI FOR VEG TYPE: '//VGLIST(I)
               CALL M3MSG2( MESG )
               EFLAG = .TRUE.
            ENDIF
 
-           IF (SLW(I) .eq. -99.0) THEN
+           IF (SLW(I) .LT. AMISS3 ) THEN
               MESG = 'ERROR: MISSING SLW FOR VEG TYPE: '//VGLIST(I)
               CALL M3MSG2( MESG )
               EFLAG = .TRUE.
            ENDIF
 
-           IF (WFAC(I) .eq. -99.0) THEN
+           IF (WFAC(I) .LT. AMISS3 ) THEN
               MESG = 'ERROR: MISSING WINTER FAC FOR VEG TYPE:
      &        '//VGLIST(I)
               CALL M3MSG2( MESG )
               EFLAG = .TRUE.
            ENDIF
 
-           IF (LFBIO(I) .eq. -99.0) THEN
+           IF (LFBIO(I) .LT. AMISS3 ) THEN
               MESG = 'ERROR: MISSING LFBIO FOR VEG TYPE: '//VGLIST(I)
               CALL M3MSG2( MESG )
               EFLAG = .TRUE.
@@ -447,7 +447,7 @@ C.........  This routine reads in emission factors
 
         DO J = 1, NSEF
         DO I = 1, NVEG
-            IF (EMFAC(I,J) .eq. -99.0 ) THEN
+            IF ( EMFAC(I,J) .LT. AMISS3 ) THEN
                MESG =
      &            'ERROR: MISSING EMISSION FACTOR FOR VEG TYPE:'
      &            //VGLIST(I)//

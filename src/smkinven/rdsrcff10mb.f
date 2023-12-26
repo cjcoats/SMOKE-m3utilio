@@ -15,7 +15,7 @@ C  SUBROUTINES AND FUNCTIONS CALLED:
 C
 C  REVISION  HISTORY:
 C      Created by  B.H. Baek (Aug 2011)
-C
+C       Version 11/2023 by CJC:  USE M3UTILIO and related changes
 C**************************************************************************
 C
 C Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
@@ -36,6 +36,7 @@ C Pathname: $Source$
 C Last updated: $Date$ 
 C
 C***************************************************************************
+        USE M3UTILIO
 
 C...........   MODULES for public variables
 C.........  This module contains the lists of unique inventory information
@@ -47,14 +48,6 @@ C.........  This module contains the lists of unique inventory information
 C...........   INCLUDES
          INCLUDE 'EMCNST3.EXT'   !  emissions constant parameters
 
-C...........   EXTERNAL FUNCTIONS and their descriptions:
-        CHARACTER(2)    CRLF
-        INTEGER         FINDC, INDEX1
-        LOGICAL         CHKINT
-        LOGICAL         USEEXPGEO
-        
-        EXTERNAL   CRLF, FINDC, INDEX1, CHKINT, USEEXPGEO
-
 C...........   SUBROUTINE ARGUMENTS
         CHARACTER(*),       INTENT (IN) :: LINE      ! input line
         CHARACTER(FIPLEN3), INTENT(OUT) :: CFIP      ! fip code
@@ -63,6 +56,9 @@ C...........   SUBROUTINE ARGUMENTS
         INTEGER,            INTENT(OUT) :: NVARPERLN ! no. variables per line
         LOGICAL,            INTENT(OUT) :: HDRFLAG   ! true: line is a header line
         LOGICAL,            INTENT(OUT) :: EFLAG     ! error flag
+
+C...........   EXTERNAL FUNCTIONS and their descriptions:
+        LOGICAL, EXTERNAL :: CHKINT, USEEXPGEO
 
 C...........   Local parameters, indpendent
         INTEGER, PARAMETER :: MXDATFIL = 60  ! arbitrary max data variables in file

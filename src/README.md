@@ -1,6 +1,13 @@
 # M3UTILIO-ized SMOKE
 
-## Notices
+## Notice
+
+**This is a developent/technology-transfer repository, not a production
+repository.** It contains a GitHub Oct. 28, 2023 version of
+SMOKE (`.0.f`), a `M3UTILIO`ized, I/O API 3,2-ized  (`.f`) of
+SMOKE, an *findent* (`.1.f90`) free-source-format reference version of
+SMOKE constructed from the `.f`, and a cleaned-up `.f90` version of
+SMOKE.
 
 **This code version has not been tested** (I don't have the facilities
 to do that), but it does compile successfully with Intel *ifort* version
@@ -21,26 +28,48 @@ For example, *make*-symbol `E132` now gives the compile-flags for the
 SMOKE (eliminating the previously-necessary compiler-dependency in
 *SMOKE/src/Makeinclude*).
 
+
 ## Introduction
 
 Fortran [`MODULE
 M3UTILIO`](https://cjcoats.github.io/ioapi/M3UTILIO.html) does the
 "proper F90 way" of encapsulating the Models-3 I/O API parameter, data
-structure, and function-declarations, since I/O API 3.0 (2002).  In
-addition to the I/O routines like `WRITE3`, it also provides `INTERFACE`
-blocks for almost all the routines in the I/O API, which provides for
-compile-tme checking of argument lists, etc.:  so far, the conversion
-from I/O API-2 style code to `USE M3UTILIO` has found argument-list
-errors in every code to which it has been applied.  This now includes
-the current (GTitHub Oct. 28, 2023) version of SMOKE, upon which this
-code distribution is based.
+structure, and function-declarations, and has done so since I/O API 3.0
+(2002).  In addition to the I/O routines like `WRITE3`, it also provides
+`INTERFACE` blocks for almost all the routines in the I/O API, which
+provides for compile-tLme checking of argument lists, etc.:  so far, the
+conversion from I/O API-2 style code to `USE M3UTILIO` has found
+argument-list errors in every code to which it has been applied.  This
+now includes eliminating argument-list bugs in the current (GitHub Oct.
+28, 2023) version of SMOKE, upon which this code distribution is based.
 
 Note that `MODULE M3UTILIO` also provides generic/polymorphic interfaces
 for a number of routines:  for example,
 [`ENVGET`](https://cjcoats.github.io/ioapi/ENVGETS.html) provides a
 type-safe name  for calling any of `ENVINT(), ENVINT8(), ENVDBLE(),
 ENVREAL(), ENVSTR(), ENVYN(), BENVINT(), BENVINT8(), BENVDBLE(),` and
-`BENVREAL()`
+`BENVREAL()` (These have not been introduced into this version of SMOKE.)
+
+The resulting code has then been converted to Fortran-90 Standard (*.f90*)
+free source format, which should have been done easily and quickly as an
+automated process using Willem Vermin's [*findent*
+program](https://github.com/wvermin/findent), with command-line options:
+<pre>
+        findent -i4 -k6 -ofree  -RR  !*
+</pre>
+The resulting reference code was named `.1.f90`.  The final `.f90` codes
+needed fix-up on loop-nest and comment indentation, etc., as well as
+fixing up numerous botches in the original code, such as 
+<pre>
+    "( /", "/ )", ". AND.", ". LT."
+</pre>
+that should *never* have had embedded blanks. The corresponding free
+source-format `INCLUDE`-files are named `.h90`.
+
+`Makefile`s were updated to include missing dependencies where the
+changes to them had not kept up with the changes to the source-code
+base.
+
 
 ## Structure
 
@@ -50,9 +79,29 @@ from GitHub.
 There is a reference read-only `.0.f` copy of each of the original GitHub
 source files, e.g., *src/biog/czangle.0.f*.
 
-New codes go by the "standard" naming, e.g.,  *src/biog/czangle.f*
-Intermediate "scratch" or "improved" versions of the codes have other
-in-fixes, e.g., *src/biog/tmpbeis4.1.f* and  *src/biog/tmpbeis4.2.f*
+New "fixed-132 codes go by the "standard" SMOKE naming, e.g., 
+*src/biog/czangle.f* Intermediate "scratch" or "improved" versions of
+the codes have other in-fixes, e.g., *src/biog/tmpbeis4.1.f* and 
+*src/biog/tmpbeis4.2.f*. Reference-copy *findent* outputs go by
+"src/*/*.1.f90*, and final "free .f90-style" codes go by `.f90` (without
+an in-fix).
+
+Note that programs [*xxdiff*](https://github.com/blais/xxdiff),
+[*tkdiff*](https://sourceforge.net/projects/tkdiff/), or
+[*kompare*](https://apps.kde.org/kompare/) are graphical "difference"
+programs that make it easy to see what the changes are between all these
+file versions, e.g.,
+<pre>
+xxdiff temporal/wrtsup.0.f temporal/wrtsup.f
+</pre>
+
+Note that **the `.f` and `.f90` codes require different *Makefile* and
+*Makeinclude* files**.  Files `.f.Makefile` and `.f.Makeinclude` are for
+the former, and `.f90.Makefile` and `.f90.Makeinclude` are for the
+latter.  To build SMOKE, in the *src* directory, copy the relevant pair
+of these to the standard *Makefile* and *Makeinclude* names, and then
+*make*.  For reference, the original `Makefile` can be found in `Makefile.0`
+
 
 ## Changes
 
@@ -63,9 +112,9 @@ All relevant codes have been `M3UTILIO`-ized.  This entailed removing
 IODECL3.EXT, FDESC3.EXT` as well as external-function declarations for
 I/O API fuctions that were called.  Other external function declarations
 were put into Fortran-90 style, e.g.
-
+<pre>
         INTEGER, EXTERNAL :: GETFLINE
-
+</pre.
 Argument-list bugs were found for calls to `SORTI2`, `SORTR2`, and
 `INDEX1`.
 
@@ -84,7 +133,7 @@ the problem, and exit (whereas the old code would  have allowed the code
 to continue inappropriately with a potentially-bad value).
 
 I/O API routine `M3ERR` was deprecated (replaced by `M3EXIT` and `M3WARN`)
-for I/O API Prototype 0.5 in July 1992, and `TRIMLEN` was deprecated
+for I/O API Prototype 0.5 of July 1992, and `TRIMLEN` was deprecated
 (replaced by Fortran-90 intrinsic `LEN_TRIM`) for I/O API version 3.0
 (2002).  Occurrences of both of these have been replaced.
 
@@ -176,22 +225,23 @@ replaces the far more cluttered
         CALL CHECKMEM( IOS, 'SLAI', PROGNAME )
 </pre>
 
+
 ### Numerics Etc.
 
 A number of loop nests (especially in biogenics) were found to be in
-nest-order as cache-hostile as possible. These have been replaced by the
-cache-friendly versions.  This should result in improved performance
-(where they occur), especially for large-grid scenarios.  See
-[Optimizing Environmental Models for Microprocessor Based Systems
-\u2014 *The Easy
+nest-order that is as cache-hostile as possible. These have been
+replaced by the cache-friendly versions.  This should result in improved
+performance (where they occur), especially for large-grid scenarios. 
+See [Optimizing Environmental Models for Microprocessor Based Systems
+&mdash; *The Easy
 Stuff*](https://cjcoats.github.io/optimization/efficient_models.html).
 
-It was recognized from the very beginning (and documented as such) that
-because `REAL` arithmetic is always subject to machine dependent
-round-off problems [^1](and therefore `REAL` values should **never** be
-tested for exact equality, a robust scheme was needed for the detection
-of "missing" for `REAL` values.  Therefore, (with over-kill) the I/O API
-provided parameters
+It was recognized from the very beginning of the Models-3 project (and
+documented as such) that because `REAL` arithmetic is always subject to
+machine dependent round-off problems [^1](and therefore `REAL` values
+should **never** be tested for exact equality, a robust scheme was
+needed for the detection of "missing" for `REAL` values.  Therefore,
+(with over-kill) the I/O API provided parameters
 <pre>
         REAL, PARAMETER :: BADVAL3 =  -9.999E36  !  for "missing"
         REAL, PARAMETER :: AMISS3  =  -9.000E36  !  for testing
@@ -218,23 +268,25 @@ The I/O API version of the `FLTERR` and `DBLERR` "these `REAL`s are
 certainly unequal, up to reasonable round-off" functions were carefully
 tuned with tolerances that handle  the numerical inadequacies of all of
 the reasonable compute platforms (including WMO GRIB, which is *quite*
-bad).  In several places, the tolerances were tightened unreasonably
+bad).  In several places, the tolerances had been tightened unreasonably
 by those un-knowing of the actual problems.  These have been fixed.
 
 In the biogenics, the photolysis process needs the tangent of the zenith
 angle.  The code from the original biogenics authors computed the cosine
 `CZEN` of the zenith angle, then took the inverse cosine
-`ZEN=ARCCOS(CZEN)`, and finally used the tangent `TAN(ZEN)` of the zenith
-angle, with the effect of both added computational costs due to the use
-of extremely-expensive inverse-trigonometric functions and additional
-round-off errorr.  The original SMOKE biogenics took advantage of the
-high-school trigonometry Pythagorean identities to compute this as
+`ZEN=ARCCOS(CZEN)`, and finally used the tangent `TAN(ZEN)` of the
+zenith angle, with the effect of both added computational costs due to
+the use of extremely-expensive trigonometric and inverse-trigonometric
+functions, and additional round-off error.  The original SMOKE biogenics
+took advantage of the high-school trigonometry Pythagorean identities to
+compute this as
 <pre>
         TAN(ZEN) = SQRT( (1/CZEN)^2 - 1 )
 </pre>
-with both lower round-=off error and much-reduced computational cost.
+with both lower round-off error and much-reduced computational cost.
 Someone in the mean-time replaced the improved version with the (lower
 quality) original.  This has now been fixed.
+
 
 ### Scratch arrays, PARAMETERs, etc.
 
@@ -249,8 +301,8 @@ an extremely tedious task ;-( )
 Many constants were moved from `DATA` statements to `PARAMETER` statements.
 
 In many places, constructs involving `CHARACTER`-string lengths of the
-form `FOO( 1 : LEN_TRIM( FOO ) )` are replaced by the much-simpler but
-equivalent `TRIM( FOO )`.
+form `FOO( 1 : LEN_TRIM( FOO ) )` are replaced by the cheaper,
+much-simpler, and  more readable but equivalent `TRIM( FOO )`.
 
 Numerous embedded tab-characters were found (these make code-indentation
 problematical, depending upon one's editor-settings); these were
@@ -274,6 +326,7 @@ bugs were never triggered, because the relevant routines were called
 only a single time.  However, the routines do not error-check to ensure
 that they are not called repeatedly.)
 
+
 ### IOVLEN3 etc.
 
 SMOKE parameters `IOVLEN3`, `IOULEN3`, and `IODLEN3`, which must of necessity
@@ -283,44 +336,58 @@ have been replaced by the matching I/O API parameters, now obtained from
 `M3UTILIO`.  This results in the effective elimination of
 *src/inc/IOSTRG3.EXT* and *src/inc/IOPRVT3.EXT*.
 
-### Next Steps
 
-SMOKE should be converted to Fortran-90 Standard (*.f90*) free source
-format, which can be done easily and quickly as a mostly-automated
-process using Willem Vermin's [*findent*
-program](https://github.com/wvermin/findent), with suggested
-command-line options:
+### `'f90` Free source format.
+
+SMOKE was converted to Fortran-90 Standard (*.f90*) free source format,
+(from the `M3UTILIO`ized code, using Willem Vermin's [*findent*
+program](https://github.com/wvermin/findent), with command-line options:
 <pre>
         findent -i4 -k6 -ofree  -RR  !*
 </pre>
+creating the `.1.f90` version of the code. From this, the final `.f90`
+code was generated, fixing up continuation and comment-indentation
+styles.
+
+Lines were re-folded to allow for the wider effective source-width
+created by the new free-format source indentation, especially when doing
+so eliminated "breaks" within phrases and enhanced readability.
+
+
+### Next Steps
+
+File timestep-consistency checks in the `TMPBEIS*` programs are bogus:
+they should be replaced by checks that ask "does this file contain the
+data" (formulated in terms, perhaps, of I/O API routine `JSTEP3()`)
+instead of "does this file have *exactly* the time steps I want?".
 
 The whole allocation-and-sorting system can and should be simplified
 enormously, using a variant of *lib/getfline.f* that also returns the
-number of non-comment lines in ASCII files, together with a proposed
-new generic routine
+number of non-comment lines in ASCII files, together with the new I/O
+API generic routine
 <pre>
         PERMUTI(N, INDX, ARR1 [, ARR2 [, ARR3]] )
 </pre>
 that sorts its array-arguments `ARR1` etc. in-place, on the basis of the
 `INDX` array returned by the `SORTI`, without the need for extra
-temporary scratch-=arrays.  Note that this would be a major task.
+temporary scratch-arrays.  Note that retrofitting this would be a major task.
 
 The "generate new files in a file-set" constructs ensuring that file
 sizes do not exceed the (netCDF-2, 1990's) 2GB file size limit have not
 been needed since the introduction of netCDF-3 in the late 1990's. 
 These constructs are no longer needed and should go away.  Possibly
 (since I/O API verslon 3.2 supports up to 2048 variables and I/O API
-3.2-large supports up to 16384 variables), all of *src/filesetapi*
+3.2-large supports up to 16384 variables), **all** of *src/filesetapi*
 should be eliminated, using standard I/O API instead. (Note that
 netCDF-3 supports file sizes larger than 2 GB, with a 2GB-per-timestep
-limit prior to netCDF-3.6 (2002), which does away with that limit...)
+limit prior to netCDF-3.6 (2002) which does away with that limit...)
 
 ### Notes
 
 [^1]: The Fortran Standard explicitly **refuses** to dictate the quality
 of how round-off behaves.  As an extreme example, *no two of the
 following* are guaranteed to be equal (a problem found especially on
-Cray vector, IBM mainfreame and POWER, Intel x86/x87, Sun, and SGI
+Cray vector, IBM mainfreame and POWER, Intel x86/x87, and SGI
 platforms), although the naive impression is that they should all be
 equal:
 <pre>

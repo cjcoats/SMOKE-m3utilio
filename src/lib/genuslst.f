@@ -71,6 +71,12 @@ C...........   Sorting index
 C...........   Local allocateable arrays for ORIS lists
         INTEGER, ALLOCATABLE :: FOIDXA  ( : )  ! sorting index for oris
         INTEGER, ALLOCATABLE :: OBIDXA  ( : )  ! sorting index for oris//blr
+        INTEGER, ALLOCATABLE :: OBSRCNTA( : )  ! unsrtd src count per ORIS/boiler
+
+        CHARACTER(ORSLEN3), ALLOCATABLE :: INVORISA( : )  ! ORIS
+        CHARACTER(FIPLEN3), ALLOCATABLE :: INVORFPA( : )  ! FIPS code for ORIS IDs
+        CHARACTER(OBRLEN3), ALLOCATABLE :: ORISBLRA( : )  ! ORIS // boiler
+        CHARACTER(DSCLEN3), ALLOCATABLE :: INVODSCA( : ) ! plant description from inventory
 
 C...........   Other local variables
         INTEGER          I, J, J1, L1, L2, N, NS, S
@@ -488,7 +494,7 @@ C.................  Count unique ORIS // boiler combos
             END DO
 
 C.............  Allocate memory for unsorted ORIS lists
-            ALLOC TE( FOIDXA( NINVORIS ),
+            ALLOCATE( FOIDXA( NINVORIS ),
      &               INVORFP( NINVORIS ),
      &               INVODSC( NINVORIS ),
      &              IORSMTCH( NINVORIS ),
@@ -497,7 +503,9 @@ C.............  Allocate memory for unsorted ORIS lists
      &              INVODSCA( NINVORIS ),
      &                OBIDXA( NORISBLR ),
      &               ORISBLR( NORISBLR ),
+     &              ORISBLRA( NORISBLR ),
      &               OBSRCNT( NORISBLR ),
+     &              OBSRCNTA( NORISBLR ),
      &               OBSRCBG( NORISBLR ),
      &               OBSRCNM( NOBLRSRC ),  STAT=IOS )
             CALL CHECKMEM( IOS, 'FOIDXA...OBSRCNM', PROGNAME )
@@ -574,10 +582,19 @@ C.................  Unsorted oris/boiler array
 
 C.............  Sort arrays
             CALL SORTI(   NINVORIS, FOIDXA, INVORIS )
-            CALL PERMUTI( NINVORIS, FOIDXA, INVORIS, INVORFP, INVODSC )
+            DO I = 1, NINVORIS
+                J = FOIDXA( I )
+                INVORIS( I ) = INVORISA( J )
+                INVORFP( I ) = INVORFPA( J )
+                INVODSC( I ) = INVODSCA( J )
+            END DO
 
             CALL SORTI(   NORISBLR, OBIDXA, ORISBLR )
-            CALL PERMUTI( NORISBLR, OBIDXA, ORISBLR, OBSRCNT )
+            DO I = 1, NORISBLR
+                J = OBIDXA( I )
+                ORISBLR( I ) = ORISBLRA( J )
+                OBSRCNT( I ) = OBSRCNTA( J )
+            END DO
 
 C.............  Build ORIS/boiler source start array
             OBSRCBG( 1 ) = 1

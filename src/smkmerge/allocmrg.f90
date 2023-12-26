@@ -1,0 +1,593 @@
+
+SUBROUTINE ALLOCMRG( MXGRP, MXVARPGP,               &
+                     AMULSIZ, MMULSIZ, PMULSIZ,     &
+                     ASPCSIZ, MSPCSIZ, PSPCSIZ,     &
+                     APOLSIZ, MPOLSIZ, PPOLSIZ )
+
+    !***********************************************************************
+    !  subroutine ALLOCMRG body starts at line
+    !
+    !  DESCRIPTION:
+    !      The purpose of this subroutine is to allocate the memory for all of the
+    !      major arrays in the merge program.
+    !
+    !  PRECONDITIONS REQUIRED:
+    !
+    !  SUBROUTINES AND FUNCTIONS CALLED:
+    !
+    !  REVISION  HISTORY:
+    !       Created 2/99 by M. Houyoux
+    !
+    !       Version Carlie J. Coats, Jr., 2014
+    !       Allocates zero-based  cumulative-count gridding matrices.
+    !
+    !       Version 11/2023 by CJC:  USE M3UTILIO, conversion to ".f90",  and
+    !       related changes
+    !***********************************************************************
+    !
+    ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
+    !       System
+    ! File: @(#)$Id$
+    !
+    ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
+    ! All Rights Reserved
+    !
+    ! Carolina Environmental Program
+    ! University of North Carolina at Chapel Hill
+    ! 137 E. Franklin St., CB# 6116
+    ! Chapel Hill, NC 27599-6116
+    !
+    ! smoke@unc.edu
+    !
+    ! Pathname: $Source$
+    ! Last updated: $Date$
+    !
+    !****************************************************************************
+    USE M3UTILIO
+
+    !.....  MODULES for public variables
+    !.....  This module contains the major data structure and control flags
+    USE MODMERGE, ONLY: AFLAG, BFLAG, MFLAG, PFLAG, XFLAG,          &
+                        AUFLAG, MUFLAG, PUFLAG, TUFLAG,             &
+                        ARFLAG, MRFLAG, PRFLAG, TRFLAG,             &
+                        SFLAG, LFLAG, PINGFLAG, ELEVFLAG, EXPLFLAG, &
+                        INLINEFLAG,                                 &
+                        LREPSTA, LREPINV, LREPSPC, LREPCTL,         &
+                        NASRC, NMSRC, NPSRC, EMLAYS,                &
+                        ANIPOL, PNIPOL, MNIPPA, NIPPA,              &
+                        ANSMATV, MNSMATV, PNSMATV, NSMATV,          &
+                        ANUMATV, MNUMATV, PNUMATV,                  &
+                        ANMSPC, BNMSPC, MNMSPC, PNMSPC, NMSPC,      &
+                        ANGMAT,         MNGMAT,                     &
+                        ANSREAC,        MNSREAC, PNSREAC,           &
+                        AEMSRC,         MEMSRC, PEMSRC,             &
+                        AEISRC,         MEISRC, PEISRC,             &
+                        AEMGRD, BEMGRD, MEMGRD, PEMGRD, TEMGRD,     &
+                        AGMATX,         MGMATX, PGMATX,             &
+                        ASMATX,         MSMATX, PSMATX,             &
+                        ARINFO,         MRINFO, PRINFO,             &
+                        AEBSTA, BEBSTA, MEBSTA, PEBSTA, TEBSTA,     &
+                        AEUSTA,         MEUSTA, PEUSTA, TEUSTA,     &
+                        AERSTA,         MERSTA, PERSTA, TERSTA,     &
+                        AECSTA,         MECSTA, PECSTA, TECSTA,     &
+                        AEBCNY, BEBCNY, MEBCNY, PEBCNY, TEBCNY,     &
+                        AEUCNY,         MEUCNY, PEUCNY, TEUCNY,     &
+                        AECCNY,         MECCNY, PECCNY, TECCNY,     &
+                        AERCNY,         MERCNY, PERCNY, TERCNY,     &
+                        LFRAC, ELEVADJ, EMLAYS
+
+    !.....  This module contains arrays for plume-in-grid and major sources
+    USE MODELEV, ONLY: ELEVFLTR, ELEVSRC, NHRSRC, INDXH, NGROUP,    &
+                       GRPGID, GRPXX, GRPYY, GRPCOL, GRPROW,        &
+                       GRPHT, GRPDM, GRPTK, GRPVE
+
+    !.....  This module contains the control packet data and control matrices
+    USE MODCNTRL, ONLY: ACUMATX,  MCUMATX,  PCUMATX,    &
+                        ACRIDX,   MCRIDX,   PCRIDX,     &
+                        ACRREPEM, MCRREPEM, PCRREPEM,   &
+                        ACRPRJFC, MCRPRJFC, PCRPRJFC,   &
+                        ACRMKTPN, MCRMKTPN, PCRMKTPN,   &
+                        ACRFAC,   MCRFAC,   PCRFAC
+
+    !.....  This module contains the arrays for state and county summaries
+    USE MODSTCY, ONLY: NCOUNTY, NSTATE
+
+    !.....  This module contains the global variables for the 3-d grid
+    USE MODGRID, ONLY: NGRID
+
+    IMPLICIT NONE
+
+    !.....   INCLUDES:
+
+    INCLUDE 'EMCNST3.h90'       !  emissions constant parameters
+
+    !.....  SUBROUTINE ARGUMENTS and their descriptions:
+
+    INTEGER, INTENT(OUT) :: MXGRP    ! max possible no. of processing groups
+    INTEGER, INTENT(OUT) :: MXVARPGP     ! maximum number of variables per group
+    INTEGER, INTENT(OUT) :: AMULSIZ      ! ar multipl control matrix array size
+    INTEGER, INTENT(OUT) :: MMULSIZ      ! mb multipl control matrix array size
+    INTEGER, INTENT(OUT) :: PMULSIZ      ! pt multipl control matrix array size
+    INTEGER, INTENT(OUT) :: ASPCSIZ      ! area speciation matrix array size
+    INTEGER, INTENT(OUT) :: MSPCSIZ      ! mobile speciation matrix array size
+    INTEGER, INTENT(OUT) :: PSPCSIZ      ! point speciation matrix array size
+    INTEGER, INTENT(OUT) :: APOLSIZ      ! area inventory emissions array size
+    INTEGER, INTENT(OUT) :: MPOLSIZ      ! mobile inventory emissions array size
+    INTEGER, INTENT(OUT) :: PPOLSIZ      ! point inventory emissions array size
+
+    !.....   Array of allocation statuses
+    INTEGER         IOSA( 100 )
+
+    !.....   Other local variables
+
+    INTEGER         I, J         ! counters and indices
+    INTEGER         IOS          ! i/o status
+    INTEGER      :: MXSRC = 0    ! max no. sources
+    INTEGER         MXVARPGP_SAV     ! saved MXVARPGP value
+    INTEGER         NCNY         ! tmp no. counties
+    INTEGER         NDIM         ! tmp dimension
+    INTEGER         NSTA         ! tmp no. states
+
+    LOGICAL      :: RESET = .FALSE.     ! true: mem alloc fail, try new config
+
+    CHARACTER(300)  MESG     ! message buffer
+
+    CHARACTER(16), PARAMETER :: PROGNAME = 'ALLOCMRG'     ! program name
+
+    !***********************************************************************
+    !   begin body of subroutine ALLOCMRG
+
+    !....  NOTE - set these temporary variables for memory allocate no matter
+    !       what, because the county totals will be computed, even if they
+    !       are not output.
+    NCNY = NCOUNTY      ! from modstcy
+    NSTA = NSTATE       ! from modstcy
+
+    !......
+    !....  Allocate memory for fixed-sized arrays .....
+    !......
+
+    !....  Allocate memory for fixed-size area source arrays
+    IF( AFLAG ) THEN
+        MXSRC = MAX( MXSRC, NASRC )
+        J = NGRID + 2 * ANGMAT
+        ALLOCATE( AGMATX( J ), STAT=IOS )      ! contiguous gridding matrix
+        CALL CHECKMEM( IOS, 'AGMATX', PROGNAME )
+
+        ALLOCATE( ARINFO( NASRC,2 ), STAT=IOS )        ! tmp ar react. data
+        CALL CHECKMEM( IOS, 'ARINFO', PROGNAME )
+
+        ALLOCATE( AEMGRD( NGRID ), STAT=IOS )      ! gridded area emissions
+        CALL CHECKMEM( IOS, 'AEMGRD', PROGNAME )
+        AEMGRD = 0.      ! array
+
+        NDIM = 0
+        IF( LREPINV ) NDIM = NDIM + ANIPOL
+        IF( LREPSPC ) NDIM = NDIM + ANMSPC
+
+        IF( LREPSTA ) THEN
+            ALLOCATE( AEBSTA( NSTA,NDIM ), STAT=IOS )         ! state total
+            CALL CHECKMEM( IOS, 'AEBSTA', PROGNAME )
+
+            IF( LREPCTL .AND. AUFLAG ) THEN
+                ALLOCATE( AEUSTA( NSTA,NDIM ), STAT=IOS )      ! state mult tot
+                CALL CHECKMEM( IOS, 'AEUSTA', PROGNAME )
+            ENDIF
+
+            IF( LREPCTL .AND. ARFLAG ) THEN
+                ALLOCATE( AERSTA( NSTA,NDIM ), STAT=IOS )      ! state reac tot
+                CALL CHECKMEM( IOS, 'AERSTA', PROGNAME )
+            ENDIF
+
+            IF( LREPCTL .AND.    &
+              ( AUFLAG .OR. ARFLAG ) ) THEN
+                ALLOCATE( AECSTA( NSTA,NDIM ), STAT=IOS )      ! state ctrl tot
+                CALL CHECKMEM( IOS, 'AECSTA', PROGNAME )
+            ENDIF
+
+        END IF
+
+        ALLOCATE( AEBCNY( NCNY,NDIM ),     &
+                  AEUCNY( NCNY,NDIM ),    &
+                  AERCNY( NCNY,NDIM ),    &
+                  AECCNY( NCNY,NDIM ), STAT=IOS )     ! county ctrl tot
+        CALL CHECKMEM( IOS, 'AECCNY', PROGNAME )
+
+
+        IF( ARFLAG ) THEN
+            ALLOCATE( ACRIDX( ANSREAC ),    &
+                    ACRREPEM( ANSREAC ),    &
+                    ACRPRJFC( ANSREAC ),    &
+                    ACRMKTPN( ANSREAC ),    &
+                      ACRFAC( ANSREAC,ANSMATV ), STAT=IOS )       ! factors
+            CALL CHECKMEM( IOS, 'ACRFAC', PROGNAME )
+        ENDIF
+
+    END IF
+
+    !.....  Biogenic source fixed-size arrays
+    IF( BFLAG ) THEN
+        ALLOCATE( BEMGRD( NGRID ),     &
+                  BEBCNY( NCNY,BNMSPC ), STAT=IOS )        ! county total
+        CALL CHECKMEM( IOS, 'BEMGRD', PROGNAME )
+
+        IF( LREPSTA ) THEN
+            ALLOCATE( BEBSTA( NSTA,BNMSPC ), STAT=IOS )    ! state total
+            CALL CHECKMEM( IOS, 'BEBSTA', PROGNAME )
+        ENDIF
+
+    END IF
+
+    !.....  Mobile source fixed-size arrays
+    IF( MFLAG ) THEN
+        MXSRC = MAX( MXSRC, NMSRC )
+        J = NGRID + 2 * MNGMAT
+        ALLOCATE( MGMATX( J ),                  &
+                  MRINFO( NMSRC,2 ),                  &
+                  MEMGRD( NGRID ), STAT=IOS )    ! gridded mobile emissions
+        CALL CHECKMEM( IOS, 'MEMGRD', PROGNAME )
+        MEMGRD = 0.      ! array
+
+        NDIM = 0
+        IF( LREPINV ) NDIM = NDIM + MNIPPA
+        IF( LREPSPC ) NDIM = NDIM + MNMSPC
+
+        IF( LREPSTA ) THEN
+            ALLOCATE( MEBSTA( NSTA,NDIM ), STAT=IOS )         ! state total
+            CALL CHECKMEM( IOS, 'MEBSTA', PROGNAME )
+
+            IF( LREPCTL .AND. MUFLAG ) THEN
+                ALLOCATE( MEUSTA( NSTA,NDIM ), STAT=IOS )      ! state mult tot
+                CALL CHECKMEM( IOS, 'MEUSTA', PROGNAME )
+            ENDIF
+
+            IF( LREPCTL .AND. MRFLAG ) THEN
+                ALLOCATE( MERSTA( NSTA,NDIM ), STAT=IOS )      ! state reac tot
+                CALL CHECKMEM( IOS, 'MERSTA', PROGNAME )
+            ENDIF
+
+            IF( LREPCTL .AND.    &
+              ( MUFLAG .OR. MRFLAG ) ) THEN
+                ALLOCATE( MECSTA( NSTA,NDIM ), STAT=IOS )      ! state ctrl tot
+                CALL CHECKMEM( IOS, 'MECSTA', PROGNAME )
+            ENDIF
+
+        ENDIF
+
+        ALLOCATE( MEBCNY( NCNY,NDIM ),                  &
+                  MEUCNY( NCNY,NDIM ),                  &
+                  MERCNY( NCNY,NDIM ),                  &
+                  MECCNY( NCNY,NDIM ), STAT=IOS )     ! county ctrl tot
+        CALL CHECKMEM( IOS, 'MEBCNY...MECCNY', PROGNAME )
+
+        IF( MRFLAG ) THEN
+            ALLOCATE( MCRIDX( MNSREAC ),                  &
+                    MCRREPEM( MNSREAC ),                  &
+                    MCRPRJFC( MNSREAC ),                  &
+                    MCRMKTPN( MNSREAC ),                  &
+                      MCRFAC( MNSREAC,MNSMATV ), STAT=IOS )       ! factors
+            CALL CHECKMEM( IOS, 'MCRIDX...MCRFAC', PROGNAME )
+        END IF
+
+    END IF
+
+    !.....  Point source fixed-size arrays
+    IF( PFLAG ) THEN
+        MXSRC = MAX( MXSRC, NPSRC )
+        J = NGRID + 2 * NPSRC
+        ALLOCATE( PGMATX( J ),          &
+                  PRINFO( NPSRC,2 ),    &
+                ELEVFLTR( NPSRC ),      &
+                  PEMGRD( NGRID,EMLAYS ), STAT=IOS )     ! gridded point emissions
+        CALL CHECKMEM( IOS, 'PEMGRD', PROGNAME )
+        ELEVFLTR = 0.      ! array
+        PEMGRD   = 0.      ! array
+
+        NDIM = 0
+        IF( LREPINV ) NDIM = NDIM + PNIPOL
+        IF( LREPSPC ) NDIM = NDIM + PNMSPC
+
+        IF( LREPSTA ) THEN
+            ALLOCATE( PEBSTA( NSTA,NDIM ), STAT=IOS )         ! state total
+            CALL CHECKMEM( IOS, 'PEBSTA', PROGNAME )
+
+            IF( LREPCTL .AND. PUFLAG ) THEN
+                ALLOCATE( PEUSTA( NSTA,NDIM ), STAT=IOS )      ! state mult tot
+                CALL CHECKMEM( IOS, 'PEUSTA', PROGNAME )
+            ENDIF
+
+            IF( LREPCTL .AND. PRFLAG ) THEN
+                ALLOCATE( PERSTA( NSTA,NDIM ), STAT=IOS )      ! state reac tot
+                CALL CHECKMEM( IOS, 'PERSTA', PROGNAME )
+            ENDIF
+
+            IF( LREPCTL .AND.    &
+              ( PUFLAG .OR. PRFLAG ) ) THEN
+                ALLOCATE( PECSTA( NSTA,NDIM ), STAT=IOS )      ! state ctrl tot
+                CALL CHECKMEM( IOS, 'PECSTA', PROGNAME )
+            ENDIF
+
+        ENDIF
+
+        ALLOCATE( PEBCNY( NCNY,NDIM ),                  &
+                  PEUCNY( NCNY,NDIM ),                  &
+                  PERCNY( NCNY,NDIM ),                  &
+                  PECCNY( NCNY,NDIM ), STAT=IOS )     ! county ctrl tot
+        CALL CHECKMEM( IOS, 'PEBCNY...PECCNY', PROGNAME )
+
+        IF( PRFLAG ) THEN
+            ALLOCATE( PCRIDX( PNSREAC ),                  &
+                    PCRREPEM( PNSREAC ),                  &
+                    PCRPRJFC( PNSREAC ),                  &
+                    PCRMKTPN( PNSREAC ),                  &
+                      PCRFAC( PNSREAC,PNSMATV ), STAT=IOS )       ! factors
+            CALL CHECKMEM( IOS, 'PCRIDX...PCRFAC', PROGNAME )
+        END IF
+
+        IF( LFLAG ) THEN
+            ALLOCATE( LFRAC( NPSRC,EMLAYS ), STAT=IOS )       ! layer fractions
+            CALL CHECKMEM( IOS, 'LFRAC', PROGNAME )
+
+        ELSE IF ( EXPLFLAG ) THEN                     ! Explicit plume rise
+            ALLOCATE( INDXH ( NHRSRC*EMLAYS ),                  &
+                     ELEVSRC( NHRSRC ),                  &
+                       LFRAC( NHRSRC,EMLAYS ), STAT=IOS )       ! layer fractions
+            CALL CHECKMEM( IOS, 'INDXH...LFRAC', PROGNAME )
+            ELEVSRC = 0      ! array
+
+        END IF
+
+        IF( ELEVFLAG .OR. PINGFLAG .OR. INLINEFLAG) THEN
+            ALLOCATE( GRPGID( NGROUP ), STAT=IOS )       ! stack group ID
+            CALL CHECKMEM( IOS, 'GRPGID', PROGNAME )
+        END IF
+
+        IF( ELEVFLAG ) THEN
+            ALLOCATE( GRPXX( NGROUP ),                  &
+                      GRPYY( NGROUP ),                  &
+                     GRPCOL( NGROUP ),                  &
+                     GRPROW( NGROUP ),                  &
+                      GRPHT( NGROUP ),                  &
+                      GRPDM( NGROUP ),                  &
+                      GRPTK( NGROUP ),                  &
+                      GRPVE( NGROUP ), STAT=IOS )    ! stack velocity
+            CALL CHECKMEM( IOS, 'GRPXX...GRPVE', PROGNAME )
+        END IF
+
+    END IF      ! end point sources
+
+    !.....  Allocate buffer array for MRGMULT to use for elevated sources
+    !       or not
+    !.....  Total gridded emissions.  Always allocate this, even if there
+    !       us only one source category because it will simplify the merging as
+    !       we won't have to check if it is allocated or not.
+    ALLOCATE( ELEVADJ( MXSRC ),                  &
+               TEMGRD( NGRID,EMLAYS ), STAT=IOS )     ! gridded out emis
+    CALL CHECKMEM( IOS, 'TEMGRD', PROGNAME )
+    ELEVADJ = 0.      ! array
+    TEMGRD = 0.
+
+    !.....  Total emissions, fixed-size arrays.
+    IF( XFLAG ) THEN
+
+        NDIM = 0
+        IF( LREPINV ) NDIM = NDIM + NIPPA
+        IF( LREPSPC ) NDIM = NDIM + NMSPC
+
+        IF( LREPSTA ) THEN
+            ALLOCATE( TEBSTA( NSTA,NDIM ), STAT=IOS )         ! state total
+            CALL CHECKMEM( IOS, 'TEBSTA', PROGNAME )
+
+            IF( LREPCTL .AND. TUFLAG ) THEN
+                ALLOCATE( TEUSTA( NSTA,NDIM ), STAT=IOS )      ! state mult tot
+                CALL CHECKMEM( IOS, 'TEUSTA', PROGNAME )
+            ENDIF
+
+            IF( LREPCTL .AND. TRFLAG ) THEN
+                ALLOCATE( TERSTA( NSTA,NDIM ), STAT=IOS )      ! state reac tot
+                CALL CHECKMEM( IOS, 'TERSTA', PROGNAME )
+            ENDIF
+
+            IF( LREPCTL .AND.    &
+              ( TUFLAG .OR. TRFLAG ) ) THEN
+                ALLOCATE( TECSTA( NSTA,NDIM ), STAT=IOS )      ! state ctrl tot
+                CALL CHECKMEM( IOS, 'TECSTA', PROGNAME )
+            ENDIF
+
+        ENDIF
+
+        ALLOCATE( TEBCNY( NCNY,NDIM ),                  &
+                  TEUCNY( NCNY,NDIM ),                  &
+                  TERCNY( NCNY,NDIM ),                  &
+                  TECCNY( NCNY,NDIM ), STAT=IOS )     ! county ctrl tot
+        CALL CHECKMEM( IOS, 'TEBCNY...TECCNY', PROGNAME )
+
+    END IF
+
+    !......
+    !....  Allocate memory for variable-sized arrays .....
+    !......
+
+    !.....  Initialize size for multiplicative control pollutants as the actual
+    !       number in in matrix for each source category
+    AMULSIZ = MAX( MIN( ANIPOL, ANUMATV ), 1 )
+    MMULSIZ = MAX( MIN( MNIPPA, MNUMATV ), 1 )
+    PMULSIZ = MAX( MIN( PNIPOL, PNUMATV ), 1 )
+
+    !.....  Initialize size for species as all pol-to-species combos for each
+    !       source category.
+    ASPCSIZ = ANSMATV
+    MSPCSIZ = MNSMATV
+    PSPCSIZ = PNSMATV
+
+    !.....  Initialize size for inventory pollutants, activities, and/or
+    !       emission types for each source category
+    APOLSIZ = ANIPOL
+    MPOLSIZ = MNIPPA
+    PPOLSIZ = PNIPOL
+
+    !.....  Initialize maximum number of variables per group using all
+    !       pollutants-to-species combinations in the input data, or all
+    !       pollutants in the inventory.
+    IF( SFLAG ) THEN
+        MXVARPGP = NSMATV
+    ELSE
+        MXVARPGP = NIPPA
+    END IF
+    MXVARPGP_SAV = MXVARPGP
+
+    !.....  Head of loop for allocating memory.  When speciation or certain
+    !       controls are not being used, the value of the variable used for
+    !       dimensioning will be 1, so no need to use IFs in many cases.
+    !.....  Note that the matricies below are allocated whether or not they are
+    !       used. If they are not used, the dimensions will be zero, and they
+    !       will not actually use memory.  The allocations are necessary
+    !       because the arrays are always referenced in the main program, even
+    !       if their data values are not accessed.
+    DO
+
+        !.....  Allocate speciation matrices...
+        !.....  Area
+        J = 1
+        ASPCSIZ = MIN( ASPCSIZ, MXVARPGP )
+        ALLOCATE( ASMATX( NASRC,ASPCSIZ ), STAT=IOSA( J ) )
+        CALL CHECKMEM( IOSA( J ), 'ASMATX', PROGNAME )
+
+        !.....  Mobile
+        J = J + 1
+        MSPCSIZ = MIN( MSPCSIZ, MXVARPGP )
+        ALLOCATE( MSMATX( NMSRC,MSPCSIZ ), STAT=IOSA( J ) )
+        CALL CHECKMEM( IOSA( J ), 'MSMATX', PROGNAME )
+
+        !.....  Point
+        J = J + 1
+        PSPCSIZ = MIN( PSPCSIZ, MXVARPGP )
+        ALLOCATE( PSMATX( NPSRC,PSPCSIZ ), STAT=IOSA( J ) )
+        CALL CHECKMEM( IOSA( J ), 'PSMATX', PROGNAME )
+
+        !.....  Allocate multiplicative control matrices
+        !.....  Area
+        J = J + 1
+        AMULSIZ = MIN( AMULSIZ, MXVARPGP )
+        ALLOCATE( ACUMATX( NASRC,AMULSIZ ), STAT=IOSA( J ) )
+        CALL CHECKMEM( IOSA( J ), 'ACUMATX', PROGNAME )
+
+        !.....  Mobile
+        J = J + 1
+        MMULSIZ = MIN( MMULSIZ, MXVARPGP )
+        ALLOCATE( MCUMATX( NMSRC,MMULSIZ ), STAT=IOSA( J ) )
+        CALL CHECKMEM( IOSA( J ), 'MCUMATX', PROGNAME )
+
+        !.....  Point
+        J = J + 1
+        PMULSIZ = MIN( PMULSIZ, MXVARPGP )
+        ALLOCATE( PCUMATX( NPSRC,PMULSIZ ), STAT=IOSA( J ) )
+        CALL CHECKMEM( IOSA( J ), 'PCUMATX', PROGNAME )
+
+        !.....  Allocate emissions arrays
+        !.....  Area
+        J = J + 1
+        APOLSIZ = MIN( APOLSIZ, MXVARPGP )
+        ALLOCATE( AEMSRC( NASRC,APOLSIZ ), STAT=IOSA( J ) )
+        CALL CHECKMEM( IOSA( J ), 'AEMSRC', PROGNAME )
+
+        !.....  Mobile
+        J = J + 1
+        MPOLSIZ = MIN( MPOLSIZ, MXVARPGP )
+        ALLOCATE( MEMSRC( NMSRC,MPOLSIZ ), STAT=IOSA( J ) )
+        CALL CHECKMEM( IOSA( J ), 'MEMSRC', PROGNAME )
+
+        !.....  Point
+        J = J + 1
+        PPOLSIZ = MIN( PPOLSIZ, MXVARPGP )
+        ALLOCATE( PEMSRC( NPSRC,PPOLSIZ ), STAT=IOSA( J ) )
+        CALL CHECKMEM( IOSA( J ), 'PEMSRC', PROGNAME )
+
+        !.....  Allocate emissions arrays needed for reactivity
+        !.....  Area
+        IF( ARFLAG ) THEN
+            J = J + 1
+            APOLSIZ = MIN( APOLSIZ, MXVARPGP )
+            ALLOCATE( AEISRC( NASRC,APOLSIZ ), STAT=IOSA( J ) )
+            CALL CHECKMEM( IOSA( J ), 'AEMSRC', PROGNAME )
+        END IF
+
+        !.....  Mobile
+        IF( MRFLAG ) THEN
+            J = J + 1
+            MPOLSIZ = MIN( MPOLSIZ, MXVARPGP )
+            ALLOCATE( MEISRC( NMSRC,MPOLSIZ ), STAT=IOSA( J ) )
+            CALL CHECKMEM( IOSA( J ), 'MEMSRC', PROGNAME )
+        END IF
+
+        !.....  Point
+        IF( PRFLAG ) THEN
+            J = J + 1
+            PPOLSIZ = MIN( PPOLSIZ, MXVARPGP )
+            ALLOCATE( PEISRC( NPSRC,PPOLSIZ ), STAT=IOSA( J ) )
+            CALL CHECKMEM( IOSA( J ), 'PEMSRC', PROGNAME )
+        END IF
+
+        !.....  Check IOSA values to see if any allocations failed
+        DO I = 1, J
+            IF( IOSA( I ) .GT. 0 ) RESET = .TRUE.
+        END DO
+
+        !.....  If any memory allocations failed, reset a new size, starting
+        !       with speciation matrices, and then moving to control and
+        !       inventory emission matrices sizes
+        IF ( RESET ) THEN
+
+            RESET = .FALSE.
+            !.....  If there is still room to make it smaller, reduce the
+            !       maximum number of variables per group
+            IF( MXVARPGP .GT. 1 ) THEN
+
+                MXVARPGP = MXVARPGP / 2 + MOD( MXVARPGP, 2 )
+
+            !.....  Not enough memory available
+            ELSE
+                MESG = 'Could not allocate enough memory to run ' //    &
+                       'the program for the options selected. The'//    &
+                       CRLF() // BLANK10 // 'program might run ' //    &
+                       'using fewer source categories or ' //    &
+                       'matrices. ' // CRLF() // BLANK10 //    &
+                       'Otherwise the computer must be '//    &
+                       'reconfigured for more memory or swap space.'
+                CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
+
+            END IF
+
+            !.....  Deallocate existing allocations to prepare for next
+            !       iteration
+            DEALLOCATE( ASMATX , MSMATX , PSMATX  )
+            DEALLOCATE( ACUMATX, MCUMATX, PCUMATX )
+            DEALLOCATE( AEMSRC , MEMSRC , PEMSRC  )
+
+        !.....  Memory allocation was successfull
+        ELSE
+            EXIT          ! Exit loop
+
+        END IF        ! End check on memory allocation
+
+    END DO      ! End of memory allocation loop
+
+    !.....  Set the maximum number of processing groups
+    !.....  Consider worse case in which each pollutant-species combo is a
+    !       new pollutant.  MXVARPGP has been set such that this case will be
+    !       handled, and the maximum number of groups can simply be set as
+    !       the original number of pol-to-spec or pollutants divided by the
+    !       current number (plus 1 if there is a remainder)
+
+    MXGRP = MXVARPGP_SAV / MXVARPGP
+    IF( MOD( MXVARPGP_SAV, MXVARPGP ) .GT. 0 ) MXGRP = MXGRP + 1
+
+    RETURN
+
+    !******************  FORMAT  STATEMENTS   ******************************
+
+    !.....   Internal buffering formats.....94xxx
+
+94010 FORMAT( 10( A, :, I8, :, 1X ) )
+
+END SUBROUTINE ALLOCMRG

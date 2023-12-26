@@ -1,0 +1,65 @@
+
+! @(#)$Id$ $Source$ $Date$
+
+!....................................................................
+!  INCLUDE FILE  BIODIMS3.h90
+!
+!  CONTAINS:
+!       dimensioning parameters for EDSS-BEIS2 Emissions Prototype
+!
+!  DEPENDENT UPON:  none
+!
+!  REVISION HISTORY:
+!       Adapted 12/95 by CJC from BEIS2 INCLUDE files PARAM.h90,
+!
+!....................................................................
+
+INTEGER, PARAMETER :: NSEF   = 4        !  # of em class in Summer emission factor table
+INTEGER, PARAMETER :: LUSES  = 4        !  dim:  land use ( gras, fore, wetl, agri
+INTEGER, PARAMETER :: BTYPES = 6        !  dim:  VOC-emitting types
+INTEGER, PARAMETER :: TREETY = 3        !  dim:  tree types (pine, decid, conif)
+INTEGER, PARAMETER :: GRAS   = 1        !  luse subscript for grass
+INTEGER, PARAMETER :: FORE   = 2        !  luse subscript for forest
+INTEGER, PARAMETER :: WETL   = 3        !  luse subscript for wetlands
+INTEGER, PARAMETER :: AGRI   = 4        !  luse subscript for agriculture
+INTEGER, PARAMETER :: RMTREE = 9        !  luse subscript for agriculture
+INTEGER, PARAMETER :: SPTREE = 5        !  luse subscript for agriculture
+
+!.......   Chemical-species-related parameters:
+
+INTEGER, PARAMETER :: BSPCS = 4         !  dim for biogenic emissions species
+INTEGER, PARAMETER :: ISOP  = 1,        !  bioem  subscript for ISOP
+INTEGER, PARAMETER :: MONO  = 2         !  bioem  subscript for MONO
+INTEGER, PARAMETER :: OVOC  = 3,        !  bioem  subscript for OVOC
+INTEGER, PARAMETER :: NO    = 4         !  bioem  subscript for NO
+
+INTEGER, SAVE :: NNO                !  output em subscript for NO
+INTEGER, SAVE :: NTERP              !  output em subscript for TERP
+INTEGER, SAVE :: NOVOC              !  output em subscript for OVOC
+INTEGER, SAVE :: NISO               !  output em subscript for ISOP
+
+REAL, PARAMETER :: SOL2PAR = 2.00   ! new BEIS2 from Alados 1996
+
+!.......   Names for beis species, emitted model species:
+
+CHARACTER(4), PARAMETER :: BIOLUSE( LUSES ) =       &
+    (/ 'GRAS', 'FORE', 'WETL', 'AGRI' /)
+
+CHARACTER(4), PARAMETER :: BIOLTYPE( BTYPES ) =     &
+    (/ 'PINE', 'DECD', 'CONF', 'AGRC', 'LEAF', 'OTHR' /)
+
+CHARACTER(16), PARAMETER :: BIOSPC( BSPCS ) =       &
+    (/ 'ISOP', 'TERP', 'OVOC', 'NO' /)
+
+CHARACTER(IOVLEN3), PARAMETER :: BPOL( BSPCS ) =    &
+    (/ 'ISOP', 'OVOC', 'NO', 'TERP' /)
+
+CHARACTER(4), PARAMETER :: OTHERID( RMTREE ) =      &
+    (/ 'Mixf', 'Conf', 'Harf', 'Borf', 'Spin',&
+       'Ufor', 'Oak', 'Odcd', 'Cnif' /)
+
+CHARACTER(4), PARAMETER :: SPFORID( SPTREE ) =      &
+    (/ 'Borf', 'Wcnf', 'Wetf', 'Wmxf', 'Wwdl' /)
+
+!................   end   BIODIMS3.h90   ....................................
+

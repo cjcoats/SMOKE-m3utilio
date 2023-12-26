@@ -527,7 +527,7 @@ C***********************************************************************
             REAL(8), INTENT(IN) :: PD
             REAL(8), INTENT(IN) :: QD
             
-            DDERR = ((PD - QD)**2 .GT. 1.0D-11*( PD*PD + QD*QD + 1.0D-5 ))
+            DDERR = ((PD-QD)**2 .GT. 1.0D-11*( PD*PD + QD*QD + 1.0D-5 ))
             RETURN
 
         END FUNCTION DDERR

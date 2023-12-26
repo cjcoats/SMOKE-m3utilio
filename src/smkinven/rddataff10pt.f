@@ -21,6 +21,7 @@ C
 C  REVISION  HISTORY:
 C       Created by Dongmei Yang (Oct, 2011) based on rddatantipt.f
 C       Version June 2016 by Carlie Coats:  add fugitive-emissions p
+C       Version 11/2023 by CJC:  USE M3UTILIO and related changes
 C**************************************************************************
 C
 C Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
@@ -41,6 +42,7 @@ C Pathname: $Source$
 C Last updated: $Date$ 
 C
 C***************************************************************************
+        USE M3UTILIO
 
 C...........   MODULES for public variables
 C.........  This module contains the information about the source category
@@ -55,13 +57,7 @@ C...........   INCLUDES
          INCLUDE 'EMCNST3.EXT'   !  emissions constant parameters
 
 C...........   EXTERNAL FUNCTIONS and their descriptions:
-        CHARACTER(2)    CRLF
-        INTEGER         FINDC, STR2INT
-        REAL            YR2DAY, STR2REAL
-        LOGICAL         CHKINT
-        
-        
-        EXTERNAL   CRLF, FINDC, STR2INT, STR2REAL, YR2DAY, CHKINT
+        LOGICAL, EXTERNAL :: CHKINT
 
 C...........   SUBROUTINE ARGUMENTS
         CHARACTER(*),       INTENT  (IN) :: LINE                  ! input line

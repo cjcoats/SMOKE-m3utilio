@@ -28,19 +28,19 @@ C.........   Physical constants and conversion factors
 C.........  Source-category flags 
         INTEGER,      PARAMETER :: NCAT = 3          ! number src categories
         CHARACTER(6), PARAMETER :: CATLIST( NCAT ) = ! src categories
-     &                         ( / 'AREA  ', 'MOBILE', 'POINT ' / )
+     &                         (/ 'AREA  ', 'MOBILE', 'POINT ' /)
 
         CHARACTER(2), PARAMETER :: GNAMLIST( NCAT ) = ! gridded inven input names
-     &                         ( / 'AG', 'MG', 'PG' / )
+     &                         (/ 'AG', 'MG', 'PG' /)
 
         CHARACTER(5), PARAMETER :: ANAMLIST( NCAT ) = ! ave data input names
-     &                         ( / 'ARINV' , 'MBINV' , 'PTINV'  / )
+     &                         (/ 'ARINV' , 'MBINV' , 'PTINV'  /)
 
         CHARACTER(5), PARAMETER :: DNAMLIST( NCAT ) = ! daily data input names
-     &                         ( / 'ARDAY' , 'MBDAY' , 'PTDAY'  / )
+     &                         (/ 'ARDAY' , 'MBDAY' , 'PTDAY'  /)
 
         CHARACTER(6), PARAMETER :: HNAMLIST( NCAT ) = ! hourly data input names
-     &                         ( / 'ARHOUR' , 'MBHOUR' , 'PTHOUR'  / )
+     &                         (/ 'ARHOUR' , 'MBHOUR' , 'PTHOUR'  /)
 
 C.......   Flag values for determining temporal-profile-category
 C.......   applicability:  the corresponding category of temporal
@@ -56,16 +56,16 @@ C.......   (The *TPRFAC's should all be distinct primes)
                                            !    week normalizer
  
         CHARACTER(9), PARAMETER :: MON_NAME( 12 ) = 
-     &         ( / 'January  ', 'February ', 'March    ', 'April    ',
+     &         (/ 'January  ', 'February ', 'March    ', 'April    ',
      &             'May      ', 'June     ', 'July     ', 'August   ',
-     &             'September', 'October  ', 'November ', 'December '/ )
+     &             'September', 'October  ', 'November ', 'December '/)
 
         INTEGER     , PARAMETER :: MON_DAYS( 12 ) =
-     &         ( / 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31/ )
+     &         (/ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31/)
 
         CHARACTER(9), PARAMETER :: DAYS( 7 ) = 
-     &         ( / 'Monday   ', 'Tuesday  ', 'Wednesday', 'Thursday ',
-     &             'Friday   ', 'Saturday ', 'Sunday   '             / )
+     &         (/ 'Monday   ', 'Tuesday  ', 'Wednesday', 'Thursday ',
+     &             'Friday   ', 'Saturday ', 'Sunday   '             /)
 
 C.........  Input file format constants
 
@@ -85,7 +85,7 @@ C.........  Input file format constants
         INTEGER, PARAMETER  :: NCDFMT     = 13 ! Gridded NetCDF format
 
         CHARACTER(12), PARAMETER :: FMTNAMES( 0:13 ) = 
-     &                        ( / 'list        ', 
+     &                        (/ 'list        ', 
      &                            'EMS-95      ', 
      &                            'EPS         ', 
      &                            'NET         ', 
@@ -98,7 +98,7 @@ C.........  Input file format constants
      &                            'ORL FIREEMIS',
      &                            'FF10        ',
      &                            'MEDS        ',
-     &                            'GRID        ' / )
+     &                            'GRID        ' /)
 
 C.........  Indicator for inventory header fields
         CHARACTER, PARAMETER :: CINVHDR = '#'
@@ -125,22 +125,22 @@ C.........  Environment variables
 C.........  Time zones
         INTEGER    , PARAMETER :: MXTZONE = 33
         INTEGER    , PARAMETER :: TZONNUM( MXTZONE ) =
-     &                        ( /     0,     3,     4,     4,     5,
+     &                        (/     0,     3,     4,     4,     5,
      &                                5,     6,     6,     7,     7,
      &                                8,     9,    10,    10,    11,
      &                               11,    12,    -1,    -2,    -3,
      &                               -4,    -5,    -6,    -7,    -8,
      &                               -9,   -10,   -11,   -12,   -13,
-     &                              -14,     1,     2 / )
+     &                              -14,     1,     2 /)
 
         CHARACTER(3), PARAMETER :: TZONNAM( MXTZONE ) =
-     &                        ( / 'GMT', 'ART', 'AST', 'EDT', 'EST',
+     &                        (/ 'GMT', 'ART', 'AST', 'EDT', 'EST',
      &                            'CDT', 'CST', 'MDT', 'MST', 'PDT',
      &                            'PST', 'AKT', 'HST', 'CAT', 'NT ',
      &                            'SST', 'BIT', 'CET', 'EET', 'MSK',
      &                            'GST', 'PKT', 'BST', 'THA', 'HKT',
      &                            'KST', 'AET', 'ADT', 'FJT', 'NZT', 
-     &                            'LNT', 'EGT', 'FNT' / )
+     &                            'LNT', 'EGT', 'FNT' /)
 
 C.........  Packet information
         INTEGER,       PARAMETER :: NPACKET = 7
@@ -151,7 +151,7 @@ C.........  Packet information
      &                               'ADD                 ',
      &                               'REACTIVITY          ',
      &                               'PROJECTION          ',
-     &                               'MACT                '  / )
+     &                               'MACT                '  /)
 
 C.........  Control and projection matrix codes (in order of precedence)
         INTEGER, PARAMETER :: CTYPPROJ = 1   ! for projection matrix
@@ -174,26 +174,26 @@ C.........  Special data input names and associated parameters
         INTEGER, PARAMETER :: CODFLAG3 = 9000 ! to ID special data types
         INTEGER, PARAMETER :: MXSPDAT  = 6    ! max number of special data
         CHARACTER(IOVLEN3), PARAMETER :: SPDATNAM( MXSPDAT ) =
-     &                                    ( / 'LAY1F           ',
+     &                                    (/ 'LAY1F           ',
      &                                        'PBOT            ',
      &                                        'PTOP            ',
      &                                        'STKTK           ',
      &                                        'STKVE           ',
-     &                                        'STKFL           '  / )
+     &                                        'STKFL           '  /)
         CHARACTER(IOULEN3), PARAMETER :: SPDATUNT( MXSPDAT ) =
-     &                                    ( / 'n/a             ',
+     &                                    (/ 'n/a             ',
      &                                        'm               ',
      &                                        'm               ',
      &                                        'deg K           ',
      &                                        'm/s             ',
-     &                                        'm^3/s           '  / )
+     &                                        'm^3/s           '  /)
         CHARACTER(25), PARAMETER :: SPDATDSC( MXSPDAT ) =
-     &                          ( / 'Plume fraction in layer 1',
+     &                          (/ 'Plume fraction in layer 1',
      &                              'Plume bottom height      ',
      &                              'Plume top height         ',
      &                              'Stack exit temperature   ',
      &                              'Stack exit velocity      ',
-     &                              'Stack exit flow          '  / )
+     &                              'Stack exit flow          '  /)
 
 C.........  Variable dimensioning components, independent
 

@@ -1,0 +1,65 @@
+
+    !***********************************************************************
+    !  type definition starts at line 34
+    !
+    !  DESCRIPTION:
+    !      This include file defines the TYPE CPACKET for reading control packets
+    !
+    !  REVISION  HISTORY:
+    !       Created 3/99 by M. Houyoux
+    !       Version 12/2023 by CJC for ".f90" source format
+    !************************************************************************
+    !
+    ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
+    !                System
+    ! File: @(#)$Id$L
+    !
+    ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
+    ! All Rights Reserved
+    !
+    ! Carolina Environmental Program
+    ! University of North Carolina at Chapel Hill
+    ! 137 E. Franklin St., CB# 6116
+    ! Chapel Hill, NC 27599-6116
+    !
+    ! smoke@unc.edu
+    !
+    ! Pathname: $Source$
+    ! Last updated: $Date$
+    !
+    !************************************************************************
+
+    INTEGER, PARAMETER :: CMTLEN3 = 120
+
+    TYPE :: CPACKET
+
+        SEQUENCE
+        INTEGER            :: CPRI    ! tmp primary control equipment
+        REAL               :: FAC1    ! tmp factors from packets
+        REAL               :: FAC2
+        REAL               :: FAC3
+        REAL               :: FAC4
+        REAL               :: FAC5
+        REAL               :: FAC6
+        REAL               :: FAC7
+        REAL               :: FAC8
+        CHARACTER(5)       :: CPOS    ! tmp sorted position of pol
+        CHARACTER(FIPLEN3) :: CFIP    ! tmp char country/state/co code
+        CHARACTER(CHRLEN3) :: CHAR1   ! tmp plant characteristic 1
+        CHARACTER(CHRLEN3) :: CHAR2   ! tmp plant characteristic 2
+        CHARACTER(CHRLEN3) :: CHAR3   ! tmp plant characteristic 3
+        CHARACTER(CHRLEN3) :: CHAR4   ! tmp plant characteristic 4
+        CHARACTER(CHRLEN3) :: CHAR5   ! tmp plant characteristic 5
+        CHARACTER(IOVLEN3) :: CPOL    ! tmp pollutant name
+        CHARACTER(SICLEN3) :: CSIC    ! tmp char SIC ID
+        CHARACTER(SCCLEN3) :: NSCC    ! tmp plant ID
+        CHARACTER(PLTLEN3) :: PLT     ! tmp plant ID
+        CHARACTER(SCCLEN3) :: TSCC    ! tmp 10-digit SCC
+        CHARACTER(SPNLEN3) :: TMPPRF  ! tmp speciation profile code
+        CHARACTER(MACLEN3) :: CMCT    ! tmp char MACT code
+        CHARACTER          :: APPFLAG ! tmp char application flag
+        CHARACTER          :: REPFLAG ! tmp char replacement flag
+        CHARACTER(STPLEN3) :: CSTYP   ! tmp source type code
+        CHARACTER(CMTLEN3) :: COMMENT ! tmp comment from control packet
+
+    END TYPE

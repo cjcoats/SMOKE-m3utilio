@@ -18,8 +18,8 @@ C  SUBROUTINES AND FUNCTIONS CALLED:
 C      Subroutines: I/O API subroutine
 C
 C  REVISION  HISTORY:
-C      Created by B.H. Baek on 8/2011
-C
+C       Created by B.H. Baek on 8/2011
+C       Version 11/2023 by CJC:  USE M3UTILIO and related changes
 C***************************************************************************
 C
 C Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
@@ -40,6 +40,7 @@ C Pathname: $Source$
 C Last updated: $Date$ 
 C
 C***************************************************************************
+        USE M3UTILIO
 
 C.........  MODULES for public variables
 C.........  This module is the inventory arrays
@@ -66,30 +67,10 @@ C.........  This module contains the arrays for state and county summaries
 C...........   INCLUDES
 
         INCLUDE 'EMCNST3.EXT'   !  emissions constant parameters
-        INCLUDE 'PARMS3.EXT'    !  I/O API parameters
-        INCLUDE 'IODECL3.EXT'   !  I/O API function declarations
-        INCLUDE 'FDESC3.EXT'    !  I/O API file description data structures.
 
 C.........  EXTERNAL FUNCTIONS
-        CHARACTER(2) CRLF
-        INTEGER      ENVINT
-        LOGICAL      ENVYN, CHKINT
-        INTEGER      FIND1
-        INTEGER      FINDC
-        INTEGER      INDEX1
-        INTEGER      JULIAN
-        INTEGER      SECSDIFF
-        INTEGER      STR2INT
-        REAL         STR2REAL
-        REAL         YR2DAY
-        INTEGER      YEAR4
-        INTEGER      GETTZONE
-        LOGICAL      ISDSTIME
-        LOGICAL      USEEXPGEO
-
-        EXTERNAL     CRLF, ENVINT, ENVYN, FIND1, FINDC, INDEX1, JULIAN, 
-     &               SECSDIFF, STR2INT, STR2REAL, YEAR4, YR2DAY, CHKINT,
-     &               GETTZONE, ISDSTIME, USEEXPGEO
+        LOGICAL, EXTERNAL :: CHKINT, USEEXPGEO
+        INTEGER, EXTERNAL :: GETTZONE
 
 C.........  SUBROUTINE ARGUMENTS
         INTEGER, INTENT (IN)  :: FDEV           ! file unit no.

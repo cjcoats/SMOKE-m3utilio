@@ -1,0 +1,15 @@
+! @(#)$Header$
+
+!.........   The variables in this include file are for defining the widths
+!            of character strings in I/O API tools. They are all declared as
+!            private so that, for instance, several modules used in the same
+!            program can all include this file without duplicate declaration
+!            errors during compilation.
+
+INCLUDE 'IOSTRG3.h90'  !
+
+!.........  Width of other global character strings
+PRIVATE :: IOVLEN3
+PRIVATE :: IODLEN3
+PRIVATE :: IOULEN3
+

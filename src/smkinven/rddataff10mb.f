@@ -14,8 +14,8 @@ C
 C  SUBROUTINES AND FUNCTIONS CALLED:
 C
 C  REVISION  HISTORY:
-C      Created by  B.H. Baek  (Aug 2011)
-C
+C       Created by  B.H. Baek  (Aug 2011)
+C       Version 11/2023 by CJC:  USE M3UTILIO and related changes
 C**************************************************************************
 C
 C Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
@@ -36,6 +36,7 @@ C Pathname: $Source$
 C Last updated: $Date$ 
 C
 C***************************************************************************
+        USE M3UTILIO
 
 C...........   MODULES for public variables
 C.........  This module contains the information about the source category
@@ -49,15 +50,7 @@ C...........   INCLUDES
         INCLUDE 'EMCNST3.EXT'   !  emissions constant parameters
 
 C...........   EXTERNAL FUNCTIONS and their descriptions:
-        CHARACTER(2)    CRLF
-        INTEGER         INDEX1 
-        INTEGER         FINDC
-        INTEGER         STR2INT
-        REAL            YR2DAY, STR2REAL
-        LOGICAL         CHKINT
-
-        EXTERNAL    CRLF, FINDC, STR2INT, STR2REAL, CHKINT, YR2DAY,
-     &              INDEX1
+        LOGICAL, EXTERNAL :: CHKINT
 
 C...........   SUBROUTINE ARGUMENTS
         CHARACTER(*),       INTENT  (IN) :: LINE                  ! input line
@@ -109,9 +102,8 @@ C           properly (country and year required)
 C.........  Interpret error status
         IF( IOS == 4 ) THEN
             WRITE( MESG,94010 ) 
-     &             'Maximum allowed data variables ' //
-     &             '(MXDATFIL=', MXDATFIL, CRLF() // BLANK10 //
-     &             ') exceeded in input file'
+     &             'Maximum allowed data variables MXDATFIL=',MXDATFIL,
+     &             CRLF() // BLANK10 //' exceeded in input file'
             CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 
         ELSE IF( IOS > 0 ) THEN

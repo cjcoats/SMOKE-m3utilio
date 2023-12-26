@@ -126,8 +126,8 @@ C...........   File units and logical/physical names
 
 C...........   Other local variables
 
-        INTEGER         C, I, J, K, K1, K2, L, L1, L2,
-     &                  LM, M, N, S, V                  !  counters and indices
+        INTEGER         C, I, J, K, K1, K2, L, L1, L2
+        INTEGER         LM, M, N, S, V                  !  counters and indices
         INTEGER         IOS        ! i/o status
         INTEGER         IYEAR      ! inventory year
         INTEGER         MXPVAR     ! max of NPPOL and NPACT

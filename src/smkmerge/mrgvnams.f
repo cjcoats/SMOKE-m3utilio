@@ -496,8 +496,6 @@ C.............  This internal subprogram builds the unsorted list of unique
 C               pollutant-to-species speciation variable descriptions.
             SUBROUTINE BUILD_VDESC_UNSORT( NCNT, NVARS, MXTMP, VDESCS )
 
-            INCLUDE 'PARMS3.EXT'    !  I/O API parameters
-
 C.............  Subprogram arguments
 
             INTEGER     , INTENT(IN OUT) :: NCNT            ! running count

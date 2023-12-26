@@ -1,0 +1,55 @@
+!  $Header$
+!....................................................................
+!  INCLUDE FILE  B3DIMS3.EXT
+!
+!  CONTAINS:
+!       dimensioning parameters for BEIS v3.09
+!
+!  DEPENDENT UPON:  none
+!
+!  REVISION HISTORY:
+!
+!....................................................................
+
+INTEGER, PARAMETER :: NSEF      = 4      !  # of em class in Summer emission factor table
+INTEGER, PARAMETER :: LUSES     = 4,      !  dim:  land use ( gras, fore, wetl, agri
+INTEGER, PARAMETER :: BSPCS     = 4      !  biogenic emission categories
+INTEGER, PARAMETER :: TREETY    = 3      !  dim:  tree types (pine, decid, conif)
+INTEGER, PARAMETER :: GRAS      = 1      !  luse subscript for grass
+INTEGER, PARAMETER :: FORE      = 2      !  luse subscript for forest
+INTEGER, PARAMETER :: WETL      = 3      !  luse subscript for wetlands
+INTEGER, PARAMETER :: AGRI      = 4      !  luse subscript for agriculture
+INTEGER, PARAMETER :: RMTREE    = 9        !  luse subscript for agriculture
+INTEGER, PARAMETER :: SPTREE    = 5        !  luse subscript for agriculture
+INTEGER, PARAMETER :: NSEASONS  = 2      !  number of seasons modeled (2 for now)
+
+!.......   Chemical-species-related parameters:
+
+INTEGER, PARAMETER :: BCATS = 5          !  dim for biogenic emissions species
+INTEGER, PARAMETER :: ISOP  = 1          !  bioem  subscript for ISOP
+INTEGER, PARAMETER :: MONO  = 2          !  bioem  subscript for MONO
+INTEGER, PARAMETER :: OVOC  = 3          !  bioem  subscript for OVOC
+INTEGER, PARAMETER :: NO    = 4          !  bioem  subscript for NO
+INTEGER, PARAMETER :: NSUMMER = 1        !  summer flag
+INTEGER, PARAMETER :: NWINTER = 2        !  winter flag
+
+INTEGER, SAVE :: NNO             !  output em subscript for NO
+INTEGER, SAVE :: NMONO           !  output em subscript for MONO
+INTEGER, SAVE :: NOVOC           !  output em subscript for OVOC
+INTEGER, SAVE :: NISO            !  output em subscript for ISOP
+
+!.......
+
+REAL   , PARAMETER :: SOL2PAR = 2.07   ! Radiation (w/m**2) to PAR conv factor from Alados 1996
+
+!.......   Names for beis species, emitted model species:
+
+CHARACTER(4), PARAMETER :: BIOTYPES( BCATS ) = (/ 'ISOP', 'MONO', 'OVOC', 'NO', 'LAI' /)
+
+CHARACTER(4), PARAMETER :: BIOSPC( BSPCS )   = (/ 'ISOP', 'MONO', 'OVOC', 'NO  ' /)
+
+CHARACTER,    PARAMETER :: SEASON( NSEASONS ) = (/  'S' , 'W' /)
+
+
+!................   end   B3DIMS3.EXT   ....................................
+
