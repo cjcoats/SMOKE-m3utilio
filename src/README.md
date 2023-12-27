@@ -37,7 +37,7 @@ M3UTILIO`](https://cjcoats.github.io/ioapi/M3UTILIO.html) does the
 structure, and function-declarations, and has done so since I/O API 3.0
 (2002).  In addition to the I/O routines like `WRITE3`, it also provides
 `INTERFACE` blocks for almost all the routines in the I/O API, which
-provides for compile-tLme checking of argument lists, etc.:  so far, the
+provides for compile-time checking of argument lists, etc.:  so far, the
 conversion from I/O API-2 style code to `USE M3UTILIO` has found
 argument-list errors in every code to which it has been applied.  This
 now includes eliminating argument-list bugs in the current (GitHub Oct.
@@ -114,7 +114,7 @@ I/O API fuctions that were called.  Other external function declarations
 were put into Fortran-90 style, e.g.
 <pre>
         INTEGER, EXTERNAL :: GETFLINE
-</pre.
+</pre>
 Argument-list bugs were found and fixed for certain calls to `SORTI2`,
 `SORTR2`, and `INDEX1`.
 
@@ -313,7 +313,7 @@ to a failure to understand how declaration-time initialization for
 variables works.  The following sort of thing
 <pre>
         INTEGER :: NFOUND = 0
-<pre>
+</pre>
 should almost always instead have a declaration, followed by a separate
 initialization-statement at the beginning of the body of the routine:
 </pre>
@@ -364,13 +364,14 @@ instead of "does this file have *exactly* the time steps I want?".
 The whole allocation-and-sorting system can and should be simplified
 enormously, using a variant of *lib/getfline.f* that also returns the
 number of non-comment lines in ASCII files, together with the new I/O
-API generic routine
+API generic routine [*PERMUITI*](https://cjcoats.github.io/ioapi/PERMUTI.html)
 <pre>
         PERMUTI(N, INDX, ARR1 [, ARR2 [, ARR3]] )
 </pre>
 that sorts its array-arguments `ARR1` etc. in-place, on the basis of the
 `INDX` array returned by the `SORTI`, without the need for extra
-temporary scratch-arrays.  Note that retrofitting this would be a major task.
+temporary scratch-arrays.  Note that retrofitting this would be a major
+task.
 
 The "generate new files in a file-set" constructs ensuring that file
 sizes do not exceed the (netCDF-2, 1990's) 2GB file size limit have not
@@ -381,6 +382,13 @@ These constructs are no longer needed and should go away.  Possibly
 should be eliminated, using standard I/O API instead. (Note that
 netCDF-3 supports file sizes larger than 2 GB, with a 2GB-per-timestep
 limit prior to netCDF-3.6 (2002) which does away with that limit...)
+
+Since SMOKE scripts always set environment variable `PROMPTFLAG` to
+`NO`, the interactive-style prompt-for-file routines `PROMPTMFILE` and 
+`PROMPTFFILE` should not have been used; these should be replaced by the
+script-style [*OPEN3*](https://cjcoats.github.io/ioapi/OPEN3.html) and
+[*GETEFILE*](https://cjcoats.github.io/ioapi/GETEFILE.html)
+
 
 ### Notes
 
