@@ -4,7 +4,7 @@
 
 **This is a developent/technology-transfer repository, not a production
 repository.** It contains a GitHub Oct. 28, 2023 version of
-SMOKE (`.0.f`), a `M3UTILIO`ized, I/O API 3,2-ized  (`.f`) of
+SMOKE (`.0.f`), a `M3UTILIO`ized, I/O API 3.2-ized  (`.f`) of
 SMOKE, an *findent* (`.1.f90`) free-source-format reference version of
 SMOKE constructed from the `.f`, and a cleaned-up `.f90` version of
 SMOKE.
@@ -82,9 +82,9 @@ source files, e.g., *src/biog/czangle.0.f*.
 New "fixed-132 codes go by the "standard" SMOKE naming, e.g., 
 *src/biog/czangle.f* Intermediate "scratch" or "improved" versions of
 the codes have other in-fixes, e.g., *src/biog/tmpbeis4.1.f* and 
-*src/biog/tmpbeis4.2.f*. Reference-copy *findent* outputs go by
-"src/*/*.1.f90*, and final "free .f90-style" codes go by `.f90` (without
-an in-fix).
+*src/biog/tmpbeis4.2.f*. Read-only reference-copy *findent* outputs go
+by "src/*/*.1.f90*, and final "free .f90-style" codes go by `.f90`
+(without an in-fix).
 
 Note that programs [*xxdiff*](https://github.com/blais/xxdiff),
 [*tkdiff*](https://sourceforge.net/projects/tkdiff/), or
@@ -98,7 +98,7 @@ xxdiff temporal/wrtsup.0.f temporal/wrtsup.f
 Note that **the `.f` and `.f90` codes require different *Makefile* and
 *Makeinclude* files**.  Files `.f.Makefile` and `.f.Makeinclude` are for
 the former, and `.f90.Makefile` and `.f90.Makeinclude` are for the
-latter.  To build SMOKE, in the *src* directory, copy the relevant pair
+latter.  To build SMOKE, in the *src* directory copy the relevant pair
 of these to the standard *Makefile* and *Makeinclude* names, and then
 *make*.  For reference, the original `Makefile` can be found in `Makefile.0`
 
@@ -115,8 +115,8 @@ were put into Fortran-90 style, e.g.
 <pre>
         INTEGER, EXTERNAL :: GETFLINE
 </pre.
-Argument-list bugs were found for calls to `SORTI2`, `SORTR2`, and
-`INDEX1`.
+Argument-list bugs were found and fixed for certain calls to `SORTI2`,
+`SORTR2`, and `INDEX1`.
 
 
 ### ENVINT, M3ERR, TRIMLEN, etc.
