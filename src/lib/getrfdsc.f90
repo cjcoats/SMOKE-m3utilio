@@ -50,11 +50,11 @@ REAL FUNCTION GETRFDSC( FILEINFO, KEY, REQUIRED )
 
     !.......   LOCAL VARIABLES their descriptions:
 
-    INTEGER       L1, L2           ! length of strings
-    INTEGER       I                ! loop index
-    INTEGER       K                ! description string position of key
+    INTEGER       L1, L2            ! length of strings
+    INTEGER       I                 ! loop index
+    INTEGER       K                 ! description string position of key
 
-    REAL          RVAL             ! temporary real value
+    REAL          RVAL              ! temporary real value
 
     CHARACTER(300) BUFFER           ! Key buffer
     CHARACTER(300) MESG             ! Message buffer
@@ -96,7 +96,7 @@ REAL FUNCTION GETRFDSC( FILEINFO, KEY, REQUIRED )
 
     IF( REQUIRED ) THEN
         MESG = 'FDESC3D packet "' // KEY( 1:L1 ) //     &
-               '" was not found in NetCDF file    !'
+               '" was not found in NetCDF file!'
         CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 
     ELSE

@@ -13,8 +13,8 @@ SUBROUTINE RDLINES( FDEV, DESCRIPT, NLINES, LINES )
     !
     !  REVISION  HISTORY:
     !       Version ??/???? by ???
-    !       Version 11/2023 by CJC:  USE M3UTILIO, ".f90" source format, and
-    !       related changes
+    !       Version 11/2023 by CJC:  USE M3UTILIO, ".f90" source format,
+    !       algorithm simplification, and related changes
     !**************************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
@@ -68,38 +68,32 @@ SUBROUTINE RDLINES( FDEV, DESCRIPT, NLINES, LINES )
     IREC = 0
     LSAV = 0
     N    = 0
-11  CONTINUE
+    DO IREC=1, 1999999999
 
-    READ( FDEV, '(A)', END=22, IOSTAT=IOS ) LINE
-    IREC = IREC + 1
+        READ( FDEV, '(A)', END=22, IOSTAT=IOS ) LINE
 
-    !.......  Skip blank lines
-    IF( LINE .EQ. ' ' ) GO TO 11
+        L2 = LEN_TRIM( LINE )
 
-    L2 = LEN_TRIM( LINE )
+        IF( IOS .GT. 0 ) THEN
+            WRITE( MESG, 94010 ) 'Error', IOS,  'reading ' //   &
+                   TRIM( DESCRIPT ) // ' file at line', IREC
+            CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 
-    IF( IOS .GT. 0 ) THEN
-        WRITE( MESG, 94010 ) 'Error', IOS,  'reading ' //   &
-               TRIM( DESCRIPT ) // ' file at line', IREC
-        CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
+        !.......  Skip blank lines
+        !.......  Keep track of width that is larger than that allocated
+        ELSE IF( L2 .EQ. 0 ) THEN
+            CYCLE
+        ELSE IF( L2 .GT. L ) THEN
+            IF( L2 .GT. LSAV ) LSAV = L2
+            CYCLE
+        END IF
 
-    !....... Keep track of width that is larger than that allocated
-    ELSE IF( L2 .GT. L ) THEN
-        IF( L2 .GT. LSAV ) LSAV = L2
-        GO TO 11
+        N = N + 1
+        IF( N .LE. NLINES ) THEN
+            LINES( N ) = LINE
+        END IF
 
-    !....... Skip blank lines
-    ELSE IF( L2 .EQ. 0 ) THEN
-        GO TO 11
-
-    END IF
-
-    N = N + 1
-    IF( N .LE. NLINES ) THEN
-        LINES( N ) = LINE
-    END IF
-
-    GO TO  11
+    END DO
 
 22  CONTINUE            !  exit from loop reading FDEV
 

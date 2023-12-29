@@ -103,7 +103,7 @@ INTEGER FUNCTION GETNLIST( ILENGTH, STRING )
     L2 = LEN_TRIM( STRING )
 
     !.....  Check for comments, and use to set the end of the line
-    L = INDEX( STRING( 1:L2 ), '    !' )
+    L = INDEX( STRING( 1:L2 ), '!' )
 
     IF( L .LE. 0 ) THEN
         L = L2
@@ -146,7 +146,7 @@ INTEGER FUNCTION GETNLIST( ILENGTH, STRING )
                 DELIM   = .FALSE.
                 QUOTVAL = SINGLEQ
                 PREVDELIM = .FALSE.
-                L1     = I + 1
+                L1      = I + 1
                 NCNT    = NCNT + 1
 
             ELSE IF( CBUF .EQ. DOUBLEQ ) THEN

@@ -67,7 +67,7 @@ SUBROUTINE RDLOOPPD( FDEV, TZONE, INSTEP, OUTSTEP, MXPDSRC, &
     INTEGER,      INTENT(OUT) :: NSTEPS             ! no. time steps
     INTEGER,      INTENT(OUT) :: FMTOUT             ! file format code
     INTEGER,      INTENT(OUT) :: EASTAT( NIPPA )    ! true: pol/act in data
-    INTEGER,      INTENT(OUT) :: SPSTAT( MXSPDAT )    ! true: special in data
+    INTEGER,      INTENT(OUT) :: SPSTAT( MXSPDAT )  ! true: special in data
 
     !.......   EXTERNAL FUNCTIONS
 
@@ -92,9 +92,9 @@ SUBROUTINE RDLOOPPD( FDEV, TZONE, INSTEP, OUTSTEP, MXPDSRC, &
     INTEGER          MM                    ! tmp month
     INTEGER          MMDD1                 ! tmp start month and day
     INTEGER          MMDD2                 ! tmp end month and day
-    INTEGER, SAVE :: NFILE                 ! no. files in the list
+    INTEGER          NFILE                 ! no. files in the list
 
-    LOGICAL, SAVE :: EFLAG = .FALSE.       ! true: error found
+    LOGICAL          EFLAG                 ! true: error found
     LOGICAL          DFLAG                 ! true: retrieve date/time  pol/act
     LOGICAL, SAVE :: DCALLONE = .TRUE.     ! true: 1st time called for day-spec
     LOGICAL, SAVE :: GETRANGE = .TRUE.     ! true: get date range if it's available
@@ -110,7 +110,7 @@ SUBROUTINE RDLOOPPD( FDEV, TZONE, INSTEP, OUTSTEP, MXPDSRC, &
 
     !***********************************************************************
     !   begin body of program RDLOOPPD
-
+    EFLAG = .FALSE.
     !.......  When start date is zero, set flag for getting dates, times, and
     !           pollutants/activities
     IF( SDATE .EQ. 0 ) THEN
@@ -145,13 +145,10 @@ SUBROUTINE RDLOOPPD( FDEV, TZONE, INSTEP, OUTSTEP, MXPDSRC, &
     !.......  Get number of lines of inventory files in list format
     NFILE = GETFLINE( FDEV, MESG )
 
-    !.......  Determine format of day- or hour-specific inputs, and store file
-    !           names
+    !.......  Determine format of day- or hour-specific inputs, and store file names
     IF( ( DAYFLAG .AND. DCALLONE ) .OR. HCALLONE ) THEN
 
         !.......  Allocate memory for storing file formats, contents of list-format'd file
-        IF( ALLOCATED( FILFMT ) ) DEALLOCATE( FILFMT )
-        IF( ALLOCATED( LSTSTR ) ) DEALLOCATE( LSTSTR )
         ALLOCATE( FILFMT( NFILE ),    &
                   LSTSTR( NFILE ), STAT=IOS )
         CALL CHECKMEM( IOS, 'FILFMT', PROGNAME )
@@ -185,19 +182,18 @@ SUBROUTINE RDLOOPPD( FDEV, TZONE, INSTEP, OUTSTEP, MXPDSRC, &
         !.......  If line is LIST header, skip to next line
         IF( INDEX( NAMTMP, 'LIST' ) > 0 ) CYCLE
 
-        !.......  If line contains the range of dates, read this packet and
-        !               skip to next line
+        !.......  If line contains the range of dates, 
+        !         read this packet and skip to next line
         I = INDEX( NAMTMP, 'DATERANGE' )
         IF( I .GT. 0 ) THEN
             I = I + 9
-            L = LEN_TRIM( NAMTMP )
-            READ( NAMTMP( I:L ), *, IOSTAT=IOS ) MMDD1, MMDD2
+            READ( NAMTMP, *, IOSTAT=IOS ) MMDD1, MMDD2
 
             !.......  If problem reading dates from string
             IF ( IOS .NE. 0 ) THEN
                 EFLAG = .TRUE.
-                WRITE( MESG, 94010 ) 'ERROR: DATERANGE header ' //    &
-                       'misformatted at line', IFIL
+                WRITE( MESG, 94010 )        &
+                    'ERROR: DATERANGE header misformatted at line', IFIL
                 CALL M3MSG2( MESG )
                 CYCLE
             END IF
@@ -221,7 +217,7 @@ SUBROUTINE RDLOOPPD( FDEV, TZONE, INSTEP, OUTSTEP, MXPDSRC, &
 
         !.......  Open files, and report status
         IDEV = JUNIT()
-        OPEN( IDEV, ERR=1003, FILE=NAMTMP, STATUS='OLD' )
+        OPEN( IDEV, IOSTAT=IOS, ERR=1003, FILE=NAMTMP, STATUS='OLD' )
 
         WRITE( MESG,94010 ) 'Successful open for emissions file:' //    &
                              CRLF() // BLANK5 // TRIM( NAMTMP )
@@ -283,13 +279,14 @@ SUBROUTINE RDLOOPPD( FDEV, TZONE, INSTEP, OUTSTEP, MXPDSRC, &
     !.......  Set output format ( to make sure that any daterange
     !           headers get filtered out)
     FMTOUT = MAXVAL( FILFMT )
+    IF( ALLOCATED( FILFMT ) ) DEALLOCATE( FILFMT, LSTSTR )
 
     RETURN
 
-999 MESG = 'ERROR: Unexpected end of file'
-    CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
-
-1003 MESG = 'ERROR: Could not open file ' // CRLF() // BLANK10// NAMTMP
+1003 CONTINUE
+    WRITE( MESG,94010 )         &
+        'ERROR: Could not open file ' // CRLF() // BLANK10// NAMTMP,    &
+        CRLF() // BLANK10// 'IOSTAT=', IOS
     CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 
     !******************  FORMAT  STATEMENTS   ******************************

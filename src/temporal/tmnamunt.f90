@@ -59,19 +59,18 @@ SUBROUTINE TMNAMUNT
     INTEGER         IOS                   !  i/o status
     REAL            FAC1, FAC2            ! tmp conversion factors
 
-    LOGICAL      :: FIXDESC = .FALSE.     ! true: append info to description
-    LOGICAL      :: EFLAG = .FALSE.       ! true: error found
+    LOGICAL         EFLAG                 ! true: error found
 
-    CHARACTER(16)      CURRUNIT       !  current unit
-    CHARACTER(16)      CURRVNAME      !  current variable name
-    CHARACTER(300)     MESG           !  message buffer
-    CHARACTER(NAMLEN3) CBUF           !  tmp variable name
+    CHARACTER(NAMLEN3)  CURRUNIT       !  current unit
+    CHARACTER(NAMLEN3)  CURRVNAME      !  current variable name
+    CHARACTER(NAMLEN3)  CBUF           !  tmp variable name
+    CHARACTER(300)      MESG           !  message buffer
 
     CHARACTER(16), PARAMETER :: PROGNAME = 'TMNAMUNT'     ! program name
 
     !***********************************************************************
     !   begin body of subroutine TMNAMUNT
-
+    EFLAG = .FALSE.
     !.......  Allocate memory for units conversions for inventory pollutants and
     !        activities (stored in MODINFO)
     ALLOCATE( EACNV( NIPPA ), STAT=IOS )
