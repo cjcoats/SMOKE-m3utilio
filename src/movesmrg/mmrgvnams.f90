@@ -209,7 +209,7 @@ SUBROUTINE MRGVNAMS
 
     !.......  Make sure some species match some of the pollutants
     IF( NSMATV .EQ. 0 ) THEN
-        MESG = 'ERROR: No speciation factors match the inventory    !'
+        MESG = 'ERROR: No speciation factors match the inventory'
         CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
     END IF
 

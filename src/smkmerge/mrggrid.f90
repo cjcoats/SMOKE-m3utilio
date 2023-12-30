@@ -381,7 +381,7 @@ PROGRAM MRGGRID
         CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 
     ELSEIF( NFILE .EQ. 0 ) THEN
-        MESG = 'No input files in list    !'
+        MESG = 'No input files in list'
         CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 
     ENDIF
@@ -389,8 +389,7 @@ PROGRAM MRGGRID
     !.....  Get met adjustment variable setting from FILELIST input file
     !.....  Adjust mobile emissiosn with meteorology
     IF( METFLAG ) THEN
-        MESG = 'CRITICAL: Meteorological adjustment to gridded emissions ' //    &
-               'has been enabled    !'
+        MESG = 'CRITICAL: Meteorological adjustment to gridded emissions has been enabled'
         CALL M3MESG( MESG )
 
         MESG = 'Specifies ambient temperature variable name for ' //    &
@@ -419,7 +418,7 @@ PROGRAM MRGGRID
 
         IF( NOXFLAG ) THEN
             MESG = 'CRITICAL: Humidity correction for NOx emissions ' //    &
-               'from mobile sources has been enabled    !'
+               'from mobile sources has been enabled'
             CALL M3MESG( MESG )
 
             MESG = 'Specifies specific humidity variable name for ' //    &
@@ -851,8 +850,7 @@ PROGRAM MRGGRID
 
     !.....  Give error message and end program unsuccessfully
     IF( EFLAG ) THEN
-        MESG = 'Inconsistent time step, grid, species, or layers '//    &
-                'among the files    !'
+        MESG = 'Inconsistent time step, grid, species, or layers among the files'
         CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
     END IF
 
@@ -921,8 +919,7 @@ PROGRAM MRGGRID
 
     !.....  Give error message and end program unsuccessfully
     IF( EFLAG ) THEN
-        MESG = 'Inconsistent units for common variables among '//    &
-               'the files    !'
+        MESG = 'Inconsistent units for common variables among the files'
         CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
     END IF
 

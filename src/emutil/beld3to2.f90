@@ -53,7 +53,7 @@ PROGRAM BELD3TO2
     !***********************************************************************
     USE M3UTILIO
 
-    IMPLICIT NONE
+    IMPLICIT NONEf
 
     !.......   INCLUDES:
 
@@ -302,7 +302,7 @@ PROGRAM BELD3TO2
     ELSE IF ( GDTYP3D .EQ. 2 ) THEN
         COORD = 'LAMBERT '
     ELSE
-        MESG = 'Code not tested for this grid type    !'
+        MESG = 'Code not tested for this grid type'
         CALL M3WARN( PROGNAME, 0, 0, MESG )
     ENDIF
 

@@ -323,14 +323,13 @@ SUBROUTINE DSCSPROF( FDEV, NIPOL, EINAM )
 
     IF( IPOL .EQ. 0 ) THEN
         EFLAG = .TRUE.
-        MESG = 'ERROR: No pollutants found in speciation '//&
-               'profiles match the inventory    !'
+        MESG = 'ERROR: No pollutants found in speciation profiles match the inventory'
         CALL M3MSG2( MESG )
     END IF
 
     IF( ISP .EQ. 0 ) THEN
         EFLAG = .TRUE.
-        MESG = 'ERROR: No species found in speciation profile    !'
+        MESG = 'ERROR: No species found in speciation profile'
         CALL M3MSG2( MESG )
     END IF
 

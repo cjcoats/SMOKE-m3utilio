@@ -76,7 +76,7 @@ SUBROUTINE RDGMAT( FNAME, NGRID, NMAT1, NMAT2, NX, IX, CX )
     IF( NSUM .GT. NMAT1 ) THEN
 
         MESG = 'ERROR: Gridding matrix dimension is inconsistent '//    &
-               'with records count    !' // CRLF() // '          ' //   &
+               'with records count' // CRLF() // '          ' //   &
                'Delete gridding matrix and recreate it.'
 
         CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )

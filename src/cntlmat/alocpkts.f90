@@ -140,7 +140,7 @@ SUBROUTINE ALOCPKTS( FDEV, WDEV, INYEAR, CPYEAR, PKTCNT, PKTBEG,    &
         !.......  If inside packet...
         IF( INSIDE ) THEN
 
-            J = INDEX( LINE, '        !' )
+            J = INDEX( LINE, '!' )
             IF ( J .LE. 0 ) J = LEN_TRIM( LINE )
             I = INDEX( LINE( 1:J ), '/END/' )
             J = INDEX( LINE( 1:J ), '/'     )

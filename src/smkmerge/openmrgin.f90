@@ -1511,7 +1511,7 @@ CONTAINS
 
         ELSE
             MESG= 'INTERNAL ERROR: Category description "' //    &
-                  CATDESC// '" not known in call to CHECK_MET_INFO        !'
+                  CATDESC// '" not known in call to CHECK_MET_INFO'
             CALL M3MSG2( MESG )
             CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 

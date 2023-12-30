@@ -106,7 +106,7 @@ CHARACTER(*) FUNCTION GETCFDSC( FILEINFO, KEY, REQUIRED )
     !           required, then abort.
 
     IF( REQUIRED ) THEN
-        MESG = 'FDESC3D packet "' // KEY( 1:L1 ) // '" was not found in file    !'
+        MESG = 'FDESC3D packet "' // KEY( 1:L1 ) // '" was not found in file'
         CALL M3EXIT( MESG, 0, 0, PROGNAME, 2 )
 
     ELSE

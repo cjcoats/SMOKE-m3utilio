@@ -128,10 +128,8 @@ LOGICAL FUNCTION CHKMETEM( GNAM2D, MNAM2D, DNAM2D,  &
 
     !.....  Internal error if none of the files are valid
     ELSE
-        MESG = 'INTERNAL ERROR: No opened meteorology files ' //    &
-               'provided in ' // PROGNAME // ' call    !'
-        CALL M3MSG2( MESG )
-        CALL M3EXIT( PROGNAME, 0, 0, ' ', 2 )
+        MESG = 'INTERNAL ERROR: No opened meteorology files provided in call!'
+        CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 
     END IF
 

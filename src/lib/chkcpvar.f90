@@ -108,7 +108,7 @@ INTEGER FUNCTION CHKCPVAR( CPVNAM, NIPOL, EINAM )
         CHKCPVAR = -2
 
         MESG = 'ERROR: Control/projection variables may only' //    &
-               'be applied to one or all inventory pollutants    !'
+               'be applied to one or all inventory pollutants'
         CALL M3MSG2( MESG )
 
     ENDIF

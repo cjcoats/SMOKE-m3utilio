@@ -412,7 +412,7 @@ SUBROUTINE RDTAG( FDEV, NOPOL )
     !.......  Write error if no tagging entries match inventory
     IF( .NOT. EFLAG .AND. NXREF .EQ. 0 ) THEN
         EFLAG = .TRUE.
-        MESG = 'ERROR: No tagging file entries match a source    !'
+        MESG = 'ERROR: No tagging file entries match a source'
         CALL M3MSG2( MESG )
 
     ELSE IF( NXREF .GT. NLINES ) THEN

@@ -206,7 +206,7 @@ SUBROUTINE RDSPDREF( FDEV )
     !.........  Write errors for problems with input
     IF( NXREF .EQ. 0 ) THEN
         EFLAG = .TRUE.
-        MESG = 'ERROR: No valid entries in SPDREF file    !'
+        MESG = 'ERROR: No valid entries in SPDREF file'
         CALL M3MSG2( MESG )
 
     ELSEIF( NXREF .GT. NLINES ) THEN

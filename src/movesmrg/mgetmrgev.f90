@@ -405,7 +405,7 @@ SUBROUTINE GETMRGEV
         END IF
 
         IF( LREPANY ) THEN
-            MESG = 'WARNING: Disabling any summary reports generation    !'
+            MESG = 'WARNING: Disabling any summary reports generation'
             CALL M3MSG2( MESG )
             LREPANY = .FALSE.
             LREPSTA = .FALSE.

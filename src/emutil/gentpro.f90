@@ -948,7 +948,7 @@ PROGRAM GENTPRO
         TPRO = TRIM   ( SEGMENT( 8 ) )
 
         IF( INDEX1( TPRO, NTPRO, TPROTYPES ) < 1 ) THEN
-            MESG = 'ERROR: Older TREF format is no longer supported        !'
+            MESG = 'ERROR: Older TREF format is no longer supported'
             CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
         END IF
 

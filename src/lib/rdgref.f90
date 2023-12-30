@@ -234,7 +234,7 @@ SUBROUTINE RDGREF( FDEV )
     !.......  Write errors for problems with input
     IF( NXREF .EQ. 0 ) THEN
         EFLAG = .TRUE.
-        MESG = 'ERROR: No valid gridding cross-reference entries    !'
+        MESG = 'ERROR: No valid gridding cross-reference entries'
         CALL M3MSG2( MESG )
 
     ELSEIF( NXREF .GT. NLINES ) THEN

@@ -123,7 +123,7 @@ SUBROUTINE RDAR2PT( FDEV, CDEV, LDEV )
     IF ( FDEV .NE. 0 ) THEN
         REWIND( FDEV )
     ELSE
-        MESG = 'Area-to-point factors file is not opened    !'
+        MESG = 'Area-to-point factors file is not opened'
         CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
     END IF
 

@@ -473,7 +473,7 @@ SUBROUTINE RDSREF( FDEV )
 
     IF( NXREF .EQ. 0 ) THEN
         EFLAG = .TRUE.
-        MESG = 'ERROR: No valid speciation cross-reference entries    !'
+        MESG = 'ERROR: No valid speciation cross-reference entries'
         CALL M3MSG2( MESG )
 
     ELSE IF( NXREF .GT. NLINES ) THEN
@@ -485,7 +485,7 @@ SUBROUTINE RDSREF( FDEV )
 
     ELSE IF( NCOMBO.GT. 0 .AND. NFRACS .GT. 0 ) THEN
         EFLAG = .TRUE.
-        MESG = 'ERROR: Both "COMBO" and fractional-profile entries in XREF    !'
+        MESG = 'ERROR: Both "COMBO" and fractional-profile entries in XREF'
         CALL M3MSG2( MESG )
 
     END IF

@@ -382,7 +382,7 @@ SUBROUTINE MXGRPEMIS( NINVGRP, TSTEP, SDATE, STIME, NSTEPS )
 
         IF( NS .LE. 0 ) THEN
             MESG = 'Because of file ' // TNAME //    &
-                   ', dates and times do not overlap at all    !'
+                   ', dates and times do not overlap at all'
             CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 
         ELSE IF ( NS .NE. NSTEPS ) THEN

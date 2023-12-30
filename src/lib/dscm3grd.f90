@@ -188,8 +188,7 @@ LOGICAL FUNCTION DSCM3GRD( GNAME, GDESC, CNAME, CTYPE, PUNIT,       &
 
         IF( IDEV .LE. 0 ) THEN
 
-            L = LEN_TRIM( LNAME )
-            MESG = 'Could not open file "' // LNAME( 1:L ) // '"        !'
+            MESG = 'Could not open file "' // TRIM( LNAME ) // '"!'
             DSCM3GRD = .FALSE.
             RETURN
 
@@ -407,10 +406,10 @@ LOGICAL FUNCTION DSCM3GRD( GNAME, GDESC, CNAME, CTYPE, PUNIT,       &
         END IF
         GNAME = GNBUF( 1:NAMLEN3 )
 
-    !.....  Set grid description, and truncate
-        GDESC = GDBUF( 1:LEN( GDESC ) )
+        !.....  Set grid description, and truncate
+        GDESC = GDBUF
 
-    !.....  Make sure everything important has been defined
+        !.....  Make sure everything important has been defined
         CALL GRDINFO_DEFINED( 'GDNAME_GD', GNAME, RDUM, IDUM, M3CHAR )
         CALL GRDINFO_DEFINED( 'GDDESC_GD', GDESC, RDUM, IDUM, M3CHAR )
         CALL GRDINFO_DEFINED( 'GDTYP_GD', CNAME, RDUM, IDUM, M3CHAR )
@@ -437,7 +436,8 @@ LOGICAL FUNCTION DSCM3GRD( GNAME, GDESC, CNAME, CTYPE, PUNIT,       &
         CALL ENVSTR( 'IOAPI_GRIDNAME_1', MESG, ' ', GNAME, IOS2 )
 
         IF( IOS2 .NE. 0 ) THEN
-            MESG = 'I/O error setting environment variable GNAME        !'
+            WRITE( MESG,94010 ) 'I/O error setting env vble "GNAME": IOSTAT=', IOS2
+            CALL M3MESG( MESG )
             DSCM3GRD = .FALSE.
             RETURN
         END IF
@@ -448,13 +448,13 @@ LOGICAL FUNCTION DSCM3GRD( GNAME, GDESC, CNAME, CTYPE, PUNIT,       &
                       P_GAM, XCENT, YCENT, XORIG, YORIG,        &
                       XCELL, YCELL, NCOLS, NROWS, NTHIK ) ) THEN
 
-        ! note: GRIDDESC file is still open from DSCGRID.F function
+            ! note: GRIDDESC file is still open from DSCGRID.F function
             GRIDPATH = .FALSE.
             EFLAG    = .FALSE.
 
         ELSE
 
-        !.....  Both G_GRIDPATH and GRIDDESC file formats failed
+            !.....  Both G_GRIDPATH and GRIDDESC file formats failed
             EFLAG = .TRUE.
 
         END IF      ! end GRIDDESC file format check

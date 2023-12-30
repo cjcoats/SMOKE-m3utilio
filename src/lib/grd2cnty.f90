@@ -109,10 +109,9 @@ SUBROUTINE GRD2CNTY( IDXINV, IDXSPC, NCNTY, CNVFAC,&
 
         IF( SRGID .LE. 0 ) THEN
 
-            WRITE( MESG,94010 ) 'The AREA_SURROGATE_NUM '//         &
-                   'environment variable was set to surrogate '//   &
-                   'no.', SSC, CRLF() // BLANK10 //                 &
-                   'but this does not exist in the surrogates data        !'
+            WRITE( MESG,94010 ) 'The AREA_SURROGATE_NUM environment '//     &
+                   'variable was set to surrogate no.', SSC,                &
+                   CRLF()//BLANK10// 'but this does not exist in the surrogates data'
             CALL M3EXIT( PNAME, 0, 0, MESG, 2 )
 
         END IF

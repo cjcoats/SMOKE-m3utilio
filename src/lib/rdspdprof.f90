@@ -165,7 +165,7 @@ SUBROUTINE RDSPDPROF( FDEV )
 
     IF( NSPDPROF == 0 ) THEN
         EFLAG = .TRUE.
-        MESG = 'ERROR: No valid entries in SPDPROF file    !'
+        MESG = 'ERROR: No valid entries in SPDPROF file'
         CALL M3MSG2( MESG )
 
     ELSEIF( NSPDPROF > NLINES ) THEN

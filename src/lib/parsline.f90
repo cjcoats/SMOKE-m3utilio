@@ -106,7 +106,7 @@ SUBROUTINE PARSLINE( LINE, N, SEGMENT )
     L2 = LEN_TRIM( LINE )
 
     !......  Check for comments, and use to set the end of the line
-    L = INDEX( LINE( 1:L2 ), '    !' )
+    L = INDEX( LINE( 1:L2 ), '!' )
 
     IF( L .LE. 0 ) THEN
         L = L2

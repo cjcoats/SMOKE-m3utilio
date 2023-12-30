@@ -323,7 +323,7 @@ PROGRAM MRGPT
         CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 
     ELSEIF( NFILE .EQ. 0 ) THEN
-        MESG = 'No input files in list    !'
+        MESG = 'No input files in list'
         CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 
     ENDIF
@@ -377,7 +377,7 @@ PROGRAM MRGPT
         CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 
     ELSEIF( NFILE .EQ. 0 ) THEN
-        MESG = 'No input files in list    !'
+        MESG = 'No input files in list'
         CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 
     ENDIF
@@ -525,8 +525,7 @@ PROGRAM MRGPT
 
     !.....  Give error message and end program unsuccessfully
     IF( EFLAG ) THEN
-        MESG = 'Inconsistent time step, grid, or layers ' //    &
-                'among the files    !'
+        MESG = 'Inconsistent time step, grid, or layers among the files'
         CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
     END IF
 
@@ -608,8 +607,7 @@ PROGRAM MRGPT
 
         !.....  Give error message and end program unsuccessfully
         IF( EFLAG ) THEN
-            MESG = 'Inconsistent units for common variables among '//    &
-                   'the files        !'
+            MESG = 'Inconsistent units for common variables among files'
             CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
         END IF
 

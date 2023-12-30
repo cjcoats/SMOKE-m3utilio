@@ -95,7 +95,7 @@ SUBROUTINE ERRPKTS( PKTTYP, JT, JX, SKIPPOL, JTMAX, JXMAX, EFLAG )
     !.......  Error for overflow of control table information
     IF( JT .EQ. 0 ) THEN
         EFLAG = .TRUE.
-        MESG = 'No usable ' // TRIM( PKTTYP ) // ' control packet entries    !'
+        MESG = 'No usable ' // TRIM( PKTTYP ) // ' control packet entries'
         CALL M3MSG2( MESG )
 
     ELSE IF( JT .GT. JTMAX ) THEN

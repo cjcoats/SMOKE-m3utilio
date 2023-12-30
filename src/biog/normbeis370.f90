@@ -448,7 +448,7 @@ SUBROUTINE NORMBEIS370( CVSW )
     ENDDO
 
     IF( EFLAG ) THEN
-        MESG = 'ERRORs are occurred above. Check the messages    !'
+        MESG = 'ERRORs are occurred above. Check the messages'
         CALL M3EXIT( PNAME, 0, 0, MESG, 2 )
     END IF
 

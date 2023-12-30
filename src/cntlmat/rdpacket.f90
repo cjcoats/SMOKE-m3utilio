@@ -106,7 +106,7 @@ SUBROUTINE RDPACKET( FDEV, PKTTYP, USEPOL, IREC, PKTINFO, CFLAG, EFLAG )
     !           quotes around the text strings
     CALL PARSLINE( LINE, MXSEG, SEGMENT )
 
-    LC = INDEX( LINE, '    !' )
+    LC = INDEX( LINE, '!' )
     IF ( LC .LE. 0 ) LC = 0
     LN = LEN( LINE )
 
@@ -264,7 +264,7 @@ SUBROUTINE RDPACKET( FDEV, PKTTYP, USEPOL, IREC, PKTINFO, CFLAG, EFLAG )
     RETURN
 
     !.......  End of file reached unexpectedly
-999 MESG = 'End of control packets file reached unexpectedly    !'
+999 MESG = 'End of control packets file reached unexpectedly'
     CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 
     !******************  FORMAT  STATEMENTS   ******************************

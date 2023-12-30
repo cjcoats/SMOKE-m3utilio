@@ -285,7 +285,7 @@ PROGRAM ELEVPOINT
          PINGTYPE .GT. PELVCONFIG_APPROACH-1      ) THEN
 
         IF ( ELEVTYPE .GT. PELVCONFIG_APPROACH ) THEN
-            MESG = 'WARNING: SMK_ELEV_METHOD value is invalid    !'//                       &
+            MESG = 'WARNING: SMK_ELEV_METHOD value is invalid'//                            &
                CRLF() // BLANK10 // 'Valid values are: '//                                  &
                CRLF() // BLANK10 // '0 = Allow Laypoint to determine elevated sources'//    &
                CRLF() // BLANK10 // '1 = Use PELVCONFIG to determine elevated sources.'//   &
@@ -297,7 +297,7 @@ PROGRAM ELEVPOINT
         END IF
 
         IF ( PINGTYPE .GT. PELVCONFIG_APPROACH-1 ) THEN
-            MESG = 'WARNING: SMK_PING_METHOD value is invalid    !'//   &
+            MESG = 'WARNING: SMK_PING_METHOD value is invalid'//        &
                CRLF() // BLANK10 // 'Valid values are: '//              &
                CRLF() // BLANK10 // '0 = No plume-in-grid sources'//    &
                CRLF() // BLANK10 // '1 = Use PELVCONFIG to determine plume-in-grid sources.' //    &
@@ -1139,7 +1139,7 @@ PROGRAM ELEVPOINT
     ELSE IF ( GDTYP3D .EQ. POLGRD3 ) THEN
         COORD3D = 'POLAR '
     ELSE
-        MESG = 'Current projection code is not supported    !'
+        MESG = 'Current projection code is not supported'
         CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
     ENDIF
 

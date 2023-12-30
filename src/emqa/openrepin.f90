@@ -750,7 +750,7 @@ CONTAINS
 
             IF( TFLAG .AND. NSTEPS .LE. 0 ) THEN
                 MESG = 'Because of file ' // FILNAM //  &
-                       ', dates and times do not overlap at all        !'
+                       ', dates and times do not overlap at all'
                 CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 
             END IF
@@ -758,7 +758,7 @@ CONTAINS
             !.......  Check time step
             IF( TSTEP3D .NE. TSTEP ) THEN
                 EFLAG = .TRUE.
-                MESG = 'ERROR: Time step is not one hour in ' // FILNAM // ' file        !'
+                MESG = 'ERROR: Time step is not one hour in file ' // FILNAM
                 CALL M3MSG2( MESG )
             END IF
 
@@ -781,7 +781,7 @@ CONTAINS
         IF( TSTEP .NE. 10000 ) THEN
 
             EFLAG = .TRUE.
-            MESG = 'ERROR: Time step is not one hour in ' // FILNAM // ' file        !'
+            MESG = 'ERROR: Time step is not one hour in file ' // FILNAM
             CALL M3MSG2( MESG )
 
         END IF

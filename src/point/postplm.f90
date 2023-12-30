@@ -178,7 +178,7 @@ SUBROUTINE POSTPLM( EMLAYS, S, ZBOT, ZTOP, PRESF, ZZF, TA, ZH, LBOT, LTOP, LFRAC
             WRITE( MESG,94010 )    &
              'Infinitely small plume created for source ', S,    &
              CRLF() // BLANK5 //    &
-             'because of inverted vertical pressure gradient    !' //    &
+             'because of inverted vertical pressure gradient' //    &
              CRLF() // BLANK5 //    &
              'All emissions put in first layer.'
             CALL M3WARN( 'POSTPLM', 0,0, MESG )

@@ -179,15 +179,14 @@ SUBROUTINE OPENTMP( II, ENAME, SDATE, STIME, TSTEP, NSTEPS,    &
         !.......  Double check that pollutant is in the inventory file
         I = INDEX1( EINAM( V ), NIPPA, EANAM )
         IF( I .LE. 0 ) THEN
-            MESG='INTERNAL ERROR: inventory file variables changed    !'
+            MESG='INTERNAL ERROR: inventory file variables changed'
             CALL M3MSG2( MESG )
             CALL M3EXIT( PROGNAME, 0, 0, ' ', 2 )
         END IF
 
         K = K + 1
         IF( K .GT. NVARSET ) THEN
-            MESG = 'INTERNAL ERROR: Memory overflow building '//    &
-                   'I/O API output variables'
+            MESG = 'INTERNAL ERROR: Memory overflow building I/O API output variables'
             CALL M3MSG2( MESG )
             CYCLE
         END IF

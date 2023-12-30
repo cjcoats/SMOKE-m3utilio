@@ -372,7 +372,7 @@ SUBROUTINE GETMRGEV
 
     !.....  Strange to have elevated ASCII and layer merge at the same time
     IF( ELEVFLAG .AND. LFLAG ) THEN
-        MESG = 'WARNING: Elevated ASCII output and 3-d output at the same time    !'
+        MESG = 'WARNING: Elevated ASCII output and 3-d output at the same time'
         CALL M3MSG2( MESG )
 
     END IF

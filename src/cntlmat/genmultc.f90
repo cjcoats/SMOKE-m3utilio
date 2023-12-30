@@ -988,7 +988,7 @@ SUBROUTINE GENMULTC( CDEV, GDEV, LDEV, MDEV, NCPE, PYEAR,   &
                'ALLOWABLE packet entries match inventory.'
         CALL M3MSG2( MESG )
 
-        MESG = 'WARNING: Multiplicative control will not be output    !'
+        MESG = 'WARNING: Multiplicative control will not be output'
         CALL M3MSG2( MESG )
 
         WRITE( RDEV, 93000 ) 'No MACT, CONTROL, EMS_CONTROL, ' //   &

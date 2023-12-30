@@ -356,10 +356,21 @@ so eliminated "breaks" within phrases and enhanced readability.
 
 ### Next Steps
 
+The set of supported map projections should be expanded to include at
+least the Mercator and polar map projection types, and ideally to
+include the full set of I/O API map projections.  This can easily be
+done using routines [`GRID2XY`](https://cjcoats.github.io/ioapi/GRID2XY.html)
+and [`XY2XY`](https://cjcoats.github.io/ioapi/XY2XY.html) from I/O API
+[`MODULE MODGCTP`](https://cjcoats.github.io/ioapi/MODGCTP.html).
+
 File timestep-consistency checks in the `TMPBEIS*` programs are bogus:
 they should be replaced by checks that ask "does this file contain the
 data" (formulated in terms, perhaps, of I/O API routine `JSTEP3()`)
 instead of "does this file have *exactly* the time steps I want?".
+
+Likewise, hard-coded one-hour-timestep assumptions are inconsistent with
+many kinds of modeling and should be removed.  They are so pervasive
+that this effort will be quite tedious.
 
 The whole allocation-and-sorting system can and should be simplified
 enormously, using a variant of *lib/getfline.f* that also returns the

@@ -111,7 +111,7 @@ LOGICAL FUNCTION DSCM3LAY( NLAYS, VGTYP, VGTOP, VGLVS )
 
     IF( IDEV .LE. 0 ) THEN
 
-        MESG = 'Could not open file "' // TRIM( LNAME ) // '"    !'
+        MESG = 'Could not open file "' // TRIM( LNAME ) // '"'
         DSCM3LAY = .FALSE.
         RETURN
 

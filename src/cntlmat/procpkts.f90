@@ -147,10 +147,9 @@ SUBROUTINE PROCPKTS( PDEV, CDEV, GDEV, LDEV, MDEV, WDEV, CPYEAR,    &
         J = INDEX1( RPOL, NIPOL, EINAM )
         IF( J .LE. 0 ) THEN
 
-            MESG = 'Environment variable "REACTIVITY_POL" is set '//&
-                   'to pollutant "' // TRIM( RPOL ) //&
-                   '",' // CRLF() // BLANK10 // 'but this ' //&
-                   'pollutant is not in the inventory        !'
+            MESG = 'Environment variable "REACTIVITY_POL" is set '//    &
+                   'to pollutant "' // TRIM( RPOL ) // '",'  //         &
+                   CRLF() // BLANK10 // 'but this pollutant is not in the inventory'
             CALL M3MSG2( MESG )
 
             MESG = 'Reactivity matrix creation skipped.'

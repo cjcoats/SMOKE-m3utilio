@@ -210,13 +210,13 @@ PROGRAM GRDMAT
 
     !.........  Temporary section for disallowing optional files
     IF( AFLAG ) THEN
-        MESG = 'NOTE: Grid adjustments file is not supported yet    !'
+        MESG = 'NOTE: Grid adjustments file is not supported yet'
         CALL M3MSG2( MESG )
         AFLAG = .FALSE.
     END IF
 
     IF( DFLAG ) THEN
-        MESG = 'NOTE: Link definitions file is not supported yet    !'
+        MESG = 'NOTE: Link definitions file is not supported yet'
         CALL M3MSG2( MESG )
         DFLAG = .FALSE.
     END IF

@@ -266,7 +266,7 @@ SUBROUTINE GENPROJ( PDEV, PYEAR, ENAME )
         MESG = 'WARNING: No PROJECTION packet entries match inventory.'
         CALL M3MSG2( MESG )
 
-        MESG = 'WARNING: Projection matrix will not be created    !'
+        MESG = 'WARNING: Projection matrix will not be created'
         CALL M3MSG2( MESG )
 
         !.......  Write not into report file

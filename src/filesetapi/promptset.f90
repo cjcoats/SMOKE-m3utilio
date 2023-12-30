@@ -108,7 +108,7 @@ CHARACTER(16) FUNCTION PROMPTSET( PROMPT, FMODE, DEFAULT,&
             END IF
 
             !......  Check logical name
-            IDX = INDEX( LNAME, '            !' )
+            IDX = INDEX( LNAME, '!' )
             IF( IDX > 0 ) THEN
                 LNAME( IDX:LEN( LNAME ) ) = ' '
             END IF

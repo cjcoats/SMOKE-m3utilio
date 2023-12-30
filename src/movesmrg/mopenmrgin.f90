@@ -570,7 +570,7 @@ CONTAINS
 
             IF( NSTEPS .LE. 0 ) THEN
                 MESG = 'Because of file ' // FILNAM //&
-                       ', dates and times do not overlap at all    !'
+                       ', dates and times do not overlap at all'
                 CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 
             END IF
@@ -593,7 +593,7 @@ CONTAINS
         IF( TSTEP3D .NE. 10000 ) THEN
 
             EFLAG = .TRUE.
-            MESG = 'ERROR: Time step is not one hour in ' // FILNAM // ' file        !'
+            MESG = 'ERROR: Time step is not one hour in file ' // FILNAM
             CALL M3MSG2( MESG )
 
         END IF
@@ -971,7 +971,7 @@ CONTAINS
 
         ELSE
             MESG= 'INTERNAL ERROR: Category description "' //&
-                  CATDESC// '" not known in call to CHECK_MET_INFO        !'
+                  CATDESC// '" not known in call to CHECK_MET_INFO'
             CALL M3MSG2( MESG )
             CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 
