@@ -324,7 +324,7 @@ SUBROUTINE GETHDR( MXDATA, CFLAG, YFLAG, DFLAG,    &
                     !.......  If not found in list of names or codes, then error
                     ELSE
                         EOS = 1
-                        MESG = 'ERROR: Data variable "' TRIM( CVAR )//  &
+                        MESG = 'ERROR: Data variable "' // TRIM( CVAR )//  &
                                '" not in master data variable list'
                         CALL M3MSG2( MESG )
                     END IF

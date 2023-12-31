@@ -35,11 +35,12 @@ MODULE MODFILESET
     ! Last updated: $Date$
     !
     !*************************************************************************
-
     USE M3UTILIO
 
     IMPLICIT NONE
     SAVE
+
+    INTEGER, PARAMETER :: ALLFILES = -1
 
     !.......  File set information
     INTEGER              :: NVARSET                 ! total number of variables in the file set

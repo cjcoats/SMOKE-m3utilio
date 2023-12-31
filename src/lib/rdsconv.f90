@@ -395,7 +395,7 @@ SUBROUTINE RDSCONV( FDEV, NNAM, ENAM, OUTNAM )
     IF( NCONV .EQ. 0 ) THEN
 
         MESG = 'No pollutant conversion entries found for inventory pollutants, ' // &
-               CRLF()//BLANK10// 'or could not find header line(s).'                 &
+               CRLF()//BLANK10// 'or could not find header line(s).' //              &
                CRLF()//BLANK10// 'THIS WILL MOST LIKELY RESULT IN INCORRECT EMISSIONS!'
         CALL M3WARN( PROGNAME, 0, 0, MESG )
 

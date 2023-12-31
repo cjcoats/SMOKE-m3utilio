@@ -41,8 +41,6 @@ CHARACTER(16) FUNCTION PROMPTSET( PROMPT, FMODE, DEFAULT,&
     USE M3UTILIO
 
     IMPLICIT NONE
-
-    !......  External functions
     LOGICAL, EXTERNAL :: OPENSET
 
     !......  Function arguments
@@ -51,8 +49,11 @@ CHARACTER(16) FUNCTION PROMPTSET( PROMPT, FMODE, DEFAULT,&
     CHARACTER(*), INTENT(IN) :: DEFAULT      ! default logical file name
     CHARACTER(*), INTENT(IN) :: CALLER       ! name of calling program
 
+    !......  External functions
+
     !......  Local parameters
-    CHARACTER(16), PARAMETER :: NONE16 = 'NONE'
+    CHARACTER(16), PARAMETER :: NONE16   = 'NONE'
+    CHARACTER(16), PARAMETER :: FUNCNAME = 'PROMPTSET'      ! function name
 
     !......  Local variables
     INTEGER            IOS                    ! I/O status
@@ -65,8 +66,6 @@ CHARACTER(16) FUNCTION PROMPTSET( PROMPT, FMODE, DEFAULT,&
     CHARACTER(16)  LNAME                      ! logical file name
     CHARACTER(300) MESG                       ! message buffer
     CHARACTER(512) BUFFER                     ! prompt buffer
-
-    CHARACTER(16) :: FUNCNAME = 'PROMPTSET'      ! function name
 
     !------------------------------------
     !  Begin body of function PROMPTSET

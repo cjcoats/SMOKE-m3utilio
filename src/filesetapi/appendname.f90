@@ -35,6 +35,7 @@ SUBROUTINE APPENDNAME( ORIGNAME, FILENUM, NEWNAME, EFLAG )
     ! Last updated: $Date$
     !
     !*************************************************************************
+    USE M3UTILIO
 
     IMPLICIT NONE
 

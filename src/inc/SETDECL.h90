@@ -29,9 +29,6 @@
 !
 !*************************************************************************
 
-!.........  Parameters
-INTEGER, PARAMETER :: ALLFILES = -1         ! flag: read all files in set
-
 !.........  Function declarations
 LOGICAL,       EXTERNAL :: OPENSET     ! open a file set
 LOGICAL,       EXTERNAL :: DESCSET     ! get file set description

@@ -44,13 +44,16 @@ LOGICAL FUNCTION OPENSET( ROOTNAME, FSTATUS, PGNAME )
     ! Last updated: $Date$
     !
     !*************************************************************************
-
     USE M3UTILIO
 
     !......  Modules for public variables
     USE MODFILESET
 
     IMPLICIT NONE
+    !......  Function arguments
+    CHARACTER(*), INTENT(IN) :: ROOTNAME      ! logical file name for file set
+    INTEGER,      INTENT(IN) :: FSTATUS       ! file mode/status (read/write, unknown)
+    CHARACTER(*), INTENT(IN) :: PGNAME        ! name of calling program
 
     !......  External functions
     INTEGER,       EXTERNAL :: RMFILE
@@ -60,10 +63,6 @@ LOGICAL FUNCTION OPENSET( ROOTNAME, FSTATUS, PGNAME )
     LOGICAL,       EXTERNAL :: CHKFILESET
     LOGICAL,       EXTERNAL :: CREATESET
 
-    !......  Function arguments
-    CHARACTER(*), INTENT(IN) :: ROOTNAME      ! logical file name for file set
-    INTEGER,      INTENT(IN) :: FSTATUS       ! file mode/status (read/write, unknown)
-    CHARACTER(*), INTENT(IN) :: PGNAME        ! name of calling program
 
     !......  Local variables
     INTEGER            I               ! counter
@@ -89,7 +88,7 @@ LOGICAL FUNCTION OPENSET( ROOTNAME, FSTATUS, PGNAME )
     CHARACTER(256)     TEMPNAME        ! temporary physical file name
     CHARACTER(256)     MESG            ! message buffer
 
-    CHARACTER(16) :: FUNCNAME = 'OPENSET'      ! function name
+    CHARACTER(16), PARAMETER :: FUNCNAME = 'OPENSET'      ! function name
 
     !---------------------------------
     !  Begin body of function OPENSET
@@ -121,7 +120,7 @@ LOGICAL FUNCTION OPENSET( ROOTNAME, FSTATUS, PGNAME )
     !......  If file is already open, check status
     IF( FILEIDX /= 0 ) THEN
 
-    !......  Trying to open as a new file
+        !......  Trying to open as a new file
         IF( FSTATUS == FSNEW3 ) THEN
             MESG = 'File ' // ROOTNAME16 // ' already opened; ' //&
                    'cannot subsequently create in "NEW".'
@@ -129,7 +128,7 @@ LOGICAL FUNCTION OPENSET( ROOTNAME, FSTATUS, PGNAME )
             OPENSET = .FALSE.
             RETURN
 
-    !......  Trying to open as read/write or unknown when already readonly
+        !......  Trying to open as read/write or unknown when already readonly
         ELSE IF( FILE_INFO( FILEIDX )%RDONLY .AND.          &
                ( FSTATUS == FSRDWR3 .OR. FSTATUS == FSUNKN3 ) ) THEN
             MESG = 'File ' // ROOTNAME16 // ' already opened READONLY; ' //&
@@ -138,10 +137,10 @@ LOGICAL FUNCTION OPENSET( ROOTNAME, FSTATUS, PGNAME )
             OPENSET = .FALSE.
             RETURN
 
-    !......  Trying to open as unknown (already checked that status is not readonly)
+        !......  Trying to open as unknown (already checked that status is not readonly)
         ELSE IF( FSTATUS == FSUNKN3 ) THEN
 
-    !......  Check consistency of file set description
+            !......  Check consistency of file set description
             IF( .NOT. CHKSETDESC( ROOTNAME16 ) ) THEN
                 MESG = 'Bad file description for file set ' // ROOTNAME16
                 CALL M3WARN( FUNCNAME, 0, 0, MESG )
@@ -149,7 +148,7 @@ LOGICAL FUNCTION OPENSET( ROOTNAME, FSTATUS, PGNAME )
                 RETURN
             END IF
 
-    !......  Check description against file info
+            !......  Check description against file info
             IF( .NOT. CHKFILESET( FILEIDX ) ) THEN
                 MESG = 'File description does not match for ' // 'file set ' // ROOTNAME16
                 CALL M3WARN( FUNCNAME, 0, 0, MESG )
@@ -157,16 +156,16 @@ LOGICAL FUNCTION OPENSET( ROOTNAME, FSTATUS, PGNAME )
                 RETURN
             END IF
 
-    !......  Loop through individual files
+            !......  Loop through individual files
             VARPOS = 1
             DO I = 1, NFILESET
 
-    !........  Set necessary file description values
+                !........  Set necessary file description values
                 NVARS3D = VARS_PER_FILE( I )
                 VTYPE3D( 1:NVARS3D ) =  VTYPESET( VARPOS:VARPOS + NVARS3D - 1 )
                 VNAME3D( 1:NVARS3D ) = VNAMESET( VARPOS:VARPOS + NVARS3D - 1 )
 
-    !........  Try to open file
+                !........  Try to open file
                 IF( .NOT. OPEN3( FILE_INFO( FILEIDX )%LNAMES( I ), FSTATUS, FUNCNAME ) ) THEN
                     OPENSET = .FALSE.
                     RETURN
@@ -175,14 +174,14 @@ LOGICAL FUNCTION OPENSET( ROOTNAME, FSTATUS, PGNAME )
                 VARPOS = VARPOS + NVARS3D
             END DO
 
-    !......  Successfully opened files
+            !......  Successfully opened files
             OPENSET = .TRUE.
             RETURN
 
-    !......  Trying to open as create
+        !......  Trying to open as create
         ELSE IF( FSTATUS == FSCREA3 ) THEN
 
-    !......  Check consistency of file set description
+            !......  Check consistency of file set description
             IF( .NOT. CHKSETDESC( ROOTNAME16 ) ) THEN
                 MESG = 'Bad file description for file set ' // ROOTNAME16
                 CALL M3WARN( FUNCNAME, 0, 0, MESG )
@@ -190,7 +189,7 @@ LOGICAL FUNCTION OPENSET( ROOTNAME, FSTATUS, PGNAME )
                 RETURN
             END IF
 
-    !......  Close already open file
+            !......  Close already open file
             IF( CLOSESET( ROOTNAME16 ) ) THEN
                 MESG = 'File ' // ROOTNAME16 // ' already opened. ' //&
                        'Closing, deleting, and re-opening it'
@@ -203,7 +202,7 @@ LOGICAL FUNCTION OPENSET( ROOTNAME, FSTATUS, PGNAME )
                 RETURN
             END IF
 
-    !......  Checked all problematic combinations
+        !......  Checked all problematic combinations
         ELSE
 
             OPENSET = .TRUE.
@@ -263,37 +262,37 @@ LOGICAL FUNCTION OPENSET( ROOTNAME, FSTATUS, PGNAME )
     !......  Open file based on status and if file or set exists
     IF( FSTATUS == FSREAD3 .OR. FSTATUS == FSRDWR3 ) THEN
 
-    !......  If single file exists, we don't have a file set
+        !......  If single file exists, we don't have a file set
         IF( FILEEXIST ) THEN
 
-    !......  Try to open single file
+            !......  Try to open single file
             IF( .NOT. OPEN3( ROOTNAME16, FSTATUS, FUNCNAME ) ) THEN
                 CALL CLEANUP( FILEIDX )
                 OPENSET = .FALSE.
                 RETURN
             END IF
 
-    !......  Get file description
+            !......  Get file description
             IF( .NOT. DESC3( ROOTNAME16 ) ) THEN
                 CALL CLEANUP( FILEIDX )
                 OPENSET = .FALSE.
                 RETURN
             END IF
 
-    !......  Allocate memory for logical file names and variables
+            !......  Allocate memory for logical file names and variables
             ALLOCATE( FILE_INFO( FILEIDX )%LNAMES( 1 ),     &
                       FILE_INFO( FILEIDX )%VARS( NVARS3D,2 ), STAT=IOS )
             CALL CHECKMEM( IOS, 'FILE_INFO%VARS', FUNCNAME )
 
-    !......  Store logical file names and variables
+            !......  Store logical file names and variables
             FILE_INFO( FILEIDX )%LNAMES( 1 ) = ROOTNAME16
             FILE_INFO( FILEIDX )%VARS( 1:NVARS3D,1 ) = VNAME3D( 1:NVARS3D )
             FILE_INFO( FILEIDX )%VARS( 1:NVARS3D,2 ) = ROOTNAME16
 
-    !......  Otherwise, if the file set exists, open the individual files
+        !......  Otherwise, if the file set exists, open the individual files
         ELSE IF( SETEXIST ) THEN
 
-    !......  Create new logical file name and set the env. variable
+            !......  Create new logical file name and set the env. variable
             LNAME = TRIM( ROOTNAME16 ) // '1'
             IF( .NOT. SETENVVAR( LNAME, TEMPNAME ) ) THEN
                 CALL CLEANUP( FILEIDX )
@@ -301,21 +300,21 @@ LOGICAL FUNCTION OPENSET( ROOTNAME, FSTATUS, PGNAME )
                 RETURN
             END IF
 
-    !......  Try to open the first file in the set
+            !......  Try to open the first file in the set
             IF( .NOT. OPEN3( LNAME, FSTATUS, FUNCNAME ) ) THEN
                 CALL CLEANUP( FILEIDX )
                 OPENSET = .FALSE.
                 RETURN
             END IF
 
-    !......  Get file description
+            !......  Get file description
             IF( .NOT. DESC3( LNAME ) ) THEN
                 CALL CLEANUP( FILEIDX )
                 OPENSET = .FALSE.
                 RETURN
             END IF
 
-    !......  Get total number of files from file header
+            !......  Get total number of files from file header
             NFILESTR = GETCFDSC( FDESC3D, '/NUMBER OF FILES/', .TRUE. )
             NFILEINT = STR2INT( NFILESTR )
             IF( NFILEINT == IMISS3 ) THEN
@@ -326,7 +325,7 @@ LOGICAL FUNCTION OPENSET( ROOTNAME, FSTATUS, PGNAME )
                 RETURN
             END IF
 
-    !......  Get total number of variables from file header
+            !......  Get total number of variables from file header
             NVARSTR  = GETCFDSC( FDESC3D, '/NUMBER OF VARIABLES/', .TRUE. )
             NVARINT  = STR2INT( NVARSTR )
             IF( NVARINT == IMISS3 ) THEN
@@ -337,21 +336,21 @@ LOGICAL FUNCTION OPENSET( ROOTNAME, FSTATUS, PGNAME )
                 RETURN
             END IF
 
-    !......  Allocate memory for logical file names and variables
+            !......  Allocate memory for logical file names and variables
             ALLOCATE( FILE_INFO( FILEIDX )%LNAMES( NFILEINT ),     &
                       FILE_INFO( FILEIDX )%VARS( NVARINT,2 ),   STAT=IOS )
             CALL CHECKMEM( IOS, 'FILE_INFO%VARS', FUNCNAME )
 
-    !......  Store logical file names and variables
+            !......  Store logical file names and variables
             FILE_INFO( FILEIDX )%LNAMES( 1 ) = LNAME
             FILE_INFO( FILEIDX )%VARS( 1:NVARS3D,1 ) = VNAME3D( 1:NVARS3D )
             FILE_INFO( FILEIDX )%VARS( 1:NVARS3D,2 ) = LNAME
             VARPOS = NVARS3D + 1
 
-    !......  Loop through remaining files in set
+        !......  Loop through remaining files in set
             DO I = 2, NFILEINT
 
-    !........  Create new logical and physical file names
+                !........  Create new logical and physical file names
                 WRITE( INTBUF, '(I2)' ) I
                 INTBUF = ADJUSTL( INTBUF )
                 LNAME = TRIM( ROOTNAME16 ) // TRIM( INTBUF )
@@ -362,37 +361,37 @@ LOGICAL FUNCTION OPENSET( ROOTNAME, FSTATUS, PGNAME )
                     RETURN
                 END IF
 
-    !........  Set new env. variable
+                !........  Set new env. variable
                 IF( .NOT. SETENVVAR( LNAME, TEMPNAME ) ) THEN
                     CALL CLEANUP( FILEIDX )
                     OPENSET = .FALSE.
                     RETURN
                 END IF
 
-    !........  Try to open file
+                !........  Try to open file
                 IF( .NOT. OPEN3( LNAME, FSTATUS, FUNCNAME ) ) THEN
                     CALL CLEANUP( FILEIDX )
                     OPENSET = .FALSE.
                     RETURN
                 END IF
 
-    !........  Get file description
+                !........  Get file description
                 IF( .NOT. DESC3( LNAME ) ) THEN
                     CALL CLEANUP( FILEIDX )
                     OPENSET = .FALSE.
                     RETURN
                 END IF
 
-    !........  Store logical file names and variables
+                !........  Store logical file names and variables
                 FILE_INFO(FILEIDX)%LNAMES( I ) = LNAME
                 FILE_INFO(FILEIDX)%VARS( VARPOS:VARPOS+NVARS3D-1,1 ) = VNAME3D( 1:NVARS3D )
                 FILE_INFO(FILEIDX)%VARS( VARPOS:VARPOS+NVARS3D-1,2 ) = LNAME
                 VARPOS = VARPOS + NVARS3D
 
-            END DO      ! loop over remaining files in file set
+            END DO          ! loop over remaining files in file set
 
         ELSE
-    !......  File doesn't exist on disk
+        !......  File doesn't exist on disk
             MESG = ROOTNAME16 // ':' // TRIM( ENVNAME )
             CALL M3MSG2( MESG )
             CALL M3WARN( FUNCNAME, 0, 0, 'File not available.' )

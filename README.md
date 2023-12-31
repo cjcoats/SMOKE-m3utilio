@@ -336,6 +336,11 @@ have been replaced by the matching I/O API parameters, now obtained from
 `M3UTILIO`.  This results in the effective elimination of
 *src/inc/IOSTRG3.EXT* and *src/inc/IOPRVT3.EXT*.
 
+`PARAMETER ALLFILES` belongs in `MODULE MODFILESETAPI`, not scattered
+through the *filesetapi* source code and additionally in `INCLUDE`-file
+`SETDECL`.  This has been implemented for the `.f90` version of the
+code.
+
 
 ### `'f90` Free source format.
 

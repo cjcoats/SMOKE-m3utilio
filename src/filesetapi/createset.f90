@@ -37,7 +37,6 @@ LOGICAL FUNCTION CREATESET( FIDX, RNAME, PHYSNAME, FSTATUS )
     ! Last updated: $Date$
     !
     !*************************************************************************
-
     USE M3UTILIO
 
     !......  Modules for public variables
@@ -80,14 +79,14 @@ LOGICAL FUNCTION CREATESET( FIDX, RNAME, PHYSNAME, FSTATUS )
     VARPOS = 1
     DO I = 1, NFILESET
 
-    !......  Set file description values
+        !......  Set file description values
         NVARS3D = VARS_PER_FILE( I )
         VTYPE3D( 1:NVARS3D ) = VTYPESET( VARPOS:VARPOS + NVARS3D - 1 )
         VNAME3D( 1:NVARS3D ) = VNAMESET( VARPOS:VARPOS + NVARS3D - 1 )
         UNITS3D( 1:NVARS3D ) = VUNITSET( VARPOS:VARPOS + NVARS3D - 1 )
         VDESC3D( 1:NVARS3D ) = VDESCSET( VARPOS:VARPOS + NVARS3D - 1 )
 
-    !......  On first time through, find space in FDESC3D array
+        !......  On first time through, find space in FDESC3D array
         IF( I == 1 ) THEN
             BLANKS = 0
             DO J = 1, MXDESC3
@@ -97,18 +96,18 @@ LOGICAL FUNCTION CREATESET( FIDX, RNAME, PHYSNAME, FSTATUS )
                     BLANKS = BLANKS + 1
                 END IF
 
-    !........  If we have 3 consecutive open spots, add file info
+                !........  If we have 3 consecutive open spots, add file info
                 IF( BLANKS == 3 ) THEN
                     WRITE( FDESC3D( J - 2 ),93010 ) '/NUMBER OF FILES/', NFILESET
                     WRITE( FDESC3D( J - 1 ),93010 ) '/FILE POSITION/', I
                     WRITE( FDESC3D( J ),    93010 ) '/NUMBER OF VARIABLES/', NVARSET
 
-    !..........  Save position for writing subsequent info
+                !..........  Save position for writing subsequent info
                     FDESCPOS = J - 1
                     EXIT
                 END IF
 
-    !........  Couldn't find space
+                !........  Couldn't find space
                 IF( J == MXDESC3 ) THEN
                     MESG = 'No spaces available in FDESC3D array'
                     CALL M3WARN( PROGNAME, 0, 0, MESG )
@@ -117,11 +116,11 @@ LOGICAL FUNCTION CREATESET( FIDX, RNAME, PHYSNAME, FSTATUS )
                 END IF
             END DO
         ELSE
-    !......  Add current file position number
+        !......  Add current file position number
             WRITE( FDESC3D( FDESCPOS ),93010 )  '/FILE POSITION/', I
         END IF
 
-    !......  Create new logical and physical file names if needed
+        !......  Create new logical and physical file names if needed
         IF( NFILESET > 1 ) THEN
             WRITE( INTBUF, '(I2)' ) I
             INTBUF = ADJUSTL( INTBUF )
@@ -132,7 +131,7 @@ LOGICAL FUNCTION CREATESET( FIDX, RNAME, PHYSNAME, FSTATUS )
                 RETURN
             END IF
 
-    !......  Set new env. variable
+            !......  Set new env. variable
             IF( .NOT. SETENVVAR( LNAME, TEMPNAME ) ) THEN
                 CREATESET = .FALSE.
                 RETURN
@@ -141,13 +140,13 @@ LOGICAL FUNCTION CREATESET( FIDX, RNAME, PHYSNAME, FSTATUS )
             LNAME = RNAME
         END IF
 
-    !......  Try to open file
+        !......  Try to open file
         IF( .NOT. OPEN3( LNAME, FSTATUS, PROGNAME ) ) THEN
             CREATESET = .FALSE.
             RETURN
         END IF
 
-    !......  Store logical file names and variables
+        !......  Store logical file names and variables
         FILE_INFO( FIDX )%LNAMES( I ) = LNAME
         FILE_INFO( FIDX )%VARS( VARPOS:VARPOS+NVARS3D-1,1 ) = VNAME3D( 1:NVARS3D )
         FILE_INFO( FIDX )%VARS( VARPOS:VARPOS+NVARS3D-1,2 ) = LNAME

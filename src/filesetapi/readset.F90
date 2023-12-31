@@ -36,7 +36,6 @@ LOGICAL FUNCTION READSET( ROOTNAME, VNAME, LAYER, FILENUM, JDATE, JTIME, BUFFER 
     ! Last updated: $Date$
     !
     !*************************************************************************
-
     USE M3UTILIO
 
     !......  Modules for public variables
@@ -52,8 +51,6 @@ LOGICAL FUNCTION READSET( ROOTNAME, VNAME, LAYER, FILENUM, JDATE, JTIME, BUFFER 
     INTEGER,      INTENT(IN)  :: JDATE         ! date (YYYYDDD)
     INTEGER,      INTENT(IN)  :: JTIME         ! time (HHMMSS)
     REAL,         INTENT(OUT) :: BUFFER(*)     ! array to hold data
-
-    INTEGER, PARAMETER :: ALLFILES = -1
 
     !......  Local arrays
     INTEGER, PARAMETER :: TYPSIZE( 6 ) =  &    !  sizeof( variable ) / sizeof( real )
@@ -148,8 +145,7 @@ LOGICAL FUNCTION READSET( ROOTNAME, VNAME, LAYER, FILENUM, JDATE, JTIME, BUFFER 
 
         !......  If all variables are requested, read file
         IF( VNAME16 == ALLVAR3 ) THEN
-            IF( .NOT. READ3( SIGNAME, VNAME, LAYER,    &
-                             JDATE, JTIME, BUFFER ) ) THEN
+            IF( .NOT. READ3( SIGNAME, VNAME, LAYER, JDATE, JTIME, BUFFER ) ) THEN
                 READSET = .FALSE.
                 RETURN
             ELSE

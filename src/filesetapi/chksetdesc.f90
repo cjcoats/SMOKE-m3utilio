@@ -35,6 +35,7 @@ LOGICAL FUNCTION CHKSETDESC( FNAME )
     ! Last updated: $Date$
     !
     !*************************************************************************
+    USE M3UTILIO
 
     !......  Modules for public variables
     USE MODFILESET

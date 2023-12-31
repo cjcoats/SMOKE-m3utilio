@@ -53,7 +53,7 @@ PROGRAM BELD3TO2
     !***********************************************************************
     USE M3UTILIO
 
-    IMPLICIT NONEf
+    IMPLICIT NONE
 
     !.......   INCLUDES:
 

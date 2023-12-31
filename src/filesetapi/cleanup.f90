@@ -35,6 +35,7 @@ SUBROUTINE CLEANUP( FIDX )
     ! Last updated: $Date$
     !
     !*************************************************************************
+    USE M3UTILIO
 
     !......  Modules for public variables
     USE MODFILESET

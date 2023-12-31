@@ -916,16 +916,4 @@ CONTAINS
     END FUNCTION IS_BG
 
 
-    !-----------------------------------------------------------------------------
-    !......  Certainly unequal, even after tolerance for round-off
-
-    LOGICAL FUNCTION FLTERR( PP, QQ )
-        REAL, INTENT( IN ) :: PP, QQ
-
-        FLTERR( PP, QQ ) = ( (PP - QQ)**2  .GT.  1.0E-9*( PP*PP + QQ*QQ + 1.0E-5 ) )
-        RETURN
-
-    END FUNCTION FLTERR
-
-
 END SUBROUTINE NORMBEIS370

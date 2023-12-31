@@ -37,7 +37,6 @@ LOGICAL FUNCTION CLOSESET( ROOTNAME )
     ! Last updated: $Date$
     !
     !*************************************************************************
-
     USE M3UTILIO
 
     !......  Modules for public variables

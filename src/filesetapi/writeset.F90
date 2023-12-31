@@ -36,9 +36,9 @@ LOGICAL FUNCTION WRITESET( ROOTNAME, VNAME, FILENUM, JDATE, JTIME, BUFFER )
     ! Last updated: $Date$
     !
     !*************************************************************************
+    USE M3UTILIO
 
     !......  Modules for public variables
-    USE M3UTILIO
     USE MODFILESET
 
     IMPLICIT NONE
@@ -50,8 +50,6 @@ LOGICAL FUNCTION WRITESET( ROOTNAME, VNAME, FILENUM, JDATE, JTIME, BUFFER )
     INTEGER,      INTENT(IN) :: JDATE         ! date (YYYYDDD)
     INTEGER,      INTENT(IN) :: JTIME         ! time (HHMMSS)
     REAL,         INTENT(IN) :: BUFFER(*)     ! array to hold data
-
-    INTEGER, PARAMETER :: ALLFILES = -1
 
     !......  Local arrays
     INTEGER, PARAMETER :: TYPSIZE( 6 ) =  &   !  sizeof( variable ) / sizeof( real )

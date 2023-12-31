@@ -37,6 +37,7 @@ LOGICAL FUNCTION CHKFILESET( FIDX )
     ! Last updated: $Date$
     !
     !*************************************************************************
+    USE M3UTILIO
 
     !......  Modules for public variables
     USE MODFILESET

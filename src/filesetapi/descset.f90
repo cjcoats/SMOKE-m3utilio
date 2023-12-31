@@ -36,7 +36,6 @@ LOGICAL FUNCTION DESCSET( ROOTNAME, FILENUM )
     ! Last updated: $Date$
     !
     !*************************************************************************
-
     USE M3UTILIO
 
     !......  Modules for public variables
@@ -44,14 +43,14 @@ LOGICAL FUNCTION DESCSET( ROOTNAME, FILENUM )
 
     IMPLICIT NONE
 
-    !......  External functions
-    CHARACTER(10), EXTERNAL :: GETCFDSC
-
     !......  Function arguments
     CHARACTER(*), INTENT(IN) :: ROOTNAME      ! logical file name for file set
     INTEGER,      INTENT(IN) :: FILENUM       ! position of file in set or ALLFILES
 
-    INTEGER, PARAMETER :: ALLFILES = -1
+    !......  External functions
+    CHARACTER(10), EXTERNAL :: GETCFDSC
+
+    CHARACTER(16), PARAMETER :: FUNCNAME = 'DESCSET'      ! function name
 
     !......  Local variables
     INTEGER            I               ! counter
@@ -66,8 +65,6 @@ LOGICAL FUNCTION DESCSET( ROOTNAME, FILENUM )
     CHARACTER(16)  ROOTNAME16          ! fixed length root file name
     CHARACTER(16)  LNAME               ! temporary logical name
     CHARACTER(256) MESG                ! message buffer
-
-    CHARACTER(16) :: FUNCNAME = 'DESCSET'      ! function name
 
     !---------------------------------
     !  Begin body of function DESCSET
