@@ -82,15 +82,17 @@ source files, e.g., *src/biog/czangle.0.f*.
 New "fixed-132 codes go by the "standard" SMOKE naming, e.g., 
 *src/biog/czangle.f* Intermediate "scratch" or "improved" versions of
 the codes have other in-fixes, e.g., *src/biog/tmpbeis4.1.f* and 
-*src/biog/tmpbeis4.2.f*. Read-only reference-copy *findent* outputs go
-by "src/*/*.1.f90*, and final "free .f90-style" codes go by `.f90`
-(without an in-fix).
+*src/biog/tmpbeis4.2.f*. Read-only reference-copy *findent* outputs use
+a `.1` in-fix, e.g., *src/biog/czangle.1.f90*, and final "free
+.f90-style" codes go by `.f90` (without an in-fix).
 
-Note that programs [*xxdiff*](https://github.com/blais/xxdiff),
-[*tkdiff*](https://sourceforge.net/projects/tkdiff/), or
+For comparing these code-versions, note that programs
+[*xxdiff*](https://github.com/blais/xxdiff),
+[*tkdiff*](https://sourceforge.net/projects/tkdiff/), and
 [*kompare*](https://apps.kde.org/kompare/) are graphical "difference"
-programs that make it easy to see what the changes are between all these
-file versions, e.g.,
+programs that display the codes side-by-side with highlighted
+differences, making it easy to see what the changes are between all
+these file versions, e.g.,
 <pre>
 xxdiff temporal/wrtsup.0.f temporal/wrtsup.f
 </pre>
@@ -238,7 +240,7 @@ Stuff*](https://cjcoats.github.io/optimization/efficient_models.html).
 
 It was recognized from the very beginning of the Models-3 project (and
 documented as such) that because `REAL` arithmetic is always subject to
-machine dependent round-off problems [^1](and therefore `REAL` values
+machine dependent round-off problems [^1] and therefore `REAL` values
 should **never** be tested for exact equality, a robust scheme was
 needed for the detection of "missing" for `REAL` values.  Therefore,
 (with over-kill) the I/O API provided parameters
@@ -411,9 +413,8 @@ script-style [*OPEN3*](https://cjcoats.github.io/ioapi/OPEN3.html) and
 [^1]: The Fortran Standard explicitly **refuses** to dictate the quality
 of how round-off behaves.  As an extreme example, *no two of the
 following* are guaranteed to be equal (a problem found especially on
-Cray vector, IBM mainfreame and POWER, Intel x86/x87, and SGI
-platforms), although the naive impression is that they should all be
-equal:
+Cray vector, IBM mainfreame and POWER, Intel x86/x87, and SGI platforms),
+although the naive impression is that they should all be equal:
 <pre>
         INTEGER, PARAMETER :: A = 1.0 / 3.0
         INTEGER, PARAMETER :: B = 0.333333333333333333  ! with extra-digit overkill
