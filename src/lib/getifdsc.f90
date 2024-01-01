@@ -57,7 +57,7 @@ INTEGER FUNCTION GETIFDSC( FILEINFO, KEY, REQUIRED )
     CHARACTER(300) BUFFER          ! Key buffer
     CHARACTER(300) MESG            ! Message buffer
 
-    CHARACTER(16) :: PROGNAME = 'GETIFDSC'        ! Program name
+    CHARACTER(16), PARAMETER :: PROGNAME = 'GETIFDSC'        ! Program name
 
     !***********************************************************************
     !   begin body of function GETIFDSC

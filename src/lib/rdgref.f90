@@ -67,8 +67,8 @@ SUBROUTINE RDGREF( FDEV )
     INTEGER, PARAMETER :: BIOGTYP  = 2
     INTEGER, PARAMETER :: MOBILTYP = 3
 
-    CHARACTER(6), PARAMETER :: LOCCATS( 3 ) =&
-                           (/ 'AREA  ', 'BIOG  ', 'MOBILE' /)
+    CHARACTER(16), PARAMETER :: PROGNAME = 'RDGREF'     ! program name
+    CHARACTER(6) , PARAMETER :: LOCCATS( 3 ) = (/ 'AREA  ', 'BIOG  ', 'MOBILE' /)
 
     !.......   Array of input fields
     CHARACTER(SCCLEN3)  FIELDARR( 3 )
@@ -105,8 +105,6 @@ SUBROUTINE RDGREF( FDEV )
     CHARACTER(SCCLEN3) CHKZERO      !  buffer to check for zero SCC
     CHARACTER(SCCLEN3) TSCC         !  temporary SCC or roadway type
     CHARACTER(VIDLEN3) CVID         !  buffer for vehicle type ID
-
-    CHARACTER(16) :: PROGNAME = 'RDGREF'     ! program name
 
     !***********************************************************************
     !   begin body of subroutine RDGREF
@@ -268,9 +266,9 @@ SUBROUTINE RDGREF( FDEV )
     RETURN
 
     !.......  Error message for reaching the end of file too soon
-999 MESG = 'End of file reached unexpectedly. ' //&
-           'Check format of gridding' // CRLF() // BLANK5 //&
-           'cross-reference file.'
+999 MESG = 'End of file reached unexpectedly. ' //  &
+           CRLF() // BLANK5 //&
+           'Check format of gridding cross-reference file.'
     CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 
     !******************  FORMAT  STATEMENTS   ******************************

@@ -41,12 +41,10 @@ SUBROUTINE PADNZERO( N, STRING )
     IMPLICIT NONE
 
     !......   SUBROUTINE ARGUMENTS
-    INTEGER,      INTENT(IN)     :: N          ! length of the string to pad
+    INTEGER,      INTENT(IN)     :: N        ! length of the string to pad
     CHARACTER(N), INTENT(IN OUT) :: STRING     ! character string to adjust
 
-    INTEGER         I, L
-
-    CHARACTER(16) :: PROGNAME = 'PADNZERO'     ! program name
+    INTEGER        I, L
 
     !***********************************************************************
     !   begin body of subroutine PADZERO
@@ -56,13 +54,9 @@ SUBROUTINE PADNZERO( N, STRING )
     DO I = 1, N
 
         IF( STRING( I:I ) .EQ. ' ' ) THEN
-
             STRING( I:I ) = '0'
-
         ELSE
-
             EXIT
-
         ENDIF
 
     ENDDO

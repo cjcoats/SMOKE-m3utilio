@@ -110,7 +110,7 @@ SUBROUTINE RDGRPS( FDEV )
     CHARACTER(300)  MESG         ! tmp message buffer
     CHARACTER(FIPLEN3) CREGN     ! tmp partial region code
 
-    CHARACTER(16) :: PROGNAME = 'RDGRPS'     ! program name
+    CHARACTER(16), PARAMETER :: PROGNAME = 'RDGRPS'     ! program name
 
     !***********************************************************************
     !   begin body of subroutine RDGRPS

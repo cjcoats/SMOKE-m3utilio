@@ -41,10 +41,10 @@ SUBROUTINE UNITMATCH( UNITBUF )
 
     IMPLICIT NONE
 
-    !...........   SUBROUTINE ARGUMENTS
+    !.......   SUBROUTINE ARGUMENTS
     CHARACTER(*), INTENT (IN OUT) :: UNITBUF
 
-    !...........   Local variables
+    !.......   Local variables
     INTEGER                I, L2
 
     LOGICAL                FRACFLAG  ! true: units are a fraction
@@ -54,16 +54,16 @@ SUBROUTINE UNITMATCH( UNITBUF )
     CHARACTER(NAMLEN3) PREFIX1 ! tmp numerator prefix (if any)
     CHARACTER(NAMLEN3) PREFIX2 ! tmp denominator prefix (if any)
 
-    CHARACTER(16) :: PROGNAME = 'UNITMATCH' ! program name
+    CHARACTER(16), PARAMETER :: PROGNAME = 'UNITMATCH' ! program name
 
     !***********************************************************************
     !   begin body of subroutine UNITMATCH
 
-    !.........  Initialize prefixes
+    !.......  Initialize prefixes
     PREFIX1 = ' '
     PREFIX2 = ' '
 
-    !.........  Separate out the numerator and denominator, if any
+    !.......  Separate out the numerator and denominator, if any
     I  = INDEX( UNITBUF, '/' )
     L2 = LEN_TRIM( UNITBUF )
     IF( I .GT. 0 ) THEN
@@ -76,8 +76,8 @@ SUBROUTINE UNITMATCH( UNITBUF )
         CDEN = ' '
     END IF
 
-    !.........  Separate out any leading adjustments (e.g., 10E6) from numerator
-    !.........  Make sure the numerator is left-justified
+    !.......  Separate out any leading adjustments (e.g., 10E6) from numerator
+    !.......  Make sure the numerator is left-justified
     I = INDEX( CNUM, '10E' )
 
     IF( I .GT. 0 ) THEN
@@ -94,8 +94,8 @@ SUBROUTINE UNITMATCH( UNITBUF )
 
     END IF
 
-    !.........  Separate out any leading adjustments (e.g., 10E6) from denominator
-    !.........  Make sure the numerator is left-justified
+    !.......  Separate out any leading adjustments (e.g., 10E6) from denominator
+    !.......  Make sure the numerator is left-justified
     IF( FRACFLAG ) THEN
 
         I = INDEX( CDEN, '10E' )
@@ -116,13 +116,13 @@ SUBROUTINE UNITMATCH( UNITBUF )
 
     END IF
 
-    !.........  Reset name of units for numerator
+    !.......  Reset name of units for numerator
     CALL RENAME_UNITS( CNUM )
 
-    !.........  Reset name of units for denominator
+    !.......  Reset name of units for denominator
     IF( FRACFLAG ) CALL RENAME_UNITS( CDEN )
 
-    !.........  Piece together output units
+    !.......  Piece together output units
     IF( PREFIX1 .NE. ' ' ) THEN
         L2 = LEN_TRIM( PREFIX1 )
         CNUM = PREFIX1( 1:L2 ) // ' ' // CNUM
@@ -146,13 +146,13 @@ SUBROUTINE UNITMATCH( UNITBUF )
 
 CONTAINS
 
-    !.............  This internal subprogram changes the units to the names
-    !               to be consistent.
+    !.......  This internal subprogram changes the units to the names
+    !         to be consistent.
     SUBROUTINE RENAME_UNITS( BUFFER )
 
         CHARACTER(*), INTENT( IN OUT ) :: BUFFER
 
-        !.............  Convert units to SMOKE notation
+        !.......  Convert units to SMOKE notation
 
         SELECT CASE( BUFFER )
           CASE( 'gms' )

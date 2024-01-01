@@ -88,7 +88,7 @@ SUBROUTINE RDHDAYS( FDEV, SDATE, EDATE )
     CHARACTER(80)   LINE                      ! Read buffer for a line
     CHARACTER(300)  MESG                      ! Message buffer
 
-    CHARACTER(16) :: PROGNAME = 'RDHDAYS'        !  program name
+    CHARACTER(16), PARAMETER :: PROGNAME = 'RDHDAYS'        !  program name
 
     !***********************************************************************
     !   Begin body of subroutine RDHDAYS

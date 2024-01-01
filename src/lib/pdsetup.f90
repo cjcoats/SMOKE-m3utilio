@@ -1,7 +1,7 @@
 
 SUBROUTINE PDSETUP( INFILE, ESDATE, ESTIME, EEDATE, EETIME,     &
-                    TZONE, NIPPA, EANAM, NPOA, NENTRY,          &
-                    EFLAG, PNAME, PDESC )
+        TZONE, NIPPA, EANAM, NPOA, NENTRY,        &
+        EFLAG, PNAME, PDESC )
 
     !***********************************************************************
     !  subroutine body starts at line
@@ -21,7 +21,7 @@ SUBROUTINE PDSETUP( INFILE, ESDATE, ESTIME, EEDATE, EETIME,     &
     !**************************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !        System
     ! File: @(#)$Id$
     !
     ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
@@ -65,25 +65,25 @@ SUBROUTINE PDSETUP( INFILE, ESDATE, ESTIME, EEDATE, EETIME,     &
     INTEGER, EXTERNAL :: GETIFDSC
 
     !......   Other local variables
-    INTEGER         I, J, LD, L2, N          !  counters and indices
+    INTEGER        I, J, LD, L2, N        !  counters and indices
 
-    INTEGER         EDATE                !  ending date
-    INTEGER         ETIME                !  ending time
-    INTEGER         IOS                  !  i/o status
-    INTEGER         NSTEPS               !  number of time steps
-    INTEGER         NVARS                !  tmp no. of variables in file
-    INTEGER         SDATE                !  starting date
-    INTEGER         STIME                !  starting time
-    INTEGER         ZONE                 !  time zone
+    INTEGER        EDATE        !  ending date
+    INTEGER        ETIME        !  ending time
+    INTEGER        IOS        !  i/o status
+    INTEGER        NSTEPS        !  number of time steps
+    INTEGER        NVARS        !  tmp no. of variables in file
+    INTEGER        SDATE        !  starting date
+    INTEGER        STIME        !  starting time
+    INTEGER        ZONE        !  time zone
 
     CHARACTER(4)    DESCRIBE
     CHARACTER(10)   CTIMESTR, ETIMESTR       ! inventory and comparison time
     CHARACTER(14)   CDATESTR, EDATESTR       ! inventory and comparison date
     CHARACTER(300)  MESG
 
-    CHARACTER(NAMLEN3)   VBUF            ! tmp variable name
+    CHARACTER(NAMLEN3)   VBUF        ! tmp variable name
 
-    CHARACTER(16) :: PROGNAME = 'PDSETUP'     ! program name
+    CHARACTER(16), PARAMETER :: PROGNAME = 'PDSETUP'     ! program name
 
     !***********************************************************************
     !   begin body of subroutine PDSETUP
@@ -103,22 +103,22 @@ SUBROUTINE PDSETUP( INFILE, ESDATE, ESTIME, EEDATE, EETIME,     &
     END IF
 
     !......  Ensure that the time zone of the file is consistent with the
-    !           time zone of the output data
+    !        time zone of the output data
     ZONE = GETIFDSC( FDESC3D, '/TZONE/', .TRUE. )
 
     IF( ZONE .NE. TZONE ) THEN
 
         EFLAG = .TRUE.
-        WRITE( MESG,94010 ) 'ERROR: Time zone in ' //           &
-               DESCRIBE( 1:LD ) // '-specific file is', ZONE,   &
-               CRLF() // BLANK10 // 'and is inconsistent ' //   &
-               'with output time zone ', TZONE
+        WRITE( MESG,94010 ) 'ERROR: Time zone in ' //    &
+            DESCRIBE( 1:LD ) // '-specific file is', ZONE,   &
+            CRLF() // BLANK10 // 'and is inconsistent ' //   &
+            'with output time zone ', TZONE
         CALL M3MSG2( MESG )
 
     END IF
 
     !......  Store header info for memory allocation and flexible usage
-    !               of pollutant-specific data
+    !        of pollutant-specific data
     SDATE = SDATE3D
     STIME = STIME3D
     NVARS = NVARS3D
@@ -139,10 +139,9 @@ SUBROUTINE PDSETUP( INFILE, ESDATE, ESTIME, EEDATE, EETIME,     &
         CDATESTR = MMDDYY( SDATE )
         CTIMESTR = HHMMSS( STIME )
         MESG = 'WARNING: ' // DESCRIBE( 1:LD ) // '-specific ' //   &
-               'starting date/time of '// CDATESTR// '@ ' //        &
-               CTIMESTR // CRLF() // BLANK10 //                     &
-               'is later than episode starting date/time of ' //    &
-               EDATESTR // '@ ' // ETIMESTR
+            'starting date/time of '// CDATESTR// '@ ' // CTIMESTR //   &
+            CRLF() // BLANK10 // 'is later than episode starting date/time of ' //    &
+            EDATESTR // '@ ' // ETIMESTR
 
         CALL M3MSG2( MESG )
     END IF
@@ -153,10 +152,10 @@ SUBROUTINE PDSETUP( INFILE, ESDATE, ESTIME, EEDATE, EETIME,     &
         CDATESTR = MMDDYY( EDATE )
         CTIMESTR = HHMMSS( ETIME )
         MESG = 'WARNING: ' // DESCRIBE( 1:LD ) // '-specific ' //   &
-               'ending date/time of '// CDATESTR// '@ ' //          &
-               CTIMESTR // CRLF() // BLANK10 //                     &
-               'is earlier than episode ending date/time of ' //    &
-               EDATESTR // '@ ' // ETIMESTR
+            'ending date/time of '// CDATESTR// '@ ' //         &
+            CTIMESTR // CRLF() // BLANK10 //                    &
+            'is earlier than episode ending date/time of ' //   &
+            EDATESTR // '@ ' // ETIMESTR
 
         CALL M3MSG2( MESG )
     END IF
@@ -170,11 +169,10 @@ SUBROUTINE PDSETUP( INFILE, ESDATE, ESTIME, EEDATE, EETIME,     &
         VBUF = VNAME3D( I )
         J = INDEX1( VBUF, NIPPA, EANAM )
         IF( J .LE. 0 ) THEN
-            L2 = LEN_TRIM( VBUF )
-            MESG = 'WARNING: ' // DESCRIBE( 1:LD ) //           &
-                   '-specific pollutant "' // VBUF( 1:L2 ) //   &
-                   '" is not in inventory file, so ' //         &
-                   'it will be ignored.'
+            MESG = 'WARNING: ' // DESCRIBE( 1:LD ) //   &
+                '-specific pollutant "' // TRIM( VBUF ) //  &
+                '" is not in inventory file, so ' //        &
+                'it will be ignored.'
             CALL M3MSG2( MESG )
 
         ELSE
@@ -191,7 +189,7 @@ SUBROUTINE PDSETUP( INFILE, ESDATE, ESTIME, EEDATE, EETIME,     &
 
     !******************  FORMAT  STATEMENTS   ******************************
 
-    !......   Internal buffering formats............ 94xxx
+    !......   Internal buffering formats...... 94xxx
 
 94010 FORMAT( 10( A, :, I8, :, 1X ) )
 

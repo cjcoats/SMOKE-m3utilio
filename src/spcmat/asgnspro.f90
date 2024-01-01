@@ -692,7 +692,7 @@ CONTAINS
         INTEGER, SAVE :: CDEV = 0               ! unit number for GSPRO_COMBO
         LOGICAL, SAVE :: FIRSTCOMBO = .TRUE.          ! true: until first COMBO entry found in GSREF
 
-        CHARACTER(24) :: PROGNAME = 'ASGNSPRO/SETSOURCE_SMATS'
+        CHARACTER(24), PARAMETER :: PROGNAME = 'ASGNSPRO/SETSOURCE_SMATS'
 
         !----------------------------------------------------------------------
 

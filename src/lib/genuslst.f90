@@ -112,7 +112,7 @@ SUBROUTINE GENUSLST
     CHARACTER(OBRLEN3) PCORSBLR          ! previous DOE plant ID // boiler
     CHARACTER(DSCLEN3) PDSC              ! tmp plant description
 
-    CHARACTER(16) :: PROGNAME = 'GENUSLST'     ! program name
+    CHARACTER(16), PARAMETER :: PROGNAME = 'GENUSLST'     ! program name
 
     !***********************************************************************
     !   begin body of subroutine GENUSLST

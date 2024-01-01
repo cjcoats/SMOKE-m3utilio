@@ -59,7 +59,7 @@ REAL FUNCTION GETRFDSC( FILEINFO, KEY, REQUIRED )
     CHARACTER(300) BUFFER           ! Key buffer
     CHARACTER(300) MESG             ! Message buffer
 
-    CHARACTER(16) :: PROGNAME = 'GETRFDSC'        ! Program name
+    CHARACTER(16), PARAMETER :: PROGNAME = 'GETRFDSC'        ! Program name
 
     !***********************************************************************
     !   begin body of function GETRFDSC
@@ -79,7 +79,7 @@ REAL FUNCTION GETRFDSC( FILEINFO, KEY, REQUIRED )
 
             IF( RVAL .LE. AMISS3 ) THEN
                 MESG = 'ERROR: non-real result found at FDESC '//   &
-                       'entry "'// KEY( 1:L1 )// '" in NetCDF file'
+                       'entry "'// KEY( 1:L1 )// '" in I/O API file'
                 CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 
             ELSE
@@ -95,8 +95,8 @@ REAL FUNCTION GETRFDSC( FILEINFO, KEY, REQUIRED )
     !           required, then abort.
 
     IF( REQUIRED ) THEN
-        MESG = 'FDESC3D packet "' // KEY( 1:L1 ) //     &
-               '" was not found in NetCDF file!'
+        MESG = 'FDESC3D packet "' // TRIM( KEY ) //     &
+               '" was not found in I/O API file!'
         CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 
     ELSE

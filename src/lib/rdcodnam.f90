@@ -83,7 +83,8 @@ SUBROUTINE RDCODNAM( FDEV )
         (/ 1 , 13, 17, 34, 40, 42, 44, 50, 52, 54, 56, 58, 62,  79, 119 /)
     INTEGER, PARAMETER :: FEND( NFIELDS ) =     &
         (/ 11, 15, 32, 38, 40, 42, 49, 50, 52, 54, 56, 60, 77, 118, 158 /)
-    CHARACTER(4),       PARAMETER :: NOIEND = '_NOI'
+    CHARACTER(4) , PARAMETER :: NOIEND   = '_NOI'
+    CHARACTER(16), PARAMETER :: PROGNAME = 'RDCODNAM'     ! program name
 
     !.......   Local allocatable arrays
     INTEGER, ALLOCATABLE :: LOCATIDX  ( : )     ! sorting index
@@ -129,8 +130,6 @@ SUBROUTINE RDCODNAM( FDEV )
     CHARACTER(NAMLEN3) :: LNAM        !  previous pollutant name
     CHARACTER(NAMLEN3) :: DNAM        !  tmp for pollutant or activity name
     CHARACTER(DDSLEN3) :: DSCVAL      !  initialized CAS description value
-
-    CHARACTER(16) :: PROGNAME = 'RDCODNAM'     ! program name
 
     !***********************************************************************
     !   begin body of subroutine RDCODNAM
@@ -203,36 +202,36 @@ SUBROUTINE RDCODNAM( FDEV )
             CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
         END IF
 
-    !.......  Skip comment and blank lines
+        !.......  Skip comment and blank lines
         IF( BLKORCMT( LINE ) ) CYCLE
 
-    !.......  Check if line is a process/pollutant combination
-    !            IF( INDEX( LINE( 1:16 ), ETJOIN ) > 0 ) THEN
-    !                SEGMENT( 1 ) = ADJUSTL( LINE( 1:16 ) )
+        !.......  Check if line is a process/pollutant combination
+        !            IF( INDEX( LINE( 1:16 ), ETJOIN ) > 0 ) THEN
+        !                SEGMENT( 1 ) = ADJUSTL( LINE( 1:16 ) )
 
-    !.......  Skip CAS number, SPECIATE4 code, and reactivity, then
-    !                   store remaining fields
-    !  commented out by Marc Houyoux for SMOKE2.3 - unsure why they were being skipped, but
-    !  they are needed for the case when process-pollutant combinations are
-    !  provided in the emissions inventory.
-    !                DO N = 6, NFIELDS
-    !                    SEGMENT( N ) =
-    !                       ADJUSTL( LINE( FBEG( N ):FEND( N ) ) )
-    !                END DO
-    !            ELSE
+        !.......  Skip CAS number, SPECIATE4 code, and reactivity, then
+        !                   store remaining fields
+        !  commented out by Marc Houyoux for SMOKE2.3 - unsure why they were being skipped, but
+        !  they are needed for the case when process-pollutant combinations are
+        !  provided in the emissions inventory.
+        !                DO N = 6, NFIELDS
+        !                    SEGMENT( N ) =
+        !                       ADJUSTL( LINE( FBEG( N ):FEND( N ) ) )
+        !                END DO
+        !            ELSE
 
-    !.......  Parse the line into its sections based on file format def'n
+        !.......  Parse the line into its sections based on file format def'n
         DO N = 1, NFIELDS
 
             SEGMENT( N ) = ADJUSTL( LINE( FBEG( N ):FEND( N ) ) )
 
         END DO
-    !            END IF
+        !            END IF
 
-    !.......  Get length of data name
+        !.......  Get length of data name
         L = LEN_TRIM( SEGMENT( 1 ) )
 
-    !.......  Error if data name is not provided
+        !.......  Error if data name is not provided
         IF( L .LE. 0 ) THEN
 
             EFLAG = .TRUE.
@@ -241,14 +240,14 @@ SUBROUTINE RDCODNAM( FDEV )
 
         END IF
 
-    !.......  Perform checks on input fields...
-    !.......  Check that data name does not have illegal characters
+        !.......  Perform checks on input fields...
+        !.......  Check that data name does not have illegal characters
         DO N = 1, L
             BUF1 = SEGMENT( 1 ) (L:L)
             IF( ( BUF1 .GE. '0' .AND. BUF1 .LE. '9' ) .OR.  &
                 ( BUF1 .GE. 'A' .AND. BUF1 .LE. 'Z' ) .OR.  &
                 ( BUF1 .EQ. '_' ) ) THEN
-                ! all is well
+                    ! all is well
             ELSE
                 EFLAG = .TRUE.
                 WRITE( MESG,94010 )'ERROR: Disallowed character "'//    &
@@ -259,7 +258,7 @@ SUBROUTINE RDCODNAM( FDEV )
             END IF
         END DO
 
-    !.......  Check that integer fields are integers
+        !.......  Check that integer fields are integers
         IF( .NOT. CHKINT( SEGMENT( 4 ) ) ) THEN
             EFLAG = .TRUE.
             WRITE( MESG,94010 ) 'ERROR: SPECIATE4 ID is not an ' //     &
@@ -281,7 +280,7 @@ SUBROUTINE RDCODNAM( FDEV )
             CALL M3MSG2( MESG )
         END IF
 
-    !.......  Check that float fields are floats
+        !.......  Check that float fields are floats
         IF( .NOT. CHKREAL( SEGMENT( 7 ) ) ) THEN
             EFLAG = .TRUE.
             WRITE( MESG,94010 ) 'ERROR: Factor value is not a '//       &
@@ -289,7 +288,7 @@ SUBROUTINE RDCODNAM( FDEV )
             CALL M3MSG2( MESG )
         END IF
 
-    !.......  Convert to upper case, where needed
+        !.......  Convert to upper case, where needed
         CALL UPCASE( SEGMENT( 1 )( 1:FLEN(1) ) )
         CALL UPCASE( SEGMENT( 2 )( 1:FLEN(2) ) )
         CALL UPCASE( SEGMENT( 3 )( 1:FLEN(3) ) )
@@ -300,14 +299,14 @@ SUBROUTINE RDCODNAM( FDEV )
         CALL UPCASE( SEGMENT( 10)( 1:FLEN(10) ) )
         CALL UPCASE( SEGMENT( 11)( 1:FLEN(11) ) )
 
-    !.......  Correct unknown entries
+        !.......  Correct unknown entries
         IF( SEGMENT( 8 ) .NE. 'V' .AND.     &
             SEGMENT( 8 ) .NE. 'T'       ) SEGMENT( 8 ) = 'N'
         IF( SEGMENT( 9 ) .NE. 'Y'       ) SEGMENT( 9 ) = 'N'
         IF( SEGMENT( 10) .NE. 'Y'       ) SEGMENT( 10) = 'N'
         IF( SEGMENT( 11) .NE. 'Y'       ) SEGMENT( 11) = 'N'
 
-    !.......  Error for blank units
+        !.......  Error for blank units
         IF( SEGMENT( 13 ) .EQ. ' ' ) THEN
 
             EFLAG = .TRUE.
@@ -318,7 +317,7 @@ SUBROUTINE RDCODNAM( FDEV )
 
         END IF
 
-    !.......  Store unsorted variables
+        !.......  Store unsorted variables
         NDAT = NDAT + 1
         IF( NDAT .LE. NINVTBL .AND. .NOT. EFLAG ) THEN
 
@@ -341,15 +340,15 @@ SUBROUTINE RDCODNAM( FDEV )
             ITCASDSCA( NDAT ) = TRIM( SEGMENT( 15 ) )
             ITCASDNMA( NDAT ) = ITCASA( NDAT ) // ITNAMA( NDAT )
 
-    !.......  Set name depending on whether or not the mode is
-    !                   included in the format.
+            !.......  Set name depending on whether or not the mode is
+            !                   included in the format.
             L = LEN_TRIM( SEGMENT( 2 ) )
 
-    !.......  If no mode provided:
+            !.......  If no mode provided:
             IF ( L .LE. 0 ) THEN
                 ITNAMA( NDAT ) = TRIM( SEGMENT( 1 ) )
 
-    !.......  If the mode is provided
+            !.......  If the mode is provided
             ELSE
                 ITNAMA( NDAT ) = TRIM( SEGMENT( 2 ) ) // ETJOIN // TRIM( SEGMENT( 1 ) )
             END IF

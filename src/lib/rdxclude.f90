@@ -65,7 +65,8 @@ SUBROUTINE RDXCLUDE( FDEV )
     LOGICAL, EXTERNAL :: USEEXPGEO
 
     !...........   Local parameters
-    INTEGER    , PARAMETER :: MXCOL = 8
+    INTEGER      , PARAMETER :: MXCOL    = 8
+    CHARACTER(16), PARAMETER :: PROGNAME = 'RDXCLUDE'     ! program name
 
     !...........   Array of input fields
     CHARACTER(CHRLEN3)  SEGMENT( MXCOL )
@@ -90,8 +91,6 @@ SUBROUTINE RDXCLUDE( FDEV )
     CHARACTER(PLTLEN3) PLT          !  temporary plant ID
     CHARACTER(SCCLEN3) TSCC         !  temporary SCC
     CHARACTER(ALLLEN3) CSRCALL      !  buffer for source char, incl pol
-
-    CHARACTER(16) :: PROGNAME = 'RDXCLUDE'     ! program name
 
     !***********************************************************************
     !   begin body of subroutine RDXCLUDE

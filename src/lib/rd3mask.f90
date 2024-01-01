@@ -1,6 +1,6 @@
 
-SUBROUTINE RD3MASK( FNAME, JDATE, JTIME, NDIM, NDIM2, NVLIST,&
-&                    VNAMES, VINDX, OUTVAR )
+SUBROUTINE RD3MASK( FNAME, JDATE, JTIME, NDIM, NDIM2, NVLIST,   &
+                    VNAMES, VINDX, OUTVAR )
 
 !***********************************************************************
 !  subroutine body starts at line
@@ -42,7 +42,7 @@ SUBROUTINE RD3MASK( FNAME, JDATE, JTIME, NDIM, NDIM2, NVLIST,&
 
     IMPLICIT NONE
 
-!.........  SUBROUTINE ARGUMENTS
+!.......  SUBROUTINE ARGUMENTS
     CHARACTER(*), INTENT (IN) :: FNAME     ! i/o api file name
     INTEGER     , INTENT (IN) :: JDATE     ! Julian date (YYYYDDD)
     INTEGER     , INTENT (IN) :: JTIME     ! time (HHMMSS)
@@ -53,42 +53,41 @@ SUBROUTINE RD3MASK( FNAME, JDATE, JTIME, NDIM, NDIM2, NVLIST,&
     INTEGER     , INTENT (IN) :: VINDX ( NVLIST ) ! var index to OUTVAR
     REAL        , INTENT(OUT) :: OUTVAR( NDIM,NDIM2 ) ! coeffs for sources
 
-!.........  Other local variables
+!.......  Other local variables
     INTEGER         J, L, L1, V       !  counters and indices
 
     CHARACTER(NAMLEN3) VBUF    !  variable name buffer
     CHARACTER(300)     MESG    !  message buffer
 
-    CHARACTER(16) :: PROGNAME = 'RD3MASK' ! program name
+    CHARACTER(16), PARAMETER :: PROGNAME = 'RD3MASK' ! program name
 
 !***********************************************************************
 !   begin body of subroutine RD3MASK
 
-!.........  Loop through variables that are possibilities for reading
+!.......  Loop through variables that are possibilities for reading
     DO V = 1, NVLIST
 
-!.............  Check variable index to see if this variable is to be read
+!.......  Check variable index to see if this variable is to be read
         J = VINDX( V )
         IF( J .EQ. 0 ) CYCLE  ! to go bottom of loop
 
         VBUF = VNAMES( V )
 
-!.............  Bounds check
+!.......  Bounds check
         IF( J .GT. NDIM2 ) THEN
 
             MESG = 'INTERNAL ERROR: Prevented overflow for read '//&
-            &       'of variable "' // TRIM( VBUF ) // '"'
+                   'of variable "' // TRIM( VBUF ) // '"'
             CALL M3MSG2( MESG )
             CALL M3EXIT( PROGNAME, 0, 0, ' ', 2 )
 
         END IF
 
-!.............  Read variable and print nice error message if cannot
-        IF ( .NOT. READ3(&
-        &     FNAME, VBUF, 1, JDATE, JTIME, OUTVAR( 1,J ) ) ) THEN
+!.......  Read variable and print nice error message if cannot
+        IF ( .NOT. READ3( FNAME, VBUF, 1, JDATE, JTIME, OUTVAR( 1,J ) ) ) THEN
 
             MESG = 'Could not read variable "' // TRIM( VBUF ) //&
-            &       '" from file "' // TRIM( FNAME ) // '"'
+                   '" from file "' // TRIM( FNAME ) // '"'
             CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 
         END IF    !  if read3() failed for file

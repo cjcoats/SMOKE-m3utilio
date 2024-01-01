@@ -90,7 +90,7 @@ SUBROUTINE  CZANGLE( JDATE, JTIME, NX, NY, LAT, LON, COSZEN, ZFLAG )
     REAL, ALLOCATABLE, SAVE :: SINLAT ( :, : )
     REAL, ALLOCATABLE, SAVE :: COSLAT ( :, : )
 
-    CHARACTER(16) :: PROGNAME = 'CZANGLE'       !  program name
+    CHARACTER(16), PARAMETER :: PROGNAME = 'CZANGLE'       !  program name
 
     !***********************************************************************
     !......  Begin body of program  .......

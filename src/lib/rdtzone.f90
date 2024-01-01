@@ -15,12 +15,12 @@ SUBROUTINE RDTZONE( FDEV, NDIM, NZS, NZF, TZONE0,       &
     !
     !  REVISION  HISTORY:
     !       Version ??/???? by ???
-    !       Version 11/2023 by CJC:  USE M3UTILIO, ".f90" source format, and 
-    !       related changes
+    !       Version 11/2023 by CJC:  USE M3UTILIO, ".f90" source format, 
+    !       INTENT, and related changes
     !****************************************************************************/
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !         System
     ! File: @(#)$Id$
     !
     ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
@@ -41,22 +41,22 @@ SUBROUTINE RDTZONE( FDEV, NDIM, NZS, NZF, TZONE0,       &
 
     IMPLICIT NONE
 
-    !...........   INCLUDES
+    !.......   INCLUDES
 
     INCLUDE 'EMCNST3.h90'       !  emissions constant parameters
 
-    !...........   SUBROUTINE ARGUMENTS
-    INTEGER      FDEV                  !  time zones file unit number
-    INTEGER      NDIM                  !  dimension for time zone arrays
-    INTEGER      NZS                   !  no of state-specific
-    INTEGER      NZF                   !  no of county-specific
-    INTEGER      TZONE0                !  fallback zone
-    INTEGER      TZONST( NDIM )        !  state-specific time zones
-    INTEGER      TFIPST( NDIM )        !  state FIPS codes (2 digit)
-    INTEGER      TZONEF( NDIM )        !  FIPS-specific time zones
-    INTEGER      TFIPEF( NDIM )        !  state/county FIPS codes (5 digits)
+    !.......   SUBROUTINE ARGUMENTS
+    INTEGER, INTENT(IN ) :: FDEV                  !  time zones file unit number
+    INTEGER, INTENT(IN ) :: NDIM                  !  dimension for time zone arrays
+    INTEGER, INTENT(OUT) :: NZS                   !  no of state-specific
+    INTEGER, INTENT(OUT) :: NZF                   !  no of county-specific
+    INTEGER, INTENT(OUT) :: TZONE0                !  fallback zone
+    INTEGER, INTENT(OUT) :: TZONST( NDIM )        !  state-specific time zones
+    INTEGER, INTENT(OUT) :: TFIPST( NDIM )        !  state FIPS codes (2 digit)
+    INTEGER, INTENT(OUT) :: TZONEF( NDIM )        !  FIPS-specific time zones
+    INTEGER, INTENT(OUT) :: TFIPEF( NDIM )        !  state/county FIPS codes (5 digits)
 
-    !...........   Unsorted time zone records
+    !.......   Unsorted time zone records
     INTEGER      INDXSA( NDIM )
     INTEGER      TZONSA( NDIM )
     INTEGER      TFIPSA( NDIM )
@@ -64,7 +64,7 @@ SUBROUTINE RDTZONE( FDEV, NDIM, NZS, NZF, TZONE0,       &
     INTEGER      TZONFA( NDIM )
     INTEGER      TFIPFA( NDIM )
 
-    !...........   Other local variables
+    !.......   Other local variables
     INTEGER         FIP, TZONE              ! tmp fips code and time zone
     INTEGER         I, J                    ! counters and indices
     INTEGER         IOS                     ! i/o status
@@ -75,7 +75,7 @@ SUBROUTINE RDTZONE( FDEV, NDIM, NZS, NZF, TZONE0,       &
     CHARACTER(300)  LINE        !  Input line from POINT file
     CHARACTER(300)  MESG        !  message buffer
 
-    CHARACTER(16) :: PROGNAME = 'RDTZONE'     ! program name
+    CHARACTER(16), PARAMETER :: PROGNAME = 'RDTZONE'     ! program name
 
     !***********************************************************************
     !   begin body of subroutine RDTZONE
@@ -153,14 +153,14 @@ SUBROUTINE RDTZONE( FDEV, NDIM, NZS, NZF, TZONE0,       &
         TFIPEF( I ) = TFIPFA( J )
     ENDDO
 
-    !.........  Rewind file
+    !.......  Rewind file
 
     REWIND( FDEV )
 
     RETURN
 
     !******************  FORMAT  STATEMENTS   ******************************
-    !...........   Internal buffering formats............ 94xxx
+    !.......   Internal buffering formats...... 94xxx
 
 94010 FORMAT( 10( A, :, I8, :, 1X ) )
 

@@ -19,7 +19,7 @@ SUBROUTINE RDSRG( VFLAG, FDEV, SRGFMT, SRGNROWS, SRGNCOLS )
     !**************************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !         System
     ! File: @(#)$Id$
     !
     ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
@@ -38,42 +38,43 @@ SUBROUTINE RDSRG( VFLAG, FDEV, SRGFMT, SRGNROWS, SRGNCOLS )
     !***************************************************************************
     USE M3UTILIO
 
-    !...........   Modules for public variables
-    !...........   This module contains the gridding surrogates tables
+    !.......   Modules for public variables
+    !.......   This module contains the gridding surrogates tables
     USE MODSURG, ONLY: NSRGREC, IDXSRGA, SFIPSA, SCELLA, SSRGIDA,&
                        IDXSRGB, NSRGFIPS, NSRGS, SRGFIPS, SRGLIST,&
                        FIPCELL, SRGFRAC, SRGCSUM, NCELLS, SFRACA
 
-    !.........  This module contains the global variables for the 3-d grid
+    !.......  This module contains the global variables for the 3-d grid
     USE MODGRID, ONLY: XOFF, YOFF, NCOLS, NROWS
 
     IMPLICIT NONE
 
-    !...........   INCLUDES
+    !.......   INCLUDES
     INCLUDE 'EMCNST3.h90'       !  emissions constat parameters
 
-    !...........   Subroutine arguments
+    !.......   Subroutine arguments
     LOGICAL      , INTENT  (IN) :: VFLAG          ! true: using variable grid
     INTEGER      , INTENT  (IN) :: FDEV           ! File unit number
     CHARACTER(*) , INTENT  (IN) :: SRGFMT         ! Format of surrogates file
     INTEGER      , INTENT  (IN) :: SRGNROWS       ! number of grid rows from hdr
     INTEGER      , INTENT  (IN) :: SRGNCOLS       ! number of grid cols from hdr
 
-    !...........   EXTERNAL FUNCTIONS and their descriptions:
+    !.......   EXTERNAL FUNCTIONS and their descriptions:
 
     LOGICAL, EXTERNAL :: BLKORCMT
 
-    !...........   Local parameters
+    !.......   Local parameters
 
-    INTEGER, PARAMETER :: MXSEG = 10              ! # of potential line segments
+    INTEGER      , PARAMETER :: MXSEG = 10              ! # of potential line segments
+    CHARACTER(16), PARAMETER :: PROGNAME = 'RDSRG'        !  program name
 
-    !...........   Other arrays
+    !.......   Other arrays
 
     CHARACTER(20) SEGMENT( MXSEG )                 ! Segments of parsed lines
 
     CHARACTER(200), ALLOCATABLE :: SORTBUF( : )     ! concatenated info for sorting
 
-    !...........   Local variables
+    !.......   Local variables
     INTEGER         I, J, K, L                ! indices and counters
 
     INTEGER         C                         ! tmp cell number
@@ -105,8 +106,6 @@ SUBROUTINE RDSRG( VFLAG, FDEV, SRGFMT, SRGNROWS, SRGNCOLS )
     CHARACTER(200)  LINE                      ! Read buffer for a line
     CHARACTER(600)  MESG                      ! Message buffer
 
-    CHARACTER(16) :: PROGNAME = 'RDSRG'        !  program name
-
     !***********************************************************************
     !   Begin body of subroutine RDSRG
 
@@ -114,7 +113,7 @@ SUBROUTINE RDSRG( VFLAG, FDEV, SRGFMT, SRGNROWS, SRGNCOLS )
     J       = 0
     NSRGREC = 0
 
-    !......... Determine the number surrogate file entries
+    !....... Determine the number surrogate file entries
 
     REWIND( FDEV )
 
@@ -164,7 +163,7 @@ SUBROUTINE RDSRG( VFLAG, FDEV, SRGFMT, SRGNROWS, SRGNCOLS )
 
     END SELECT
 
-    !......... Allocate memory for surrogate arrays
+    !....... Allocate memory for surrogate arrays
     IF( ALLOCATED( IDXSRGA ) ) DEALLOCATE( IDXSRGA )
     ALLOCATE( IDXSRGA( NSRGREC ),                  &
               IDXSRGB( NSRGREC ),                  &
@@ -175,14 +174,14 @@ SUBROUTINE RDSRG( VFLAG, FDEV, SRGFMT, SRGNROWS, SRGNCOLS )
                SFRACA( NSRGREC ), STAT=IOS )
     CALL CHECKMEM( IOS, 'IDXSRGA...SFRACA', PROGNAME )
 
-    !.........  Create message fields for errors
+    !.......  Create message fields for errors
     WRITE( COLRANGE, '( "( ", I1, " to ", I4, " )" )' ) 1, SRGNCOLS
     WRITE( ROWRANGE, '( "( ", I1, " to ", I4, " )" )' ) 1, SRGNROWS
 
     LC = LEN_TRIM( COLRANGE )
     LR = LEN_TRIM( ROWRANGE )
 
-    !.........  Fill surrogate arrays
+    !.......  Fill surrogate arrays
 
     REWIND( FDEV )
     IREC    = 0
@@ -225,9 +224,9 @@ SUBROUTINE RDSRG( VFLAG, FDEV, SRGFMT, SRGNROWS, SRGNCOLS )
 
             END IF
 
-            !.................  Parse the line of data into segments based on the rules
-            !                   for "list-formatted" in fortran, but not requiring
-            !                   quotes around the text strings
+            !.......  Parse the line of data into segments based on the rules
+            !         for "list-formatted" in fortran, but not requiring
+            !         quotes around the text strings
 
             CALL PARSLINE( LINE, MXSEG, SEGMENT )
 
@@ -240,7 +239,7 @@ SUBROUTINE RDSRG( VFLAG, FDEV, SRGFMT, SRGNROWS, SRGNCOLS )
 
             WFLAG = .FALSE.
 
-            !.................  Check the value of the column number
+            !.......  Check the value of the column number
             IF( COL .LT. 0 .OR.  COL .GT. SRGNCOLS  .OR.            &
               ( ROW .EQ. 0 .AND. COL .NE. 0     )    ) THEN
                 WFLAG = .TRUE.
@@ -251,7 +250,7 @@ SUBROUTINE RDSRG( VFLAG, FDEV, SRGFMT, SRGNROWS, SRGNCOLS )
                 CALL M3MESG( MESG )
             END IF
 
-            !.................  Check the value of the row number
+            !.......  Check the value of the row number
             IF( ROW .LT. 0 .OR.  ROW .GT. SRGNROWS  .OR.            &
               ( COL .EQ. 0 .AND. ROW .NE. 0     )    ) THEN
                 WFLAG = .TRUE.
@@ -261,21 +260,21 @@ SUBROUTINE RDSRG( VFLAG, FDEV, SRGFMT, SRGNROWS, SRGNCOLS )
                        ' at line', IREC
                 CALL M3MESG( MESG )
 
-            !.................  Special treatment for cell (0,0) (skip for now)
+            !.......  Special treatment for cell (0,0) (skip for now)
             ELSE IF( ROW .EQ. 0 .AND. COL .EQ. 0 ) THEN
                 CYCLE
 
             END IF
 
-            !.................  Adjust column and row for subgrid
+            !.......  Adjust column and row for subgrid
             COL = COL - XOFF
             ROW = ROW - YOFF
 
-            !.................  Skip entry after subgrid adjustment
+            !.......  Skip entry after subgrid adjustment
             IF( COL .LE. 0 .OR. COL .GT. NCOLS .OR.                 &
                 ROW .LE. 0 .OR. ROW .GT. NROWS  ) CYCLE
 
-            !.................  Check the value of the ratio value
+            !.......  Check the value of the ratio value
             IF( RATIO .GT. 1. ) THEN
                 WRITE( MESG,94020 )                                 &
                        'WARNING: resetting surrogates ratio at ' // &
@@ -284,7 +283,7 @@ SUBROUTINE RDSRG( VFLAG, FDEV, SRGFMT, SRGNROWS, SRGNCOLS )
                 RATIO = 1.
             END IF
 
-    !.................  Skip entry if rows and columns are out of range
+    !.......  Skip entry if rows and columns are out of range
             IF( WFLAG ) CYCLE
 
             J = J + 1
@@ -303,7 +302,7 @@ SUBROUTINE RDSRG( VFLAG, FDEV, SRGFMT, SRGNROWS, SRGNCOLS )
 
         NSRGALL = J
 
-        !.............  Write out final warning for row/col out of range
+        !.......  Write out final warning for row/col out of range
         IF( OFLAG ) THEN
             MESG = 'WARNING: Lines skipped in surrogate file ' //   &
                    'because rows or columns were out of range.'
@@ -317,16 +316,16 @@ SUBROUTINE RDSRG( VFLAG, FDEV, SRGFMT, SRGNROWS, SRGNCOLS )
 
     END SELECT
 
-    !.........  Now create the derived surrogates tables from the original data...
+    !.......  Now create the derived surrogates tables from the original data...
 
-    !.........  Sort surrogates by county code  cell  surrogate code
+    !.......  Sort surrogates by county code  cell  surrogate code
     CALL SORTIC( NSRGALL, IDXSRGA, SORTBUF )
 
-    !.........  Sort surrogates by surrogate code
+    !.......  Sort surrogates by surrogate code
     CALL SORTI1( NSRGALL, IDXSRGB, SSRGIDA )
 
-    !.........  Count county codes in surrogates file and maximum number of cells
-    !           per cy/st/co code.
+    !.......  Count county codes in surrogates file and maximum number of cells
+    !         per cy/st/co code.
     LFIP     = ' '
     LCEL     = -1
     MXCFIP   = 0
@@ -357,7 +356,7 @@ SUBROUTINE RDSRG( VFLAG, FDEV, SRGFMT, SRGNROWS, SRGNCOLS )
 
     IF( CELCNT .GT. MXCFIP ) MXCFIP = CELCNT
 
-    !.........  Count surrogate codes in surrogates file
+    !.......  Count surrogate codes in surrogates file
     LSSC  = -1
     NSRGS = 0
     DO I = 1, NSRGALL
@@ -372,7 +371,7 @@ SUBROUTINE RDSRG( VFLAG, FDEV, SRGFMT, SRGNROWS, SRGNCOLS )
 
     END DO
 
-    !.........  Allocate memory for derived surrogates tables
+    !.......  Allocate memory for derived surrogates tables
     IF( ALLOCATED( SRGLIST ) ) DEALLOCATE( SRGLIST )
 
     ALLOCATE(  NCELLS( NSRGFIPS ),                  &
@@ -383,7 +382,7 @@ SUBROUTINE RDSRG( VFLAG, FDEV, SRGFMT, SRGNROWS, SRGNCOLS )
               SRGCSUM( NSRGS, NSRGFIPS ), STAT=IOS )
     CALL CHECKMEM( IOS, 'SRGCSUM', PROGNAME )
 
-    !.........  Initialize arrays
+    !.......  Initialize arrays
     NCELLS  = 0      ! array
     SRGFIPS = ' '    ! array
     SRGLIST = 0      ! array
@@ -391,9 +390,9 @@ SUBROUTINE RDSRG( VFLAG, FDEV, SRGFMT, SRGNROWS, SRGNCOLS )
     SRGFRAC = 0.     ! array
     SRGCSUM = 0.     ! array
 
-    !.........  Store derived surrogates tables...
+    !.......  Store derived surrogates tables...
 
-    !.........  Store the surrogate ID list
+    !.......  Store the surrogate ID list
     LSSC  = -1
     NSRGS = 0
     DO I = 1, NSRGALL
@@ -409,11 +408,11 @@ SUBROUTINE RDSRG( VFLAG, FDEV, SRGFMT, SRGNROWS, SRGNCOLS )
 
     END DO
 
-    !.........  Initialize arrays that might not be totally populated
+    !.......  Initialize arrays that might not be totally populated
     FIPCELL = 0       ! array
     SRGFRAC = 0       ! array
 
-    !.........  Store the surrogate fractions, FIPS codes, and cell numbers...
+    !.......  Store the surrogate fractions, FIPS codes, and cell numbers...
     LFIP     = ' '
     LCEL     = -1
     NSRGFIPS = 0
@@ -439,16 +438,16 @@ SUBROUTINE RDSRG( VFLAG, FDEV, SRGFMT, SRGNROWS, SRGNCOLS )
             LCEL = C
         END IF
 
-        !.............  Store cell count at every iteration, and it will get
-        !               overwritten until the maximum value for each county is stored
+        !.......  Store cell count at every iteration, and it will get
+        !         overwritten until the maximum value for each county is stored
         NCELLS ( NSRGFIPS ) = CELCNT
 
-        !.............  Store cell number  at every iteration, but it will be the same
-        !               each time
+        !.......  Store cell number  at every iteration, but it will be the same
+        !         each time
         FIPCELL( CELCNT, NSRGFIPS ) = C
 
-        !.............  Find surrogate code in sorted list and use position to store
-        !               the surrogates fraction
+        !.......  Find surrogate code in sorted list and use position to store
+        !         the surrogates fraction
         K = FIND1( SSC, NSRGS, SRGLIST )
 
         SRGFRAC( K, CELCNT, NSRGFIPS ) = RATIO
@@ -456,18 +455,18 @@ SUBROUTINE RDSRG( VFLAG, FDEV, SRGFMT, SRGNROWS, SRGNCOLS )
 
     END DO
 
-    !.........  Now check to make sure the surrogate totals for each county are
-    !           less than or equal to 1.
+    !.......  Now check to make sure the surrogate totals for each county are
+    !         less than or equal to 1.
     DO I = 1, NSRGFIPS
 
         GFLAG = .FALSE.
         CNTCHK = 0
         DO K = 1, NSRGS
 
-            !.................  Check if county total surrogates greater than 1
+            !.......  Check if county total surrogates greater than 1
             IF( SRGCSUM( K,I ) .GT. 1.001 ) THEN
 
-            !.....................  If first problem on this line
+            !.......  If first problem on this line
                 IF( .NOT. GFLAG ) THEN
                     WRITE( MESG,94030 ) 'WARNING: County ' //           &
                       'surrogate total greater than 1. for '//          &
@@ -476,8 +475,8 @@ SUBROUTINE RDSRG( VFLAG, FDEV, SRGFMT, SRGNROWS, SRGNCOLS )
                     GFLAG = .TRUE.
                     CNTCHK = CNTCHK + 1
 
-                !.....................  If multiple problems on this line, but fewer than
-                !                       the MESG length will permit, add to message
+                !.......  If multiple problems on this line, but fewer than
+                !         the MESG length will permit, add to message
                 ELSE IF( CNTCHK .LE. 27 ) THEN
                     L = LEN_TRIM( MESG )
                     WRITE( MESG,94031 ) MESG( 1:L )// ', SSC(',         &
@@ -488,7 +487,7 @@ SUBROUTINE RDSRG( VFLAG, FDEV, SRGFMT, SRGNROWS, SRGNCOLS )
 
             END IF
 
-            !.................  Renormalize all surrogates with totals > 1
+            !.......  Renormalize all surrogates with totals > 1
             IF( SRGCSUM( K,I ) .GT. 1. ) THEN
                 RFLAG = .TRUE.              ! Set to give global warning
                 DO C = 1, NCELLS( I )
@@ -498,14 +497,14 @@ SUBROUTINE RDSRG( VFLAG, FDEV, SRGFMT, SRGNROWS, SRGNCOLS )
 
         END DO
 
-            !.............  Give a warning message for significant counties
+            !.......  Give a warning message for significant counties
         IF( GFLAG ) CALL M3MESG( MESG )
 
     END DO
 
-    !.........  Reset number of surrogate records stored in the module with
-    !           the correct number after reading file and removing records that
-    !           are outside the subgrid (if any)
+    !.......  Reset number of surrogate records stored in the module with
+    !         the correct number after reading file and removing records that
+    !         are outside the subgrid (if any)
     NSRGREC = NSRGALL
 
     IF( RFLAG ) THEN
@@ -519,12 +518,12 @@ SUBROUTINE RDSRG( VFLAG, FDEV, SRGFMT, SRGNROWS, SRGNCOLS )
 
     !******************  FORMAT  STATEMENTS   ******************************
 
-    !...........   Formatted file I/O formats............ 93xxx
+    !.......   Formatted file I/O formats...... 93xxx
 
 93000 FORMAT( A )
 
 
-    !...........   Internal buffering formats............ 94xxx
+    !.......   Internal buffering formats...... 94xxx
 
 94010 FORMAT( 10( A, :, I8, :, 1X ) )
 

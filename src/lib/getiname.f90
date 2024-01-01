@@ -49,7 +49,7 @@ SUBROUTINE GETINAME( CATEGORY, ENAME, ANAME )
 
     CHARACTER(300)  MESG                       ! Message buffer
 
-    CHARACTER(16) :: PROGNAME = 'GETINAME'      ! Program name
+    CHARACTER(16), PARAMETER :: PROGNAME = 'GETINAME'      ! Program name
 
     !***********************************************************************
     !   begin body of subroutine GETINAME

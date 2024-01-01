@@ -87,7 +87,7 @@ SUBROUTINE PREBMET( MNAME, WNAME, SFILE, TZONE, TSTEP, SDATE,   &
 
     CHARACTER(300)  MESG         !  message buffer
 
-    CHARACTER(16), parameter :: PROGNAME = 'PREBMET'     ! program name
+    CHARACTER(16), PARAMETER :: PROGNAME = 'PREBMET'     ! program name
 
     !***********************************************************************
     !   begin body of subroutine PRETMPR

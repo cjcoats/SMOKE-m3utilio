@@ -559,7 +559,7 @@ CONTAINS        !    !-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
         CHARACTER(80)   GDESC             !  grid description
         CHARACTER(300)  MESG              !  message buffer
 
-        CHARACTER(16) :: PROGNAME = 'INGRID'         ! program name
+        CHARACTER(16), PARAMETER :: PROGNAME = 'INGRID'         ! program name
 
         !.......  begin body of INGRIDD  .........
         IF( FIRSTIME ) THEN

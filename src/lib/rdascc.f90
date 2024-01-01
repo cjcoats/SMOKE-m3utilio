@@ -48,7 +48,6 @@ SUBROUTINE  RDASCC( ADEV, NDIM, NASC, ASCA7, ASCA3 )
     INTEGER, INTENT (  OUT) :: ASCA7( NDIM )     !  leading-7 digits
     INTEGER, INTENT (  OUT) :: ASCA3( NDIM )     !  trailing-3 digits
 
-
     !.......   SCRATCH LOCAL VARIABLES and their descriptions:
 
     INTEGER         IREC                !  input line (record) number
@@ -59,8 +58,7 @@ SUBROUTINE  RDASCC( ADEV, NDIM, NASC, ASCA7, ASCA3 )
     LOGICAL         EFLAG       !  input error flag
     CHARACTER(300)  MESG        !  message buffer for M3MESG() and M3EXIT()
 
-    CHARACTER(16) :: PROGNAME = 'RDASCC'     ! program name
-
+    CHARACTER(16), PARAMETER :: PROGNAME = 'RDASCC'     ! program name
 
     !***********************************************************************
     !   begin body of subroutine  RDASCC

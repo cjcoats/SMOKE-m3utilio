@@ -41,10 +41,10 @@ SUBROUTINE ALOCSTBL( NIPOL, ICSIZE )
     !***************************************************************************
 
     !.......   This module is for cross reference tables
-    USE MODXREF, ONLY: CSPT01, CSPT02, CSPT03, CSPT04, CSPT05,&
-            CSPT06, CSPT07, CSPT08, CSPT09, CSPT10, CSPT11,&
-            CSPT12, CSPT13, CSPT14, CSPT15, CSPT16,&
-            CSPT26, CSPT27, CSPT28, CSPT29, CSPT30, CSPT31,&
+    USE MODXREF, ONLY: CSPT01, CSPT02, CSPT03, CSPT04, CSPT05,  &
+            CSPT06, CSPT07, CSPT08, CSPT09, CSPT10, CSPT11,     &
+            CSPT12, CSPT13, CSPT14, CSPT15, CSPT16,             &
+            CSPT26, CSPT27, CSPT28, CSPT29, CSPT30, CSPT31,     &
             CSPT32, CSPT33, CSPT34, CSPT35, CSPT36, CSPT37
 
     IMPLICIT NONE
@@ -61,7 +61,7 @@ SUBROUTINE ALOCSTBL( NIPOL, ICSIZE )
 
     INTEGER       IOS                  ! i/o status
 
-    CHARACTER(16) :: PROGNAME = 'ALOCSTBL'     ! program name
+    CHARACTER(16), PARAMETER :: PROGNAME = 'ALOCSTBL'     ! program name
 
     !***********************************************************************
     !   begin body of subroutine ALOCSTBL

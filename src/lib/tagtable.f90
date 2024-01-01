@@ -19,7 +19,7 @@ SUBROUTINE TAGTABLE( ICSIZE, NXREF, XTYPE, XTCNT )
     !***************************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !         System
     ! File: @(#)$Id$
     !
     ! smoke@unc.edu
@@ -31,14 +31,14 @@ SUBROUTINE TAGTABLE( ICSIZE, NXREF, XTYPE, XTCNT )
 
     USE M3UTILIO
 
-    !.........  This module is for cross reference tables
+    !.......  This module is for cross reference tables
     USE MODXREF, ONLY: INDXTA, CSRCTA, CSCCTA, CMACTA, CISICA, ISPTA,&
                        CTAGNA, NXTYPES
 
-    !.........  This module contains the speciation profiles
+    !.......  This module contains the speciation profiles
     USE MODSPRO, ONLY: SPCLIST
 
-    !...........   This module is for cross reference tables for tagging
+    !.......   This module is for cross reference tables for tagging
     USE MODTAG, ONLY: TAGXCNT, TAGCHRT03, TAGCHRT04, TAGCHRT06,&
             TAGCHRT07, TAGCHRT09, TAGCHRT10, TAGCHRT11, TAGCHRT26,&
             TAGCHRT27, TAGCHRT28, TAGCHRT29, TAGCHRT30, TAGCHRT31,&
@@ -48,30 +48,29 @@ SUBROUTINE TAGTABLE( ICSIZE, NXREF, XTYPE, XTCNT )
             TAGT32, TAGT33, TAGT34, TAGT35, TAGT36, TAGT37,&
             NTAGSALL, TAGSPECIES
 
-    !.........  This module contains the information about the source category
+    !.......  This module contains the information about the source category
     USE MODINFO, ONLY: CATEGORY
 
     IMPLICIT NONE
 
-    !...........   INCLUDES
+    !.......   INCLUDES
     INCLUDE 'EMCNST3.h90'       !  emissions constant parameters
 
-    !...........   SUBROUTINE ARGUMENTS
+    !.......   SUBROUTINE ARGUMENTS
     INTEGER, INTENT (IN) :: ICSIZE( * )         ! size of x-ref groups
     INTEGER, INTENT (IN) :: NXREF               ! no. ungrpd x-ref entries
     INTEGER, INTENT (IN) :: XTYPE ( NXREF )     ! group no. of x-ref entry
     INTEGER, INTENT (IN) :: XTCNT ( NXREF )     ! pos. in x-ref group
 
-    !...........   Local field position array
+    !.......   Local field position array
     INTEGER, ALLOCATABLE :: ENDLEN( : )
 
-    !...........   Other local variables
+    !.......   Other local variables
     INTEGER       I, J, L, K, T, V         ! counter and indices
     INTEGER       ISP                ! temporary species position in SPCLIST
-
     INTEGER       IOS                  ! i/o status
 
-    LOGICAL    :: EFLAG = .FALSE.      ! true: error has occurred
+    LOGICAL       EFLAG                ! true: error has occurred
 
     CHARACTER(512)     MESG        ! message buffer
 
@@ -86,12 +85,12 @@ SUBROUTINE TAGTABLE( ICSIZE, NXREF, XTYPE, XTCNT )
     CHARACTER(SICLEN3) CSICL       ! buffer for left 2-digit SIC
     CHARACTER(MACLEN3) CMCT        ! buffer for MACT code
 
-    CHARACTER(16) :: PROGNAME = 'TAGTABLE'     ! program name
+    CHARACTER(16), PARAMETER :: PROGNAME = 'TAGTABLE'     ! program name
 
     !***********************************************************************
     !   begin body of subroutine TAGTABLE
-
-    !.........  First deallocate if these have previously been allocated
+    EFLAG = .FALSE.
+    !.......  First deallocate if these have previously been allocated
     IF ( ALLOCATED( TAGCHRT03 ) ) THEN
 
         DEALLOCATE( TAGCHRT03, TAGCHRT04, TAGCHRT06 )
@@ -103,11 +102,11 @@ SUBROUTINE TAGTABLE( ICSIZE, NXREF, XTYPE, XTCNT )
 
     END IF
 
-    !.........  Set up zero strings for SCC and SIC codes of zero
+    !.......  Set up zero strings for SCC and SIC codes of zero
     SCCZERO = REPEAT( '0', SCCLEN3 )
     SICZERO = REPEAT( '0', SICLEN3 )
 
-    !.........  Set the local field position array based on the source category
+    !.......  Set the local field position array based on the source category
     SELECT CASE ( CATEGORY )
       CASE( 'AREA' )
         ALLOCATE( ENDLEN( MXARCHR3 ), STAT=IOS )
@@ -129,7 +128,7 @@ SUBROUTINE TAGTABLE( ICSIZE, NXREF, XTYPE, XTCNT )
 
     END SELECT
 
-    !.........  Allocate tables for all of the valid tagging combinations
+    !.......  Allocate tables for all of the valid tagging combinations
     J = MAX( 1, ICSIZE( 3 ) )                         ! SCC=all, FIP=0
     ALLOCATE( TAGCHRT03( J ), STAT=IOS )
     CALL CHECKMEM( IOS, 'TAGCHRT03', PROGNAME )
@@ -263,7 +262,7 @@ SUBROUTINE TAGTABLE( ICSIZE, NXREF, XTYPE, XTCNT )
     CALL CHECKMEM( IOS, 'TAGT37', PROGNAME )
     TAGT37 = EMCMISS3
 
-    !.........  Loop through sorted tagging cross-reference table populate tables
+    !.......  Loop through sorted tagging cross-reference table populate tables
     DO I = 1, NXREF
         J      = INDXTA( I )
         CSRC   = CSRCTA( J )
@@ -293,11 +292,11 @@ SUBROUTINE TAGTABLE( ICSIZE, NXREF, XTYPE, XTCNT )
             CSIC = SICZERO
         END IF
 
-        !.............  Set up partial strings for country/state/county
+        !.......  Set up partial strings for country/state/county
         CFIP   = CSRC( 1:FIPLEN3 )
         CSTA   = CSRC( 1:STALEN3 )
 
-        !.............  If SIC given, setup SIC fields
+        !.......  If SIC given, setup SIC fields
         IF( CSIC /= SICZERO ) THEN
             TSCC  = SCCZERO
             CSICL = CSIC( 1:SICLEN3-2 )
@@ -348,7 +347,7 @@ SUBROUTINE TAGTABLE( ICSIZE, NXREF, XTYPE, XTCNT )
             TAGCHRT31( K ) = CFIP // CSIC
             TAGT31( K,V ) = CTAG
 
-    !.............  MACT based cases
+    !.......  MACT based cases
           CASE( 32 )
             TAGCHRT32( K ) = CMCT
             TAGT32( K,V ) = CTAG
@@ -380,27 +379,27 @@ SUBROUTINE TAGTABLE( ICSIZE, NXREF, XTYPE, XTCNT )
 
     END DO
 
-    !.........  If error flag, then abort
+    !.......  If error flag, then abort
     IF( EFLAG ) THEN
         MESG = 'Problem processing tagging records.'
         CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
     END IF
 
-    !.........  Save table sizes
+    !.......  Save table sizes
     ALLOCATE( TAGXCNT( NXTYPES ), STAT=IOS )
     CALL CHECKMEM( IOS, 'TAGXCNT', PROGNAME )
     DO I = 1, NXTYPES
         TAGXCNT( I ) = ICSIZE( I )
     END DO
 
-    !.........  Deallocate local memory
+    !.......  Deallocate local memory
     DEALLOCATE( ENDLEN )
 
     RETURN
 
     !******************  FORMAT  STATEMENTS   ******************************
 
-    !...........   Internal buffering formats............ 94xxx
+    !.......   Internal buffering formats...... 94xxx
 
 94010 FORMAT( 10( A, :, I8, :, 1X ) )
 

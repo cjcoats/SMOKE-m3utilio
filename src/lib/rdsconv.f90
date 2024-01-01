@@ -143,7 +143,7 @@ SUBROUTINE RDSCONV( FDEV, NNAM, ENAM, OUTNAM )
     CHARACTER(RWTLEN3) CRWT          ! roadway type no.
     CHARACTER(VIDLEN3) CVID          ! vehicle type ID no.
 
-    CHARACTER(16) :: PROGNAME = 'RDSCONV'     ! program name
+    CHARACTER(16), PARAMETER :: PROGNAME = 'RDSCONV'     ! program name
 
     !***********************************************************************
     !   begin body of subroutine RDSCONV
@@ -245,9 +245,8 @@ SUBROUTINE RDSCONV( FDEV, NNAM, ENAM, OUTNAM )
 
             !..........  Make sure that memory is available for error checks
             IF ( .NOT. ALLOCATED( OUTSET ) ) THEN
-                ALLOCATE( OUTSET( NNAM ), STAT=IOS )
-                CALL CHECKMEM( IOS, 'OUTSET', PROGNAME )
-                ALLOCATE( OUTERR( NNAM ), STAT=IOS )
+                ALLOCATE( OUTSET( NNAM ),       &
+                          OUTERR( NNAM ), STAT=IOS )
                 CALL CHECKMEM( IOS, 'OUTERR', PROGNAME )
                 OUTSET = .FALSE.              ! array
                 OUTERR = .FALSE.              ! array
@@ -382,7 +381,7 @@ SUBROUTINE RDSCONV( FDEV, NNAM, ENAM, OUTNAM )
             N( T ) = N( T ) + 1
 
             !........  Set indicator for writing out warning that some entries were
-            !               skipped in file.
+            !          skipped in file.
         ELSE
             SFLAG = .TRUE.
 

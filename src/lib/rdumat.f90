@@ -18,7 +18,7 @@ SUBROUTINE RDUMAT( FNAME, NSRC, NMAT1, NMAT2, NU, IU, CU )
     !****************************************************************************/
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !         System
     ! File: @(#)$Id$
     !
     ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
@@ -39,7 +39,7 @@ SUBROUTINE RDUMAT( FNAME, NSRC, NMAT1, NMAT2, NU, IU, CU )
 
     IMPLICIT NONE
 
-    !.........  SUBROUTINE ARGUMENTS
+    !.......  SUBROUTINE ARGUMENTS
     CHARACTER(*), INTENT (IN) :: FNAME           ! ungridding matrix name
     INTEGER     , INTENT (IN) :: NSRC            ! number of sources
     INTEGER     , INTENT (IN) :: NMAT1           ! dim 1 for matrix
@@ -48,10 +48,10 @@ SUBROUTINE RDUMAT( FNAME, NSRC, NMAT1, NMAT2, NU, IU, CU )
     INTEGER                   :: IU( NMAT1 )     ! list of cells per source
     REAL                      :: CU( NMAT2 )     ! coefficients for cells
 
-    !.........  Other local variables
+    !.......  Other local variables
     CHARACTER(300)  MESG        !  message buffer
 
-    CHARACTER(16) :: PROGNAME = 'RDUMAT'     ! program name
+    CHARACTER(16), PARAMETER :: PROGNAME = 'RDUMAT'     ! program name
 
     !***********************************************************************
     !   begin body of subroutine RDUMAT

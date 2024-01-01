@@ -42,47 +42,47 @@ REAL FUNCTION UNITFAC( UNIT1, UNIT2, LNUM )
 
     IMPLICIT NONE
 
-    !.........   INCLUDES
+    !.......   INCLUDES
 
     INCLUDE 'EMCNST3.h90'
 
-    !...........   SUBROUTINE ARGUMENTS
+    !.......   SUBROUTINE ARGUMENTS
 
     CHARACTER(*), INTENT (IN) :: UNIT1    ! first unit
     CHARACTER(*), INTENT (IN) :: UNIT2    ! second unit
     LOGICAL     , INTENT (IN) :: LNUM     ! true: for numerators
 
-    !...........   Other local variables
+    !.......   Other local variables
     INTEGER         I, K1, K2, L1, L2, LB1, LB2
     INTEGER         EXP1       ! exponent on first unit
     INTEGER         EXP2       ! exponent on second unit
 
     REAL            PRECNV     ! Conversion for exponential prefixes
 
-    CHARACTER(NAMLEN3) :: BUF1 = ' '
-    CHARACTER(NAMLEN3) :: BUF2 = ' '
+    CHARACTER(NAMLEN3) :: BUF1
+    CHARACTER(NAMLEN3) :: BUF2
 
-    CHARACTER(16) :: PROGNAME = 'UNITFAC' ! program name
+    CHARACTER(16), PARAMETER :: PROGNAME = 'UNITFAC' ! program name
 
     !***********************************************************************
     !   begin body of function UNITFAC
 
-    !.........  Initialize factor
+    !.......  Initialize factor
     UNITFAC = 1.0
 
-    !.........  Retrieve length of unit strings
+    !.......  Retrieve length of unit strings
     L1 = LEN_TRIM( UNIT1 )
     L2 = LEN_TRIM( UNIT2 )
 
-    !.........  Cases where one or more of the provided units are blank
+    !.......  Cases where one or more of the provided units are blank
     IF( L1 .LE. 0 .OR. L2 .LE. 0 ) RETURN
 
-    !.........  Determine positions of the divide-by symbol in the units
+    !.......  Determine positions of the divide-by symbol in the units
     K1 = INDEX( UNIT1, '/' )
     K2 = INDEX( UNIT2, '/' )
 
-    !.........  Define buffers as numerators or denominators, depending on
-    !           value of LNUM
+    !.......  Define buffers as numerators or denominators, depending on
+    !         value of LNUM
     IF( LNUM ) THEN
         IF( K1 .LE. 0 ) K1 = L1 + 1
         IF( K2 .LE. 0 ) K2 = L2 + 1
@@ -103,7 +103,7 @@ REAL FUNCTION UNITFAC( UNIT1, UNIT2, LNUM )
     CALL UNITMATCH( BUF1 )
     CALL UNITMATCH( BUF2 )
 
-    !.........  Separate out any leading adjustments (e.g., 10E6)
+    !.......  Separate out any leading adjustments (e.g., 10E6)
     EXP1 = 0
     EXP2 = 0
     K1 = INDEX( BUF1, '10E' )
@@ -125,10 +125,10 @@ REAL FUNCTION UNITFAC( UNIT1, UNIT2, LNUM )
         END IF
     END IF
 
-    !.........  Set conversion factor by comparing units prefixes
+    !.......  Set conversion factor by comparing units prefixes
     PRECNV = 10**( EXP1 - EXP2 )
 
-    !.........  Set conversion factor by comparing numerators of main units
+    !.......  Set conversion factor by comparing numerators of main units
     SELECT CASE( BUF1 )
 
       CASE( 'moles' )
@@ -316,7 +316,7 @@ REAL FUNCTION UNITFAC( UNIT1, UNIT2, LNUM )
 
     END SELECT
 
-    !.........  Inckude any prefix adjustments
+    !.......  Inckude any prefix adjustments
     UNITFAC = UNITFAC * PRECNV
 
     RETURN
@@ -325,14 +325,14 @@ REAL FUNCTION UNITFAC( UNIT1, UNIT2, LNUM )
 CONTAINS    !******************  INTERNAL SUBPROGRAMS  *****************************
 
 
-    !.............  This subprogram checks for an internal error of the
-    !               units conversion case not being programmed in the code
+    !.......  This subprogram checks for an internal error of the
+    !         units conversion case not being programmed in the code
     SUBROUTINE CASE_NOT_FOUND( FACTOR )
 
-        !.............  Subprogram arguments
+        !.......  Subprogram arguments
         REAL, INTENT (OUT) :: FACTOR
 
-        !.............   Local variables
+        !.......   Local variables
         CHARACTER(300) MESG
 
         !----------------------------------------------------------------------

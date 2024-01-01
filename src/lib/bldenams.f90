@@ -70,7 +70,9 @@ SUBROUTINE BLDENAMS( CATEGORY_L, NIPPA_L, NPPOA, EANAM_L,&
     INTEGER     , INTENT(OUT) :: OUTTYPES( NIPPA_L,NPPOA )    ! var typ:int/real
     CHARACTER(*), INTENT(OUT) :: OUTDESCS( NIPPA_L,NPPOA )    ! var descriptions
 
-    !.....  Data arrays for variable names...
+    !.....  PARAMETERs...
+
+    CHARACTER(16), PARAMETER :: PROGNAME = 'BLDENAMS'     ! program name
 
     !.....  Area source variable name parameters
     CHARACTER(CPRTLEN3), PARAMETER :: ARPREFIX( 2:NARPPOL3 ) =      &
@@ -96,9 +98,9 @@ SUBROUTINE BLDENAMS( CATEGORY_L, NIPPA_L, NPPOA, EANAM_L,&
     !.....  Mobile source variable name parameters
     CHARACTER(CPRTLEN3), PARAMETER :: MBPREFIX( 2:NMBPPOL3 ) = (/ AVEDAYRT /)
 
-    CHARACTER(NAMLEN3), PARAMETER :: MBUNITS( NMBPPOL3 ) =  (/ 'tons/yr ', 'tons/day' /)
+    CHARACTER(NAMLEN3),  PARAMETER :: MBUNITS( NMBPPOL3 ) =  (/ 'tons/yr ', 'tons/day' /)
 
-    INTEGER, PARAMETER :: MBTYPES( NMBPPOL3 ) = (/ M3REAL, M3REAL /)
+    INTEGER,             PARAMETER :: MBTYPES( NMBPPOL3 ) = (/ M3REAL,       M3REAL /)
 
     CHARACTER(MXDLEN3), PARAMETER :: MBDESCS( NMBPPOL3 ) =          &
          (/ 'Annual Data     ',                                     &
@@ -142,8 +144,6 @@ SUBROUTINE BLDENAMS( CATEGORY_L, NIPPA_L, NPPOA, EANAM_L,&
     CHARACTER(NAMLEN3)  NAM       !  current pollutant/activity name
     CHARACTER(10)   BUFFER        !  tmp string buffer
     CHARACTER(300)  MESG          !  message buffer
-
-    CHARACTER(16) :: PROGNAME = 'BLDENAMS'     ! program name
 
     !***********************************************************************
     !   begin body of subroutine BLDENAMS

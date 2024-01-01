@@ -64,7 +64,7 @@ LOGICAL FUNCTION CREATESET( FIDX, RNAME, PHYSNAME, FSTATUS )
     CHARACTER(256) TEMPNAME          ! temporary physical file name
     CHARACTER(300) MESG              ! message buffer
 
-    CHARACTER(16) :: PROGNAME = 'CREATESET'      ! program name
+    CHARACTER(16), PARAMETER :: PROGNAME = 'CREATESET'      ! program name
 
     !-------------------------------------
     !  Begin body of function CREATESET

@@ -46,14 +46,12 @@ CHARACTER(*) FUNCTION MULTUNIT( UNIT1, UNIT2 )
     CHARACTER(*), INTENT (IN) :: UNIT2        ! second unit
 
     !......   Other local variables
-    INTEGER         K1, K2, L1, L2, LD1, LD2, LN1, LN2
+    INTEGER        K1, K2, L1, L2, LD1, LD2, LN1, LN2
 
     CHARACTER(NAMLEN3) :: DEN1 = ' '
     CHARACTER(NAMLEN3) :: DEN2 = ' '
     CHARACTER(NAMLEN3) :: NUM1 = ' '
     CHARACTER(NAMLEN3) :: NUM2 = ' '
-
-    CHARACTER(16) :: PROGNAME = 'MULTUNIT'     ! program name
 
     !***********************************************************************
     !   begin body of function MULTUNIT
@@ -148,8 +146,7 @@ CHARACTER(*) FUNCTION MULTUNIT( UNIT1, UNIT2 )
 
     ELSE
 
-        MULTUNIT = NUM1( 1:LN1 )// '*'// NUM2( 1:LN2 )// '/'//&
-                   DEN1( 1:LD1 )// '*'// DEN2
+        MULTUNIT = NUM1( 1:LN1 )// '*'// NUM2( 1:LN2 )// '/'// DEN1( 1:LD1 )// '*'// DEN2
 
     END IF
 

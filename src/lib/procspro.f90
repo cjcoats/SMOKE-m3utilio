@@ -20,7 +20,7 @@ SUBROUTINE PROCSPRO( NMSPC, SPCNAM )
     !****************************************************************************/
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !        System
     ! File: @(#)$Id$
     !
     ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
@@ -42,7 +42,7 @@ SUBROUTINE PROCSPRO( NMSPC, SPCNAM )
     !......   MODULES for public variables
     !......   This module contains the speciation profile tables
     USE MODSPRO, ONLY: NSPFUL, NSPROF, NSPECIES, SPROFN,    &
-                       IDXSPRO, IDXSSPEC, INPRF, SPECID
+        IDXSPRO, IDXSSPEC, INPRF, SPECID
 
     IMPLICIT NONE
 
@@ -50,26 +50,26 @@ SUBROUTINE PROCSPRO( NMSPC, SPCNAM )
     INCLUDE 'EMCNST3.h90'       !  emissions constant parameters
 
     !......  SUBROUTINE ARGUMENTS
-    INTEGER     , INTENT (IN) :: NMSPC               ! No. of species for 1 pol
+    INTEGER     , INTENT (IN) :: NMSPC        ! No. of species for 1 pol
     CHARACTER(*), INTENT (IN) :: SPCNAM( NMSPC )     ! Species names for 1 pol
 
     !......  Other local variables
-    INTEGER          I, J, K, L1          !  counters and indices
-    INTEGER          IOS                  !  i/o status
+    INTEGER        I, J, K, L1        !  counters and indices
+    INTEGER        IOS        !  i/o status
 
-    CHARACTER(300)     MESG           ! message buffer
+    CHARACTER(300)     MESG        ! message buffer
 
-    CHARACTER(NAMLEN3) SBUF           ! species name buffer
-    CHARACTER(SPNLEN3) PCODE          ! current speciation profile code
+    CHARACTER(NAMLEN3) SBUF        ! species name buffer
+    CHARACTER(SPNLEN3) PCODE        ! current speciation profile code
     CHARACTER(SPNLEN3) PREVCODE       ! previous speciation profile code
 
-    CHARACTER(16) :: PROGNAME = 'PROCSPRO'     ! program name
+    CHARACTER(16), PARAMETER :: PROGNAME = 'PROCSPRO'     ! program name
 
     !***********************************************************************
     !   begin body of subroutine PROCSPRO
 
     !......  Loop through sorted, unprocessed speciation profiles table to count
-    !           the number of unique profiles
+    !        the number of unique profiles
 
     PREVCODE = EMCMISS3
     J = 0
@@ -82,7 +82,7 @@ SUBROUTINE PROCSPRO( NMSPC, SPCNAM )
             PREVCODE = PCODE
         ENDIF
 
-    END DO            !  end loop on speciation profile table
+    END DO        !  end loop on speciation profile table
 
     NSPROF = J
 
@@ -97,9 +97,9 @@ SUBROUTINE PROCSPRO( NMSPC, SPCNAM )
     NSPECIES = 0       ! array
 
     !......  Loop through sorted, unprocessed speciation profiles table for
-    !           current pollutant to process it.  This algorithm works because we
-    !           have stored (in INPRF) only those profiles for the current
-    !           pollutant.
+    !        current pollutant to process it.  This algorithm works because we
+    !        have stored (in INPRF) only those profiles for the current
+    !        pollutant.
 
     PREVCODE = EMCMISS3
     J = 0
@@ -122,9 +122,9 @@ SUBROUTINE PROCSPRO( NMSPC, SPCNAM )
         K = FINDC( SBUF, NMSPC, SPCNAM )
 
         IF( K .LE. 0 ) THEN
-            MESG = 'INTERNAL ERROR: model species "' //             &
-                   TRIM( SBUF ) // '" not found in sorted ' //      &
-                   'names list developed for this pollutant'
+            MESG = 'INTERNAL ERROR: model species "' //        &
+            TRIM( SBUF ) // '" not found in sorted ' //      &
+                'names list developed for this pollutant'
             CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 
         ELSE
@@ -134,7 +134,7 @@ SUBROUTINE PROCSPRO( NMSPC, SPCNAM )
 
         END IF
 
-    END DO            !  end loop on speciation profile table
+    END DO        !  end loop on speciation profile table
 
     RETURN
 

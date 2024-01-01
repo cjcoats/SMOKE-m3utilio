@@ -58,7 +58,8 @@ SUBROUTINE RDSPDPROF( FDEV )
     INTEGER, EXTERNAL :: GETFLINE
 
     !...........   Local parameters
-    INTEGER    , PARAMETER :: MXCOL = 25
+    INTEGER      , PARAMETER :: MXCOL = 25
+    CHARACTER(16), PARAMETER :: PROGNAME = 'RDSPDPROF'        ! program name
 
     !...........   Array of input fields
     CHARACTER(SPDLEN3)  SEGMENT( MXCOL )
@@ -70,21 +71,18 @@ SUBROUTINE RDSPDPROF( FDEV )
 
     !...........   Local variables
     INTEGER         I,J,K                         ! counters and indices
-
     INTEGER         IOS                           ! I/O status
     INTEGER         NLINES                        ! no. lines in file
     INTEGER         PREVNUM                       ! previous profile number
 
-    LOGICAL      :: EFLAG = .FALSE.               ! true: error found
+    LOGICAL         EFLAG                         ! true: error found
 
     CHARACTER(150)  LINE                          ! Read buffer for a line
     CHARACTER(256)  MESG                          ! message buffer
 
-    CHARACTER(16) :: PROGNAME = 'RDSPDPROF'        ! program name
-
     !***********************************************************************
     !   Begin body of subroutine RDSPDPROF
-
+    EFLAG = .FALSE.
     !........  Count number of lines in file
     NLINES = GETFLINE( FDEV, 'Speed profiles file')
 
@@ -197,7 +195,7 @@ SUBROUTINE RDSPDPROF( FDEV )
     DO I = 1, NSPDPROF
         J = SPDIDXA( I )
 
-    !............  Check that duplicate profile numbers have not been used
+        !............  Check that duplicate profile numbers have not been used
         IF( SPDNUMA( J ) == PREVNUM ) THEN
             EFLAG = .TRUE.
             WRITE( MESG,94010 ) 'ERROR: At least two speed ' //     &

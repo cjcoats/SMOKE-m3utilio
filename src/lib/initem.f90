@@ -48,7 +48,7 @@ SUBROUTINE INITEM( LDEV, NAMEVERS, INPROGNM )
     IMPLICIT NONE
 
     !.....  Subroutine arguments
-    INTEGER,       INTENT (INOUT) :: LDEV          ! Log file unit number
+    INTEGER,       INTENT (INOUT) :: LDEV       ! Log file unit number
     CHARACTER(50), INTENT (IN) :: NAMEVERS      ! ASCII field e/ version number appended to end
     CHARACTER(16), INTENT (IN) :: INPROGNM      ! Calling program name
 
@@ -66,7 +66,7 @@ SUBROUTINE INITEM( LDEV, NAMEVERS, INPROGNM )
     CHARACTER(50)  VERCHAR
     CHARACTER(300) LINE0, LINE1, LINE2, LINE3, LINE4, LINE5
 
-    CHARACTER(16) :: PROGNAME = 'INITEM'      ! program name
+    CHARACTER(16), PARAMETER :: PROGNAME = 'INITEM'      ! program name
 
     !***********************************************************************
     !   begin body of program INITEM

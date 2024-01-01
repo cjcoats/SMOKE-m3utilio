@@ -50,7 +50,7 @@ SUBROUTINE CLEANUP( FIDX )
 
     CHARACTER(300) MESG                        ! message buffer
 
-    CHARACTER(16) :: PROGNAME = 'CLEANUP'      ! program name
+    CHARACTER(16), PARAMETER :: PROGNAME = 'CLEANUP'      ! program name
 
     !-----------------------------------
     !  Begin body of subroutine CLEANUP

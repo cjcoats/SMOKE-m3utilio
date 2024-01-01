@@ -78,7 +78,7 @@ SUBROUTINE GETSINFO( ENAME )
     CHARACTER(16)  TMPNAME          ! tmp logical file name for map data files
     CHARACTER(256) MESG             ! Message buffer
 
-    CHARACTER(16) :: PROGNAME = 'GETSINFO'        ! Program name
+    CHARACTER(16), PARAMETER :: PROGNAME = 'GETSINFO'        ! Program name
 
     !***********************************************************************
     !   begin body of subroutine GETSINFO

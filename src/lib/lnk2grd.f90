@@ -66,8 +66,8 @@ SUBROUTINE LNK2GRD( NDIM, XBEGIN, YBEGIN, XENDIN, YENDIN,   &
     !.....  Local arrays dimensioned with subroutine arguments
     INTEGER, ALLOCATABLE, SAVE :: XCOL( : )        !  subscript for this grid intersection
     INTEGER, ALLOCATABLE, SAVE :: YROW( : )        !  subscript for this grid intersection
-    REAL, ALLOCATABLE, SAVE    :: XFAC( : )        !  frac of link traversed
-    REAL, ALLOCATABLE, SAVE    :: YFAC( : )        !  frac of link traversed
+    REAL   , ALLOCATABLE, SAVE :: XFAC( : )        !  frac of link traversed
+    REAL   , ALLOCATABLE, SAVE :: YFAC( : )        !  frac of link traversed
 
     !.......   LOCAL VARIABLES and their descriptions:
 
@@ -100,7 +100,7 @@ SUBROUTINE LNK2GRD( NDIM, XBEGIN, YBEGIN, XENDIN, YENDIN,   &
 
     LOGICAL :: FIRSTIME = .TRUE.         !  true: first time routine called
 
-    CHARACTER(16) :: PROGNAME = 'LNK2GRD'      ! progname name
+    CHARACTER(16), PARAMETER :: PROGNAME = 'LNK2GRD'      ! progname name
 
     !***********************************************************************
     !   begin body of subroutine  LNK2GRD

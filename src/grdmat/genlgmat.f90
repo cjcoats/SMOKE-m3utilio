@@ -19,8 +19,8 @@ SUBROUTINE GENLGMAT( GNAME, FDEV, NCOEF, CMAX, CMIN )
     !  REVISION  HISTORY:
     !       prototype 2/2016 by Carlie J. Coats, Jr., UNC IE, adapted from
     !          "m3tools/mtxcalc.f90"
-    !       Version 11/2023 by CJC:  USE M3UTILIO, conversion to ".f90",  and
-    !       related changes
+    !       Version 11/2023 by CJC:  USE M3UTILIO, conversion to ".f90",
+    !       orientation-calculation bug-fix, and related changes
     !**************************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
@@ -69,10 +69,12 @@ SUBROUTINE GENLGMAT( GNAME, FDEV, NCOEF, CMAX, CMIN )
     INTEGER,              INTENT(OUT) :: CMIN       !  min no. of sources per cell
 
     !.........  PARAMETERS
-    REAL*8, PARAMETER    :: PI     = 3.14159265358979324D0     !  pi
-    REAL*8, PARAMETER    :: PI180  = PI / 180.0D0              !  degrees-to-radians
-    REAL*8, PARAMETER    :: REARTH = 6367333.0D0               !  mean radius of the earth (meters)
-    REAL*8, PARAMETER    :: DG2M   = REARTH * PI / 180.0D0     !  degrees-to-meters at equator
+    REAL*8       , PARAMETER :: PI     = 3.14159265358979324D0     !  pi
+    REAL*8       , PARAMETER :: PI180  = PI / 180.0D0              !  degrees-to-radians
+    REAL*8       , PARAMETER :: REARTH = 6367333.0D0               !  mean radius of the earth (meters)
+    REAL*8       , PARAMETER :: DG2M   = REARTH * PI / 180.0D0     !  degrees-to-meters at equator
+
+    CHARACTER(16), PARAMETER ::   PROGNAME = 'GENLGMAT'       ! program name
 
     !.........  LOCAL VARIABLES and their descriptions:
     INTEGER     I, J, K, L, M, N, C, R, S, V
@@ -107,8 +109,6 @@ SUBROUTINE GENLGMAT( GNAME, FDEV, NCOEF, CMAX, CMIN )
 
     CHARACTER(256)          MESG                      ! tmp line buffer
 
-    CHARACTER(NAMLEN3) ::   PROGNAME = 'GENLGMAT'       ! program name
-
     !***********************************************************************
     !   begin body of subroutine GENLGMAT
 
@@ -120,7 +120,7 @@ SUBROUTINE GENLGMAT( GNAME, FDEV, NCOEF, CMAX, CMIN )
     ELSE IF ( .NOT. DESC3( 'GRIDMASK' ) ) THEN
         MESG   = 'Could not DESC3( "GRIDMASK" )'
         CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
-    ELSE IF ( XCELLE * YCELLE .LT. 0.0D0 ) THEN
+    ELSE IF ( XCELL3D .LT. 0.0D0 .OR. YCELL3D .LT. 0.0D0 ) THEN
         MESG   = 'Negative input-grid XCELL or YCELL:  unsupported case'
         CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
     ELSE
@@ -184,11 +184,11 @@ SUBROUTINE GENLGMAT( GNAME, FDEV, NCOEF, CMAX, CMIN )
     !$OMP&                   SHARED( NCOLS, NROWS, MSFX2 ),
     !$OMP&                  PRIVATE( C, R, K )
         DO R = 1, NROWS
-            DO C = 1, NCOLS
-                Y = YORIG + ( DBLE( R ) - 0.5d0 )*YCELL
-                K = C + NCOLS*( R - 1 )
-                MSFX2( K ) = 1.0 / ( DG2M**2 * COS( PI180*Y ) )
-            END DO
+        DO C = 1, NCOLS
+            Y = YORIG + ( DBLE( R ) - 0.5d0 )*YCELL
+            K = C + NCOLS*( R - 1 )
+            MSFX2( K ) = 1.0 / ( DG2M**2 * COS( PI180*Y ) )
+        END DO
         END DO
 
         IF ( GDTYPE .EQ. LATGRD3 ) THEN

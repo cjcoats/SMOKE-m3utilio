@@ -75,7 +75,7 @@ SUBROUTINE GETDYSAV( NSRC, CIFIP, LDAYSAV )
     CHARACTER(300) TRAILER           ! ending part of output log message
     CHARACTER(300) MESG              ! message buffer
 
-    CHARACTER(16) :: PROGNAME = 'GETDYSAV'     ! program name
+    CHARACTER(16), PARAMETER :: PROGNAME = 'GETDYSAV'     ! program name
 
     !***********************************************************************
     !   begin body of subroutine GETDYSAV

@@ -43,9 +43,7 @@ SUBROUTINE PADZERO( STRING )
     !......   SUBROUTINE ARGUMENTS
     CHARACTER(*), INTENT(IN OUT) :: STRING     ! character string to adjust
 
-    INTEGER         I, L
-
-    CHARACTER(16) :: PROGNAME = 'PADZERO'     ! program name
+    INTEGER        I, L
 
     !***********************************************************************
     !   begin body of subroutine PADZERO
@@ -57,13 +55,9 @@ SUBROUTINE PADZERO( STRING )
     DO I = 1, L
 
         IF( STRING( I:I ) .EQ. ' ' ) THEN
-
             STRING( I:I ) = '0'
-
         ELSE
-
             EXIT
-
         ENDIF
 
     ENDDO

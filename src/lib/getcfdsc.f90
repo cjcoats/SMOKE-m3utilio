@@ -60,7 +60,7 @@ CHARACTER(*) FUNCTION GETCFDSC( FILEINFO, KEY, REQUIRED )
     CHARACTER(300) BUFFER          ! key buffer
     CHARACTER(300) MESG            ! message buffer
 
-    CHARACTER(16) :: PROGNAME = 'GETCFDSC'        ! Program name
+    CHARACTER(16), PARAMETER :: PROGNAME = 'GETCFDSC'        ! Program name
 
     !***********************************************************************
     !   begin body of subroutine GETCFDSC

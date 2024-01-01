@@ -72,7 +72,7 @@ SUBROUTINE GETIDASZ( FDEV, CATEGORY, NLINEBP )
     CHARACTER(300)  LINE            !  input file line buffer
     CHARACTER(300)  MESG            !  message buffer
 
-    CHARACTER(16) :: PROGNAME = 'GETIDASZ'     ! program name
+    CHARACTER(16), PARAMETER :: PROGNAME = 'GETIDASZ'     ! program name
 
     !***********************************************************************
     !   begin body of subroutine GETIDASZ

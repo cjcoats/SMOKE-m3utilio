@@ -136,7 +136,7 @@ SUBROUTINE OPENREPIN( ENAME, ANAME, CUNAME, GNAME, LNAME,           &
 
     CHARACTER(NAMLEN3) GRDENV          ! gridded output units from envrmt
 
-    CHARACTER(16) :: PROGNAME = 'OPENREPIN'     ! program name
+    CHARACTER(16), PARAMETER :: PROGNAME = 'OPENREPIN'     ! program name
 
     !***********************************************************************
     !   begin body of subroutine OPENREPIN

@@ -84,7 +84,7 @@ SUBROUTINE GENPTVCEL( NRECS, NGRID, XLOCA, YLOCA, NEXCLD, NX, INDX, GN, SN )
     CHARACTER(16)   GNAME         !  logical file name for GRID_DOT_2D file
     CHARACTER(300)  MESG          !  message buffer
 
-    CHARACTER(16) :: PROGNAME = 'GENPTVCEL'     ! program name
+    CHARACTER(16), PARAMETER :: PROGNAME = 'GENPTVCEL'     ! program name
 
     !***********************************************************************
     !   begin body of subroutine GENPTVCEL
