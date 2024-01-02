@@ -604,8 +604,7 @@ PROGRAM MRGGRID
         ICNTFIL = ALLFILES
         IF( NFILES( F ) .EQ. 1 ) ICNTFIL = 1       ! send ALLFILES if more than one file, send 1 otherwise
         IF ( .NOT. DESCSET( IO_NAM, ICNTFIL ) ) THEN
-            MESG = 'Could not get description of file "'  //    &
-                    NAM( 1:LEN_TRIM( NAM ) ) // '"'
+            MESG = 'Could not get description of file "' // TRIM( NAM ) // '"'
             CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 
         ELSE
@@ -899,9 +898,6 @@ PROGRAM MRGGRID
         ELSE
             IF ( VUNITA( V,F ) .NE. VUNITU( K ) ) THEN
                 EFLAG = .TRUE.
-                L  = LEN_TRIM( VNM )
-                L1 = LEN_TRIM( VUNITA( V,F ) )
-                L2 = LEN_TRIM( VUNITU( K )   )
                 WRITE( MESG,94010 ) 'ERROR: Variable "' // TRIM( VNM ) //       &
                        '" in file', F, 'has units "'// TRIM( VUNITA( V,F ) ) // &
                        '"' // CRLF() // BLANK10 //    &
@@ -932,8 +928,7 @@ PROGRAM MRGGRID
     IF( NFILES( 1 ) .EQ. 1 ) ICNTFIL = 1       ! send ALLFILES if more than one file, send 1 otherwise
 
     IF( .NOT. DESCSET( IONAME( 1 ), ICNTFIL ) ) THEN
-        MESG = 'Could not get description of file "'  //    &
-                FNAME( 1 )( 1:LEN_TRIM( FNAME(1) ) ) // '"'
+        MESG = 'Could not get description of file "' // TRIM( FNAME(1) ) // '"'
         CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
     ENDIF
 
@@ -1385,8 +1380,7 @@ PROGRAM MRGGRID
 
     !.....  Write species/hour to output file
             IF( .NOT. WRITE3( ONAME, TVNM, JDATE, JTIME, EOUT )) THEN
-                MESG = 'Could not write "'// TVNM// '" to file "'//    &
-                        ONAME( 1:LEN_TRIM( ONAME ) ) // '".'
+                MESG = 'Could not write "'// TVNM// '" to file "'// TRIM( ONAME ) // '".'
                 CALL M3EXIT( PROGNAME, JDATE, JTIME, MESG, 2 )
             END IF
 

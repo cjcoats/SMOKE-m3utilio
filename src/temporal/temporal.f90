@@ -42,6 +42,7 @@ PROGRAM TEMPORAL
     !
     !*************************************************************************
     USE M3UTILIO
+    USE MODFILESET, ONLY:  ALLFILES
 
     !.......  MODULES for public variables
     !.......  This module contains the inventory arrays

@@ -124,18 +124,15 @@ SUBROUTINE UNITMATCH( UNITBUF )
 
     !.......  Piece together output units
     IF( PREFIX1 .NE. ' ' ) THEN
-        L2 = LEN_TRIM( PREFIX1 )
-        CNUM = PREFIX1( 1:L2 ) // ' ' // CNUM
+        CNUM = TRIM( PREFIX1 ) // ' ' // CNUM
     END IF
 
     IF( PREFIX2 .NE. ' ' ) THEN
-        L2 = LEN_TRIM( PREFIX2 )
-        CNUM = PREFIX2( 1:L2 ) // ' ' // CDEN
+        CNUM = TRIM( PREFIX2 ) // ' ' // CDEN
     END IF
 
     IF( FRACFLAG ) THEN
-        L2 = LEN_TRIM( CNUM )
-        UNITBUF = CNUM( 1:L2 ) // '/' // CDEN
+        UNITBUF = TRIM( CNUM ) // '/' // CDEN
 
     ELSE
         UNITBUF = CNUM

@@ -35,16 +35,14 @@ SUBROUTINE OPENPHYS( CALLER, FNAME, STATUS, PHYSNAME, EFLAG )
     ! Last updated: $Date$
     !
     !***************************************************************************
+    USE M3UTILIO
+    USE MODFILESET, ONLY:  ALLFILES
 
     IMPLICIT NONE
 
     !......   INCLUDES
     INCLUDE 'IOCNST3.h90'       !  emissions constant parameters
     INCLUDE 'SETDECL.h90'       !  FileSetAPI variables and functions
-
-    !......   EXTERNAL FUNCTIONS and their descriptions:
-    CHARACTER(2), EXTERNAL :: CRLF
-    LOGICAL     , EXTERNAL :: SETENVVAR
 
     !......  SUBROUTINE ARGUMENTS
     CHARACTER(*), INTENT(IN   ) :: CALLER        ! calling routine
@@ -77,8 +75,8 @@ SUBROUTINE OPENPHYS( CALLER, FNAME, STATUS, PHYSNAME, EFLAG )
         !......  Get description for file
     ELSE IF( .NOT. DESCSET( FNAME, ALLFILES ) ) THEN
         EFLAG = .TRUE.
-        MESG = 'Could not get description of file: ' // CRLF()//    &
-               BLANK10// TRIM( PHYSNAME )
+        MESG = 'Could not get description of file: ' //     &
+               CRLF()//BLANK10// TRIM( PHYSNAME )
         CALL M3EXIT( CALLER, 0, 0, MESG, 2 )
 
     END IF

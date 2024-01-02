@@ -993,12 +993,10 @@ PROGRAM LAYPOINT
 
         MESG = 'Cy/St/Co, Plant'
         DO I = 1, NCHARS - 2
-            L = LEN_TRIM( MESG )
-            WRITE( MESG,'(A,I1,A)' ) MESG( 1:L ) // ', Char', I
+            WRITE( MESG,'(A,I1,A)' ) TRIM( MESG ) // ', Char', I
         END DO
-        L = LEN_TRIM( MESG )
 
-        WRITE( RDEV,93040 ) REP_LAYR, MESG( 1:L )
+        WRITE( RDEV,93040 ) REP_LAYR, TRIM( MESG )
 
     END IF
 
@@ -1030,7 +1028,7 @@ PROGRAM LAYPOINT
 
             !.......  Write day and date message to report file
             IF( RDEV .GT. 0 ) THEN
-                WRITE( RDEV,93000 ) MESG( 1:LEN_TRIM( MESG ) )
+                WRITE( RDEV,93000 ) TRIM( MESG )
             END IF
 
             LDATE = JDATE

@@ -155,12 +155,9 @@ SUBROUTINE WRMRGREP( JDATE, JTIME )
         DO V = 1, NMSPC
             IF( .NOT. SMATCHK ) THEN
                 GRDUNIT(V) = MULTUNIT( GRDUNIT( V ), 's/day' )
-
-                L = LEN_TRIM( GRDUNIT( V ) )
-                CBUF = '[' // GRDUNIT( V )( 1:L ) // ']'
+                CBUF = '[' // TRIM( GRDUNIT( V ) ) // ']'
             ELSE
-                L = LEN_TRIM( TOTUNIT( V ) )
-                CBUF = '[' // TOTUNIT( V )( 1:L ) // ']'
+                CBUF = '[' // TRIM( TOTUNIT( V ) ) // ']'
             END IF
 
             MNAMES( V ) = EMNAM( V )
@@ -172,8 +169,7 @@ SUBROUTINE WRMRGREP( JDATE, JTIME )
         DO V = 1, NIPPA
 
             !.......  Set names and units for output
-            L = LEN_TRIM( TOTUNIT( NMSPC+V ) )
-            CBUF = '[' // TOTUNIT( NMSPC+V )( 1:L ) // ']'
+            CBUF = '[' // TRIM( TOTUNIT( NMSPC+V ) ) // ']'
 
             MNAMES( NMSPC+V ) = EANAM( V )
             MUNITS( NMSPC+V ) = CBUF
@@ -310,26 +306,22 @@ CONTAINS
         TYPENAM = ' speciated'
 
         HEADER = TRIM( HEADER ) // TRIM( DATANAM )// TYPENAM // ' emissions'
-        L = LEN_TRIM( HEADER )
 
         IF( JDATE .NE. 0 ) THEN
 
             K1  = WKDAY( PDATE )
             K2  = WKDAY( JDATE )
-            LD1 = LEN_TRIM( DAYS( K1 ) )
-            LD2 = LEN_TRIM( DAYS( K2 ) )
 
-            WRITE( HEADER,94010 ) HEADER( 1:L ) // ' from ' //&
-               CRLF() // '#' // BLANK5(1:4) //&
-               TRIM( DAYS( K1 ) ) // ' ' // MMDDYY( PDATE ) //&
-               ' at', PTIME, 'to' // CRLF() // '#' // BLANK5(1:4) //&
-               TRIM( DAYS( K2 ) ) // ' '// MMDDYY( JDATE ) //&
+            WRITE( HEADER,94010 ) TRIM( HEADER ) // ' from ' //         &
+               CRLF() // '#' // BLANK5(1:4) //                          &
+               TRIM( DAYS( K1 ) ) // ' ' // MMDDYY( PDATE ) //          &
+               ' at', PTIME, 'to' // CRLF() // '#' // BLANK5(1:4) //    &
+               TRIM( DAYS( K2 ) ) // ' '// MMDDYY( JDATE ) //           &
                ' at', JTIME
-            L = LEN_TRIM( HEADER )
 
         END IF
 
-        HEADER = HEADER( 1:L ) // ' within grid ' // GRDNM
+        HEADER = TRIM( HEADER ) // ' within grid ' // GRDNM
 
         RETURN
 
@@ -395,24 +387,20 @@ CONTAINS
         WRITE( HDRFMT, '( "(A",A)' ) ',";"'
         DO J = 1, NDIM
             TMPFMT = HDRFMT
-            L = LEN_TRIM( TMPFMT )
-            WRITE( HDRFMT, '(A, ",1X,A",I2.2,A)' ) TMPFMT(1:L), WIDTHS( J ), ',";"'
+            WRITE( HDRFMT, '(A, ",1X,A",I2.2,A)' ) TRIM( TMPFMT ), WIDTHS( J ), ',";"'
         END DO
         TMPFMT = HDRFMT
-        L = LEN_TRIM( TMPFMT )
-        WRITE( HDRFMT, '(A)' ) TMPFMT( 1:L ) // ')'
+        WRITE( HDRFMT, '(A)' ) TRIM( TMPFMT ) // ')'
 
         !.......  Create format statement for output of emissions
         WRITE( DATFMT, '( "(A",I2.2,A)' ) WIDTHS( 0 ), ',";"'
         DO J = 1, NDIM
             TMPFMT = DATFMT
-            L = LEN_TRIM( TMPFMT )
-            WRITE( DATFMT, '(A, ",1X,E",I2.2,".",I1,A)' )&
-                   TMPFMT(1:L), WIDTHS( J ), EFMTDEC, ',";"'
+            WRITE( DATFMT, '(A, ",1X,E",I2.2,".",I1,A)' )   &
+                   TRIM( TMPFMT ), WIDTHS( J ), EFMTDEC, ',";"'
         END DO
         TMPFMT = DATFMT
-        L = LEN_TRIM( TMPFMT )
-        WRITE( DATFMT, '(A)' ) TMPFMT( 1:L ) // ')'
+        WRITE( DATFMT, '(A)' ) TRIM( TMPFMT ) // ')'
 
         RETURN
 
@@ -546,7 +534,7 @@ CONTAINS
 
         !.......  Write header for state totals
         WRITE( FDEV, '(A)' ) '# '
-        WRITE( FDEV, '(A)' ) HEADER( 1:LEN_TRIM( HEADER ) )
+        WRITE( FDEV, '(A)' ) TRIM( HEADER )
 
         !.......  Write line
         !         WRITE( FDEV, '(A)' ) LINFLD( 1:L2 )
@@ -702,7 +690,7 @@ CONTAINS
 
         !.......  Write header for county totals
         WRITE( FDEV, '(A)' ) '# '
-        WRITE( FDEV, '(A)' ) HEADER( 1:LEN_TRIM( HEADER ) )
+        WRITE( FDEV, '(A)' ) TRIM( HEADER )
 
         !.......  Write units for columns
         WRITE( FDEV, HDRFMT ) ADJUSTL( HDRBUF ),  ( OUTUNIT( J ), J=1,NDIM )
@@ -786,7 +774,7 @@ CONTAINS
 
         !.......  Write header for county totals
         WRITE( FDEV, '(A)' ) '# '
-        WRITE( FDEV, '(A)' ) HEADER( 1:LEN_TRIM( HEADER ) )
+        WRITE( FDEV, '(A)' ) TRIM( HEADER )
 
         !.......  Write units for columns
         WRITE( FDEV, HDRFMT ) ADJUSTL( HDRBUF ),  ( OUTUNIT( J ), J=1, NDIM )

@@ -40,7 +40,8 @@ SUBROUTINE RDINVMAP( INAME, IDEV, ENAME, ANAME, SDEV )
 
     !.......   MODULES for public variables
     !.......  This module contains the information about the source category
-    USE MODINFO, ONLY: NMAP, MAPNAM, MAPFIL
+    USE MODINFO,    ONLY: NMAP, MAPNAM, MAPFIL
+    USE MODFILESET, ONLY: ALLFILES
 
     IMPLICIT NONE
 

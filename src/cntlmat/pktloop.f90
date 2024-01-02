@@ -131,7 +131,7 @@ SUBROUTINE PKTLOOP( FDEV, PDEV, CDEV, GDEV, LDEV, MDEV, WDEV,&
         !               unsorted x-ref data
         IF( ACTION .EQ. 'PROCESS' ) THEN
 
-            MESG = 'Processing ' // PKTLIST( K )( 1:LEN_TRIM( PKTLIST( K ) ) ) // ' packet...'
+            MESG = 'Processing ' // TRIM( PKTLIST( K ) ) // ' packet...'
             CALL M3MSG2( MESG )
 
             J = XRFCNT( K )

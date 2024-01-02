@@ -347,8 +347,7 @@ SUBROUTINE OPENMRGIN
                                    FSREAD3, 'MET_CRO_2D', PROGNAME )
 
             IF( .NOT. DESC3( METNAME ) ) THEN
-                MESG = 'Could not get description of file "' //&
-                    METNAME( 1:LEN_TRIM( METNAME ) ) // '" '
+                MESG = 'Could not get description of file "' // TRIM( METNAME ) // '" '
                 CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
             END IF
 
@@ -685,8 +684,7 @@ CONTAINS
                        // ' ' // LOCCAT // ' HOURLY EMISSIONS file'
                 TMPNAM = CRL // 'TMP_' // SUFFIX( D )
 
-                FNAME( D ) = PROMPTSET( MESG,FSREAD3,&
-                                          TMPNAM,PROGNAME )
+                FNAME( D ) = PROMPTSET( MESG, FSREAD3, TMPNAM, PROGNAME )
                 IDX( D ) = D
             END DO
 
@@ -710,8 +708,7 @@ CONTAINS
 
             !.......  Get header and compare source number and time range
             IF ( .NOT. DESCSET( TMPNAM, ALLFILES ) ) THEN
-                MESG = 'Could not get description of file set "' //&
-                       TMPNAM( 1:LEN_TRIM( TMPNAM ) ) // '"'
+                MESG = 'Could not get description of file set "' // TRIM( TMPNAM ) // '"'
                 CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
             ENDIF
 
@@ -730,10 +727,9 @@ CONTAINS
             !.......  For by-day files, make sure that the file starts at hour 0
             IF( LBDSTAT .AND. STIME3D .NE. 0 ) THEN
                 EFLAG = .TRUE.
-                L = LEN_TRIM( TMPNAM )
-                WRITE( MESG,94010 ) 'ERROR: Start time of', STIME3D,&
-                       'in file "'// TMPNAM( 1:L ) //&
-                       '" is invalid.' // CRLF() // BLANK10 //&
+                WRITE( MESG,94010 ) 'ERROR: Start time of', STIME3D,        &
+                       'in file "'// TRIM( TMPNAM ) // '" is invalid.' //   &
+                       CRLF() // BLANK10 //&
                        'Only start time of 000000 is valid for' //&
                        'processing by day.'
                 CALL M3MSG2( MESG )
@@ -898,8 +894,7 @@ CONTAINS
 
                     !.......  Otherwise, make it a warning
                     ELSE
-                        L = LEN_TRIM( MESG )
-                        MESG = 'WARNING: ' // MESG( 1:L )
+                        MESG = 'WARNING: ' // MESG
                         CALL M3MSG2( MESG )
                     END IF
 

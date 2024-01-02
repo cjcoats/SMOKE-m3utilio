@@ -14,8 +14,8 @@ SUBROUTINE WRINVCHR( ENAME, SDEV, A2PFLAG, NONPOINT )
     !
     !  REVISION  HISTORY:
     !       Created by M. Houyoux 4/99
-    !       Version 11/2023 by CJC:  USE M3UTILIO, conversion to ".f90",  and
-    !       related changes
+    !       Version 11/2023 by CJC:  USE M3UTILIO, conversion to ".f90",
+    !       algorithm simplification, and related changes
     !**************************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
@@ -37,6 +37,7 @@ SUBROUTINE WRINVCHR( ENAME, SDEV, A2PFLAG, NONPOINT )
     !
     !***************************************************************************
     USE M3UTILIO
+    USE MODFILESET, ONLY:  ALLFILES
 
     !.......  MODULES for public variables
     !.......  This module contains the inventory arrays
@@ -319,6 +320,7 @@ SUBROUTINE WRINVCHR( ENAME, SDEV, A2PFLAG, NONPOINT )
     M12 = MXCHRS + 12
 
     !.......  Get the maximum column width for each of the columns in ASCII file
+    !!        NOTE:  LEM_TRIM( Foo ) == 0 *exactly*when* FOO is blank
     COLWID = 0        ! array
     DO S = 1, NSRC
 
@@ -327,138 +329,109 @@ SUBROUTINE WRINVCHR( ENAME, SDEV, A2PFLAG, NONPOINT )
             L2 = SC_ENDP( K )
             BUFFER = ADJUSTL( CSOURC( S )( L1:L2 ) )
             J = LEN_TRIM( BUFFER )                          ! could be blank
-            IF( BUFFER .NE. ' ' .AND. J > COLWID( K ) )  COLWID( K ) = J
+            IF( J > COLWID( K ) )  COLWID( K ) = J
         END DO
 
         SELECT CASE ( CATEGORY )
           CASE( 'AREA' )
             J = LEN_TRIM( CSRCTYP( S ) )
-            IF( CSRCTYP( S ) /= ' ' .AND.    &
-                J > COLWID( M1 ) ) COLWID( M1 ) = J
+            IF(J > COLWID( M1 ) ) COLWID( M1 ) = J
 
             IF( NONPOINT ) THEN
 
                 J = LEN_TRIM( CMACT( S ) )
-                IF( CMACT( S ) /= ' ' .AND.    &
-                    J > COLWID( M2 ) ) COLWID( M2 ) = J
+                IF( J > COLWID( M2 ) ) COLWID( M2 ) = J
 
                 J = LEN_TRIM( CNAICS( S ) )
-                IF( CNAICS( S ) /= ' ' .AND.    &
-                    J > COLWID( M3 ) ) COLWID( M3 ) = J
+                IF( J > COLWID( M3 ) ) COLWID( M3 ) = J
 
                 J = LEN_TRIM( CINTGR( S ) )                      ! could be blank
-                IF( CINTGR( S ) .NE. ' ' .AND.    &
-                    J > COLWID( M4 ) ) COLWID( M4 ) = J
+                IF( J > COLWID( M4 ) ) COLWID( M4 ) = J
 
                 J = LEN_TRIM( CISIC( S ) )
-                IF( CISIC( S ) .NE. ' ' .AND.    &
-                    J > COLWID( M5 ) ) COLWID( M5 ) = J
+                IF( J > COLWID( M5 ) ) COLWID( M5 ) = J
 
                 J = LEN_TRIM( CEXTORL( S ) )                     ! could be blank
-                IF( CEXTORL( S ) .NE. ' ' .AND.    &
-                    J > COLWID( M6 ) ) COLWID( M6 ) = J
+                IF( J > COLWID( M6 ) ) COLWID( M6 ) = J
 
             ELSE IF ( FF10FLAG ) THEN
 
                 J = LEN_TRIM( CSHAPE( S ) )                     ! could be blank
-                IF( CSHAPE( S ) .NE. ' ' .AND.    &
-                    J > COLWID( M2 ) ) COLWID( M2 ) = J
+                IF( J > COLWID( M2 ) ) COLWID( M2 ) = J
 
                 J = LEN_TRIM( CINTGR( S ) )                     ! could be blank
-                IF( CINTGR( S ) .NE. ' ' .AND.    &
-                    J > COLWID( M3 ) ) COLWID( M3 ) = J
+                IF( J > COLWID( M3 ) ) COLWID( M3 ) = J
 
                 J = LEN_TRIM( CISIC( S ) )
-                IF( CISIC( S ) .NE. ' ' .AND.    &
-                    J > COLWID( M4 ) ) COLWID( M4 ) = J
+                IF( J > COLWID( M4 ) ) COLWID( M4 ) = J
 
                 J = LEN_TRIM( CEXTORL( S ) )                     ! could be blank
-                IF( CEXTORL( S ) .NE. ' ' .AND.    &
-                    J > COLWID( M5 ) ) COLWID( M5 ) = J
+                IF( J > COLWID( M5 ) ) COLWID( M5 ) = J
 
             ELSE
 
                 J = LEN_TRIM( CINTGR( S ) )                     ! could be blank
-                IF( CINTGR( S ) .NE. ' ' .AND.    &
-                    J > COLWID( M2 ) ) COLWID( M2 ) = J
+                IF( J > COLWID( M2 ) ) COLWID( M2 ) = J
 
                 J = LEN_TRIM( CISIC( S ) )
-                IF( CISIC( S ) .NE. ' ' .AND.    &
-                    J > COLWID( M3 ) ) COLWID( M3 ) = J
+                IF( J > COLWID( M3 ) ) COLWID( M3 ) = J
 
                 J = LEN_TRIM( CEXTORL( S ) )                     ! could be blank
-                IF( CEXTORL( S ) .NE. ' ' .AND.    &
-                    J > COLWID( M4 ) ) COLWID( M4 ) = J
+                IF( J > COLWID( M4 ) ) COLWID( M4 ) = J
 
             END IF
 
           CASE( 'MOBILE' )
 
             J = LEN_TRIM( CVTYPE( S ) )                       ! could be blank
-            IF( CVTYPE( S ) .NE. ' ' .AND.    &
-                J > COLWID( M1 ) ) COLWID( M1 ) = J
+            IF( J > COLWID( M1 ) ) COLWID( M1 ) = J
 
             J = LEN_TRIM( CSRCTYP( S ) )
-            IF( CSRCTYP( S ) /= ' ' .AND.    &
-                J > COLWID( M2 ) ) COLWID( M2 ) = J
+            IF( J > COLWID( M2 ) ) COLWID( M2 ) = J
 
             J = LEN_TRIM( CINTGR( S ) )                     ! could be blank
-            IF( CINTGR( S ) .NE. ' ' .AND.    &
-                J > COLWID( M3 ) ) COLWID( M3 ) = J
+            IF( J > COLWID( M3 ) ) COLWID( M3 ) = J
 
             J = LEN_TRIM( CEXTORL( S ) )                     ! could be blank
-            IF( CEXTORL( S ) .NE. ' ' .AND.    &
-                J > COLWID( M4 ) ) COLWID( M4 ) = J
+            IF( J > COLWID( M4 ) ) COLWID( M4 ) = J
 
           CASE( 'POINT' )
 
             J = LEN_TRIM( CSCC( S ) )                       ! could be blank
-            IF( CSCC( S ) .NE. ' ' .AND.    &
-                J > COLWID( M1 ) ) COLWID( M1 ) = J
+            IF( J > COLWID( M1 ) ) COLWID( M1 ) = J
 
             J = LEN_TRIM( CORIS( S ) )                      ! could be blank
-            IF( CORIS( S ) .NE. ' ' .AND.    &
-                J > COLWID( M2 ) ) COLWID( M2 ) = J
+            IF( J > COLWID( M2 ) ) COLWID( M2 ) = J
 
             J = LEN_TRIM( CBLRID( S ) )                     ! could be blank
-            IF( CBLRID( S ) .NE. ' ' .AND.    &
-                J > COLWID( M3 ) ) COLWID( M3 ) = J
+            IF( J > COLWID( M3 ) ) COLWID( M3 ) = J
 
             J = LEN_TRIM( CMACT( S ) )                     ! could be blank
-            IF( CMACT( S ) .NE. ' ' .AND.    &
-                J > COLWID( M4 ) ) COLWID( M4 ) = J
+            IF( J > COLWID( M4 ) ) COLWID( M4 ) = J
 
             J = LEN_TRIM( CNAICS( S ) )                     ! could be blank
-            IF( CNAICS( S ) .NE. ' ' .AND.    &
-                J > COLWID( M5 ) ) COLWID( M5 ) = J
+            IF( J > COLWID( M5 ) ) COLWID( M5 ) = J
 
             J = LEN_TRIM( CSRCTYP( S ) )                     ! could be blank
-            IF( CSRCTYP( S ) .NE. ' ' .AND.    &
-                J > COLWID( M6 ) ) COLWID( M6 ) = J
+            IF( J > COLWID( M6 ) ) COLWID( M6 ) = J
 
             J = LEN_TRIM( CERPTYP( S ) )                     ! could be blank
-            IF( CERPTYP( S ) .NE. ' ' .AND.    &
-                J > COLWID( M7 ) ) COLWID( M7 ) = J
+            IF( J > COLWID( M7 ) ) COLWID( M7 ) = J
 
             J = LEN_TRIM( CPDESC( S ) )                      ! could be blank
-            IF( CPDESC( S ) .NE. ' ' .AND.    &
-                J > COLWID( M8 ) ) COLWID( M8 ) = J
+            IF( J > COLWID( M8 ) ) COLWID( M8 ) = J
 
             J = LEN_TRIM( CNEIUID( S ) )                     ! could be blank
-            IF( CNEIUID( S ) .NE. ' ' .AND.    &
-                J > COLWID( M9 ) ) COLWID( M9 ) = J
+            IF( J > COLWID( M9 ) ) COLWID( M9 ) = J
 
             J = LEN_TRIM( CINTGR( S ) )                     ! could be blank
-            IF( CINTGR( S ) .NE. ' ' .AND.    &
-                J > COLWID( M10 ) ) COLWID( M10 ) = J
+            IF( J > COLWID( M10 ) ) COLWID( M10 ) = J
 
             J = LEN_TRIM( CISIC( S ) )
-            IF( CISIC( S ) .NE. ' ' .AND.    &
-                J > COLWID( M11 ) ) COLWID( M11 ) = J
+            IF( J > COLWID( M11 ) ) COLWID( M11 ) = J
 
             J = LEN_TRIM( CEXTORL( S ) )                     ! could be blank
-            IF( CEXTORL( S ) .NE. ' ' .AND.    &
-                J > COLWID( M12 ) ) COLWID( M12 ) = J
+            IF( J > COLWID( M12 ) ) COLWID( M12 ) = J
 
         END SELECT
 
@@ -509,7 +482,7 @@ SUBROUTINE WRINVCHR( ENAME, SDEV, A2PFLAG, NONPOINT )
     OUTFMT = TRIM( OUTFMT ) // ')'
 
     !.......  Write the ASCII file header
-    WRITE( SDEV,93100 ) NL, OUTFMT( 1:LEN_TRIM( OUTFMT ) )
+    WRITE( SDEV,93100 ) NL, TRIM( OUTFMT )
     WRITE( SDEV,93000 ) HDRFLDS( 1 )
     DO K = 1, NASCII
         IF( LF( K ) ) WRITE( SDEV,93000 ) HDRFLDS( K+1 )

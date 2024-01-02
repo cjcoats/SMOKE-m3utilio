@@ -43,6 +43,7 @@ PROGRAM SMKMERGE
     !
     !****************************************************************************
     USE M3UTILIO
+    USE MODFILESET, ONLY:  ALLFILES
 
     !.....  MODULES for public variables
     !.....  This module contains the major data structure and control flags

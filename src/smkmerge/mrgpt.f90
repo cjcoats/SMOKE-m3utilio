@@ -301,7 +301,7 @@ PROGRAM MRGPT
             LE = LEN_TRIM( LINE )
             FNAME( F,1 ) = LINE( LB+1:LE )
 
-            IF ( .NOT. OPEN3( FNAME(F,1), FSREAD3, PROGNAME )) THEN
+            IF ( .NOT. OPEN3( FNAME(F,1), FSREAD3, PROGNAME ) ) THEN
 
                 MESG = 'Could not open file "' // TRIM( FNAME(F,1) )// '".'
                 CALL M3MSG2( MESG )
@@ -852,8 +852,7 @@ PROGRAM MRGPT
         !.....  Set up for opening output file...
         !.....  Get grid information
         IF( .NOT. DESC3( FNAME( 1,S ) ) ) THEN
-            MESG = 'Could not get description of file "'  //    &
-                    FNAME( 1,S )( 1:LEN_TRIM( FNAME(1,S) ) ) // '"'
+            MESG = 'Could not get description of file "'  // TRIM( FNAME(1,S) ) // '"'
             CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
         ENDIF
 

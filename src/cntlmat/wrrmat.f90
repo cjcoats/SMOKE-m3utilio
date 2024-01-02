@@ -38,6 +38,7 @@ SUBROUTINE WRRMAT( NSRC, NMSPC, FDEV, FILNAM, INDX, REPEM,&
     !
     !***************************************************************************
     USE M3UTILIO
+    USE MODFILESET, ONLY:  ALLFILES
 
     IMPLICIT NONE
 
@@ -82,7 +83,7 @@ SUBROUTINE WRRMAT( NSRC, NMSPC, FDEV, FILNAM, INDX, REPEM,&
         WRITE( OUTFMT, 94020 ) SCCLEN3, SPNLEN3
 
         !.......  Write out header
-        WRITE( FDEV, 93010 ) 3, OUTFMT( 1:LEN_TRIM( OUTFMT ) )
+        WRITE( FDEV, 93010 ) 3, TRIM( OUTFMT )
         WRITE( FDEV, 93000 ) 'SRCID   Source index'
         WRITE( FDEV, 93000 ) 'CSCC    Source category code '
         WRITE( FDEV, 93000 ) 'SPROF   Speciation profile number'

@@ -230,11 +230,9 @@ SUBROUTINE WRMRGREP( JDATE, JTIME, NIDX )
 
                 !.....  Set names and units for totals output
                 IF( SFLAG ) THEN
-                    L = LEN_TRIM( TOTUNIT( J ) )
-                    CBUF = '[' // TOTUNIT( J )( 1:L ) // ']'
+                    CBUF = '[' // TRIM( TOTUNIT( J ) ) // ']'
                 ELSE
-                    L = LEN_TRIM( TOTUNIT( I ) )
-                    CBUF = '[' // TOTUNIT( I )( 1:L ) // ']'
+                    CBUF = '[' // TRIM( TOTUNIT( I ) ) // ']'
                 END IF
 
                 TCNT = TCNT + 1
@@ -659,8 +657,7 @@ CONTAINS
                    TRIM( TMPFMT ), WIDTHS( J ), EFMTDEC, ',";"'
         END DO
         TMPFMT = DATFMT
-        L = LEN_TRIM( TMPFMT )
-        WRITE( DATFMT, '(A)' ) TMPFMT( 1:L ) // ')'
+        DATFMT = TRIM( TMPFMT ) // ')'
 
         RETURN
 
@@ -718,7 +715,7 @@ CONTAINS
 
         !.....  Write header for state totals
         WRITE( FDEV, '(A)' ) '# '
-        WRITE( FDEV, '(A)' ) HEADER( 1:LEN_TRIM( HEADER ) )
+        WRITE( FDEV, '(A)' ) TRIM( HEADER )
 
         !.....  Write line
         !       WRITE( FDEV, '(A)' ) LINFLD( 1:L2 )

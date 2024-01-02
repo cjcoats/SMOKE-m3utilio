@@ -38,6 +38,7 @@ SUBROUTINE GENMULTC( CDEV, GDEV, LDEV, MDEV, NCPE, PYEAR,   &
     !
     !***************************************************************************
     USE M3UTILIO
+    USE MODFILESET, ONLY:  ALLFILES
 
     !.......  MODULES for public variables
     !.......  This module contains the inventory arrays

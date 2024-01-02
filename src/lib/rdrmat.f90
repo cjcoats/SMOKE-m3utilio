@@ -1,6 +1,5 @@
 
-SUBROUTINE RDRMAT( FNAME, NSREAC, SPECNUM, IDX, REPEM,&
-&                   PRJFC, MKTPN, RFAC )
+SUBROUTINE RDRMAT( FNAME, NSREAC, SPECNUM, IDX, REPEM, PRJFC, MKTPN, RFAC )
 
     !***********************************************************************
     !  subroutine body starts at line
@@ -82,7 +81,7 @@ SUBROUTINE RDRMAT( FNAME, NSREAC, SPECNUM, IDX, REPEM,&
 
         INVAR = VNAME3D( N )
 
-        MESG = PART1 // INVAR( 1:LEN_TRIM( INVAR ) ) // PART3
+        MESG = PART1 // TRIM( INVAR ) // PART3
 
         !.........  Section for reading non-species variables
         SELECT CASE( INVAR )
@@ -135,8 +134,8 @@ SUBROUTINE RDRMAT( FNAME, NSREAC, SPECNUM, IDX, REPEM,&
 
         WRITE( MESG,94010 )                                         &
                'INTERNAL ERROR: Dimension mismatch. Memory ' //     &
-               'needed for reactivity factors was', V, CRLF() //    &
-               BLANK10 // 'but', SPECNUM, 'was allocated.'
+               'needed for reactivity factors was', V,              &
+               CRLF() //BLANK10 // 'but', SPECNUM, 'was allocated.'
         CALL M3MSG2( MESG )
         CALL M3EXIT( PROGNAME, 0, 0, ' ', 2 )
 

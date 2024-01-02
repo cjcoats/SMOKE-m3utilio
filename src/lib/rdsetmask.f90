@@ -40,6 +40,7 @@ SUBROUTINE RDSETMASK( FNAME, JDATE, JTIME, NDIM, NDIM2, NVLIST,     &
     !
     !***************************************************************************
     USE M3UTILIO
+    USE MODFILESET, ONLY:  ALLFILES
 
     IMPLICIT NONE
 

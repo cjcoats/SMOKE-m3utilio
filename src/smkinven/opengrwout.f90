@@ -38,6 +38,7 @@ SUBROUTINE OPENGRWOUT( ENAME, FYEAR, NAME1, SFLAG, OFLAG,       &
     !
     !***************************************************************************
     USE M3UTILIO
+    USE MODFILESET, ONLY:  ALLFILES
 
     !.......  MODULES for public variables
     !.......  This module contains the information about the source category
