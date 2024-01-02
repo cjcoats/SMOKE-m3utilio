@@ -25,7 +25,7 @@ SUBROUTINE REPMRGGRD( RCNT, NX, IX, CX, EFLAG )
     !***********************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !         System
     ! File: @(#)$Id$
     !
     ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
@@ -92,7 +92,7 @@ SUBROUTINE REPMRGGRD( RCNT, NX, IX, CX, EFLAG )
     !   begin body of subroutine REPMRGGRD
 
     !.......  For first time a normalized grid is encountered by this routine,
-    !           compute the cell-area normalization factors for full grid.
+    !         compute the cell-area normalization factors for full grid.
     IF ( ALLRPT( RCNT )%NORMCELL .AND. FIRSTFLAG ) THEN
 
         ALLOCATE( NORMFAC( NGRID ), STAT=IOS )
@@ -130,11 +130,11 @@ SUBROUTINE REPMRGGRD( RCNT, NX, IX, CX, EFLAG )
     LSUBGRID = ( ALLRPT( RCNT )%SUBGNAM .NE. ' ' )
 
     !.......  Deallocate source list and bins before reallocating for source-cell
-    !           intersections.  Valid sources are identified with INDEXA     != 0.
+    !         intersections.  Valid sources are identified with INDEXA     != 0.
     IF( ALLOCATED( OUTSRC ) ) DEALLOCATE( OUTSRC, OUTBIN )
 
     !.......  Deallocate cell and gridding information if they have been
-    !           allocated for a previous report
+    !         allocated for a previous report
     IF( ALLOCATED( OUTCELL ) ) DEALLOCATE( OUTCELL, OUTGFAC )
 
     !.......  Count cell-source intersections...
@@ -172,8 +172,8 @@ SUBROUTINE REPMRGGRD( RCNT, NX, IX, CX, EFLAG )
 CONTAINS
 
     !.......  This internal function counts or computes the source-cell
-    !               intersections for a whole grid or subgrid, and for specifically-
-    !               selected sources from the inventory.
+    !         intersections for a whole grid or subgrid, and for specifically-
+    !         selected sources from the inventory.
     SUBROUTINE SOURCE_CELL_X( COMMAND, NX, IX, CX )
 
         !.......  Subprogram arguments (note - array dimensions from MODREPRT)
@@ -189,7 +189,7 @@ CONTAINS
 
         !.......  Special case of no subgrid and all sources selected
         !.......  Have this case explicitly because it will not be slowed down
-        !               by uncessary counting and conditionals.
+        !         by uncessary counting and conditionals.
         IF( NSRCDROP .EQ. 0 .AND. .NOT. LSUBGRID ) THEN
 
             NOUTREC = NMATX
@@ -246,7 +246,7 @@ CONTAINS
         ELSE
 
             !.......  Determine subgrid index based on name (the validity has
-            !                   already been confirmed elsewhere).
+            !         already been confirmed elsewhere).
             IG = INDEX1( ALLRPT( RCNT )%SUBGNAM, NSUBGRID, SUBGNAM )
 
             K  = 0
@@ -295,7 +295,7 @@ CONTAINS
         END IF                      ! If ( all sources and full grid ) or not
 
         !.......  If needed, update all gridding factors with division by cell
-        !               area.
+        !         area.
         IF ( ALLRPT( RCNT )%NORMCELL ) THEN
 
             DO N = 1, NOUTREC

@@ -19,7 +19,7 @@ SUBROUTINE BLDREPIDX( SLNAME, SSNAME )
     !***********************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !         System
     ! File: @(#)$Id$
     !
     ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
@@ -113,9 +113,9 @@ SUBROUTINE BLDREPIDX( SLNAME, SSNAME )
     !   begin body of subroutine BLDREPIDX
 
     !.......  Set the maximum number of output variables, depending on whether
-    !           hourly data are in use for any reports
+    !         hourly data are in use for any reports
     !.......  Also, increase further if any projection or control checks
-    !           are being run
+    !         are being run
     MXDATALL = NIPPA
     IF( TFLAG ) MXDATALL = NIPPA + NTPDAT
     IF( PRRPTFLG ) MXDATALL = MXDATALL * 3
@@ -457,7 +457,7 @@ SUBROUTINE BLDREPIDX( SLNAME, SSNAME )
         END DO          ! End creating list of unique species
 
         !.......  If species name in SPCNAM is the same as a pollutant name,
-        !               then set it to blank
+        !         then set it to blank
         DO V = 1, NSVARS
             K = INDEX1( SPCNAM( V ), NIPPA, EANAM )
             IF( K .GT. 0 )  THEN
@@ -491,7 +491,7 @@ SUBROUTINE BLDREPIDX( SLNAME, SSNAME )
     OUTDNAM = ' '
 
     !.......  Go through reports, and assign indices to from data to output
-    !           columns
+    !         columns
     DO N = 1, NREPORT
 
         RPT_ = ALLRPT( N )
@@ -719,10 +719,9 @@ SUBROUTINE BLDREPIDX( SLNAME, SSNAME )
             !.......  Give warning if no matches
             IF( .NOT. ANYOUT ) THEN
                 L = LEN_TRIM( OUTDNAM( I,N ) )
-                WRITE( MESG,94010 ) 'WARNING: Skipping requested '//    &
-                       'output data "'// OUTDNAM( I,N )( 1:L ) //       &
-                       '" for report', N, CRLF() // BLANK10 //      &
-                       'because no match found with inputs.'
+                WRITE( MESG,94010 ) 'WARNING: Skipping requested output data "'//    &
+                       TRIM( OUTDNAM( I,N ) ) // '" for report', N,   &
+                       CRLF() // BLANK10 // 'because no match found with inputs.'
                 CALL M3MSG2( MESG )
             END IF
 

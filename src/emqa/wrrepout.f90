@@ -28,7 +28,7 @@ SUBROUTINE WRREPOUT( FDEV, RCNT, NDATA, JDATE, JTIME,       &
     !***********************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !         System
     ! File: @(#)$Id$
     !
     ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
@@ -125,7 +125,8 @@ SUBROUTINE WRREPOUT( FDEV, RCNT, NDATA, JDATE, JTIME,       &
     LOGICAL     , INTENT(INOUT) :: EFLAG
 
     !.......   Local parameters
-    INTEGER, PARAMETER :: STRLEN = 10000       ! Maximum info string length
+    INTEGER      , PARAMETER :: STRLEN   = 10000       ! Maximum info string length
+    CHARACTER(16), PARAMETER :: PROGNAME = 'WRREPOUT'     ! program name
 
     !.......   Arrays for source characteristics output formatting
     CHARACTER(300) CHARS ( MXCHRS )     !  source fields for output
@@ -170,8 +171,6 @@ SUBROUTINE WRREPOUT( FDEV, RCNT, NDATA, JDATE, JTIME,       &
     CHARACTER(SCCLEN3)  TSCC                  ! tmp SCC string
     CHARACTER(FIPLEN3)  TFIPS                 ! tmp FIPS string
 
-    CHARACTER(16), PARAMETER :: PROGNAME = 'WRREPOUT'     ! program name
-
     !***********************************************************************
     !   begin body of subroutine WRREPOUT
 
@@ -207,7 +206,7 @@ SUBROUTINE WRREPOUT( FDEV, RCNT, NDATA, JDATE, JTIME,       &
 
         !.......  Update logical source-characteristics fields
         !.......  In future, there can be different cases here for "BY STACK", for
-        !               example
+        !         example
         IF( RPT_%BYSRC ) THEN
             LF( 1:NCHARS ) = .TRUE.
         END IF
@@ -228,8 +227,8 @@ SUBROUTINE WRREPOUT( FDEV, RCNT, NDATA, JDATE, JTIME,       &
             END IF
 
             !.......  Build tmp string based on date, hour, and other columns that
-            !               are included in the output file.  Whether these are included
-            !               is determined by the report settings.
+            !         are included in the output file.  Whether these are included
+            !         is determined by the report settings.
             MXLE   = 1
             STRING = ' '
             LE     = 1
@@ -293,7 +292,6 @@ SUBROUTINE WRREPOUT( FDEV, RCNT, NDATA, JDATE, JTIME,       &
                 YEAR = JDATE / 1000
 
                 !.......  Add date field to header
-                OUTDATE = ' '
                 WRITE( OUTDATE, DATEFMT ) MONTH, DAY, YEAR
 
                 STRING = STRING( 1:LE ) // OUTDATE
@@ -306,7 +304,6 @@ SUBROUTINE WRREPOUT( FDEV, RCNT, NDATA, JDATE, JTIME,       &
             !.......  Include hour in string
             IF( RPT_%BYHOUR ) THEN
                 IF( .NOT. DLFLAG ) THEN
-                    BUFFER = ' '
                     WRITE( BUFFER, HOURFMT ) OUTHOUR          ! Integer
                     STRING = STRING( 1:LE ) // BUFFER
                     MXLE = MXLE + HOURWIDTH + LX
@@ -316,7 +313,6 @@ SUBROUTINE WRREPOUT( FDEV, RCNT, NDATA, JDATE, JTIME,       &
 
             ELSE IF( .NOT. RPT_%BYHOUR .AND. RPT_%CARB ) THEN
                 IF( .NOT. DLFLAG ) THEN
-                    BUFFER = ' '
                     OUTHOUR = 0
                     WRITE( BUFFER, HOURFMT ) OUTHOUR          ! Integer
                     STRING = STRING( 1:LE ) // BUFFER
@@ -329,7 +325,6 @@ SUBROUTINE WRREPOUT( FDEV, RCNT, NDATA, JDATE, JTIME,       &
 
             !.......  Include layer in string
             IF( RPT_%BYLAYER ) THEN
-                BUFFER = ' '
                 WRITE( BUFFER, LAYRFMT ) LAYER                ! Integer
                 STRING = STRING( 1:LE ) // BUFFER
                 MXLE = MXLE + LAYRWIDTH + LX
@@ -339,14 +334,12 @@ SUBROUTINE WRREPOUT( FDEV, RCNT, NDATA, JDATE, JTIME,       &
 
             !.......  Include cell numbers in string
             IF( RPT_%BYCELL ) THEN
-                BUFFER = ' '
                 WRITE( BUFFER, CELLFMT ) BINX( I ), BINY( I )              ! Integers
                 STRING = STRING( 1:LE ) // BUFFER
                 MXLE = MXLE + CELLWIDTH + LX
                 LE = MIN( MXLE, STRLEN )
                 LX = 0
             ELSE IF( .NOT. RPT_%BYCELL .AND. RPT_%CARB ) THEN
-                BUFFER = ' '
                 WRITE( BUFFER, CELLFMT ) 0,0             ! Integers
                 STRING = STRING( 1:LE ) // BUFFER
                 MXLE = MXLE + CELLWIDTH + LX
@@ -356,7 +349,6 @@ SUBROUTINE WRREPOUT( FDEV, RCNT, NDATA, JDATE, JTIME,       &
 
             !.......  Include source number in string
             IF( RPT_%BYSRC ) THEN
-                BUFFER = ' '
                 WRITE( BUFFER, SRCFMT ) BINSMKID( I )              ! Integer
                 STRING = STRING( 1:LE ) // BUFFER
                 MXLE = MXLE + SRCWIDTH + LX
@@ -447,7 +439,7 @@ SUBROUTINE WRREPOUT( FDEV, RCNT, NDATA, JDATE, JTIME,       &
                 L = SCCWIDTH
                 L1 = L - LV - 1                                    ! 1 for space
                 TSCC = BINSCC( I )
-            !                    IF( TSCC(1:2) .EQ. '00' ) TSCC='  '//TSCC(3:SCCLEN3)
+            !         IF( TSCC(1:2) .EQ. '00' ) TSCC='  '//TSCC(3:SCCLEN3)
                 STRING = STRING( 1:LE ) // TSCC( 1:L1 ) // DELIM
                 MXLE = MXLE + L + LX
                 LE = MIN( MXLE, STRLEN )
@@ -528,8 +520,7 @@ SUBROUTINE WRREPOUT( FDEV, RCNT, NDATA, JDATE, JTIME,       &
             IF( RPT_%BYMON ) THEN
                 L = MONWIDTH
                 L1 = L - LV - 1 - 1                              ! 1 for space
-                STRING = STRING( 1:LE ) // ' ' //&
-                         BINMONID( I )( 1:L1 )// DELIM
+                STRING = STRING( 1:LE ) // ' ' // BINMONID( I )( 1:L1 )// DELIM
                 MXLE = MXLE + L + LX
                 LE = MIN( MXLE, STRLEN )
                 LX = 0

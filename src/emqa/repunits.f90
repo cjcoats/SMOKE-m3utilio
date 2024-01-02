@@ -24,7 +24,7 @@ SUBROUTINE REPUNITS( RCNT )
     !***********************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !         System
     ! File: @(#)$Id$
     !
     ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
@@ -119,7 +119,7 @@ SUBROUTINE REPUNITS( RCNT )
     UCNVFAC = 1.        ! array
 
     !.......  If current report has speciation, loop through species and update
-    !           units arrays
+    !         units arrays
     DO V = 1, NSVARS
 
         !.......  Set index to data arrays based on speciation status
@@ -129,7 +129,7 @@ SUBROUTINE REPUNITS( RCNT )
         IF ( E .LE. 0 ) CYCLE
 
         !.......  If current variable is a speciated variable and is output for
-        !               this report
+        !         this report
         IF( TOSOUT( V,RCNT )%AGG .GT. 0 ) THEN
 
             !.......  If using mole-speciation matrix
@@ -160,7 +160,7 @@ SUBROUTINE REPUNITS( RCNT )
     DO E = 1, NV
 
         !.......  If current variable is a pol/act/e-type and is used for this
-        !               report
+        !         report
         IF( TODOUT( E,RCNT )%AGG .GT. 0 ) THEN
 
             TMPUNIT = LOCUNIT( E )
@@ -242,14 +242,14 @@ CONTAINS
         T_UNIT = I_UNIT
 
         !.......  Set output units and conversion factor, if output units are
-        !               set by the report configuration file
+        !         set by the report configuration file
         IF( ALLUSET( UIDX, RCNT ) .NE. ' ' ) THEN
 
             O_UNIT = ALLUSET( UIDX, RCNT )
 
             !.......  Set the numerators and denominators...
             !.......  Make sure if no denominator is given that there won't be
-            !                   a problem
+            !         a problem
             !.......  For the input units:
             L2 = LEN_TRIM( T_UNIT )
             L  = INDEX( T_UNIT, '/' )
@@ -264,7 +264,7 @@ CONTAINS
             IF( LP1 .GT. 0 ) DEN_I = ADJUSTL( T_UNIT( LP1:L2 ) )
 
             !.......  If input denominator is hourly, but reporting is not
-            !                   hourly, then sum per day.  Change denominator accordingly.
+            !         hourly, then sum per day.  Change denominator accordingly.
             IF( DEN_I .EQ. 'hr'  .AND. .NOT. ALLRPT( RCNT )%BYHOUR ) THEN
                 DEN_I = 'day'
                 L2 = LEN_TRIM( NUM_I )

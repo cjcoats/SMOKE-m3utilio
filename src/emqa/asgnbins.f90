@@ -30,7 +30,7 @@ SUBROUTINE ASGNBINS( RCNT )
     !***********************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !         System
     ! File: @(#)$Id$
     !
     ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
@@ -196,7 +196,7 @@ SUBROUTINE ASGNBINS( RCNT )
         IV = INDEX1( RPT_%SPCPOL, NSPCPOL, SPCPOL )
         IF ( IV .LE. 0 ) THEN
             MESG = 'INTERNAL ERROR: Pollutant "'// RPT_%SPCPOL//&
-                       'not found in list created from REPCONFIG.'
+                   'not found in list created from REPCONFIG.'
             CALL M3MSG2( MESG )
             EFLAG = .TRUE.
         END IF
@@ -239,15 +239,14 @@ SUBROUTINE ASGNBINS( RCNT )
 
     IF( RPT_%BYINTGR  .AND. .NOT. ASSOCIATED( CINTGR ) ) THEN
         MESG = 'ERROR: BY INTEGRATE is requested, but ' //&
-               'Integrate flag is not present in ASCII '//&
-               'inventory file'
+               'Integrate flag is not present in ASCII inventory file'
         CALL M3MSG2( MESG )
         EFLAG = .TRUE.
     END IF
 
     IF( RPT_%BYERPTYP .AND. .NOT. ALLOCATED( CERPTYP ) ) THEN
         MESG = 'ERROR: BY ERPTYP is requested, but ' //&
-               'ERPTYP code is not present in ASCII  inventory file'
+               'ERPTYP code is not present in ASCII inventory file'
         CALL M3MSG2( MESG )
         EFLAG = .TRUE.
     END IF
@@ -1008,7 +1007,7 @@ SUBROUTINE ASGNBINS( RCNT )
             BINCOIDX( B ) = K
 
             !.......  If using population normalization, initialize with
-            !                       country population
+            !         country population
 
             IF ( RPT_%NORMPOP ) THEN
                 IF( CTRYPOPL( K )  .GT. 0. ) THEN

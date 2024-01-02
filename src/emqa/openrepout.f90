@@ -20,7 +20,7 @@ SUBROUTINE OPENREPOUT( FILNAM, FDEV, MDEV )
     !***********************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !         System
     ! File: @(#)$Id$
     !
     ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
@@ -73,7 +73,7 @@ SUBROUTINE OPENREPOUT( FILNAM, FDEV, MDEV )
 
     IOS = -1
     !.......  If file name is less than 16 characters, check if file name is a
-    !           defined environment variable
+    !         defined environment variable
     IF( L .LE. 16 ) THEN
         MESG = 'Check of file name for logical status'
         VARBUF = FILNAM

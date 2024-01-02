@@ -23,7 +23,7 @@ SUBROUTINE RDREPIN( NSLIN, NSSIN, RDEV, SDEV, GDEV, PDEV, TDEV,     &
     !***********************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !         System
     ! File: @(#)$Id$
     !
     ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
@@ -126,10 +126,10 @@ SUBROUTINE RDREPIN( NSLIN, NSSIN, RDEV, SDEV, GDEV, PDEV, TDEV,     &
     LOGICAL,EXTERNAL :: USEEXPGEO
 
     !.......  Local allocatable arrays
-    REAL   , ALLOCATABLE :: LFRAC1L( : )      ! 1st-layer fraction
+    REAL        LFRAC1L( NSRC )      ! 1st-layer fraction
 
     !.......  Array that contains the names of the inventory variables needed for
-    !           this program
+    !         this program
     CHARACTER(NAMLEN3) IVARNAMS( MXINVARR )
 
     !.......  For parsing lines
@@ -322,8 +322,7 @@ SUBROUTINE RDREPIN( NSLIN, NSSIN, RDEV, SDEV, GDEV, PDEV, TDEV,     &
         END IF
 
         !.......  Allocate memory for and read in required inventory characteristics
-        CALL RDINVCHR( CATEGORY, ENAME, SDEV, NSRC, NINVARR,&
-                       IVARNAMS )
+        CALL RDINVCHR( CATEGORY, ENAME, SDEV, NSRC, NINVARR, IVARNAMS )
 
     ELSE
 
@@ -567,9 +566,9 @@ SUBROUTINE RDREPIN( NSLIN, NSSIN, RDEV, SDEV, GDEV, PDEV, TDEV,     &
             IF( S .LE. 0 ) THEN
 
                 !.......  Check if the first segment is an integer, and
-                !                     if not, then there is garbage at the end of
-                !                     the report (or an old report with multiple
-                !                     reports in one file).  If so, end read loop.
+                !         if not, then there is garbage at the end of
+                !         the report (or an old report with multiple
+                !         reports in one file).  If so, end read loop.
                 IF( .NOT. CHKINT( SEGMENT( 1 ) ) ) THEN
                     EXIT
                 END IF
@@ -579,8 +578,7 @@ SUBROUTINE RDREPIN( NSLIN, NSSIN, RDEV, SDEV, GDEV, PDEV, TDEV,     &
                 EFLAG = .TRUE.
                 WRITE( MESG,94010 ) 'ERROR: Projection report ' //&
                        'entry at line', I, 'could not' //&
-                       CRLF() // BLANK10 // 'be matched to the ' //&
-                       'inventory.'
+                       CRLF() // BLANK10 // 'be matched to the inventory.'
                 CALL M3MESG( MESG )
                 CYCLE
             END IF
@@ -597,9 +595,8 @@ SUBROUTINE RDREPIN( NSLIN, NSSIN, RDEV, SDEV, GDEV, PDEV, TDEV,     &
 
                     !......  If message has not been written for this line...
                     IF( .NOT. MSGFLAG ) THEN
-                        WRITE( MESG,94010 ) 'ERROR: Bad format ' //&
-                        &'or value at line', IREC, 'of projection '//&
-                        &'report.'
+                        WRITE( MESG,94010 ) 'ERROR: Bad format or value at line', IREC,     &
+                                            'of projection report.'
                         CALL M3MSG2( MESG )
                     END IF
                     MSGFLAG = .TRUE.
@@ -631,11 +628,10 @@ SUBROUTINE RDREPIN( NSLIN, NSSIN, RDEV, SDEV, GDEV, PDEV, TDEV,     &
 
         DO V = 1, NVCMULT
             IF( .NOT. READSET( CUNAME, PNAMMULT( V ), ALLAYS3,&
-                            ALLFILES, 0, 0, ACUMATX( 1,1+V ) )) THEN
+                               ALLFILES, 0, 0, ACUMATX( 1,1+V ) )) THEN
 
-                MESG = 'ERROR: Could not read "' //&
-                       TRIM( PNAMMULT( V ) ) //'" from file "' //&
-                       TRIM( CUNAME ) // '"'
+                MESG = 'ERROR: Could not read "' // TRIM( PNAMMULT( V ) ) // &
+                       '" from file "' // TRIM( CUNAME ) // '"'
                 CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 
             END IF
@@ -655,8 +651,7 @@ SUBROUTINE RDREPIN( NSLIN, NSSIN, RDEV, SDEV, GDEV, PDEV, TDEV,     &
         !.......  Get file header for variable names
         IF ( .NOT. DESCSET( BNAME, ALLFILES ) ) THEN
 
-            MESG = 'Could not get description of file "' //&
-                   BNAME( 1:LEN_TRIM( BNAME ) ) // '"'
+            MESG = 'Could not get description of file "' // TRIM( BNAME ) // '"'
             CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 
         END IF
@@ -788,7 +783,7 @@ SUBROUTINE RDREPIN( NSLIN, NSSIN, RDEV, SDEV, GDEV, PDEV, TDEV,     &
         END DO
 
         !.......  Check file format, assuming that pollutants weren't processed
-        !               in > 1 groups.  (this routine doesn't handle grouped processing)
+        !         in > 1 groups.  (this routine doesn't handle grouped processing)
         IF ( S .NE. NSRC ) THEN
             MESG = 'INTERNAL ERROR: ' // CRL// 'TSUP file has '//&
                    'inconsistent number of lines with NSRC'
@@ -852,9 +847,6 @@ SUBROUTINE RDREPIN( NSLIN, NSSIN, RDEV, SDEV, GDEV, PDEV, TDEV,     &
             GROUPID = 0       ! array
         END IF
 
-        ALLOCATE( LFRAC1L( NSRC ), STAT=IOS )
-        CALL CHECKMEM( IOS, 'LFRAC1L', PROGNAME )
-
         MESG = 'Reading layer fractions...'
         CALL M3MSG2( MESG )
 
@@ -862,8 +854,7 @@ SUBROUTINE RDREPIN( NSLIN, NSSIN, RDEV, SDEV, GDEV, PDEV, TDEV,     &
         JTIME = STIME
         DO T = 1, NSTEPS
 
-            IF( READ3( LNAME, 'LFRAC', 1,&
-                       JDATE, JTIME, LFRAC1L ) ) THEN
+            IF( READ3( LNAME, 'LFRAC', 1, JDATE, JTIME, LFRAC1L ) ) THEN
                 DO S = 1, NSRC
                     IF( LFRAC1L( S ) .LT. 1. ) LMAJOR( S ) = .TRUE.
                 END DO
@@ -881,14 +872,14 @@ SUBROUTINE RDREPIN( NSLIN, NSSIN, RDEV, SDEV, GDEV, PDEV, TDEV,     &
     END IF
 
     !.......  Reformat source characteristics and set widths.  Do this once
-    !           for the entire run of the program, so that it doesn't have to be
-    !           done for each report (it is slow)
+    !         for the entire run of the program, so that it doesn't have to be
+    !         done for each report (it is slow)
 
     IF( ANY( ALLRPT%BYSRC  ) .OR.&
         ANY( ALLRPT%BYPLANT ) ) THEN
 
         !.......  Determine width of source chararactistic columns over the
-        !               whole inventory
+        !         whole inventory
         SWIDTH = 0           ! initialize array
         DO S = 1, NSRC
 
@@ -954,9 +945,6 @@ SUBROUTINE RDREPIN( NSLIN, NSSIN, RDEV, SDEV, GDEV, PDEV, TDEV,     &
         CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
     END IF
 
-    !.......  Deallocate local memory
-    IF( ALLOCATED( LFRAC1L ) ) DEALLOCATE( LFRAC1L )
-
     RETURN
 
 999 MESG = 'Unexpected end of file reached while reading supplementary gridding file.'
@@ -991,7 +979,7 @@ CONTAINS
     !----------------------------------------------------------------------
 
     !.......  This internal function scans a character array for any
-    !               non-blank values, and if it finds one, returns true.
+    !         non-blank values, and if it finds one, returns true.
     LOGICAL FUNCTION ANY_CVAL( NDIM, CHARARR )
 
         !.......  Subprogram arguments

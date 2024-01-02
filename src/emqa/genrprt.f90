@@ -29,7 +29,7 @@ SUBROUTINE GENRPRT( FDEV, RCNT, ADEV, MDEV, ENAME, TNAME,&
     !***********************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !         System
     ! File: @(#)$Id$
     !
     ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
@@ -74,6 +74,7 @@ SUBROUTINE GENRPRT( FDEV, RCNT, ADEV, MDEV, ENAME, TNAME,&
 
     !.......  This module contains the information about the source category
     USE MODINFO, ONLY: NSRC, NIPPA, EAREAD, EANAM, MXCHRS, NCHARS
+    USE MODFILESET,ONLY:  ALLFILES
 
     IMPLICIT NONE
 
@@ -298,7 +299,7 @@ SUBROUTINE GENRPRT( FDEV, RCNT, ADEV, MDEV, ENAME, TNAME,&
         DO L = 1, LOUT
 
             !.......  If needed for this report, read layer fractions for current
-            !                   layer, otherwise set to 1.
+            !         layer, otherwise set to 1.
             IF( RPT_%BYLAYER ) THEN
 
                 IF( .NOT. READ3( LNAME, 'LFRAC', L, JDATE, JTIME, LFRAC1L ) ) THEN
@@ -312,7 +313,7 @@ SUBROUTINE GENRPRT( FDEV, RCNT, ADEV, MDEV, ENAME, TNAME,&
             END IF
 
             !.......  Loop through input data (NV=NIPPA+NTPDAT or NSVARS) and
-            !                   sum to bins within list of output records
+            !         sum to bins within list of output records
             DO V = 1, NV
 
                 !.......  Set index to data arrays based on speciation status
@@ -347,7 +348,7 @@ SUBROUTINE GENRPRT( FDEV, RCNT, ADEV, MDEV, ENAME, TNAME,&
                 !   N: the formulas below (may be a good idea to apply in separate section?)
 
                 !.......  If speciation, apply speciation factors to appropriate
-                !                       pollutant and emission types.
+                !         pollutant and emission types.
 
                 IF( TODOUT( E,RCNT )%SPCYN ) THEN
 
@@ -469,10 +470,10 @@ SUBROUTINE GENRPRT( FDEV, RCNT, ADEV, MDEV, ENAME, TNAME,&
                 END IF                       ! end if speciation
 
                 !.......  If used for this report, transfer emission values
-                !                       without speciation to temporary bin array
+                !         without speciation to temporary bin array
                 !.......  Make sure that this data record has not already been
-                !                       added to the output columns, as could have happened when
-                !                       loop is over species (NV=NSVARS)
+                !         added to the output columns, as could have happened when
+                !         loop is over species (NV=NSVARS)
                 IF( TODOUT( E,RCNT )%AGG .GT. 0 .AND.   &
                   ( SIDX( E ) .EQ. 0 .OR. SIDX( E ) .EQ. V ) )THEN
 
@@ -608,7 +609,7 @@ SUBROUTINE GENRPRT( FDEV, RCNT, ADEV, MDEV, ENAME, TNAME,&
     END DO        ! End loop over time steps
 
     !.......  Summing hourly layered for total daily laytered emission when DLFLAG is set to TRUE
-    !           Skipped hourly output at line 464 and sum hourly emissions for daily total
+    !         Skipped hourly output at line 464 and sum hourly emissions for daily total
     IF( DLFLAG ) THEN
 
         DO L = 1, LOUT

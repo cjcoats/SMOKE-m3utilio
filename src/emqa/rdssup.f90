@@ -18,7 +18,7 @@ SUBROUTINE RDSSUP ( PDEV )
     !***********************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !         System
     ! File: @(#)$Id$
     !
     ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
@@ -49,17 +49,16 @@ SUBROUTINE RDSSUP ( PDEV )
     !.......  This module contains Smkreport-specific settings
     USE MODREPRT, ONLY: RPT_, NSPCPOL, SPCPOL, LSPCPOL
 
-
     IMPLICIT NONE
 
     !.......   INCLUDES
     INCLUDE 'EMCNST3.h90'       !  emissions constant parameters
 
-    !......  External Function
-    INTEGER,EXTERNAL :: GETFLINE
-
     !.......   SUBROUTINE ARGUMENTS
     INTEGER     , INTENT (IN) :: PDEV       ! unit no.: speciation supplemental
+
+    !......  External Function
+    INTEGER,EXTERNAL :: GETFLINE
 
     !.......  Local variables
     INTEGER             IOS, IS1, IS2
@@ -106,7 +105,7 @@ SUBROUTINE RDSSUP ( PDEV )
         L1 = INDEX( LINE, '"' )                ! Find start quote
 
         !.......  If pollutant name, figure out which pollutant index and
-        !               reset source counter to 0.
+        !         reset source counter to 0.
         IF ( L1 .GT. 0 ) THEN
 
             L2 = LEN_TRIM( LINE )             ! Find end quote
@@ -180,7 +179,7 @@ SUBROUTINE RDSSUP ( PDEV )
         L1 = INDEX( LINE, '"' )                ! Find start quote
 
         !.......  If pollutant name, figure out which pollutant index and
-        !               reset source counter to 0.
+        !         reset source counter to 0.
         IF ( L1 .GT. 0 ) THEN
 
             L2 = LEN_TRIM( LINE )             ! Find end quote
@@ -194,7 +193,7 @@ SUBROUTINE RDSSUP ( PDEV )
             END IF
 
         !.......  If not pollutant name, then continue to read in the
-        !                   pollutant codes and store them by source
+        !         pollutant codes and store them by source
         ELSE IF ( V .GT. 0 ) THEN
 
             N1 = INDEX( LINE, 'NFRAC=' )

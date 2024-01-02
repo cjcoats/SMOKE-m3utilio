@@ -22,7 +22,7 @@ SUBROUTINE RDGRPS( FDEV )
     !***********************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !         System
     ! File: @(#)$Id$
     !
     ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
@@ -161,7 +161,7 @@ SUBROUTINE RDGRPS( FDEV )
     !         groups is the sum of the defined groups and the unmatched and valid
     !         in-line groups.
     !.......  Reallocate memory for group labels so that labels can be reset with
-    !           the inline labels as well.
+    !         the inline labels as well.
     IF( NREGNGRP .GT. 0 ) THEN
         DEALLOCATE( REGNNAM )
         ALLOCATE( REGNNAM( NREGNGRP ),              &
@@ -206,14 +206,14 @@ SUBROUTINE RDGRPS( FDEV )
     CALL READ_GROUPS( FDEV, NGRID, 'STORE', LCELSTAT )
 
     !.......  Convert region group entries to data structures needed for
-    !           further processing
+    !         further processing
     IF( NREGNGRP .GT. 0 ) THEN
 
         !.......  Loop through different regions
         DO N = 1, PKTCOUNT( REG_IDX )
 
             !.......  Initialize region list indicator depending on first subgrid
-            !                   entry
+            !         entry
             IF( REGSTAT( 1,N ) ) THEN               ! include
                 LRGN = .FALSE.                      ! array
             ELSE                                    ! exclude
@@ -341,8 +341,8 @@ SUBROUTINE RDGRPS( FDEV )
 CONTAINS
 
     !.......  This subprogram provides reads the group definitions
-    !               in various ways, as indicated by the main program
-    !               argument.
+    !         in various ways, as indicated by the main program
+    !         argument.
     SUBROUTINE READ_GROUPS( FDEV, NGRID, READTYPE, LGRDSTAT )
 
         !.......  External functions
@@ -477,7 +477,7 @@ CONTAINS
                     J = INDEX1( RPT_%REGNNAM, NREGRAW, REGNNAM )
 
                     !.......  If region name is not found, then try to convert
-                    !                           to a region code and compare with the inventory.
+                    !         to a region code and compare with the inventory.
                     IF( J .LE. 0 ) THEN
 
                         !.......  Check if label is an integer
@@ -491,14 +491,14 @@ CONTAINS
                             CALL CHECK_REGIONS( CFIP, LEVEL, IOS )
 
                             !.......  If code is valid, store line number of
-                            !                                   record
+                            !         record
                             IF( IOS .EQ. 0 ) THEN
                                 N = NCNT( REG_IDX ) + 1
                                 NCNT( REG_IDX ) = N
                                 LINECODE( IREC ) = 1
 
                             !.......  Otherwise, give warning because the label
-                            !                                   does not match and it's not an inline code
+                            !         does not match and it's not an inline code
                             ELSE
                                 WRITE( MESG,94010 ) 'WARNING: Region label "' //    &
                                   TRIM( RPT_%REGNNAM )// '" at line', IREC,         &
@@ -545,7 +545,7 @@ CONTAINS
                         CALL PARSE_SUBGRID( RPT_%SUBGNAM, NGRID, LCELSTAT, NINCL )
 
                         !.......  If subgrid is valid, increase count and
-                        !                               flag line as a in-line subgrid
+                        !         flag line as a in-line subgrid
                         IF( NINCL .GT. 0 ) THEN
                             N = NCNT( SBG_IDX ) + 1
                             NCNT( SBG_IDX ) = N
@@ -568,7 +568,7 @@ CONTAINS
                     END IF                            ! If subgrid name not found in list
 
                     !.......  Store current subgrid label for use in next
-                    !                           iteration
+                    !         iteration
                     PSUBGNAM = RPT_%SUBGNAM
 
                 END IF                            ! If subgrid selected on current line
@@ -669,12 +669,12 @@ CONTAINS
                     ALLRPT( N )%REGNNAM = RPT_%REGNNAM
 
                     !.......  See if this name is already stored and if not,
-                    !                           store it.
+                    !         store it.
                     RCNT = PKTCOUNT( REG_IDX )
                     J = INDEX1( RPT_%REGNNAM, RCNT, REGNNAM )
 
                     !.......  Store without checking status because LINECODE = 1
-                    !                           only if code has already been through CHECK_REGIONS
+                    !         only if code has already been through CHECK_REGIONS
                     IF( J .LE. 0 ) THEN
                         RCNT = RCNT + 1
                         REGNNAM( RCNT ) = RPT_%REGNNAM
@@ -717,9 +717,8 @@ CONTAINS
 
                 !.......  No default case for calling internal subprogram
               CASE DEFAULT
-                L = LEN_TRIM( READTYPE )
                 MESG = 'INTERNAL ERROR: Can not call READ_GROUPS '//&
-                       'subprogram with type "' // READTYPE( 1:L )//&
+                       'subprogram with type "' // TRIM( READTYPE )//&
                        '"'
                 CALL M3MSG2( MESG )
                 CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
@@ -732,8 +731,7 @@ CONTAINS
         RETURN
 
         !.......  Problem(s) reading input file...
-999     WRITE( MESG,94010 ) 'INTERNAL ERROR: Unexpected end of ' //&
-               'file at line', IREC
+999     WRITE( MESG,94010 ) 'INTERNAL ERROR: Unexpected end of file at line', IREC
         CALL M3MSG2( MESG )
         CALL M3EXIT( PROGNAME, 0, 0, ' ', 2 )
 
@@ -813,8 +811,8 @@ CONTAINS
     !----------------------------------------------------------------------
 
     !.......  This subprogram compares interprets a subgrid definition
-    !               and sets a logical array with one record per grid cell
-    !               to true for the records in the subgrid.
+    !         and sets a logical array with one record per grid cell
+    !         to true for the records in the subgrid.
     !.......  NINCL is > 0 when subgrid definition is valid
     !.......  LCELSTAT must be initialized by caller
     SUBROUTINE PARSE_SUBGRID( SGRANGE, NGRID, LCELSTAT, NINCL )

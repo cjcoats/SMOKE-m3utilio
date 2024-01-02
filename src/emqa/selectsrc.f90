@@ -24,7 +24,7 @@ SUBROUTINE SELECTSRC( RCNT )
     !***********************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !         System
     ! File: @(#)$Id$
     !
     ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
@@ -76,16 +76,17 @@ SUBROUTINE SELECTSRC( RCNT )
     INTEGER         IOS                 ! i/o status
     INTEGER         REGNIDX             ! index to list of region groups for this rpt
 
-    LOGICAL      :: EFLAG = .FALSE.      ! True: error has been detected
+    LOGICAL         EFLAG               ! True: error has been detected
 
-    CHARACTER(FIPLEN3) CFIP                    ! tmp country/state/county code
-    CHARACTER(256)     MESG                    ! message buffer
+    CHARACTER(FIPLEN3) CFIP             ! tmp country/state/county code
+    CHARACTER(256)     MESG             ! message buffer
 
     CHARACTER(16), PARAMETER :: PROGNAME = 'SELECTSRC'     ! program name
 
     !***********************************************************************
     !   begin body of subroutine SELECTSRC
 
+    EFLAG = .FALSE.
     !.......  Set report-specific local settings
     RPT_    = ALLRPT( RCNT )
     LREGION = .FALSE.
@@ -159,7 +160,7 @@ SUBROUTINE SELECTSRC( RCNT )
     END IF
 
     !.......  Now create compressed list of sources, but leave INDEXA as is
-    !           for use by REPMRGGRD
+    !         for use by REPMRGGRD
 
     IF( PSFLAG ) THEN
         NOUTREC = 0
@@ -189,7 +190,7 @@ SUBROUTINE SELECTSRC( RCNT )
     CALL CHECKMEM( IOS, 'OUTSRC,OUTSFAC', PROGNAME )
 
     !.......  Now create compressed list of sources, but leave INDEXA as is
-    !           for use by REPMRGGRD
+    !         for use by REPMRGGRD
 
     IF( PSFLAG ) THEN
 

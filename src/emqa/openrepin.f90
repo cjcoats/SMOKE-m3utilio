@@ -23,7 +23,7 @@ SUBROUTINE OPENREPIN( ENAME, ANAME, CUNAME, GNAME, LNAME,           &
     !***********************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !         System
     ! File: @(#)$Id$
     !
     ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
@@ -154,9 +154,9 @@ SUBROUTINE OPENREPIN( ENAME, ANAME, CUNAME, GNAME, LNAME,           &
         CALL RDINVMAP( INAME, IDEV, ENAME, ANAME, SDEV )
 
         !.......  Store source-category-specific header information,
-        !           including the inventory pollutants in the file (if any).  Note that
-        !           the I/O API header info is passed by include file and the
-        !           results are stored in module MODINFO.
+        !         including the inventory pollutants in the file (if any).  Note that
+        !         the I/O API header info is passed by include file and the
+        !         results are stored in module MODINFO.
         CALL GETSINFO( ENAME )
 
         !.......  Store non-category-specific header information
@@ -164,13 +164,13 @@ SUBROUTINE OPENREPIN( ENAME, ANAME, CUNAME, GNAME, LNAME,           &
         NSTEPS = 1
 
         !.......  Reset the maximum input data if any reports did not select
-        !           specific data values.  MXINDAT might get larger than needed.
+        !         specific data values.  MXINDAT might get larger than needed.
         IF( DATAMISS ) THEN
             MXINDAT = MAX( NIPPA, MXINDAT )
         END IF
 
         !.......  Determine the year and projection status of the inventory
-        !           CALL CHECK_INVYEAR( ENAME, APRJFLAG, FDESC3D )
+        !         CALL CHECK_INVYEAR( ENAME, APRJFLAG, FDESC3D )
 
     ELSE
         NCHARS = 3
@@ -178,7 +178,7 @@ SUBROUTINE OPENREPIN( ENAME, ANAME, CUNAME, GNAME, LNAME,           &
         JSTACK = 3
 
         ALLOCATE( SC_BEGP( NCHARS ),    &
-              SC_ENDP( NCHARS ), STAT=IOS )
+                  SC_ENDP( NCHARS ), STAT=IOS )
         CALL CHECKMEM( IOS, 'SC_BEGP,SC_ENDP', PROGNAME )
 
         PLTIDX = 2
@@ -210,7 +210,7 @@ SUBROUTINE OPENREPIN( ENAME, ANAME, CUNAME, GNAME, LNAME,           &
         END IF
 
         !.......  Store variable number, names, and units from the hourly
-        !               emissions fileTPNAME
+        !         emissions fileTPNAME
         NTPDAT = NVARSET
         ALLOCATE( TPNAME( NTPDAT ),     &
                   TPUNIT( NTPDAT ),     &
@@ -222,7 +222,7 @@ SUBROUTINE OPENREPIN( ENAME, ANAME, CUNAME, GNAME, LNAME,           &
         TPDESC = VDESCSET( 1:NTPDAT )          ! array
 
         !.......  Determine the year and projection status of the hourly
-        !           CALL CHECK_INVYEAR( TNAME, PRJFLAG, FDESC3D )
+        !         CALL CHECK_INVYEAR( TNAME, PRJFLAG, FDESC3D )
 
     END IF
 
@@ -254,13 +254,12 @@ SUBROUTINE OPENREPIN( ENAME, ANAME, CUNAME, GNAME, LNAME,           &
 
         MESG = 'Enter logical name for the GRIDDING SUPPLEMENTAL '//&
                'file'
-        GDEV = PROMPTFFILE( MESG, .TRUE., .TRUE.,&
-                            CRL//'GSUP', PROGNAME )
+        GDEV = PROMPTFFILE( MESG, .TRUE., .TRUE., CRL//'GSUP', PROGNAME )
 
     END IF
 
     !.......  Open mole speciation matrix, compare number of sources, store
-    !           speciation variable descriptions, and store mass or moles.
+    !         speciation variable descriptions, and store mass or moles.
     IF( SLFLAG ) THEN
 
         SLNAME = PROMPTSET( 'Enter logical name for the MOLE SPECIATION MATRIX',&
@@ -286,7 +285,7 @@ SUBROUTINE OPENREPIN( ENAME, ANAME, CUNAME, GNAME, LNAME,           &
     END IF
 
     !.......  Open mass speciation matrix, compare number of sources, store
-    !           speciation variable descriptions, and store mass or moles.
+    !         speciation variable descriptions, and store mass or moles.
     IF( SSFLAG ) THEN
 
         SSNAME = PROMPTSET( 'Enter logical name for the MASS SPECIATION MATRIX',&
@@ -336,7 +335,7 @@ SUBROUTINE OPENREPIN( ENAME, ANAME, CUNAME, GNAME, LNAME,           &
     END IF      ! end of mass speciation open
 
     !.......  Open projection matrix, compare number of sources,
-    !               and store projection variable names.
+    !         and store projection variable names.
     IF( PRFLAG ) THEN
 
         MESG = 'Enter logical name for the PROJECTION MATRIX'
@@ -347,12 +346,12 @@ SUBROUTINE OPENREPIN( ENAME, ANAME, CUNAME, GNAME, LNAME,           &
         NVPROJ = NVARS3D
 
         !.......  Set allocation size depending on whether report is also
-        !             read in.
+        !         read in.
         I = NVPROJ
         IF( PRRPTFLG ) I = 2 * I
 
         !.......  Allocate memory for variables (including possible
-        !             other variables for report check) and store names
+        !         other variables for report check) and store names
         ALLOCATE( PNAMPROJ( I ), STAT=IOS )
         CALL CHECKMEM( IOS, 'PNAMPROJ', PROGNAME )
         PNAMPROJ = ' '      ! array
@@ -417,11 +416,10 @@ SUBROUTINE OPENREPIN( ENAME, ANAME, CUNAME, GNAME, LNAME,           &
     END IF
 
     !.......  Open multiplicative control matrix, compare number of sources,
-    !               and store control variable names.
+    !         and store control variable names.
     IF( CUFLAG ) THEN
 
-        MESG = 'Enter logical name for the ' //&
-               'MULTIPLICATIVE CONTROL MATRIX'
+        MESG = 'Enter logical name for the MULTIPLICATIVE CONTROL MATRIX'
         CUNAME = PROMPTSET( MESG, FSREAD3, CRL//'CMAT', PROGNAME )
 
         CALL RETRIEVE_SET_HEADER( CUNAME )
@@ -434,39 +432,39 @@ SUBROUTINE OPENREPIN( ENAME, ANAME, CUNAME, GNAME, LNAME,           &
     END IF      ! end of multiplicative control open
 
     !.......  Open additive control matrix, compare number of sources,
-    !               and store control variable names.
+    !         and store control variable names.
     !        IF( CAFLAG ) THEN
-    !            MESG= 'INTERNAL ERROR: Area additive controls not ' //
-    !                 'yet implemented in ' // PROGNAME
-    !            CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
+    !         MESG= 'INTERNAL ERROR: Area additive controls not ' //
+    !         'yet implemented in ' // PROGNAME
+    !         CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 
     !        END IF      ! end of additive control open
 
     !.......  Open reactivity control matrix, compare number of sources, and
-    !               store control variable descriptions, and store mass or moles.
+    !         store control variable descriptions, and store mass or moles.
     !        IF( CRFLAG ) THEN
-    !            RNAME = PROMPTMFILE(
-    !                'Enter logical name for the REACTIVITY MATRIX',
-    !                FSREAD3, CRL//'RMAT', PROGNAME )
+    !         RNAME = PROMPTMFILE(
+    !         'Enter logical name for the REACTIVITY MATRIX',
+    !         FSREAD3, CRL//'RMAT', PROGNAME )
 
-    !            CALL RETRIEVE_IOAPI_HEADER( RNAME )
-    !            CALL CHKSRCNO( CATDESC, RNAME, NTHIK3D, NSRC, EFLAG )
-    !            NRMATV = NVARS3D
-    !            NSREAC = NROWS3D
-    !            ALLOCATE( RVDESC( NRMATV ), STAT=IOS )
-    !            CALL CHECKMEM( IOS, 'RVDESC', PROGNAME )
-    !            CALL STORE_VDESCS( 1, 1, NRMATV, RVDESC )
+    !         CALL RETRIEVE_IOAPI_HEADER( RNAME )
+    !         CALL CHKSRCNO( CATDESC, RNAME, NTHIK3D, NSRC, EFLAG )
+    !         NRMATV = NVARS3D
+    !         NSREAC = NROWS3D
+    !         ALLOCATE( RVDESC( NRMATV ), STAT=IOS )
+    !         CALL CHECKMEM( IOS, 'RVDESC', PROGNAME )
+    !         CALL STORE_VDESCS( 1, 1, NRMATV, RVDESC )
 
     !.......  Retrieve the number of speciation factors
-    !            RNMSPC = GETIFDSC( FDESC3D, '/SPECIES VARS/', .TRUE. )
+    !         RNMSPC = GETIFDSC( FDESC3D, '/SPECIES VARS/', .TRUE. )
 
     !.......  Check the year and projection year of the matrix
-    !           CALL CHECK_INVYEAR( ARNAME, APRJFLAG, FDESC3D )
+    !         CALL CHECK_INVYEAR( ARNAME, APRJFLAG, FDESC3D )
 
     !        END IF      ! end of reactivity control open
 
     !.......  Open layer fractions file, compare number of sources, check
-    !           met information, and store the vertical coordinates info
+    !         met information, and store the vertical coordinates info
     IF( LFLAG ) THEN
 
         MESG= 'Enter logical name for the POINT LAYER FRACTIONS MATRIX'
@@ -484,15 +482,14 @@ SUBROUTINE OPENREPIN( ENAME, ANAME, CUNAME, GNAME, LNAME,           &
 
     !.......  Open elevated/plume-in-grid file
         MESG = 'Enter logical name for the ELEVATED/PING file'
-        EDEV = PROMPTFFILE( MESG, .TRUE., .TRUE., 'PELV', PROGNAME      )
+        EDEV = PROMPTFFILE( MESG, .TRUE., .TRUE., 'PELV', PROGNAME )
 
     END IF
 
     !.......  Get country, state, and county names, if needed
     IF( YFLAG .AND. .NOT. USEEXPGEO() ) THEN
 
-        MESG = 'Enter logical name for COUNTRY, STATE, AND ' //&
-               'COUNTY file'
+        MESG = 'Enter logical name for COUNTRY, STATE, AND COUNTY file'
         YDEV = PROMPTFFILE( MESG,.TRUE.,.TRUE.,'COSTCY',PROGNAME )
 
     END IF
@@ -533,8 +530,7 @@ SUBROUTINE OPENREPIN( ENAME, ANAME, CUNAME, GNAME, LNAME,           &
     IF( NNFLAG ) THEN
 
         MESG = 'Enter logical name for NAICS DESCRIPTIONS'
-        NNDEV = PROMPTFFILE(&
-                    MESG,.TRUE.,.TRUE.,'NAICSDESC',PROGNAME )
+        NNDEV = PROMPTFFILE( MESG,.TRUE.,.TRUE.,'NAICSDESC',PROGNAME )
 
     END IF
 
@@ -618,7 +614,7 @@ SUBROUTINE OPENREPIN( ENAME, ANAME, CUNAME, GNAME, LNAME,           &
     END IF
 
     !.......  If there were any errors inputing files or while comparing
-    !           with one another, then abort
+    !         with one another, then abort
     IF( EFLAG ) THEN
 
         MESG = 'Problems opening input files. See ERROR(S) above.'
@@ -627,14 +623,13 @@ SUBROUTINE OPENREPIN( ENAME, ANAME, CUNAME, GNAME, LNAME,           &
     END IF
 
     !.......  If we are using temporalized emissions, then update date/time and
-    !           duration using environment variable settings, then prompt.
+    !         duration using environment variable settings, then prompt.
     IF( TFLAG ) THEN
 
         !.......  Write explanation
         MESG = 'For time-based reports, enter the starting date, '//    &
                'starting time, and output' // CRLF() // BLANK10 //      &
-               'duration.  Defaults are set based on the input ' //     &
-               'files.'
+               'duration.  Defaults are set based on the input files.'
         CALL M3MSG2( MESG )
 
         !.......  Subselect dates and times
@@ -658,7 +653,7 @@ SUBROUTINE OPENREPIN( ENAME, ANAME, CUNAME, GNAME, LNAME,           &
 CONTAINS
 
     !.......  This internal subprogram tries to retrieve the I/O API header
-    !               and aborts if it was not successful
+    !         and aborts if it was not successful
     SUBROUTINE RETRIEVE_IOAPI_HEADER( FILNAM )
 
         !.......  Subprogram arguments
@@ -668,8 +663,7 @@ CONTAINS
 
         IF ( .NOT. DESC3( FILNAM ) ) THEN
 
-            MESG = 'Could not get description of file "' //&
-                   TRIM( FILNAM ) // '"'
+            MESG = 'Could not get description of file "' // TRIM( FILNAM ) // '"'
             CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 
         ENDIF
@@ -679,7 +673,7 @@ CONTAINS
     !----------------------------------------------------------------------
     !----------------------------------------------------------------------
     !.......  This subprogram tries to retrieve the description for a file
-    !               set and aborts if it was not successful
+    !         set and aborts if it was not successful
     SUBROUTINE RETRIEVE_SET_HEADER( FILNAM )
 
         INCLUDE 'SETDECL.h90'       !  FileSetAPI function declarations
@@ -691,8 +685,7 @@ CONTAINS
 
         IF ( .NOT. DESCSET( FILNAM, ALLFILES ) ) THEN
 
-            MESG = 'Could not get description of file set "' //&
-                   TRIM( FILNAM ) // '"'
+            MESG = 'Could not get description of file set "' // TRIM( FILNAM ) // '"'
             CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 
         ENDIF
@@ -703,8 +696,8 @@ CONTAINS
     !----------------------------------------------------------------------
 
     !.......  This subprogram updates the time (episode) information
-    !               and compares to the existing information, if it has been
-    !               previously set.
+    !         and compares to the existing information, if it has been
+    !         previously set.
     SUBROUTINE UPDATE_TIME_INFO( FILNAM )
 
         !.......  Subprogram arguments
@@ -822,7 +815,7 @@ CONTAINS
     !----------------------------------------------------------------------
     !----------------------------------------------------------------------
     !.......  This subprogram initializes and checks the inventory year
-    !               of the emissions and the projection status
+    !         of the emissions and the projection status
     SUBROUTINE CHECK_INVYEAR( FNAME, PRJFLAG, IODESC )
 
         !.......  Subprogram arguments
@@ -846,9 +839,9 @@ CONTAINS
         STRICT = .TRUE.
 
         !.......  First determine whether to abort when projected year does not
-        !               match.  This is used for reactivity matrices, which will
-        !               always have a projection year, even if the inventory isn't
-        !               projected.
+        !         match.  This is used for reactivity matrices, which will
+        !         always have a projection year, even if the inventory isn't
+        !         projected.
         IF( .NOT. PRJFLAG ) THEN
             BUFFER = GETCFDSC( FDESC3D, '/FROM/', .FALSE. )
             IF( BUFFER .EQ. 'OPENRMAT' ) STRICT = .FALSE.
@@ -912,7 +905,7 @@ CONTAINS
     !----------------------------------------------------------------------
     !----------------------------------------------------------------------
     !.......  This subprogram stores I/O API NetCDF variable names into
-    !               a local array based on indices in subprogram call.
+    !         a local array based on indices in subprogram call.
     SUBROUTINE STORE_VNAMES( ISTART, INCRMT, NNAM, NAMES )
 
         !.......  Subprogram arguments
@@ -939,7 +932,7 @@ CONTAINS
     !----------------------------------------------------------------------
     !----------------------------------------------------------------------
     !.......  This subprogram stores I/O API NetCDF variable descriptions into
-    !               a local array based on indices in subprogram call.
+    !         a local array based on indices in subprogram call.
     SUBROUTINE STORE_VDESCS( ISTART, INCRMT, NDESC, DESCS )
 
         !.......  Subprogram arguments
@@ -958,8 +951,7 @@ CONTAINS
         J = ISTART
         DO I = 1, NDESC
 
-            L = LEN_TRIM( VDESCSET( J ) )
-            DESCS( I ) = VDESCSET( J )( 1:L )
+            DESCS( I ) = VDESCSET( J )
             J = J + INCRMT
 
         END DO

@@ -23,7 +23,7 @@ SUBROUTINE WRREPHDR( FDEV, RCNT, FILENUM, LH, OUTFMT )
     !***********************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !         System
     ! File: @(#)$Id$
     !
     ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
@@ -102,7 +102,6 @@ SUBROUTINE WRREPHDR( FDEV, RCNT, FILENUM, LH, OUTFMT )
     !C.......  This module contains the information about the source category
     USE MODINFO, ONLY: NCHARS, CATEGORY, CATDESC, BYEAR, INVPIDX,   &
                        EANAM, ATTRUNIT
-
 
     IMPLICIT NONE
 
@@ -729,9 +728,9 @@ SUBROUTINE WRREPHDR( FDEV, RCNT, FILENUM, LH, OUTFMT )
     END IF
 
     !.......  Set widths and build formats for country, state, and county names.
-    !           These are done on loops of unique lists of these names
-    !           so that the LEN_TRIMs can be done on the shortest possible list
-    !           of entries instead of on all entries in the bins list.
+    !         These are done on loops of unique lists of these names
+    !         so that the LEN_TRIMs can be done on the shortest possible list
+    !         of entries instead of on all entries in the bins list.
 
     !.......  Geo code level 1 names
     IF( RPT_%BYGEO1NAM ) THEN
@@ -1655,7 +1654,7 @@ SUBROUTINE WRREPHDR( FDEV, RCNT, FILENUM, LH, OUTFMT )
     IF( RPT_%NAICSNAM ) THEN
 
         !.......  For NAICS descriptions in the inventory, get max name
-        !               width
+        !         width
         NWIDTH = 0
         DO I = 1, NINVNAICS
             IF( LNAICSUSE( I ) ) THEN
@@ -1846,7 +1845,7 @@ SUBROUTINE WRREPHDR( FDEV, RCNT, FILENUM, LH, OUTFMT )
                 END IF
 
                 !.......  Build the array of output formats for the data in
-                !                       current report
+                !         current report
                 TMPFMT = OUTFMT
                 L2 = LEN_TRIM( TMPFMT )
                 WRITE( OUTFMT, '(A,I2.2,A,I2.2)' )          &
@@ -1886,7 +1885,7 @@ SUBROUTINE WRREPHDR( FDEV, RCNT, FILENUM, LH, OUTFMT )
                 END IF
 
             !.......  Otherwise make sure there is no comma on the end and
-            !                   add the ending parenthese
+            !         add the ending parenthese
             ELSE
                 IF( L1 .LT. QAFMTL3-1 ) THEN
                     IF( TMPFMT( L1:L1 ) .EQ. ',' ) L1 = L1 - 1
@@ -1935,7 +1934,7 @@ SUBROUTINE WRREPHDR( FDEV, RCNT, FILENUM, LH, OUTFMT )
     !.......  User Titles  ..........
 
     !.......  Loop through user-defined titles for current report, and write
-    !           to the report verbatim.
+    !         to the report verbatim.
     DO I = 1, RPT_%NUMTITLE
 
         L2 = LEN_TRIM( TITLES( I,RCNT ) )
@@ -2166,7 +2165,7 @@ CONTAINS
     !----------------------------------------------------------------------
 
     !.......  This internal subprogram finds the width of the largest
-    !               integer in an array
+    !         integer in an array
     INTEGER FUNCTION INTEGER_COL_WIDTH( NVAL, IARRAY )
 
         !.......  Subprogram arguments

@@ -20,7 +20,7 @@ SUBROUTINE QAREPIN( RCNT, IOS )
     !***********************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !         System
     ! File: @(#)$Id$
     !
     ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
@@ -141,7 +141,7 @@ SUBROUTINE QAREPIN( RCNT, IOS )
         I = SECSDIFF( EDATE, ETIME, EDATE, RPT_%OUTTIME )
 
         !.......  If reporting time is after data ending time, reset the no.
-        !               of time steps so that the reporting ends on the previous day
+        !         of time steps so that the reporting ends on the previous day
         IF( I .GT. 0 ) THEN
                 ! Workaround - NEXTIME does not properly subtract 24 hours so have
                 !   to use two steps
@@ -156,10 +156,10 @@ SUBROUTINE QAREPIN( RCNT, IOS )
             RPTNSTEP = I / 3600 + 1
 
         !.......  If reporting time is before data ending time, reset the
-        !               number of time steps so that the reporting ends on the
-        !               reporting hour
+        !         number of time steps so that the reporting ends on the
+        !         reporting hour
         !.......  Also set reporting time steps for reporting time matches
-        !               ending time.
+        !         ending time.
         ELSE IF( I .LE. 0 ) THEN
             IF( .NOT. RPT_%BYHOUR ) RPTNSTEP = NSTEPS + I / 3600
 

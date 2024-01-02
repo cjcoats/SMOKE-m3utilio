@@ -25,7 +25,7 @@ PROGRAM SMKREPORT
     !***********************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !         System
     ! File: @(#)$Id$
     !
     ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
@@ -134,7 +134,7 @@ PROGRAM SMKREPORT
     LDEV = INIT3()
 
     !.......  Write out copyright, version, web address, header info, and prompt
-    !           to continue running the program.
+    !         to continue running the program.
     CALL INITEM( LDEV, CVSW, PROGNAME )
 
     !.......  Prompt for and open REPCONFIG file
@@ -142,8 +142,8 @@ PROGRAM SMKREPORT
                         .TRUE., .TRUE., 'REPCONFIG', PROGNAME )
 
     !.......  Scan report configuration file to determine input file types,
-    !           get global file flags and settings, and determine maximum
-    !           values for use in memory allocation.
+    !         get global file flags and settings, and determine maximum
+    !         values for use in memory allocation.
     CALL SCANREPC( CDEV )
 
     !.......  Get environment variable settings
@@ -164,28 +164,26 @@ PROGRAM SMKREPORT
     CALL RDRPRTS( CDEV )
 
     !.......  Build pollutant, activity, emis-type, and species indices to output
-    !           data columns based on the selected output data from the reports
+    !         data columns based on the selected output data from the reports
     !.......  Index arrays are stored in the bin module
     CALL BLDREPIDX( SLNAME, SSNAME )
 
     !.......  Allocate memory for gridding matrix (even if not used so that it
-    !           can be passed through subroutines)
+    !         can be passed through subroutines)
     GDIM = NGRID + 2*NMATX
     ALLOCATE( GMAT( GDIM ), STAT=IOS )
     CALL CHECKMEM( IOS, 'GMAT', PROGNAME )
 
     !.......  Allocate memory for speciation matrices (even if no speciation
-    !           so that arrays can be passed through subroutines).
+    !         so that arrays can be passed through subroutines).
     N = 1
     IF( SLFLAG .OR. SSFLAG ) N = NSRC
 
     IF( SLFLAG ) NSLIN = NSPCIN
-    ALLOCATE( SLMAT( N, NSLIN ), STAT=IOS )
-    CALL CHECKMEM( IOS, 'SLMAT', PROGNAME )
-
     IF( SSFLAG ) NSSIN = NSPCIN
-    ALLOCATE( SSMAT( N, NSSIN ), STAT=IOS )
-    CALL CHECKMEM( IOS, 'SSMAT', PROGNAME )
+    ALLOCATE( SLMAT( N, NSLIN ),       &
+              SSMAT( N, NSSIN ), STAT=IOS )
+    CALL CHECKMEM( IOS, 'SLMAT,SSMAT', PROGNAME )
 
     !.......  Read one-time input file data
     CALL RDREPIN( NSLIN, NSSIN, RDEV, SDEV, GDEV, PDEV, TDEV,       &
@@ -345,7 +343,7 @@ PROGRAM SMKREPORT
         CALL M3MSG2( MESG )
 
         !.......  Update inventory input names and units, depending on status of
-        !               average day emissions.
+        !         average day emissions.
         INVPIDX = 0
         IF ( RPT_%AVEDAY ) INVPIDX = 1
         IF( .NOT. AFLAG ) CALL GETSINFO( ENAME )
@@ -375,7 +373,7 @@ PROGRAM SMKREPORT
             CALL WRREPHDR( ODEV( J ), N, I, HWID, OUTFMT )
 
             !.......  Loop through time steps (if any) and sum emissions into bins
-            !               for the appropriate time resolution...
+            !         for the appropriate time resolution...
 
             !.......  For mole-based speciation...
             IF( RPT_%USESLMAT ) THEN
@@ -404,7 +402,7 @@ PROGRAM SMKREPORT
 
     !.......  Normal completion
     ELSE
-        CALL M3EXIT( PROGNAME, 0, 0, ' ', 0 )
+        CALL M3EXIT( PROGNAME, 0, 0, 'Successful completion', 0 )
     END IF
 
     !******************  FORMAT  STATEMENTS   ******************************

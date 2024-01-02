@@ -21,7 +21,7 @@ SUBROUTINE RDRPRTS( FDEV )
     !***********************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !         System
     ! File: @(#)$Id$
     !
     ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
@@ -89,7 +89,7 @@ SUBROUTINE RDRPRTS( FDEV )
     !   begin body of subroutine RDRPRTS
 
     !.......  Allocate memory for report arrays based on previous read of file
-    !           and previously determined settings...
+    !         and previously determined settings...
 
     !.......  Allocate and initialize report arrays
     ALLOCATE( ALLRPT( NREPORT ),            &
@@ -246,7 +246,7 @@ SUBROUTINE RDRPRTS( FDEV )
         IF( LIN_SUBDATA )  INDNAM( 1:RPT_%NUMDATA, N ) = SEGMENT( 3:NS )
 
         !.......  Units - for now, one unit applies to all
-        !               note: Must edit here to permit units to be different by variable
+        !         note: Must edit here to permit units to be different by variable
         IF( LIN_UNIT )  ALLUSET( :, N ) = UNITSET
 
     END DO        ! End read loop of report configuration file
@@ -283,7 +283,7 @@ SUBROUTINE RDRPRTS( FDEV )
         END IF
 
         !.......  Check pollutants selected with SPCCODE and build a list of
-        !               valid pollutants
+        !         valid pollutants
         IF ( ALLRPT( N )%BYSPC ) THEN
 
             CBUF = ALLRPT( N )%SPCPOL
@@ -294,12 +294,9 @@ SUBROUTINE RDRPRTS( FDEV )
             !.......  Error if not found
             IF ( J .LE. 0 ) THEN
 
-                L = LEN_TRIM( CBUF )
-                WRITE( MESG,94010 ) 'WARNING: Pollutant "'//&
-                       CBUF( 1:L ) // '" for report', N,&
-                       'not found in inventory ' // CRLF()//&
-                       BLANK10// 'pollutant list.  Ignoring '//&
-                       'instruction for speciation codes.'
+                WRITE( MESG,94010 ) 'WARNING: Pollutant "'// TRIM( CBUF ) //    &
+                       '" for report not found in inventory pollutant list.' // &
+                       CRLF()// BLANK10// 'Ignoring instruction for speciation codes.'
                 CALL M3MSG2( MESG )
                 ALLRPT( N )%BYSPC = .FALSE.
 
@@ -317,9 +314,8 @@ SUBROUTINE RDRPRTS( FDEV )
 
             !.......  Store other valid pollutants, but ensure not already in list
             ELSE
-                L = LEN_TRIM( CBUF )
-                WRITE( MESG,94010 ) 'WARNING: Skipping pollutant '//&
-                        '"'// CBUF( 1:L ) // '" at line', IREC,&
+                WRITE( MESG,94010 ) 'WARNING: Skipping pollutant "'//TRIM( CBUF )// &
+                        '" at line', IREC,&
                         CRLF()// BLANK10 // 'Only allowed one '&
                         // 'pollutant per REPCONFIG file '//&
                         'with SPCCODE instruction.'
