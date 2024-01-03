@@ -28,6 +28,9 @@ For example, *make*-symbol `E132` now gives the compile-flags for the
 SMOKE (eliminating the previously-necessary compiler-dependency in
 *SMOKE/src/Makeinclude*).
 
+The *src/movesmrg/rdmrclist* bug (`MCREFIDX` is `CHARACTER`, not
+`INTEGER` as `FORMAT 94010` demands) is fixed.
+
 
 ## Introduction
 

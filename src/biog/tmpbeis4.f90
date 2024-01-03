@@ -88,7 +88,7 @@ PROGRAM TMPBEIS4
     REAL, ALLOCATABLE :: SOILM ( :, : )          ! soil moisture
     REAL, ALLOCATABLE :: SOILT ( :, : )          ! soil temperature
     REAL, ALLOCATABLE :: SOILT2( :, : )          ! soil temp first 1m
-    REAL, ALLOCATABLE :: WSAT( :, : )          ! soil temp first 1m
+    REAL, ALLOCATABLE :: WSAT( :, : )            ! soil temp first 1m
 
     REAL, ALLOCATABLE :: RN    ( :, : )          ! nonconvective rainfall
     REAL, ALLOCATABLE :: RC    ( :, : )          ! convective rainfall
@@ -172,13 +172,13 @@ PROGRAM TMPBEIS4
     INTEGER ::      RVARS       ! number of valid rainfall hours (if less than one day run)
     INTEGER ::      RINDEX      ! pointer to RAINFALL BUFFER
     LOGICAL         EFLAG       !  error flag
-    LOGICAL ::      SAMEFILE = .TRUE.       ! radiation/cld and tmpr data in same file
+    LOGICAL ::      SAMEFILE    ! radiation/cld and tmpr data in same file
     !....... BEIS4 settings setup for using SEAON_CALC function as default
-    LOGICAL ::      SWITCH_FILE = .FALSE.      ! use frost switch file
+    LOGICAL ::      SWITCH_FILE         ! use frost switch file
     LOGICAL ::      ASSUME_SUMMER = .FALSE.     ! use summer normalized emissions
-    LOGICAL ::      SEASON_CALC = .TRUE.      ! use frost switch file
-    LOGICAL ::      WRF_LAI = .TRUE.      ! use WRF LAI
-    LOGICAL ::      WRF_WSAT = .TRUE.      ! use WRF WSAT
+    LOGICAL ::      SEASON_CALC ! use frost switch file
+    LOGICAL ::      WRF_LAI     ! use WRF LAI
+    LOGICAL ::      WRF_WSAT    ! use WRF WSAT
 
     LOGICAL         GETATN
     LOGICAL         PX_VERSION         ! true: using PX version of MCIP
@@ -203,18 +203,18 @@ PROGRAM TMPBEIS4
     CHARACTER(16)      SMNAM          ! soil moisture variable name
     CHARACTER(SPNLEN3) SPPRO          ! speciation profile to use
     CHARACTER(16)      STMPNAM        ! soil temperature variable name
-    CHARACTER(16)      STMP2NAM      ! soil temperature layer 2 variable name
-    CHARACTER(16)      WSATNAM       !   WSAT variable
+    CHARACTER(16)      STMP2NAM       ! soil temperature layer 2 variable name
+    CHARACTER(16)      WSATNAM        !   WSAT variable
 
     CHARACTER(16)      STNAM          ! soil type variable name
     CHARACTER(16)      TMPRNAM        ! temperature variable name
-    CHARACTER(16)      RADYNINAM        ! inverse aero resistance variable name
-    CHARACTER(16)      TEMPGNAM        ! ground temp variable name
-    CHARACTER(16)      RGRNDNAM        ! radiation reaching ground variable name
-    CHARACTER(16)      LAINAM        ! LAI (from WRF) variable name
-    CHARACTER(16)      Q2NAM        ! 2m mixing ratio variable name
-    CHARACTER(16)      RSTOMINAM        ! inverse stomatal resistance variable name
-    CHARACTER(16)      USTARNAM         ! surface friction variable name
+    CHARACTER(16)      RADYNINAM      ! inverse aero resistance variable name
+    CHARACTER(16)      TEMPGNAM       ! ground temp variable name
+    CHARACTER(16)      RGRNDNAM       ! radiation reaching ground variable name
+    CHARACTER(16)      LAINAM         ! LAI (from WRF) variable name
+    CHARACTER(16)      Q2NAM          ! 2m mixing ratio variable name
+    CHARACTER(16)      RSTOMINAM      ! inverse stomatal resistance variable name
+    CHARACTER(16)      USTARNAM       ! surface friction variable name
     CHARACTER(16)      VTMP           ! temporary variable name
 
     !***********************************************************************
@@ -280,11 +280,11 @@ PROGRAM TMPBEIS4
     RDEV = PROMPTFFILE( 'Enter logical name for SPECIATION PROFILES file',&
                         .TRUE., .TRUE., 'GSPRO', PROGNAME )
 
-    !.........  Scan speciation profiles file to get all of the pollutant-species
+    !.......  Scan speciation profiles file to get all of the pollutant-species
     !         combinations that are valid for the pollutants in the inventory.
-    !.........  The species names are sorted in ABC order for each pollutant, and
+    !.......  The species names are sorted in ABC order for each pollutant, and
     !         and the pollutants are in the same order as BIOTYPES.
-    !.........  Also retrieve the maximum number of species per pollutant and
+    !.......  Also retrieve the maximum number of species per pollutant and
     !         maximum number of profile entries per pollutant.
 
     CALL DSCSPROF( RDEV, NSEF, BIOTYPES )
@@ -485,7 +485,7 @@ PROGRAM TMPBEIS4
 
         IF ( WRF_WSAT ) THEN
 
-            !.............  Check for soil saturation variable
+            !.........  Check for soil saturation variable
             MESG = 'Variable name for soil saturation'
             CALL ENVSTR( 'WSAT_VAR', MESG, 'WSAT', WSATNAM, IOS )
             IF ( IOS .GT. 0 ) THEN
@@ -494,7 +494,7 @@ PROGRAM TMPBEIS4
             CALL CHECK_VARIABLE( WSATNAM, M3NAME )
 
         ENDIF
-        !.............  Check for soil type variable
+        !.........  Check for soil type variable
         MESG = 'Variable name for soil type'
         CALL ENVSTR( 'ISLTYP_VAR', MESG, 'SLTYP', STNAM, IOS )
         IF ( IOS .GT. 0 ) THEN
@@ -649,7 +649,7 @@ PROGRAM TMPBEIS4
         IF( IOS < 0 ) FDFLAG = .FALSE.
     END IF
 
-    !.........  Get default time characteristic for output file:
+    !.......  Get default time characteristic for output file:
     !         If we're going to prompt, then set the defaults based on met
     !         otherwise, use environment variables to set defaults
     JDATE  = SDATE3D
@@ -678,7 +678,7 @@ PROGRAM TMPBEIS4
 
     CALL GETM3EPI( TZONE, JDATE, JTIME, TSTEP, NSTEPS )
 
-    !.........  Build description for, and create/open output file
+    !.......  Build description for, and create/open output file
     !         (all but variables-table in description is borrowed from M3NAME)
     SDATE3D = JDATE
     STIME3D = JTIME
@@ -1119,7 +1119,7 @@ PROGRAM TMPBEIS4
             CALL M3EXIT( PROGNAME, RDATE, RTIME, MESG, 2 )
         END IF
 
-    ! ARRAY ARITHMETIC
+        ! ARRAY ARITHMETIC
 
         RSTOM( : , : ) = 1.0/RSTOMI( : , : )
         RATM ( : , : ) = 1.0/RADYNI( : , : )
@@ -1132,7 +1132,7 @@ PROGRAM TMPBEIS4
             ENDIF
         END IF
 
-    !.............  Calculate hourly rainfall totals
+        !.............  Calculate hourly rainfall totals
 
         RAINFALL( 1:NCOLS, 1:NROWS, RINDEX ) = RN + RC
 
@@ -1146,7 +1146,7 @@ PROGRAM TMPBEIS4
             INITIAL_RUN = .FALSE.
         ENDIF
 
-    ! calculate fseas based on deep soil temperature following WRF 3.8.1 PX
+        ! calculate fseas based on deep soil temperature following WRF 3.8.1 PX
 
         IF ( SEASON_CALC ) THEN
 
@@ -1236,7 +1236,6 @@ PROGRAM TMPBEIS4
     END DO     ! loop over hours
 
     !.........  Create saved NO emissions file
-
     !.........  Build description for, and create/open output file
     NCOLS3D = NCOLS
     NROWS3D = NROWS
