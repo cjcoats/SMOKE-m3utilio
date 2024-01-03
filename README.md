@@ -2,7 +2,7 @@
 
 ## Notice
 
-**This is a developent/technology-transfer repository, not a production
+**This is a development/technology-transfer repository, not a production
 repository.** It contains a GitHub Oct. 28, 2023 version of
 SMOKE (`.0.f`), a `M3UTILIO`ized, I/O API 3.2-ized  (`.f`) of
 SMOKE, an *findent* (`.1.f90`) free-source-format reference version of
@@ -293,15 +293,18 @@ Someone in the mean-time replaced the improved version with the (lower
 quality) original.  This has now been fixed.
 
 
-### Scratch arrays, PARAMETERs, etc.
+### Scratch arrays, `PARAMETER`s, `TRIM`, etc.
 
 Fortran-90 provides very simple and flexible array structure for "auto"
-local-variable arrays.  SMOKE almost throughout avoids this simplicity,
-using `ALLOCATE` and `DEALLOCATE` for what should be local-variable arrays.
-
-In a number of places, `ALLOCATE / DEALLOCATE` arrays were turned into
-auto arrays.  (Doing this to the maximum extent possible would have been
-an extremely tedious task ;-( )
+local-variable arrays (which, BTW, provide "leak-proof re-use of
+memory.  SMOKE almost throughout avoids this simplicity, using
+`ALLOCATE` and `DEALLOCATE` for what should be local-variable arrays.
+Note that  `DEALLOCATE` does not necessarily reverse the effects of the
+matching `ALLOCATE`:  it generally causes "holes" in the program's
+memory-map, and if repeated constitutes a memory leak. In a number of
+places, `ALLOCATE / DEALLOCATE` arrays were turned into auto arrays. 
+(Doing this to the maximum extent possible would have been an extremely
+tedious task ;-( ) [See `PERMUTI`, below.]
 
 Many constants were moved from `DATA` statements to `PARAMETER` statements.
 
@@ -315,11 +318,11 @@ replaced by the appropriate numbers of blanks.
 
 In many places, the original code-authors introduced potential bugs due
 to a failure to understand how declaration-time initialization for
-variables works.  The following sort of thing
+variables works.  The following sort of declaration
 <pre>
         INTEGER :: NFOUND = 0
 </pre>
-should almost always instead have a declaration, followed by a separate
+should  always instead have a declaration, followed by a separate
 initialization-statement at the beginning of the body of the routine:
 </pre>
         INTEGER :: NFOUND
@@ -385,14 +388,14 @@ that this effort will be quite tedious.
 The whole allocation-and-sorting system can and should be simplified
 enormously, using a variant of *lib/getfline.f* that also returns the
 number of non-comment lines in ASCII files, together with the new I/O
-API generic routine [*PERMUITI*](https://cjcoats.github.io/ioapi/PERMUTI.html)
+API generic routine [`PERMUTI`](https://cjcoats.github.io/ioapi/PERMUTI.html)
 <pre>
         PERMUTI(N, INDX, ARR1 [, ARR2 [, ARR3]] )
 </pre>
-that sorts its array-arguments `ARR1` etc. in-place, on the basis of the
-`INDX` array returned by the `SORTI`, without the need for extra
-temporary scratch-arrays.  Note that retrofitting this would be a major
-task.
+that sorts its array-arguments `ARR1` etc. in-place, on the basis of
+the `INDX` array returned by the `SORTI`, without the need for extra
+temporary scratch-arrays.  Note that retrofitting `PERMUTI` would be a
+major task.
 
 The "generate new files in a file-set" constructs ensuring that file
 sizes do not exceed the (netCDF-2, 1990's) 2GB file size limit have not
@@ -411,7 +414,8 @@ script-style [*OPEN3*](https://cjcoats.github.io/ioapi/OPEN3.html) and
 [*GETEFILE*](https://cjcoats.github.io/ioapi/GETEFILE.html)
 
 
-### Notes
+### NOTES  (*btw, GitHub has a Markdown-formatting bug that shows up
+here*)
 
 [^1]: The Fortran Standard explicitly **refuses** to dictate the quality
 of how round-off behaves.  As an extreme example, *no two of the
