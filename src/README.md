@@ -28,8 +28,11 @@ For example, *make*-symbol `E132` now gives the compile-flags for the
 SMOKE (eliminating the previously-necessary compiler-dependency in
 *SMOKE/src/Makeinclude*).
 
-The *src/movesmrg/rdmrclist* bug (`MCREFIDX` is `CHARACTER`, not
-`INTEGER` as `FORMAT 94010` demands) is fixed.
+Argument-list bugs that were found, as well as the
+*src/movesmrg/rdmrclist* bug (`MCREFIDX` is `CHARACTER`, not `INTEGER`
+as `FORMAT 94010` demands; see 
+https://forum.cmascenter.org/t/error-running-movesmerg-for-rpd/4606/4) 
+have been fixed.
 
 
 ## Introduction
@@ -297,14 +300,14 @@ quality) original.  This has now been fixed.
 
 Fortran-90 provides very simple and flexible array structure for "auto"
 local-variable arrays (which, BTW, provide "leak-proof re-use of
-memory.  SMOKE almost throughout avoids this simplicity, using
-`ALLOCATE` and `DEALLOCATE` for what should be local-variable arrays.
-Note that  `DEALLOCATE` does not necessarily reverse the effects of the
+memory).  SMOKE systematically avoids this simplicity, using `ALLOCATE`
+and `DEALLOCATE` for what should be "auto" local-variable arrays. Note
+that  `DEALLOCATE` does not necessarily reverse the effects of the
 matching `ALLOCATE`:  it generally causes "holes" in the program's
-memory-map, and if repeated constitutes a memory leak. In a number of
-places, `ALLOCATE / DEALLOCATE` arrays were turned into auto arrays. 
-(Doing this to the maximum extent possible would have been an extremely
-tedious task ;-( ) [See `PERMUTI`, below.]
+memory-map, and if performed repeated constitutes a memory leak. In a
+number of places, `ALLOCATE / DEALLOCATE` arrays were turned into auto
+arrays.  (Doing this to the maximum extent possible would have been an
+extremely tedious task ;-( ) [See `PERMUTI`, below.]
 
 Many constants were moved from `DATA` statements to `PARAMETER` statements.
 
