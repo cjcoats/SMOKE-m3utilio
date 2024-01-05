@@ -19,8 +19,8 @@ LOGICAL FUNCTION CHKMETEM( GNAM2D, MNAM2D, DNAM2D,  &
     !
     !  REVISION  HISTORY:
     !       Created 3/99 by M. Houyoux
-    !       Version 11/2023 by CJC:  USE M3UTILIO, conversion to ".f90",  and
-    !       related changes
+    !       Version 11/2023 by CJC:  USE M3UTILIO, conversion to ".f90", 
+    !       fix grid-check numerics using I/O API GRDCHK3, and related changes
     !**************************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
@@ -106,7 +106,7 @@ LOGICAL FUNCTION CHKMETEM( GNAM2D, MNAM2D, DNAM2D,  &
 
     !.....  Find the file to use as a base-line file for checking the others...
     !.....  Determine if any of the 3-d files are used. If so, find one to
-    !           use as the base-line
+    !       use as the base-line
     IF( GNAM3D .NE. 'NONE' .OR.     &
         MNAM3D .NE. 'NONE'      ) THEN
 
@@ -120,7 +120,7 @@ LOGICAL FUNCTION CHKMETEM( GNAM2D, MNAM2D, DNAM2D,  &
 
         END IF
 
-        !.....  If only 2-d files, then find one to use as the base-line
+    !.....  If only 2-d files, then find one to use as the base-line
     ELSE IF( MNAM2D .NE. 'NONE' ) THEN
         FILNAM = MNAM2D
     ELSE IF( GNAM2D .NE. 'NONE' ) THEN
@@ -256,64 +256,23 @@ CONTAINS
         !                YORIG3D = YORIG3D + 0.5D0 * YCELL3D
         END IF
 
-        !.....  Check horizontal parameters from header
-        IF ( NCOLS .NE. NCOLS3D .OR.            &
-             NROWS .NE. NROWS3D .OR.            &
-             DBLERR( XCELL, XCELL3D ) .OR.      &
-             DBLERR( YCELL, YCELL3D ) .OR.      &
-             DBLERR( XORIG, XORIG3D ) .OR.      &
-             DBLERR( YORIG, YORIG3D ) .OR.      &
-             DBLERR( XCENT, XCENT3D ) .OR.      &
-             DBLERR( YCENT, YCENT3D ) .OR.      &
-             DBLERR( P_ALP, P_ALP3D ) .OR.      &
-             DBLERR( P_BET, P_BET3D ) .OR.      &
-             DBLERR( P_GAM, P_GAM3D )      ) THEN
+        !.....  Check  parameters from header
+        IF ( .NOT.FILCHK3( FILNAM, GRDDED3,                             &
+                           NCOLS, NROWS, NLAYS3D, NTHIK3D ) .OR.        &
+             .NOT.GRDCHK3( FILNAM, P_ALP, P_BET, P_GAM, XCENT, YCENT,   &
+                           XORIG, YORIG, XCELL, YCELL,                  &
+                           NLAYS, VGTYP, VGTOP, VGLVS ) ) THEN
 
             EFLAG = .TRUE.
-            MESG = 'ERROR: Horizontal grid parameters in file "' // &
-                   TRIM( FILNAM ) // '"'// CRLF() // BLANK10//      &
-                   'are inconsistent with initialized values.'
+            MESG = 'ERROR: Grid parameters in file "' // TRIM( FILNAM ) // '"'// &
+                   CRLF() // BLANK10// 'are inconsistent with initialized values.'
             CALL M3MSG2( MESG )
 
         END IF
 
-        !.....  Check vertical parameters from header
-        IF( NLAYS3D .GT. 1 .AND. VGTYP .GT. 0 ) THEN
-
-            IF ( NLAYS .NE. NLAYS3D .OR.    &
-                 VGTYP .NE. VGTYP3D .OR.    &
-                 VGTOP .NE. VGTOP3D      ) THEN
-
-                EFLAG = .TRUE.
-                VFLAG = .TRUE.
-
-            ELSE
-
-                J = LBOUND( VGLVS3D,1 )
-                DO K = 0, NLAYS
-
-                    IF( FLTERR( VGLVS( K ), VGLVS3D( J ) ) ) THEN
-                        EFLAG = .TRUE.
-                        VFLAG = .TRUE.
-                    END IF
-                    J = J + 1
-
-                END DO
-
-            END IF
-
-            IF( VFLAG ) THEN
-                MESG = 'ERROR: Vertical grid parameters in file "'//    &
-                       TRIM( FILNAM ) // '"'//CRLF() // BLANK10//       &
-                       'are inconsistent with initialized values.'
-                CALL M3MSG2( MESG )
-            END IF
-
-        END IF
-
         !.....  Look for met scenario and cloud scheme indicators in I/O API
-        !               file header. If they are not there, do nothing. If they are
-        !               there, compare to the original settings.
+        !       file header. If they are not there, do nothing. If they are
+        !       there, compare to the original settings.
         CVAL = GETCFDSC( FDESC3D, '/MET SCENARIO/', .FALSE. )
         IF( CVAL .NE. ' ' .AND. CVAL .NE. METSCEN ) THEN
             EFLAG = .TRUE.

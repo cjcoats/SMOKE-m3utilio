@@ -15,7 +15,7 @@ LOGICAL FUNCTION SETSCCTYPE( TSCC )
     !  SUBROUTINES AND FUNCTIONS CALLED: none
     !
     !  REVISION  HISTORY:
-    !     7/03: Created by C. Seppanen
+    !       7/03: Created by C. Seppanen
     !       12/2023 by CJC:  ".f90" code format changes
     !***********************************************************************
     !

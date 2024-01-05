@@ -20,7 +20,7 @@ SUBROUTINE WRCHRSCC( CSCC )
     !************************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !         System
     ! File: @(#)$Id$
     !
     ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
@@ -73,7 +73,7 @@ SUBROUTINE WRCHRSCC( CSCC )
                         .FALSE., .TRUE., CRL // 'SCC', PNAME )
 
     !.........  Write out SCCs list (this subroutine expect the data structure
-    !           that is being provided.
+    !         that is being provided.
 
     CALL M3MSG2( 'Writing out ACTUAL SCC file...' )
 

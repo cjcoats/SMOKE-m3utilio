@@ -66,8 +66,8 @@ SUBROUTINE GETDYSAV( NSRC, CIFIP, LDAYSAV )
     INTEGER       NEXEMPT           ! no. entries in the exemptions file
     INTEGER       NLINES            ! no. lines in input file
 
-    LOGICAL    :: EFLAG = .TRUE.     ! true: error found
-    LOGICAL    :: FFLAG = .TRUE.     ! true: use daylight time exemption file
+    LOGICAL       EFLAG              ! true: error found
+    LOGICAL       FFLAG              ! true: use daylight time exemption file
 
     CHARACTER(FIPLEN3) CSC           ! tmp country/state/county code
     CHARACTER(FIPLEN3) STA           ! tmp country/state code
@@ -81,6 +81,7 @@ SUBROUTINE GETDYSAV( NSRC, CIFIP, LDAYSAV )
     !   begin body of subroutine GETDYSAV
 
     !.....  Initialize daylight savings indicator array
+    EFLAG   = .TRUE.
     LDAYSAV = .TRUE.      ! array
 
     !.....  Get environment variable to decide whether file prompt is

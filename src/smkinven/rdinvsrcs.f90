@@ -326,14 +326,13 @@ SUBROUTINE RDINVSRCS( FDEV, FNAME, NRAWBP, NRAWSRCS, ORLFLG )
         IF( IOS /= 0 ) THEN
 
             WRITE( MESG,94010 ) 'Problem at line ', CURFIL, 'of ' //    &
-               TRIM( FNAME ) // '.' // ' Could not open file:' //    &
+               TRIM( FNAME ) // '. Could not open file:' //    &
                CRLF() // BLANK5 // TRIM( INFILE )
             CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 
         ELSE
-            WRITE( MESG,94010 ) 'Successful OPEN for ' //    &
-               'inventory file:' // CRLF() // BLANK5 //    &
-               TRIM( INFILE )
+            WRITE( MESG,94010 ) 'Successful OPEN for inventory file:' // &
+                CRLF() // BLANK5 // TRIM( INFILE )
             CALL M3MSG2( MESG )
 
         END IF

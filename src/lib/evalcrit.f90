@@ -1,7 +1,6 @@
 
-LOGICAL FUNCTION EVALCRIT( NV, NORS, MXAND, VALS, REFS, RANK,&
-&                           CHRS, COMPARE, COMPCHR, TYPES,&
-&                           STATUS )
+LOGICAL FUNCTION EVALCRIT( NV, NORS, MXAND, VALS, REFS, RANK,   &
+                           CHRS, COMPARE, COMPCHR, TYPES, STATUS )
 
     !***********************************************************************
     !  function body starts at line
@@ -60,14 +59,14 @@ LOGICAL FUNCTION EVALCRIT( NV, NORS, MXAND, VALS, REFS, RANK,&
     LOGICAL     , INTENT(OUT) :: STATUS ( NORS, MXAND, NV )     ! true: condition met
 
     !.......   OTHER LOCAL VARIABLES and their descriptions:
-    INTEGER    L, L2, M, N          ! counters and indices
+    INTEGER     L, L2, M, N          ! counters and indices
 
-    REAL       REFMIN           ! tmp minimum for range check
-    REAL       REFMAX           ! tmp maximum for range check
-    REAL       TMPVAL           ! tmp value
+    REAL        REFMIN           ! tmp minimum for range check
+    REAL        REFMAX           ! tmp maximum for range check
+    REAL        TMPVAL           ! tmp value
 
-    LOGICAL    ANDSTAT              ! true: all ands apply
-    LOGICAL :: EFLAG = .FALSE.      ! true: error encountered
+    LOGICAL     ANDSTAT              ! true: all ands apply
+    LOGICAL     EFLAG                ! true: error encountered
 
     CHARACTER(300)  MESG
 
@@ -76,6 +75,7 @@ LOGICAL FUNCTION EVALCRIT( NV, NORS, MXAND, VALS, REFS, RANK,&
     !***********************************************************************
     !   begin body of function EVALCRIT
 
+    EFLAG     = .FALSE.
     EVALCRIT  = .FALSE.
     STATUS    = .FALSE.        ! array
 
@@ -147,8 +147,8 @@ LOGICAL FUNCTION EVALCRIT( NV, NORS, MXAND, VALS, REFS, RANK,&
 
                 END SELECT
 
-    !.....  If any of the AND conditions are false, exit from loop
-    !.....  Also reset status for all ANDs on this OR to FALSE
+                !.....  If any of the AND conditions are false, exit from loop
+                !.....  Also reset status for all ANDs on this OR to FALSE
                 IF ( .NOT. ANDSTAT ) THEN
                     STATUS( L, 1:MXAND, 1:NV ) = .FALSE.
                     EXIT
@@ -160,10 +160,10 @@ LOGICAL FUNCTION EVALCRIT( NV, NORS, MXAND, VALS, REFS, RANK,&
 
         END DO          ! End of ANDs loop
 
-    !.....  Update OR status
+        !.....  Update OR status
         EVALCRIT = ANDSTAT
 
-    !.....  If any OR status is true, then whole thing is true
+        !.....  If any OR status is true, then whole thing is true
         IF( EVALCRIT ) EXIT
 
     END DO        ! End of ORs loop
@@ -173,5 +173,7 @@ LOGICAL FUNCTION EVALCRIT( NV, NORS, MXAND, VALS, REFS, RANK,&
         MESG = 'Problem interpreting selection criteria.'
         CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
     END IF
+   
+    RETURN
 
 END FUNCTION EVALCRIT

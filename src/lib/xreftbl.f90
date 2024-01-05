@@ -24,7 +24,7 @@ SUBROUTINE XREFTBL( OPTYPE, NXREF )
     !*************************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !         System
     ! File: @(#)$Id$
     !
     ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
@@ -43,49 +43,49 @@ SUBROUTINE XREFTBL( OPTYPE, NXREF )
     !***************************************************************************
     USE M3UTILIO
 
-    !.........  MODULES for public variables
-    !.........  This module is for cross reference tables
+    !.......  MODULES for public variables
+    !.......  This module is for cross reference tables
     USE MODXREF, ONLY: INDXTA, CSRCTA, CSCCTA, ISPTA, CMACTA, CISICA,   &
                        TXCNT, NXTYPES, XDUPCHK
 
-    !.........  This module contains the information about the source category
+    !.......  This module contains the information about the source category
     USE MODINFO, ONLY: MXCHRS, NIPPA, SCCLEV1, SCCLEV2,                 &
                        SCCLEV3, LSCCEND, SC_ENDP, SC_BEGP,              &
                        JSCC, RSCCBEG, PLTIDX, EANAM, NIACT, NCHARS
 
-    !.........  This module contains the speciation profiles
+    !.......  This module contains the speciation profiles
     USE MODSPRO, ONLY: CMBDEX
 
     IMPLICIT NONE
 
-    !...........   INCLUDES
+    !.......   INCLUDES
 
     INCLUDE 'EMCNST3.h90'   !  emissions constant parameters
 
-    !...........   SUBROUTINE ARGUMENTS
+    !.......   SUBROUTINE ARGUMENTS
     CHARACTER(*), INTENT (IN) :: OPTYPE ! operation type (tmprl,spec,ctg...)
     INTEGER     , INTENT (IN) :: NXREF  ! no. ungrouped x-ref entries
 
-    !.........  EXTERNAL FUNCTIONS and their descriptions:
+    !.......  EXTERNAL FUNCTIONS and their descriptions:
 
     LOGICAL, EXTERNAL :: SETSCCTYPE, CHKEXPSCC, CHKEXPSIC, USEEXPGEO
 
-    !...........   Local parameters
+    !.......   Local parameters
     INTEGER, PARAMETER :: SNFLEN3 = SRCLEN3 - FIPLEN3
 
-    !...........  Local allocatable arrays...
+    !.......  Local allocatable arrays...
 
-    !...........   Arrays for intial pass through x-ref to determine degree of
-    !              each record and store the type and count of that type
+    !.......   Arrays for intial pass through x-ref to determine degree of
+    !         each record and store the type and count of that type
     INTEGER     XTYPE( NXREF )      ! group number of x-ref entry
     INTEGER     XTCNT( NXREF )      ! position in group of x-ref entry
     LOGICAL     DEFAULT( NIPPA+1 )  ! true: if default entry in x-ref
 
-    !...........  Arrays for counting number of x-ref records in each matching
-    !             degree and comparing current record with previous record as part
-    !             of the counting. Note that although all arrays below are
-    !             available for each degree of matching, only the array elements
-    !             that are appropriate for a given degree are actually populated.
+    !.......  Arrays for counting number of x-ref records in each matching
+    !         degree and comparing current record with previous record as part
+    !         of the counting. Note that although all arrays below are
+    !         available for each degree of matching, only the array elements
+    !         that are appropriate for a given degree are actually populated.
     INTEGER            N     ( 0:NXTYPES ) ! cnt for degree of matching
 
     CHARACTER(FIPLEN3) PCFIP ( NXTYPES )  ! previous co/st/cy code
@@ -95,10 +95,10 @@ SUBROUTINE XREFTBL( OPTYPE, NXREF )
     CHARACTER(SS5LEN3) PCSSC ( NXTYPES )  ! previous CSRC(part) // SCC
     CHARACTER(MACLEN3) PCMCT ( NXTYPES )  ! previous MACT
 
-    !...........   Array of source characeristics
+    !.......   Array of source characeristics
     CHARACTER(300)          CHARS( MXCHRS )
 
-    !...........   Other local variables
+    !.......   Other local variables
     INTEGER       I, J, J1, J2, K, L  ! counter and indices
 
     INTEGER       IDUM             ! dummy integer
@@ -167,7 +167,7 @@ SUBROUTINE XREFTBL( OPTYPE, NXREF )
     !***********************************************************************
     !   begin body of subroutine XREFTBL
 
-    !.........  For first time routine is called ...
+    !.......  For first time routine is called ...
     IF( FIRSTIME ) THEN
 
         MESG = 'Use only full SCC matches'
@@ -181,7 +181,7 @@ SUBROUTINE XREFTBL( OPTYPE, NXREF )
 
     LOPT = LEN_TRIM( OPTYPE )
 
-    !.........  Check for valid operation type
+    !.......  Check for valid operation type
     SELECT CASE( OPTYPE )
 
       CASE( 'ALLOWABLE' )
@@ -251,7 +251,7 @@ SUBROUTINE XREFTBL( OPTYPE, NXREF )
 
     END SELECT
 
-    !.........  Set up zero strings for FIPS code of zero and SCC code of zero
+    !.......  Set up zero strings for FIPS code of zero and SCC code of zero
     FIPZERO  = REPEAT( '0', FIPLEN3 )
     SCCZERO  = REPEAT( '0', SCCLEN3 )
     SCRZERO  = REPEAT( '0', SCCLEN3 - LSCCEND )
@@ -262,26 +262,26 @@ SUBROUTINE XREFTBL( OPTYPE, NXREF )
     SICRZERO = REPEAT( '0', SICLEN3 - 2 )
     MCTZERO  = REPEAT( '0', MACLEN3 )
 
-    !.........  Initialize default array
+    !.......  Initialize default array
     DEFAULT = .FALSE.   ! array
 
-    !.........  Initialize arrays for counting number of x-ref records in each
-    !           degree of matching
+    !.......  Initialize arrays for counting number of x-ref records in each
+    !         degree of matching
     N      = 0    ! arrays
     PCFIP  = ' '
     PCSRC  = ' '
     PCSSC  = ' '
     PTSCC  = ' '
 
-    !.........  Initialize source characteristics
+    !.......  Initialize source characteristics
     CHARS = ' '  ! array
 
-    !.........  Initialize index check
+    !.......  Initialize index check
     NCHKCHR = NCHARS
     IF( JSCC .GT. 0 ) NCHKCHR = NCHARS - 1
 
-    !.........  Loop through and count entries of each type. Store type.
-    !.........  For CSRC, don't include pollutant for grouping.
+    !.......  Loop through and count entries of each type. Store type.
+    !.......  For CSRC, don't include pollutant for grouping.
     ISP    = 0
     PSCC   = ' '
     DO I = 1, NXREF
@@ -308,11 +308,11 @@ SUBROUTINE XREFTBL( OPTYPE, NXREF )
             CHARS( J ) = CSRC( SC_BEGP( J ):SC_ENDP( J ) )
         END DO
 
-        !.............  Rearrange CHARS if SCC is a part of the source definition
-        !               because we have now stored SCC separately.  It will be
-        !               much easier to group the source characteristics this way.
-        !               Still go back to using original definition when storing
-        !               in tables (i.e., use CSRC)
+        !.......  Rearrange CHARS if SCC is a part of the source definition
+        !         because we have now stored SCC separately.  It will be
+        !         much easier to group the source characteristics this way.
+        !         Still go back to using original definition when storing
+        !         in tables (i.e., use CSRC)
         IF( JSCC .GT. 0 ) THEN
             DO J = JSCC, NCHARS - 1
                 CHARS( J ) = CHARS( J + 1 )
@@ -320,7 +320,7 @@ SUBROUTINE XREFTBL( OPTYPE, NXREF )
             CHARS( NCHARS ) = ' '
         END IF
 
-        !.............  Set up partial strings for checking country/state/county
+        !.......  Set up partial strings for checking country/state/county
         CFIP    = CHARS( 1 )
         CFPL   = CSRC( SC_BEGP( 1 ):SC_ENDP( PLTIDX ) )
         IF( PLTIDX /= 0 .AND. PLTIDX <= NCHARS ) THEN
@@ -338,10 +338,10 @@ SUBROUTINE XREFTBL( OPTYPE, NXREF )
         
             CSICR = SICRZERO
 
-            !.................  Set type of SCC
+            !.......  Set type of SCC
             SCCFLAG = SETSCCTYPE( TSCC )
 
-            !.................  If SCC type has changed, reset zero strings
+            !.......  If SCC type has changed, reset zero strings
             IF( SCCFLAG ) THEN
                 SCRZERO  = REPEAT( '0', SCCLEN3 - LSCCEND )
                 SCCZ_A   = REPEAT( '0', SCCLEN3 - SCCLEV1 )
@@ -349,25 +349,25 @@ SUBROUTINE XREFTBL( OPTYPE, NXREF )
                 SCCZ_C   = REPEAT( '0', SCCLEN3 - SCCLEV3 )
             END IF
 
-            !.................  Standard strings for SCC left and right matching
+            !.......  Standard strings for SCC left and right matching
             SCCL    = TSCC(       1:LSCCEND )
             SCCR    = TSCC( RSCCBEG:SCCLEN3 )
 
-            !.................  More partial strings for special SCC levels matching
+            !.......  More partial strings for special SCC levels matching
             SCCR_A = TSCC( SCCLEV1 + 1:SCCLEN3 )
             SCCR_B = TSCC( SCCLEV2 + 1:SCCLEN3 )
             SCCR_C = TSCC( SCCLEV3 + 1:SCCLEN3 )
 
         END IF
 
-        !.............  Reset flag for identifying when a record with the same
-        !               info but different pollutant is encountered
+        !.......  Reset flag for identifying when a record with the same
+        !         info but different pollutant is encountered
         SAMEFLAG = .FALSE.
 
-        !.............  Select cases
-        !.............  Note that since these are sorted in order of increasing FIPS
-        !               code, SCC, pollutant index, etc., that the entries with zero for
-        !               these characteristics will appear earlier in the sorted list
+        !.......  Select cases
+        !.......  Note that since these are sorted in order of increasing FIPS
+        !         code, SCC, pollutant index, etc., that the entries with zero for
+        !         these characteristics will appear earlier in the sorted list
         IF( CFIP .EQ. FIPZERO ) THEN                           ! FIPS code is default
 
             IF( CMCT .NE. MCTZERO ) THEN                       ! have valid MACT code
@@ -400,7 +400,7 @@ SUBROUTINE XREFTBL( OPTYPE, NXREF )
 
                 END IF
 
-        !.....................  Set SCC to zero to avoid lower level SCC checks
+        !.........  Set SCC to zero to avoid lower level SCC checks
                 TSCC = REPEAT( '0', SCCLEN3 )
 
             ELSE IF( CSICR .NE. SICRZERO .OR.                 &    ! Full SIC defined
@@ -499,9 +499,9 @@ SUBROUTINE XREFTBL( OPTYPE, NXREF )
 
             END IF
 
-        !.................  Section for special SCC levels for controls. This is not an
-        !                   efficient way to implement this, but it's needed so long
-        !                   as the old Right-left method is still needed.
+            !.......  Section for special SCC levels for controls. This is not an
+            !         efficient way to implement this, but it's needed so long
+            !         as the old Right-left method is still needed.
             IF ( .NOT. FULLSCC .AND. OFLAG .AND. NT .NE. 1 .AND.&
                   TSCC .NE. SCCZERO .AND. .NOT. CHKEXPSCC( TSCC ) )THEN
 
@@ -585,7 +585,7 @@ SUBROUTINE XREFTBL( OPTYPE, NXREF )
 
                 END IF
 
-        !.....................  Set SCC to zero to avoid lower level SCC checks
+                !......  Set SCC to zero to avoid lower level SCC checks
                 TSCC = REPEAT( '0', SCCLEN3 )
 
             ELSE IF( CSICR .NE. SICRZERO .OR.                   &    ! Full SIC defined
@@ -666,9 +666,9 @@ SUBROUTINE XREFTBL( OPTYPE, NXREF )
 
             END IF
 
-            !.................  Section for special SCC levels for controls. This is not an
-            !                   efficient way to implement this, but it's needed so long
-            !                   as the old Right-left method is still needed.
+            !.......  Section for special SCC levels for controls. This is not an
+            !         efficient way to implement this, but it's needed so long
+            !         as the old Right-left method is still needed.
 
             IF ( .NOT. FULLSCC .AND. OFLAG .AND. NT .NE. 4 .AND.                &
                  TSCC .NE. SCCZERO .AND. .NOT. CHKEXPSCC( TSCC ) ) THEN
@@ -759,7 +759,7 @@ SUBROUTINE XREFTBL( OPTYPE, NXREF )
 
                 END IF
 
-                !.....................  Set SCC to zero to avoid lower level SCC checks
+                !.........  Set SCC to zero to avoid lower level SCC checks
                 TSCC = REPEAT( '0', SCCLEN3 )
 
             ELSEIF( CSICR .NE. SICRZERO .OR.                 &    ! Full SIC defined
@@ -840,9 +840,9 @@ SUBROUTINE XREFTBL( OPTYPE, NXREF )
 
             END IF                                                  ! End SCC
 
-            !.................  Section for special SCC levels for controls. This is not an
-            !                   efficient way to implement this, but it's needed so long
-            !                   as the old Right-left method is still needed.
+            !.......  Section for special SCC levels for controls. This is not an
+            !         efficient way to implement this, but it's needed so long
+            !         as the old Right-left method is still needed.
             IF ( .NOT. FULLSCC .AND. OFLAG .AND. NT .NE. 7 .AND.        &
                  TSCC .NE. SCCZERO .AND. .NOT. CHKEXPSCC( TSCC ) ) THEN
 
@@ -899,9 +899,9 @@ SUBROUTINE XREFTBL( OPTYPE, NXREF )
 
             IF( TSCC .EQ. SCCZERO ) THEN               ! SCC code is default
 
-                !.....................  Loop through plant-specific characteristics. Only the
-                !                       plant is permitted to not have an SCC not specified
-                !.....................  Process NT 16 through 12, and 10
+                !.........  Loop through plant-specific characteristics. Only the
+                !         plant is permitted to not have an SCC not specified
+                !.........  Process NT 16 through 12, and 10
                 NT = 9 + MXCHRS
                 DO J = MXCHRS, 2, -1
 
@@ -925,17 +925,17 @@ SUBROUTINE XREFTBL( OPTYPE, NXREF )
 
                     NT = NT - 1
 
-                    !......................  Adjust NT for indexing quirk.  Since NT=11 must have
-                    !                        an SCC match, we're really processing for NT=10
-                    !                        since in this section, SCC=0
+                    !..........  Adjust NT for indexing quirk.  Since NT=11 must have
+                    !         an SCC match, we're really processing for NT=10
+                    !         since in this section, SCC=0
                     IF( NT .EQ. 11 ) NT = 10
 
                 END DO               ! End loop on plant characteristics
 
-                !.....................  Check for Plant-MACT combination
+                !.........  Check for Plant-MACT combination
                 IF( CMCT .NE. MCTZERO ) THEN                           ! Plant/MACT specified
 
-                    !.........................  Give warning and skip if other fields besides plant are included
+                    !...........  Give warning and skip if other fields besides plant are included
                     IF( CFPL .NE. CSRC ) THEN
                         MESG = 'Plant-MACT entry with other source characteristics is skipped'
                         CALL REPORT_INVALID_XREF( MESG )
@@ -968,11 +968,11 @@ SUBROUTINE XREFTBL( OPTYPE, NXREF )
                 NT = 0
 
             ELSE                                              ! Complete SCC
-                !.....................  Loop through plant-specific characteristics,
-                !                       and store the most specific entries first.
-                !.....................  Only the most specific and plant-only can have
-                !                       full TSCC assignment.
-                !.....................  Process NT 16 through 11
+                !.........  Loop through plant-specific characteristics,
+                !         and store the most specific entries first.
+                !.........  Only the most specific and plant-only can have
+                !         full TSCC assignment.
+                !.........  Process NT 16 through 11
                 NT = 9 + MXCHRS
                 DO J = MXCHRS, 2, -1
                     IF( ( J .EQ. NCHKCHR .OR. J .EQ. 2  ) .AND.     &
@@ -1021,8 +1021,8 @@ SUBROUTINE XREFTBL( OPTYPE, NXREF )
 
     END DO                           ! End Loop on sorted x-ref entries
 
-    !.........  If processing tagging data, call routine to process it and
-    !           then skip to the end of the program
+    !.......  If processing tagging data, call routine to process it and
+    !         then skip to the end of the program
     IF( TAGFLAG ) THEN
 
         CALL TAGTABLE( N( 1 ), NXREF, XTYPE, XTCNT )
@@ -1030,60 +1030,60 @@ SUBROUTINE XREFTBL( OPTYPE, NXREF )
 
     END IF
 
-    !.........  Allocate the memory for the source-characteristics portion of the
-    !           grouped cross-reference tables
+    !.......  Allocate the memory for the source-characteristics portion of the
+    !         grouped cross-reference tables
     CALL ALOCCHRT( N( 1 ) )
 
-    !.........  Populate the grouped tables of cross-reference source-characteristics
+    !.......  Populate the grouped tables of cross-reference source-characteristics
     CALL FILLCHRT( NXREF, XTYPE, XTCNT )
 
-    !.........  Depending on the operation type, first allocate memory for the tables
-    !           and initialize profile codes where needed.
-    !.........  Then, populate the tables from the sorted and post-processed
-    !           cross-reference tables
+    !.......  Depending on the operation type, first allocate memory for the tables
+    !         and initialize profile codes where needed.
+    !.......  Then, populate the tables from the sorted and post-processed
+    !         cross-reference tables
 
-    !.........  Temporal x-ref tables
+    !.......  Temporal x-ref tables
     IF( TFLAG ) THEN
 
         CALL ALOCTTBL( NIPPA, N( 1 ) )
         CALL FILLTTBL( NIPPA, NXREF, N( 1 ), XTYPE, XTCNT( 1 ) )
 
-    !.........  Speciation x-ref tables
+    !.......  Speciation x-ref tables
     ELSE IF( SFLAG ) THEN
 
         CALL ALOCSTBL( NIPPA, N( 1 ) )
         CALL FILLSTBL( NIPPA, NXREF, N( 1 ), XTYPE, XTCNT( 1 ) )
 
-    !.........  Gridding x-ref tables
+    !.......  Gridding x-ref tables
     ELSE IF( IFLAG ) THEN
         CALL ALOCGTBL( N( 1 ) )
         CALL FILLGTBL( NXREF, N( 1 ), XTYPE, XTCNT( 1 ) )
 
-    !.........  Emission factor x-ref tables
+    !.......  Emission factor x-ref tables
     ELSE IF( FFLAG ) THEN
         CALL ALOCETBL( NIACT, N( 1 ) )
         CALL FILLETBL( NIACT, NXREF, N( 1 ), XTYPE, XTCNT( 1 ) )
 
-    !.........  Vehicle mix
+    !.......  Vehicle mix
     ELSE IF( MFLAG ) THEN
         CALL ALOCMTBL( N( 1 ) )
         CALL FILLMTBL( NXREF, N( 1 ), XTYPE, XTCNT( 1 ) )
 
-    !.........  Speeds
+    !.......  Speeds
     ELSE IF( PFLAG ) THEN
         CALL ALOCPTBL( N( 1 ) )
         CALL FILLPTBL( NXREF, N( 1 ), XTYPE, XTCNT( 1 ) )
 
-    !.........  non-HAP inclusion/exclusions file
+    !.......  non-HAP inclusion/exclusions file
     ELSE IF( XFLAG ) THEN
     ! Do nothing, because all that is needed is the CHRT* arrays
 
-    !.........  Area-to-point factors assignment
+    !.......  Area-to-point factors assignment
     ELSE IF( YFLAG ) THEN
         CALL ALOCATBL( N( 1 ) )
         CALL FILLATBL( NXREF, N( 1 ), XTYPE, XTCNT( 1 ) )
 
-    !.........  All control x-ref tables
+    !.......  All control x-ref tables
     ELSE
 
         CALL ALOCCTBL( NIPPA, N( 1 ) )
@@ -1093,7 +1093,7 @@ SUBROUTINE XREFTBL( OPTYPE, NXREF )
 
 300 CONTINUE
 
-    !.........  Store count of records in each group in final variable
+    !.......  Store count of records in each group in final variable
     DO I = 1, NXTYPES
         TXCNT( I ) = N( I )
     END DO
@@ -1102,7 +1102,7 @@ SUBROUTINE XREFTBL( OPTYPE, NXREF )
 
     !******************  FORMAT  STATEMENTS   ******************************
 
-    !...........   Internal buffering formats............ 94xxx
+    !.......   Internal buffering formats...... 94xxx
 
 94010 FORMAT( 10( A, :, I8, :, 1X ) )
 
@@ -1110,19 +1110,19 @@ SUBROUTINE XREFTBL( OPTYPE, NXREF )
 
 CONTAINS
 
-    !.............  This internal subprogram writes a warning message for
-    !               duplicate entries in the cross-reference file.
-    !               Disabled if MODXREF/XDUPCHK is .FALSE.
+    !.......  This internal subprogram writes a warning message for
+    !         duplicate entries in the cross-reference file.
+    !         Disabled if MODXREF/XDUPCHK is .FALSE.
 
     SUBROUTINE REPORT_DUP_XREF
 
-        !.............  Local variables
+        !.......  Local variables
         INTEGER        :: L1
         INTEGER        :: L2
         CHARACTER(300) :: BUFFER
         CHARACTER(300) :: MESG
 
-        !......................................................................
+        !........................
 
         IF ( .NOT.XDUPCHK ) RETURN
 
@@ -1152,23 +1152,23 @@ CONTAINS
     END SUBROUTINE REPORT_DUP_XREF
 
     !----------------------------------------------------------------------
-    !.............  This internal subprogram writes a warning message for
-    !               invalid cross-reference entries
+    !.......  This internal subprogram writes a warning message for
+    !         invalid cross-reference entries
     SUBROUTINE REPORT_INVALID_XREF( INMESG )
 
-        !.............  Subprogram arguments
+        !.......  Subprogram arguments
         CHARACTER(*), INTENT( IN ) :: INMESG           ! Input message to include on line 2
 
-        !.............  Local parameters
+        !.......  Local parameters
         CHARACTER(48), PARAMETER :: PART1 = 'WARNING: Skipping invalid cross-reference entry.'
 
-        !.............  Local variables
+        !.......  Local variables
         INTEGER        :: L1
         INTEGER        :: L2
         CHARACTER(300) :: BUFFER
         CHARACTER(300) :: MESG
 
-        !......................................................................
+        !........................
 
         CALL FMTCSRC( CSRC, NCHARS, BUFFER, L1 )
 

@@ -14,8 +14,9 @@ SUBROUTINE SRCGRPCNT( NSRC, NMAT1, NX, IX )
     !  SUBROUTINES AND FUNCTIONS CALLED:
     !
     !  REVISION  HISTORY:
-    !     Created 7/2013 by C. Seppanen
-    !
+    !       Created 7/2013 by C. Seppanen
+    !       Version 11/2023 by CJC:  USE M3UTILIO, ".f90" source format, and 
+    !       related changes
     !***************************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling

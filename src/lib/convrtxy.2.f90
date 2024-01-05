@@ -1,6 +1,6 @@
 
-SUBROUTINE CONVRTXY( NSRC, CTYPE, GDNAM, P_ALP, P_BET,&
-&                     P_GAM, XCENT, YCENT, XVALS, YVALS )
+SUBROUTINE CONVRTXY( NSRC, CTYPE, GDNAM, P_ALP, P_BET,  &
+                     P_GAM, XCENT, YCENT, XVALS, YVALS )
 
     !***********************************************************************
     !  subroutine body starts at line

@@ -1,9 +1,10 @@
 
-SUBROUTINE UNGRIDBV( NC, NR, XREFS, YREFS,          &
-                     NPTS, XLOC, YLOC, NU, CU )
+SUBROUTINE UNGRIDBV( NC, NR, XREFS, YREFS, NPTS, XLOC, YLOC, NU, CU )
 
     !***************************************************************************
-    !  subroutine body starts at line
+    ! Derived from EDSS/Models-3 I/O API.
+    ! Distributed under the GNU LESSER GENERAL PUBLIC LICENSE version 2.1
+    ! See file "LGPL.txt" for conditions of use.
     !
     !  DESCRIPTION:
     !      This subroutine computes "ungridding" matrices to be used by the
@@ -15,7 +16,7 @@ SUBROUTINE UNGRIDBV( NC, NR, XREFS, YREFS,          &
     !  SUBROUTINES AND FUNCTIONS CALLED:
     !
     !  REVISION  HISTORY:
-    !       Created by C. Seppanen 7/04 based on ungridb.f
+    !       Created by C. Seppanen 7/04 based on I/O API ungridb.f
     !       Version 12/2023 by CJC:  ".f90" source format and related changes
     !***************************************************************************
     !

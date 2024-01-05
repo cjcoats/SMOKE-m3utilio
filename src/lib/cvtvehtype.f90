@@ -44,7 +44,6 @@ INTEGER FUNCTION CVTVEHTYPE( SMKVEH )
     INTEGER, INTENT (IN) :: SMKVEH       ! vehicle type in SMOKE code
 
     !.......   LOCAL VARIABLES and their descriptions:
-    LOGICAL :: EFLAG      = .FALSE.       ! true: error found
 
     CHARACTER(300)          MESG          !  message buffer
 
@@ -70,17 +69,14 @@ INTEGER FUNCTION CVTVEHTYPE( SMKVEH )
         CVTVEHTYPE = 7
       CASE( 108 )                  ! motorcycles
         CVTVEHTYPE = 8
-      CASE DEFAULT
-        EFLAG = .TRUE.
 
+      CASE DEFAULT
         WRITE( MESG, '(A,I8,A)' ) 'ERROR: Vehicle type ', SMKVEH, 'is not recognized.'
         CALL M3MESG( MESG )
-    END SELECT
-
-    IF( EFLAG ) THEN
         MESG = 'Problem converting vehicle type'
         CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
-    END IF
+
+    END SELECT
 
     RETURN
 

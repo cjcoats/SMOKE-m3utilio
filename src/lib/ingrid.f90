@@ -13,8 +13,8 @@ LOGICAL FUNCTION INGRID( XX, YY, NCOLS, NROWS, COL, ROW )
     !
     !  REVISION  HISTORY:
     !       Created by M. Houyoux 9/2000
-    !       Version 11/2023 by CJC:  USE M3UTILIO, conversion to ".f90",  and
-    !       related changes
+    !       Version 11/2023 by CJC:  USE M3UTILIO, conversion to ".f90", 
+    !       do calculations in REAL*8, and related changes
     !***************************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
@@ -61,10 +61,10 @@ LOGICAL FUNCTION INGRID( XX, YY, NCOLS, NROWS, COL, ROW )
     INTEGER, SAVE :: NC        !  saved no. columns
     INTEGER, SAVE :: NR        !  saved no. rows
 
-    REAL             XDUM, YDUM     ! tmp X and Y coordinates
-    REAL, SAVE    :: XX0, YY0       ! X and Y origin in coordinates of grid
-    REAL, SAVE    :: XX1, YY1       ! X and Y upper right position of grid
-    REAL, SAVE    :: DDX, DDY       ! Inverse cell length in X and Y directions
+    REAL*8           XDUM, YDUM     ! tmp X and Y coordinates
+    REAL*8, SAVE  :: XX0, YY0       ! X and Y origin in coordinates of grid
+    REAL*8, SAVE  :: XX1, YY1       ! X and Y upper right position of grid
+    REAL*8, SAVE  :: DDX, DDY       ! Inverse cell length in X and Y directions
 
     LOGICAL, SAVE :: FIRSTIME = .TRUE.       ! true: first time routine called
 
@@ -90,11 +90,11 @@ LOGICAL FUNCTION INGRID( XX, YY, NCOLS, NROWS, COL, ROW )
             MESG = 'Could not get Models-3 grid description'
             CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 
-    !.....  Store grid parameters for later processing
+        !.....  Store grid parameters for later processing
         ELSE
 
-            XX0 = SNGL( XORIG3D )
-            YY0 = SNGL( YORIG3D )
+            XX0 = XORIG3D
+            YY0 = YORIG3D
             XX1 = XX0 + FLOAT( NCOLS3D ) * SNGL( XCELL3D )
             YY1 = YY0 + FLOAT( NROWS3D ) * SNGL( YCELL3D )
             DDX = 1.0 / SNGL( XCELL3D )

@@ -113,23 +113,23 @@ SUBROUTINE GETM3EPI( TZONE, SDATE, STIME, TSTEP, NSTEPS )
     END IF
 
     !.....  Check if date and time are already set (by a file) and if so, make
-    !           comparisons to the environment values.
+    !       comparisons to the environment values.
     IF( SDATE .GT. 0 ) THEN
 
-    !.....  Compute ending time from subroutine arguments, using 1-hour time
-    !               step assumption
+        !.....  Compute ending time from subroutine arguments, using 1-hour time
+        !               step assumption
         EDATE = SDATE
         ETIME = STIME
         CALL NEXTIME( EDATE, ETIME, NSTEPS * 10000 )
 
-    !.....  Compare environment-based episode settings to those of the files
-    !.....  If the environment settings are more restrictive, then reset.
+        !.....  Compare environment-based episode settings to those of the files
+        !.....  If the environment settings are more restrictive, then reset.
         G_EDATE = G_SDATE
         G_ETIME = G_STIME
         CALL NEXTIME( G_EDATE, G_ETIME, G_NSTEPS * G_TSTEP )
 
         ISECS = SECSDIFF( SDATE, STIME, G_SDATE, G_STIME )
-        IF( ISECS .GT. 0 ) THEN      ! environment settings are later
+        IF( ISECS .GT. 0 ) THEN          ! environment settings are later
             SDATE = G_SDATE
             STIME = G_STIME
         ELSE IF( ISECS .LT. 0 ) THEN
@@ -154,7 +154,7 @@ SUBROUTINE GETM3EPI( TZONE, SDATE, STIME, TSTEP, NSTEPS )
         END IF
 
     !.....  If date and time are not already set, use the environment variable
-    !           values as defaults
+    !       values as defaults
     ELSE
 
         SDATE  = G_SDATE
@@ -178,8 +178,8 @@ SUBROUTINE GETM3EPI( TZONE, SDATE, STIME, TSTEP, NSTEPS )
     IF( NSTEPS .GT. 0 ) THEN
         N = SECSDIFF( SDATE, STIME, EDATE, ETIME ) / 3600
 
-    !.....  Double check the number of time steps to ensure that the input
-    !               files are not out of range from the environment settings
+        !.....  Double check the number of time steps to ensure that the input
+        !       files are not out of range from the environment settings
         IF( N .LE. 0 ) THEN
             MESG= 'Date/time from input file(s) are inconsistent '//    &
                   'with the environment ' // CRLF() // BLANK10 //       &
@@ -246,10 +246,10 @@ SUBROUTINE GETM3EPI( TZONE, SDATE, STIME, TSTEP, NSTEPS )
 94010 FORMAT( 10( A, :, I6, :, 2X ) )
 
 94050 FORMAT( A, 1X, I2.2, A, 1X, A, 1X, I6.6, 1X,&
-            A, 1X, I5.3, 1X, A, 1X, I5.3, 1X, A   )
+              A, 1X, I5.3, 1X, A, 1X, I5.3, 1X, A   )
 
 94052 FORMAT( A, 1X, A, 1X, I6.6, 1X,&
-            A, 1X, I5.3, 1X, A, 1X, I5.3, 1X, A   )
+              A, 1X, I5.3, 1X, A, 1X, I5.3, 1X, A   )
 
 
 END SUBROUTINE GETM3EPI

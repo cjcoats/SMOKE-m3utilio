@@ -1,4 +1,4 @@
-# M3UTILIO-ized SMOKE
+# M3UTILIO/F90-ized SMOKE
 
 ## Notice
 
@@ -28,11 +28,11 @@ For example, *make*-symbol `E132` now gives the compile-flags for the
 SMOKE (eliminating the previously-necessary compiler-dependency in
 *SMOKE/src/Makeinclude*).
 
-Argument-list bugs that were found, as well as the
-*src/movesmrg/rdmrclist* bug (`MCREFIDX` is `CHARACTER`, not `INTEGER`
-as `FORMAT 94010` demands; see 
+Argument-list bugs that were found, as well as the `FORMAT` bugs in
+*src/movesmrg/rdmrclist* and *lib/efsetup* (`MCREFIDX` and `VOLNAM` are
+`CHARACTER`, not `INTEGER` as `FORMAT 94010` demands; see 
 https://forum.cmascenter.org/t/error-running-movesmerg-for-rpd/4606/4) 
-have been fixed.
+have been fixed.  There is a greatly-simplified  *lib/efsetup.2.f90*.
 
 
 ## Introduction
@@ -236,20 +236,25 @@ replaces the far more cluttered
 
 ### Numerics Etc.
 
+It was recognized early-on in Models-3 development that grid-coordinate
+related calculations needed to be done in `DOUBLE PRECISION`, i.e.,
+`REAL*8` &mdash; the critical situation being exactly the situation
+dealt with in *lib/ingrid*.  This routine has been corrected to do so.
+
 A number of loop nests (especially in biogenics) were found to be in
 nest-order that is as cache-hostile as possible. These have been
 replaced by the cache-friendly versions.  This should result in improved
-performance (where they occur), especially for large-grid scenarios. 
+performance (where these nests occur), especially for large-grid scenarios. 
 See [Optimizing Environmental Models for Microprocessor Based Systems
 &mdash; *The Easy
 Stuff*](https://cjcoats.github.io/optimization/efficient_models.html).
 
-It was recognized from the very beginning of the Models-3 project (and
-documented as such) that because `REAL` arithmetic is always subject to
-machine dependent round-off problems [^1] and therefore `REAL` values
-should **never** be tested for exact equality, a robust scheme was
-needed for the detection of "missing" for `REAL` values.  Therefore,
-(with over-kill) the I/O API provided parameters
+It was recognized from the very beginning of the Models-3 project in
+1991 (and documented as such) that because `REAL` arithmetic is always
+subject to machine dependent round-off problems [^1] and therefore
+`REAL` values should **never** be tested for exact equality, a robust
+scheme was needed for the detection of "missing" for `REAL` values. 
+Therefore, (with over-kill) the I/O API provided parameters
 <pre>
         REAL, PARAMETER :: BADVAL3 =  -9.999E36  !  for "missing"
         REAL, PARAMETER :: AMISS3  =  -9.000E36  !  for testing
@@ -313,7 +318,20 @@ Many constants were moved from `DATA` statements to `PARAMETER` statements.
 
 In many places, constructs involving `CHARACTER`-string lengths of the
 form `FOO( 1 : LEN_TRIM( FOO ) )` are replaced by the cheaper,
-much-simpler, and  more readable but equivalent `TRIM( FOO )`.
+much-simpler, and  more readable but equivalent `TRIM( FOO )`.  Likeise,
+some "stupid" double-assignments like:
+<pre>
+        ALLOCATE( ENDLEN( MXPTCHR3 ), STAT=IOS )
+        CALL CHECKMEM( IOS, 'ENDLEN', PROGNAME )
+        ENDLEN = 1      ! array
+        ENDLEN( 1:MXPTCHR3 ) = PTENDL3( 1:MXPTCHR3 )
+</pre>
+have been simplified to:
+<pre>
+        ALLOCATE( ENDLEN( MXPTCHR3 ), STAT=IOS )
+        CALL CHECKMEM( IOS, 'ENDLEN', PROGNAME )
+        ENDLEN( 1:MXPTCHR3 ) = PTENDL3( 1:MXPTCHR3 )
+</pre>
 
 Numerous embedded tab-characters were found (these make code-indentation
 problematical, depending upon one's editor-settings); these were
@@ -325,7 +343,7 @@ variables works.  The following sort of declaration
 <pre>
         INTEGER :: NFOUND = 0
 </pre>
-should  always instead have a declaration, followed by a separate
+should  almost always instead have a declaration, followed by a separate
 initialization-statement at the beginning of the body of the routine:
 </pre>
         INTEGER :: NFOUND
@@ -404,11 +422,16 @@ The "generate new files in a file-set" constructs ensuring that file
 sizes do not exceed the (netCDF-2, 1990's) 2GB file size limit have not
 been needed since the introduction of netCDF-3 in the late 1990's. 
 These constructs are no longer needed and should go away.  Possibly
-(since I/O API verslon 3.2 supports up to 2048 variables and I/O API
+(since I/O API version 3.2 supports up to 2048 variables and I/O API
 3.2-large supports up to 16384 variables), **all** of *src/filesetapi*
-should be eliminated, using standard I/O API instead. (Note that
-netCDF-3 supports file sizes larger than 2 GB, with a 2GB-per-timestep
-limit prior to netCDF-3.6 (2002) which does away with that limit...)
+should be eliminated, using standard I/O API routines instead. (Note
+that netCDF-3 supports file sizes larger than SMOKE's 2 GB assumption,
+with a 2GB-per-timestep limit prior to netCDF-3.6 (2002) which does away
+with that limit...)
+
+In this matter, *lib/ioapi_grd_size* needs to be changed from type
+`INTEGER` to `INTEGER*8`, since with large grids and variable-counts,
+timestep size in files may well exceed 2 GB.
 
 Since SMOKE scripts always set environment variable `PROMPTFLAG` to
 `NO`, the interactive-style prompt-for-file routines `PROMPTMFILE` and 
@@ -417,8 +440,7 @@ script-style [*OPEN3*](https://cjcoats.github.io/ioapi/OPEN3.html) and
 [*GETEFILE*](https://cjcoats.github.io/ioapi/GETEFILE.html)
 
 
-### NOTES  (*btw, GitHub has a Markdown-formatting bug that shows up
-here*)
+### NOTES  (*btw, GitHub has a Markdown-formatting bug that shows up here*)
 
 [^1]: The Fortran Standard explicitly **refuses** to dictate the quality
 of how round-off behaves.  As an extreme example, *no two of the

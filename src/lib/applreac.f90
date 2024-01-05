@@ -1,7 +1,7 @@
 
-SUBROUTINE APPLREAC( NSRC, NREAC, KEY1, KEY2, PRJFLAG, LMKTPON,&
-&                     EMIS, EMIST, IDX, REPEM, PRJFC, MKTPEN,&
-&                     RMAT, RCTINFO )
+SUBROUTINE APPLREAC( NSRC, NREAC, KEY1, KEY2, PRJFLAG, LMKTPON, &
+                     EMIS, EMIST, IDX, REPEM, PRJFC, MKTPEN,    &
+                     RMAT, RCTINFO )
 
     !***********************************************************************
     !  subroutine body starts at line 59
@@ -85,13 +85,13 @@ SUBROUTINE APPLREAC( NSRC, NREAC, KEY1, KEY2, PRJFLAG, LMKTPON,&
     RCTINFO( :,2 ) = 0.
 
     !.....  Exit from subroutine if reactivity matrix does not apply for this
-    !           species
+    !       species
     IF( KEY2 .LE. 0 ) RETURN
 
     !.....  Note that inventory and hourly (if present) have already been
-    !           checked to insure the same base and projection years.
+    !       checked to insure the same base and projection years.
     !.....  Compute the reactivity-controlled emissions by source and set the
-    !           market penetration.
+    !       market penetration.
     PFAC = 1.
     DO J = 1, NREAC
 
@@ -99,31 +99,26 @@ SUBROUTINE APPLREAC( NSRC, NREAC, KEY1, KEY2, PRJFLAG, LMKTPON,&
         S = IDX( J )
 
         !.....  If the inventory emissions are already projected, apply the
-        !               reactivity projection factor
+        !       reactivity projection factor
         IF( PRJFLAG ) PFAC = PRJFC( J )
 
         !.....  Compute output emissions as the product of the replacement
-        !               emissions, times the projection factor, times the temporal
-        !               adjustment (or 1. if EMIS=EMIST). Screen for divide by zero.
-        EM = 0.
+        !       emissions, times the projection factor, times the temporal
+        !       adjustment (or 1. if EMIS=EMIST). Screen for divide by zero.
+
         IF( EMIS( S,KEY1 ) .GT. 0 ) THEN
-
-            EM = REPEM( J ) * PFAC * EMIST( S,KEY1 ) / EMIS( S,KEY1 )
-
+            RCTINFO( S,1 ) = REPEM( J ) * RMAT( J,KEY2 ) * PFAC * EMIST( S,KEY1 ) / EMIS( S,KEY1 )
+        ELSE
+            RCTINFO( S,1 ) = 0.0
         END IF
 
-        RCTINFO( S,1 ) = EM * RMAT( J,KEY2 )
-
         !.....  If using market penetration, then set to value in matrix
+        !.....  If ignoring market penetration, then set to unity
+
         IF( LMKTPON ) THEN
-
             RCTINFO( S,2 ) = MKTPEN( J )
-
-            !.....  If ignoring market penetration, then set to unity
         ELSE
-
             RCTINFO( S,2 ) = 1.
-
         END IF
 
     END DO

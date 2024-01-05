@@ -81,8 +81,7 @@ SUBROUTINE APPLUMAT( NSRC, NMATX, VAL, NU, IU, CU, VALBYSRC )
 
             !.....  Get column and row from subgrid
             C = IU( K )
-            ROW = C / NCOLS                      ! note: integer math
-            IF( MOD( C, NCOLS ) .GT. 0. ) ROW = ROW + 1
+            ROW = 1 + ( C - 1 ) / NCOLS                      ! note: integer math
             COL = C - ( ROW-1 ) * NCOLS
 
             !.....  Compute cell number of base grid

@@ -1,5 +1,5 @@
 
-SUBROUTINE FLTRXREF( CFIP, CSIC, TSCC, CPOA, CMCT, IXSIC, IXSCC,&
+SUBROUTINE FLTRXREF( CFIP, CSIC, TSCC, CPOA, CMCT, IXSIC, IXSCC,    &
                      IXPOA, SKIPPOA, SKIPREC )
 
     !**************************************************************************
@@ -48,8 +48,8 @@ SUBROUTINE FLTRXREF( CFIP, CSIC, TSCC, CPOA, CMCT, IXSIC, IXSCC,&
     USE MODSOURC, ONLY: CISIC, CMACT
 
     !.....  This module contains the lists of unique source characteristics
-    USE MODLISTS, ONLY: INVSCC, INVSCL, INVSIC, INVSIC2, INVMACT,&
-                        NINVSCC, NINVSCL, NINVSIC, NINVSIC2,&
+    USE MODLISTS, ONLY: INVSCC, INVSCL, INVSIC, INVSIC2, INVMACT,   &
+                        NINVSCC, NINVSCL, NINVSIC, NINVSIC2,        &
                         NINVMACT
 
     !.....  This module contains the information about the source category
@@ -182,8 +182,8 @@ SUBROUTINE FLTRXREF( CFIP, CSIC, TSCC, CPOA, CMCT, IXSIC, IXSCC,&
         END IF
 
         !.....  Mobile sources can have zeros for vehicle types and not
-        !                   road classes, so check to make sure that this isn't the
-        !                   case.
+        !       road classes, so check to make sure that this isn't the
+        !       case.
         IF( CATEGORY    .EQ. 'MOBILE' .AND.&
             TSCC( SCCEXPLEN3+1:SCCEXPLEN3+2 ) .EQ. '22'     .AND.&
             TSCC( SCCEXPLEN3+3:SCCEXPLEN3+6 ) .EQ. '0000'         ) THEN
@@ -199,7 +199,7 @@ SUBROUTINE FLTRXREF( CFIP, CSIC, TSCC, CPOA, CMCT, IXSIC, IXSCC,&
     END IF
 
     !.....  Check SIC with inventory SIC list.  The record might not match
-    !           based on SCC, but maybe by SIC.
+    !       based on SCC, but maybe by SIC.
     IF( ( TSCC == SCCZERO .OR. SKIPREC ) .AND.  &
           PFLAG .AND. CSIC .NE. SICZERO ) THEN
 
@@ -228,7 +228,7 @@ SUBROUTINE FLTRXREF( CFIP, CSIC, TSCC, CPOA, CMCT, IXSIC, IXSCC,&
         IXPOA = 0
 
     !.....  Ensure that pol/act is in master list of pol/act or
-    !           skip the pollutant/activity-specific entry
+    !       skip the pollutant/activity-specific entry
     ELSE
 
         IXPOA = INDEX1( CPOA, NIPPA, EANAM )

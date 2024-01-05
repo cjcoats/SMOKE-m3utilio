@@ -126,7 +126,7 @@ SUBROUTINE GETIDASZ( FDEV, CATEGORY, NLINEBP )
 
             CYCLE              ! to end of loop
 
-            !.....  Otherwise, count the lines and lines times pollutants
+        !.....  Otherwise, count the lines and lines times pollutants
         ELSE
 
             !.....  First, check to ensure header was there for area and

@@ -14,8 +14,8 @@ SUBROUTINE TAGTABLE( ICSIZE, NXREF, XTYPE, XTCNT )
     !
     !  REVISION  HISTORY:
     !       Created 1/2009 by M. Houyoux
-    !       Version 11/2023 by CJC:  USE M3UTILIO and related changes
-    !
+    !       Version 11/2023 by CJC:  USE M3UTILIO, ".f90" source format, and 
+    !       related changes
     !***************************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
@@ -63,7 +63,7 @@ SUBROUTINE TAGTABLE( ICSIZE, NXREF, XTYPE, XTCNT )
     INTEGER, INTENT (IN) :: XTCNT ( NXREF )     ! pos. in x-ref group
 
     !.......   Local field position array
-    INTEGER, ALLOCATABLE :: ENDLEN( : )
+    INTEGER     ENDLEN( MAX( MXARCHR3, MXMBCHR3, MXPTCHR3 ) )
 
     !.......   Other local variables
     INTEGER       I, J, L, K, T, V         ! counter and indices
@@ -107,23 +107,15 @@ SUBROUTINE TAGTABLE( ICSIZE, NXREF, XTYPE, XTCNT )
     SICZERO = REPEAT( '0', SICLEN3 )
 
     !.......  Set the local field position array based on the source category
+    ENDLEN = 1      ! array
     SELECT CASE ( CATEGORY )
       CASE( 'AREA' )
-        ALLOCATE( ENDLEN( MXARCHR3 ), STAT=IOS )
-        CALL CHECKMEM( IOS, 'ENDLEN', PROGNAME )
-        ENDLEN = 1      ! array
         ENDLEN( 1:MXARCHR3 ) = ARENDL3( 1:MXARCHR3 )
 
       CASE( 'MOBILE' )
-        ALLOCATE( ENDLEN( MXMBCHR3 ), STAT=IOS )
-        CALL CHECKMEM( IOS, 'ENDLEN', PROGNAME )
-        ENDLEN = 1      ! array
         ENDLEN( 1:MXMBCHR3 ) = MBENDL3( 1:MXMBCHR3 )
 
       CASE( 'POINT' )
-        ALLOCATE( ENDLEN( MXPTCHR3 ), STAT=IOS )
-        CALL CHECKMEM( IOS, 'ENDLEN', PROGNAME )
-        ENDLEN = 1      ! array
         ENDLEN( 1:MXPTCHR3 ) = PTENDL3( 1:MXPTCHR3 )
 
     END SELECT
@@ -391,9 +383,6 @@ SUBROUTINE TAGTABLE( ICSIZE, NXREF, XTYPE, XTCNT )
     DO I = 1, NXTYPES
         TAGXCNT( I ) = ICSIZE( I )
     END DO
-
-    !.......  Deallocate local memory
-    DEALLOCATE( ENDLEN )
 
     RETURN
 

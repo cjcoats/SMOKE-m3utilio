@@ -23,7 +23,7 @@ SUBROUTINE WRSRCGRPS( VNAME, JDATE, JTIME, INPUTFLAG, INPUTEMIS )
     !***************************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !         System
     ! File: @(#)$Id$
     !
     ! COPYRIGHT (C) 2013, Environmental Modeling for Policy Development
@@ -43,18 +43,18 @@ SUBROUTINE WRSRCGRPS( VNAME, JDATE, JTIME, INPUTFLAG, INPUTEMIS )
 
     USE M3UTILIO
 
-    !.........  MODULES for public variables
-    !.........  This module contains the major data structure and control flags
+    !.......  MODULES for public variables
+    !.......  This module contains the major data structure and control flags
     USE MODMERGE, ONLY: EMGGRD, NSRCGRP, NSGOUTPUT, GRPCNT,         &
                         IGRPNUM, SGINLNNAME, SRCGRPNAME,            &
                         PFLAG, PVNAME, PVSDATE, PVSTIME, ISRCGRP
 
-    !.........  This module contains the global variables for the 3-d grid
+    !.......  This module contains the global variables for the 3-d grid
     USE MODGRID, ONLY: NGRID, NCOLS, NROWS,                         &
                        GDTYP, GRDNM, P_ALP, P_BET, P_GAM,           &
                        XCENT, YCENT, XORIG, YORIG, XCELL, YCELL
 
-    !.........  This module contains arrays for plume-in-grid and major sources
+    !.......  This module contains arrays for plume-in-grid and major sources
     USE MODELEV, ONLY: NGROUP, NELEVGRPS, EMELEVGRP,                &
                        ELEVSTKGRP, ELEVSRCGRP, ELEVSTKCNT, SGFIREFLAG
 
@@ -63,17 +63,17 @@ SUBROUTINE WRSRCGRPS( VNAME, JDATE, JTIME, INPUTFLAG, INPUTEMIS )
 
     IMPLICIT NONE
 
-    !.........  INCLUDES:
+    !.......  INCLUDES:
     INCLUDE 'SETDECL.h90'   !  FileSetAPI variables and functions
 
-    !...........   SUBROUTINE ARGUMENTS
+    !.......   SUBROUTINE ARGUMENTS
     CHARACTER(*), INTENT (IN) :: VNAME   ! variable name to output
     INTEGER     , INTENT (IN) :: JDATE   ! Julian date to output (YYYYDDD)
     INTEGER     , INTENT (IN) :: JTIME   ! time to output (HHMMSS)
     LOGICAL     , INTENT (IN) :: INPUTFLAG      ! indicate if input emissions need to be used
     REAL        , INTENT (IN) :: INPUTEMIS( * ) ! input emissions (optional)
 
-    !...........   Local arrays
+    !.......   Local arrays
     INTEGER     INTDATA( NGROUP )              ! generic integer data
     REAL       REALDATA( NGROUP )              ! generic real data
     INTEGER     ISTACK ( NSGOUTPUT ) ! group number
@@ -94,7 +94,7 @@ SUBROUTINE WRSRCGRPS( VNAME, JDATE, JTIME, INPUTFLAG, INPUTEMIS )
     REAL        ACRES  ( NSGOUTPUT ) ! acres burned for a fire
     REAL        OUTEMIS( NSGOUTPUT ) ! output emissions
 
-    !...........   Other local variables
+    !.......   Other local variables
     INTEGER          C, G, K, IDX  ! counters and indices
     INTEGER          IOS           ! i/o status
     INTEGER          ROWNUM        ! grid cell row
@@ -115,7 +115,7 @@ SUBROUTINE WRSRCGRPS( VNAME, JDATE, JTIME, INPUTFLAG, INPUTEMIS )
 
     IF( FIRSTTIME ) THEN
 
-        !.............  Output stack groups file
+        !.......  Output stack groups file
         ISTACK = 0      ! array
         STKCNT = 0
         ROW    = 0
@@ -127,7 +127,7 @@ SUBROUTINE WRSRCGRPS( VNAME, JDATE, JTIME, INPUTFLAG, INPUTEMIS )
         LAT    = BADVAL3
         LONG   = BADVAL3
 
-        !.............  Set dummy stack parameter arrays based on environment settings
+        !.......  Set dummy stack parameter arrays based on environment settings
         STKDM  = ENVREAL( 'SRCGRP_STKDM',  'Stack diameter',           0.1, IOS )
         IF ( IOS .GT. 0 ) THEN
             CALL M3EXIT( PNAME,0,0, 'Bad env vble "SRCGRP_STKDM"', 2 )
@@ -152,18 +152,18 @@ SUBROUTINE WRSRCGRPS( VNAME, JDATE, JTIME, INPUTFLAG, INPUTEMIS )
         K = 0
         DO C = 1, NGRID
 
-            !.................  Determine row and column for current grid cell
+            !.......  Determine row and column for current grid cell
             ROWNUM = C / NCOLS           ! integer math
             IF( MOD( C, NCOLS ) .GT. 0 ) ROWNUM = ROWNUM + 1
             COLNUM = C - ( ROWNUM-1 ) * NCOLS
 
-            !.................  Calculate x and y-position at center of grid cell
+            !.......  Calculate x and y-position at center of grid cell
             XLOCACELL = XORIG + ( COLNUM-1 ) * XCELL + 0.5 * XCELL
             YLOCACELL = YORIG + ( ROWNUM-1 ) * YCELL + 0.5 * YCELL
 
             DO G = 1, NSRCGRP
 
-                !.....................  Skip missing values
+                !.......  Skip missing values
                 IF( GRPCNT( C, G ) == 0 ) CYCLE
 
                 K = K + 1
@@ -176,14 +176,14 @@ SUBROUTINE WRSRCGRPS( VNAME, JDATE, JTIME, INPUTFLAG, INPUTEMIS )
             END DO
         END DO
 
-        !.............  Convert x and y grid cell locations to lat/lon
+        !.......  Convert x and y grid cell locations to lat/lon
         LAT = YLOCA
         LONG = XLOCA
         CALL CONVRTLL( K, GDTYP, GRDNM,         &
                        P_ALP, P_BET, P_GAM,     &
                        XCENT, YCENT, LONG, LAT )
 
-        !.............  Append data for elevated source groups
+        !.......  Append data for elevated source groups
         IF( PFLAG ) THEN
             ELEVIDX = K + 1
 
@@ -260,7 +260,7 @@ SUBROUTINE WRSRCGRPS( VNAME, JDATE, JTIME, INPUTFLAG, INPUTEMIS )
                 STKFLW( IDX ) = REALDATA( ELEVSTKGRP( G ) )
             END DO
 
-            !.................  If lat/lon is in existing stack groups file, append it
+            !.......  If lat/lon is in existing stack groups file, append it
             IF( READ3( PVNAME, 'LATITUDE', 1, PVSDATE, PVSTIME, REALDATA ) ) THEN
 
                 DO G = 1, NELEVGRPS
@@ -268,7 +268,7 @@ SUBROUTINE WRSRCGRPS( VNAME, JDATE, JTIME, INPUTFLAG, INPUTEMIS )
                     LAT( IDX ) = REALDATA( ELEVSTKGRP( G ) )
                 END DO
 
-                !.....................  Assume longitude is available if latitude was
+                !.......  Assume longitude is available if latitude was
                 CALL REAL_READ3( PVNAME, 'LONGITUDE', 1, PVSDATE, PVSTIME, REALDATA )
                 DO G = 1, NELEVGRPS
                     IDX = ELEVIDX + G - 1
@@ -277,7 +277,7 @@ SUBROUTINE WRSRCGRPS( VNAME, JDATE, JTIME, INPUTFLAG, INPUTEMIS )
 
             ELSE
 
-                !.....................  Otherwise, convert x and y grid cell locations
+                !.......  Otherwise, convert x and y grid cell locations
                 LAT( ELEVIDX:NSGOUTPUT )  = YLOCA( ELEVIDX:NSGOUTPUT )
                 LONG( ELEVIDX:NSGOUTPUT ) = XLOCA( ELEVIDX:NSGOUTPUT )
                 CALL CONVRTLL( NSGOUTPUT-ELEVIDX+1, GDTYP, GRDNM,       &
@@ -306,7 +306,7 @@ SUBROUTINE WRSRCGRPS( VNAME, JDATE, JTIME, INPUTFLAG, INPUTEMIS )
         CALL REAL_WRITE3( SRCGRPNAME, 'STKVE', JDATE, JTIME, STKVE )
         CALL REAL_WRITE3( SRCGRPNAME, 'STKFLW', JDATE, JTIME, STKFLW )
 
-    !.................  If acres burned is in existing stack groups file, add to output
+    !.......  If acres burned is in existing stack groups file, add to output
         IF( SGFIREFLAG ) THEN
 
             ACRES = 0.
@@ -329,7 +329,7 @@ SUBROUTINE WRSRCGRPS( VNAME, JDATE, JTIME, INPUTFLAG, INPUTEMIS )
     DO C = 1, NGRID
         DO G = 1, NSRCGRP
 
-            !.................  Skip missing values
+            !.......  Skip missing values
             IF( GRPCNT( C, G ) == 0 ) CYCLE
 
             K = K + 1
@@ -341,7 +341,7 @@ SUBROUTINE WRSRCGRPS( VNAME, JDATE, JTIME, INPUTFLAG, INPUTEMIS )
         END DO
     END DO
 
-    !.........  Append emissions for elevated source groups
+    !.......  Append emissions for elevated source groups
     IF( PFLAG ) THEN
         DO G = 1, NELEVGRPS
 
@@ -364,11 +364,11 @@ SUBROUTINE WRSRCGRPS( VNAME, JDATE, JTIME, INPUTFLAG, INPUTEMIS )
 
 CONTAINS
 
-    !.............  This internal subprogram reads real data from an
-    !               I/O API file, and aborts if not successful.
+    !.......  This internal subprogram reads real data from an
+    !         I/O API file, and aborts if not successful.
     SUBROUTINE REAL_READ3( FILNAM, VARNAM, LAYER, RDATE, RTIME, REALBUF )
 
-    !.............  Subprogram arguments
+    !.......  Subprogram arguments
         CHARACTER(*) FILNAM       ! logical file name
         CHARACTER(*) VARNAM       ! variable name
         INTEGER      LAYER        ! layer number
@@ -382,8 +382,7 @@ CONTAINS
             MESG = 'Type for variable "' // TRIM( VARNAM ) //       &
                    '" in "'// TRIM( FILNAM ) // '" not M3REAL'
             CALL M3EXIT( PNAME, RDATE, RTIME, MESG, 2 )
-        ELSE IF ( .NOT. READ3( FILNAM, VARNAM, LAYER,               &
-                               RDATE, RTIME, REALBUF ) ) THEN
+        ELSE IF ( .NOT. READ3( FILNAM, VARNAM, LAYER, RDATE, RTIME, REALBUF ) ) THEN
 
             MESG = 'Could not read "' // TRIM( VARNAM ) //          &
                    '" from file "' // TRIM( FILNAM ) // '"'
@@ -398,11 +397,11 @@ CONTAINS
     !----------------------------------------------------------------------
     !----------------------------------------------------------------------
 
-    !.............  This internal subprogram reads integer data from an
-    !               I/O API file, and aborts if not successful.
+    !.......  This internal subprogram reads integer data from an
+    !         I/O API file, and aborts if not successful.
     SUBROUTINE INT_READ3( FILNAM, VARNAM, LAYER, RDATE, RTIME, INTBUF )
 
-    !.............  Subprogram arguments
+    !.......  Subprogram arguments
         CHARACTER(*) FILNAM       ! logical file name
         CHARACTER(*) VARNAM       ! variable name
         INTEGER      LAYER        ! layer number
@@ -419,8 +418,7 @@ CONTAINS
                    '" not M3INT'
             CALL M3EXIT( PNAME, RDATE, RTIME, MESG, 2 )
 
-        ELSE IF ( .NOT. READ3( FILNAM, VARNAM, LAYER,           &
-                               RDATE, RTIME, INTBUF ) ) THEN
+        ELSE IF ( .NOT. READ3( FILNAM, VARNAM, LAYER, RDATE, RTIME, INTBUF ) ) THEN
 
             MESG = 'Could not read "' // TRIM( VARNAM ) //      &
                    '" from file "'    // TRIM( FILNAM ) // '"'
@@ -435,12 +433,11 @@ CONTAINS
     !----------------------------------------------------------------------
     !----------------------------------------------------------------------
 
-    !.............  This internal subprogram writes real data to an
-    !               I/O API file, and aborts if not successful.
-    SUBROUTINE REAL_WRITE3( FILNAM, VARNAM,             &
-                            WDATE, WTIME, REALBUF )
+    !.......  This internal subprogram writes real data to an
+    !         I/O API file, and aborts if not successful.
+    SUBROUTINE REAL_WRITE3( FILNAM, VARNAM, WDATE, WTIME, REALBUF )
 
-    !.............  Subprogram arguments
+    !.......  Subprogram arguments
         CHARACTER(*) FILNAM       ! logical file name
         CHARACTER(*) VARNAM       ! variable name
         INTEGER      WDATE        ! write Julian date
@@ -471,11 +468,11 @@ CONTAINS
     !----------------------------------------------------------------------
     !----------------------------------------------------------------------
 
-    !.............  This internal subprogram writes integer data to an
-    !               I/O API file, and aborts if not successful.
+    !.......  This internal subprogram writes integer data to an
+    !         I/O API file, and aborts if not successful.
     SUBROUTINE INT_WRITE3( FILNAM, VARNAM, WDATE, WTIME, INTBUF )
 
-    !.............  Subprogram arguments
+    !.......  Subprogram arguments
         CHARACTER(*) FILNAM       ! logical file name
         CHARACTER(*) VARNAM       ! variable name
         INTEGER      WDATE        ! write Julian date
@@ -506,8 +503,8 @@ CONTAINS
     !----------------------------------------------------------------------
     !----------------------------------------------------------------------
 
-    !.............  This internal subprogram writes integer data to an
-    !               I/O API file, and aborts if not successful.
+    !.......  This internal subprogram writes integer data to an
+    !         I/O API file, and aborts if not successful.
     INTEGER FUNCTION GET_VTYPE( FILNAM, VARNAM, JDATE, JTIME )
 
         CHARACTER(LEN=*), INTENT(IN   ) :: FILNAM, VARNAM

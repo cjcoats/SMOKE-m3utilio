@@ -67,8 +67,8 @@ SUBROUTINE CHKSRCNO( CATDESC, FILNAM, NTEST, NSRC, EFLAG )
         EFLAG = .TRUE.
         WRITE( MESG,94010 )                                         &
                'ERROR: Dimension mismatch. Source number in ' //    &
-               FILNAM // ' file: ', NTEST, ', ' // CRLF() //        &
-               BLANK10 // 'but in ' // CATDESC //                   &
+               FILNAM // ' file: ', NTEST, ', ' //                  &
+               CRLF()//BLANK10 // 'but in ' // CATDESC //           &
                ' source inventory file: ', NSRC
         CALL M3MSG2( MESG )
 

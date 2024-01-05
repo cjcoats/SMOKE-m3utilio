@@ -103,8 +103,7 @@ SUBROUTINE GENPTVCEL( NRECS, NGRID, XLOCA, YLOCA, NEXCLD, NX, INDX, GN, SN )
     CALL CHKGRID( GNAME, 'DOT', 0, EFLAG )
 
     IF( EFLAG ) THEN
-        MESG = TRIM( GNAME ) // ' does not match previously set ' //&
-               'grid description'
+        MESG = TRIM( GNAME ) // ' does not match previously set grid description'
         CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
     END IF
 

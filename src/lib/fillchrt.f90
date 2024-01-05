@@ -57,13 +57,13 @@ SUBROUTINE FILLCHRT( NXREF, XTYPE, XTCNT )
     !.......   INCLUDES
     INCLUDE 'EMCNST3.h90'       !  emissions constant parameters
 
-    !.......   EXTERNAL FUNCTIONS and their descriptions:
-    LOGICAL, EXTERNAL :: SETSCCTYPE
-
     !.......   SUBROUTINE ARGUMENTS
     INTEGER     , INTENT (IN) :: NXREF               ! no. ungrpd x-ref entries
     INTEGER     , INTENT (IN) :: XTYPE ( NXREF )     ! group no. of x-ref entry
     INTEGER     , INTENT (IN) :: XTCNT ( NXREF )     ! pos. in x-ref group
+
+    !.......   EXTERNAL FUNCTIONS and their descriptions:
+    LOGICAL, EXTERNAL :: SETSCCTYPE
 
     !.......   Local field position array
     INTEGER, ALLOCATABLE :: ENDLEN( : )
@@ -102,19 +102,16 @@ SUBROUTINE FILLCHRT( NXREF, XTYPE, XTCNT )
       CASE( 'AREA' )
         ALLOCATE( ENDLEN( MXARCHR3 ), STAT=IOS )
         CALL CHECKMEM( IOS, 'ENDLEN', PROGNAME )
-        ENDLEN = 1      ! array
         ENDLEN( 1:MXARCHR3 ) = ARENDL3( 1:MXARCHR3 )
 
       CASE( 'MOBILE' )
         ALLOCATE( ENDLEN( MXMBCHR3 ), STAT=IOS )
         CALL CHECKMEM( IOS, 'ENDLEN', PROGNAME )
-        ENDLEN = 1      ! array
         ENDLEN( 1:MXMBCHR3 ) = MBENDL3( 1:MXMBCHR3 )
 
       CASE( 'POINT' )
         ALLOCATE( ENDLEN( MXPTCHR3 ), STAT=IOS )
         CALL CHECKMEM( IOS, 'ENDLEN', PROGNAME )
-        ENDLEN = 1      ! array
         ENDLEN( 1:MXPTCHR3 ) = PTENDL3( 1:MXPTCHR3 )
 
     END SELECT

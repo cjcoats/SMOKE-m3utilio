@@ -123,10 +123,8 @@ C           selected.
                 IF( PINDX .LE. 0 ) THEN
 
                     EFLAG = .TRUE.
-                    WRITE( MESG,94010 )
-     &                 'ERROR: Volatile pollutant type "' //
-     &                 VOLNAM( 1:L ) // '" is invalid for the ' //
-     &                 TRIM( MODELNAM ) // ' model'
+                    MESG  = 'ERROR: Volatile pollutant type "' // TRIM( VOLNAM ) //  &
+                            '" is invalid for the ' // TRIM( MODELNAM ) // ' model'
                 END IF
 
             END SELECT
@@ -213,11 +211,5 @@ c note: add here
         FIRSTIME = .FALSE.
 
         RETURN
-
-C******************  FORMAT  STATEMENTS   ******************************
-
-C...........   Internal buffering formats............ 94xxx
-
-94010   FORMAT( 10( A, :, I9, :, 1X ) )
 
         END SUBROUTINE EFSETUP

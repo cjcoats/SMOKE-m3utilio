@@ -18,7 +18,7 @@ SUBROUTINE WRORLOUT( RDEV, DATNAM, NREC, NPVAR, SRCID, SRCDAT, STATUS )
     !**************************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !         System
     ! File: @(#)$Id$
     !
     ! Carolina Environmental Program
@@ -35,33 +35,33 @@ SUBROUTINE WRORLOUT( RDEV, DATNAM, NREC, NPVAR, SRCID, SRCDAT, STATUS )
 
     USE M3UTILIO
 
-    !...........   MODULES for public variables
-    !...........   This module is the inventory arrays
+    !.......   MODULES for public variables
+    !.......   This module is the inventory arrays
     USE MODSOURC, ONLY: CIFIP, INVYR, XLOCA, YLOCA,                 &
                         CORIS, STKHT, STKDM, STKTK, STKVE,          &
                         CSCC, CSOURC, CPDESC, CLINK, CBLRID,        &
                         CERPTYP, CMACT, CNAICS, CSRCTYP, CNEIUID,   &
                         CEXTORL, CISIC
 
-    !.........  This module contains the arrays for state and county summaries
+    !.......  This module contains the arrays for state and county summaries
     USE MODSTCY, ONLY: NCOUNTRY, CTRYCOD, CTRYNAM
 
-    !.........  This module contains the lists of unique inventory information
+    !.......  This module contains the lists of unique inventory information
     USE MODLISTS, ONLY: NINVTBL, ITNAMA, ITCASA, ITFACA
 
-    !...........   This module contains the information about the source category
+    !.......   This module contains the information about the source category
     USE MODINFO, ONLY: CATEGORY, NIPPA, NIPOL, NIACT,               &
                        NPPOL, NPACT, EANAM, EAUNIT, MXCHRS,         &
                        SC_BEGP, SC_ENDP, ACTVTY
 
     IMPLICIT NONE
 
-    !...........   INCLUDES:
+    !.......   INCLUDES:
 
     INCLUDE 'EMCNST3.h90'   !  emissions constant parameters
     INCLUDE 'CONST3.EXT'    !  physical constants
 
-    !...........   SUBROUTINE ARGUMENTS
+    !.......   SUBROUTINE ARGUMENTS
     INTEGER      , INTENT (IN) :: RDEV           ! emissions unit no.
     CHARACTER(*) , INTENT (IN) :: DATNAM         ! name of output pollutant
     INTEGER      , INTENT (IN) :: NREC           ! number of sources
@@ -70,7 +70,7 @@ SUBROUTINE WRORLOUT( RDEV, DATNAM, NREC, NPVAR, SRCID, SRCDAT, STATUS )
     REAL         , INTENT (IN) :: SRCDAT( NREC, NPVAR ) ! emissions + attrb
     INTEGER      , INTENT(OUT) :: STATUS         ! exit status
 
-    !...........   ORL output variables (names same as ORL format description)
+    !.......   ORL output variables (names same as ORL format description)
 
     INTEGER         FIP
     INTEGER         CPRI     ! primary control device code
@@ -98,7 +98,7 @@ SUBROUTINE WRORLOUT( RDEV, DATNAM, NREC, NPVAR, SRCID, SRCDAT, STATUS )
     CHARACTER(NEILEN3) CNEI   ! NEI unique ID
     CHARACTER(EXTLEN3) :: CEXT = ''   ! Extended ORL vars
 
-    !...........   Other local variables
+    !.......   Other local variables
 
     INTEGER         C, I, J, L, L1, L2, K, N, S  ! counters and indices
 
@@ -128,10 +128,10 @@ SUBROUTINE WRORLOUT( RDEV, DATNAM, NREC, NPVAR, SRCID, SRCDAT, STATUS )
     !   begin body of subroutine WRORLOUT
 
 
-    !.........  Initializations
+    !.......  Initializations
     STATUS = 0
 
-    !.........  Write warning if activities are in inventory.
+    !.......  Write warning if activities are in inventory.
     IF( NIACT .GT. 0 ) THEN
         MESG = 'WARNING: Activities in inventory cannot be '//  &
                'written to ORL format because' //CRLF()//       &
@@ -140,24 +140,24 @@ SUBROUTINE WRORLOUT( RDEV, DATNAM, NREC, NPVAR, SRCID, SRCDAT, STATUS )
         CALL M3MSG2( MESG )
     END IF
 
-    !.........  Write each ORL record
+    !.......  Write each ORL record
     SELECT CASE( CATEGORY )
 
-    !............................................................................
-    !.........  For area sources...
+    !....................................................................
+    !.......  For area sources...
       CASE ( 'AREA' )
 
         IF ( FIRSTIME ) THEN
 
-            !.................  Retrieve environment variable to optionally write out ORL
-            !                   Nonroad format instead of ORL nonpoint.
+            !.........  Retrieve environment variable to optionally write out ORL
+            !         Nonroad format instead of ORL nonpoint.
             MESG = 'Output Nonroad ORL format instead of nonpoint'
             LNONRD = ENVYN ( 'ORL_NONROAD_OUT', MESG, .FALSE., IOS )
             IF ( IOS .GT. 0 ) THEN
                 CALL M3EXIT( PNAME,0,0, 'Bad env vble "ORL_NONROAD_OUT"', 2 )
             END IF
 
-            !.................  Write initial header
+            !.........  Write initial header
             IF( LNONRD ) THEN
                 WRITE( RDEV, 93000 )                &
                     '#ORL NONROAD',                 &
@@ -174,12 +174,12 @@ SUBROUTINE WRORLOUT( RDEV, DATNAM, NREC, NPVAR, SRCID, SRCDAT, STATUS )
 
         END IF
 
-        !.............  Write area-source characteristics to output file
+        !.......  Write area-source characteristics to output file
         DO C = 1, NREC
 
             S = SRCID( C )
 
-            !.................  Store others in temporary variables
+            !.........  Store others in temporary variables
             COID = STR2INT( CIFIP( S ) ) / 100000
             FIP  = STR2INT( CIFIP( S ) ) - COID * 100000
             SIC  = CISIC( S )
@@ -210,7 +210,7 @@ SUBROUTINE WRORLOUT( RDEV, DATNAM, NREC, NPVAR, SRCID, SRCDAT, STATUS )
                 CEXT = ''
             END IF
 
-            !.................  Account for missing or default codes
+            !.........  Account for missing or default codes
             IF ( SCC(1:2) .EQ. '00'   ) SCC = SCC(3:SCCLEN3)
             IF ( MACT .EQ. '000000'   ) MACT    = '-9'
             IF ( MACT(1:2) .EQ. '00'  ) MACT = MACT(3:MACLEN3)
@@ -219,10 +219,10 @@ SUBROUTINE WRORLOUT( RDEV, DATNAM, NREC, NPVAR, SRCID, SRCDAT, STATUS )
             IF ( NAICS .EQ. '000000'  ) NAICS   = '-9'
             IF ( NAICS     .EQ. ' '   ) NAICS   = '-9'
 
-            !.................  Retrieve pollutant code from Inventory Table
-            !.................  Ensure that only CAS codes where the factor is 1 are used.
-            !.................  If there are multiple CAS codes where the factor is 1, use the first one
-            !.................     (accomplished since original INVTABLE list order is maintained already)
+            !.........  Retrieve pollutant code from Inventory Table
+            !.........  Ensure that only CAS codes where the factor is 1 are used.
+            !.........  If there are multiple CAS codes where the factor is 1, use the first one
+            !.........     (accomplished since original INVTABLE list order is maintained already)
             CAS = ' '
             DO I = 1, NINVTBL
 
@@ -242,23 +242,23 @@ SUBROUTINE WRORLOUT( RDEV, DATNAM, NREC, NPVAR, SRCID, SRCDAT, STATUS )
                 CYCLE
             END IF
 
-            !.................  Get emissions and emissions-dependent values.
+            !.........  Get emissions and emissions-dependent values.
             ANN_EMIS = SRCDAT( C,1 )
             AVD_EMIS = SRCDAT( C,2 )
             CEFF = SRCDAT( C,4 ) * 100.
             REFF = SRCDAT( C,5 ) * 100.
             RPEN = SRCDAT( C,6 ) * 100.
 
-            !.................  Write out header
+            !.........  Write out header
             CALL WRITE_ORL_HEADER( RDEV, IOS )
             IF( IOS .GT. 0 ) CYCLE
 
-            !.................  Write out entries for this record
-            !.................  Write ORL nonroad format
+            !.........  Write out entries for this record
+            !.........  Write ORL nonroad format
             IF( LNONRD ) THEN
                 WRITE( RDEV,93200 ) FIP, SCC, TRIM(CAS), ANN_EMIS,      &
                      AVD_EMIS, CEFF, REFF, RPEN, SRCTYPE, TRIM(CEXT)
-            !.................  Write ORL nonpoint format
+            !.........  Write ORL nonpoint format
             ELSE
                 WRITE( RDEV,93210 ) FIP, SCC, TRIM(SIC), TRIM(MACT),    &
                      TRIM(SRCTYPE), TRIM(NAICS), TRIM(CAS), ANN_EMIS,   &
@@ -270,13 +270,13 @@ SUBROUTINE WRORLOUT( RDEV, DATNAM, NREC, NPVAR, SRCID, SRCDAT, STATUS )
 
         END DO      ! loop through sources
 
-        !............................................................................
-        !.........  For mobile sources...
+        !....................................................................
+        !.......  For mobile sources...
       CASE ( 'MOBILE' )
 
         IF ( FIRSTIME ) THEN
 
-            !.................  Write initial header
+            !.........  Write initial header
             WRITE( RDEV, 93000 )                &
                 '#ORL',                         &
                 '#TYPE     Onroad Inventory',   &
@@ -285,12 +285,12 @@ SUBROUTINE WRORLOUT( RDEV, DATNAM, NREC, NPVAR, SRCID, SRCDAT, STATUS )
 
         END IF
 
-        !.............  Write mobile-source characteristics to output file
+        !.......  Write mobile-source characteristics to output file
         DO C = 1, NREC
 
             S = SRCID( C )
 
-            !.................  Store others in temporary variables
+            !.........  Store others in temporary variables
             COID = STR2INT( CIFIP( S ) ) / 100000
             FIP  = STR2INT( CIFIP( S ) ) - COID * 100000
             SIC  = CISIC( S )
@@ -310,13 +310,13 @@ SUBROUTINE WRORLOUT( RDEV, DATNAM, NREC, NPVAR, SRCID, SRCDAT, STATUS )
                 CEXT = ''
             END IF
 
-            !.................  Account for missing or default codes
+            !.........  Account for missing or default codes
             IF ( SRCTYPE .EQ. ' ' ) SRCTYPE = '-9'
 
-            !.................  Retrieve pollutant code from Inventory Table
-            !.................  Ensure that only CAS codes where the factor is 1 are used.
-            !.................  If there are multiple CAS codes where the factor is 1, use the first one
-            !.................     (accomplished since original INVTABLE list order is maintained already)
+            !.........  Retrieve pollutant code from Inventory Table
+            !.........  Ensure that only CAS codes where the factor is 1 are used.
+            !.........  If there are multiple CAS codes where the factor is 1, use the first one
+            !.........     (accomplished since original INVTABLE list order is maintained already)
             CAS = ' '
             DO I = 1, NINVTBL
 
@@ -336,19 +336,19 @@ SUBROUTINE WRORLOUT( RDEV, DATNAM, NREC, NPVAR, SRCID, SRCDAT, STATUS )
                 CYCLE
             END IF
 
-            !.................  Get emissions and emissions-dependent values.
+            !.........  Get emissions and emissions-dependent values.
             ANN_EMIS = SRCDAT( C,1 )
             AVD_EMIS = SRCDAT( C,2 )
             CEFF = SRCDAT( C,4 ) * 100.
             REFF = SRCDAT( C,5 ) * 100.
             RPEN = SRCDAT( C,6 ) * 100.
 
-            !.................  Write out header
+            !.........  Write out header
             CALL WRITE_ORL_HEADER( RDEV, IOS )
             IF( IOS .GT. 0 ) CYCLE
 
-            !.................  Write out entries for this record
-            !.................  Write ORL onroad format
+            !.........  Write out entries for this record
+            !.........  Write ORL onroad format
             WRITE( RDEV,93300 ) FIP, SCC, TRIM(CAS), ANN_EMIS, AVD_EMIS, SRCTYPE, TRIM(CEXT)
 
             LCOID = COID
@@ -356,13 +356,13 @@ SUBROUTINE WRORLOUT( RDEV, DATNAM, NREC, NPVAR, SRCID, SRCDAT, STATUS )
 
         END DO  ! loop through sources
 
-        !............................................................................
-        !.........  For point sources...
+        !....................................................................
+        !.......  For point sources...
       CASE ( 'POINT' )
 
         IF ( FIRSTIME ) THEN
 
-            !.................  Write initial header
+            !.........  Write initial header
             WRITE( RDEV, 93000 )                        &
                  '#ORL',                                &
                  '#TYPE     Point Source Inventory',    &
@@ -371,24 +371,24 @@ SUBROUTINE WRORLOUT( RDEV, DATNAM, NREC, NPVAR, SRCID, SRCDAT, STATUS )
 
         END IF
 
-        !.............  Compute conversion constants
+        !.......  Compute conversion constants
         M2FT  = 1./FT2M
 
-        !.............  Write point-source characteristics to output file
+        !.......  Write point-source characteristics to output file
         DO C = 1, NREC
 
             S = SRCID( C )
             CALL PARSCSRC( CSOURC( S ), MXCHRS, SC_BEGP, SC_ENDP,   &
                            ORLCOLS, NCHAR, CHARS )
 
-            !.................  Truncate character string variables
+            !.........  Truncate character string variables
             PLANTID  = CHARS( 2 )
             POINTID  = CHARS( 3 )
             STACKID  = CHARS( 4 )
             SEGMENT  = CHARS( 5 )
             SCC      = CHARS( 6 )
 
-            !.................  Store others in temporary variables
+            !.........  Store others in temporary variables
             COID   = STR2INT( CIFIP( S ) ) / 100000
             FIP    = STR2INT( CIFIP( S ) ) - COID * 100000
             SIC    = CISIC( S )(SICLEN3-3:SICLEN3)
@@ -431,7 +431,7 @@ SUBROUTINE WRORLOUT( RDEV, DATNAM, NREC, NPVAR, SRCID, SRCDAT, STATUS )
             XLOC     = XLOCA( S )
             YLOC     = YLOCA( S )
 
-            !.................  Account for missing or default codes
+            !.........  Account for missing or default codes
             IF ( PLANTID   .EQ. ' '      ) PLANTID = '0'
             IF ( POINTID   .EQ. ' '      ) POINTID = '0'
             IF ( STACKID   .EQ. ' '      ) STACKID = '0'
@@ -446,34 +446,34 @@ SUBROUTINE WRORLOUT( RDEV, DATNAM, NREC, NPVAR, SRCID, SRCDAT, STATUS )
             IF ( NAICS     .EQ. '0000-9' ) NAICS   = '-9'
             IF ( NAICS     .EQ. ' '      ) NAICS   = '-9'
 
-            !.................  Convert units of stack parameters
+            !.........  Convert units of stack parameters
             STKHGT  = STKHT( S ) * M2FT
             STKDIAM = STKDM( S ) * M2FT
             STKTEMP = ( STKTK( S ) - CTOK ) * CTOF + 32.
             STKVEL  = STKVE( S ) * M2FT
             STKFLOW = STKVEL * 0.25 * PI * STKDIAM * STKDIAM
 
-            !.................  Retrieve pollutant code from Inventory Table
+            !.........  Retrieve pollutant code from Inventory Table
             I = INDEX1( DATNAM, NINVTBL, ITNAMA )
             CAS = ITCASA( I )
 
-            !.................  Get emissions and emissions-dependent values.
+            !.........  Get emissions and emissions-dependent values.
             ANN_EMIS = SRCDAT( C,1 )
             AVD_EMIS = SRCDAT( C,2 )
             CEFF = SRCDAT( C,3 ) * 100.
             REFF = SRCDAT( C,4 ) * 100.
 
-            !.................  Set default or placeholder variables
+            !.........  Set default or placeholder variables
             CTYPE = "L"
             UTMZ = -9
             CPRI = 0
             CSEC = 0
 
-            !.................  Write out header
+            !.........  Write out header
             CALL WRITE_ORL_HEADER( RDEV, IOS )
             IF( IOS .GT. 0 ) CYCLE
 
-            !.................  Write out data
+            !.........  Write out data
             WRITE( RDEV, 93600 ) FIP, TRIM(PLANTID), TRIM(POINTID),     &
                    TRIM(STACKID), TRIM(SEGMENT), TRIM(PLNTDESC),        &
                    TRIM(SCC), TRIM(ERPTYPE), TRIM(SRCTYPE), STKHGT,     &
@@ -494,7 +494,7 @@ SUBROUTINE WRORLOUT( RDEV, DATNAM, NREC, NPVAR, SRCID, SRCDAT, STATUS )
 
     !******************  FORMAT  STATEMENTS   ******************************
 
-    !...........   Formatted file I/O formats............ 93xxx
+    !.......   Formatted file I/O formats............ 93xxx
 
 93000 FORMAT( A )
 
@@ -511,7 +511,7 @@ SUBROUTINE WRORLOUT( RDEV, DATNAM, NREC, NPVAR, SRCID, SRCDAT, STATUS )
               2( ',', F10.5), ',', I3, ',"', A, '"', 2( ',', E13.6 ),   &
               2( ',', F6.2 ), ',', I2, ',', I2, 3(',"',A,'"'), A )  ! point
 
-    !...........   Internal buffering formats............ 94xxx
+    !.......   Internal buffering formats............ 94xxx
 
 94010 FORMAT( 10( A, :, I8, :, 1X ) )
 
@@ -519,16 +519,16 @@ SUBROUTINE WRORLOUT( RDEV, DATNAM, NREC, NPVAR, SRCID, SRCDAT, STATUS )
 
 CONTAINS
 
-    !.............  This internal subprogram is for writing the COUNTRY and YEAR
-    !               parts of the ORL header fields, when the COUNTRY or YEAR are
-    !               inconsistent with the previous country or year.
+    !.......  This internal subprogram is for writing the COUNTRY and YEAR
+    !         parts of the ORL header fields, when the COUNTRY or YEAR are
+    !         inconsistent with the previous country or year.
     SUBROUTINE WRITE_ORL_HEADER( FDEV, LOCSTAT )
 
-        !.............  Subprogram arguments
+        !.......  Subprogram arguments
         INTEGER, INTENT (IN) :: FDEV        ! file unit no.
         INTEGER, INTENT(OUT) :: LOCSTAT     ! exit status
 
-        !.............  Subprogram local variables
+        !.......  Subprogram local variables
         INTEGER     K
         CHARACTER( FIPLEN3 ) CTRY
 
@@ -546,9 +546,7 @@ CONTAINS
 
             IF( K .GT. 0 ) THEN
 
-                WRITE( FDEV, 93000 )                &
-                   '#COUNTRY  ' // CTRYNAM( K ),    &
-                   '#YEAR     ' // CYEAR
+                WRITE( FDEV, 93000 ) '#COUNTRY  ' // CTRYNAM( K ), '#YEAR     ' // CYEAR
 
             ELSE
                 STATUS = 1
@@ -563,11 +561,11 @@ CONTAINS
 
         !---------------------  FORMAT  STATEMENTS   -----------------------------
 
-        !...............   Formatted file I/O formats............ 93xxx
+        !.......   Formatted file I/O formats............ 93xxx
 
 93000   FORMAT( A )
 
-        !...............   Internal buffering formats............ 94xxx
+        !.......   Internal buffering formats............ 94xxx
 
 94010   FORMAT( 10( A, :, I8, :, 1X ) )
 

@@ -46,6 +46,7 @@ SUBROUTINE XFRACTBL( NDIM, NXREF, INDX, CSRC, SPRF, FRAC )
     INTEGER     , PARAMETER :: CSRCLEN = SSMLEN3 + POLLEN3
     CHARACTER(1), PARAMETER :: BLANK   = ' '
 
+
     !...........   Subroutine arguments
 
     INTEGER            , INTENT(INOUT) :: NDIM          !  no. ungrouped x-ref entries
@@ -54,13 +55,12 @@ SUBROUTINE XFRACTBL( NDIM, NXREF, INDX, CSRC, SPRF, FRAC )
     CHARACTER(CSRCLEN) , INTENT(IN   ) :: CSRC( NDIM )  !  source chars (unsorted)
     CHARACTER(SPNLEN3) , INTENT(INOUT) :: SPRF( NDIM )  !  speciation profiles (unsorted)
     REAL               , INTENT(IN   ) :: FRAC( NDIM )  !  profile-fractions
-
     !...........   Local variabless
 
     INTEGER     I, J, JJ, K, KK, L, L2, M, N, IOS
     INTEGER     NFREF
     LOGICAL     AFLAG, EFLAG, SUMCHECK
-    REAL        WT, WSUM
+    REAL*8      WT, WSUM
 
     CHARACTER(SPNLEN3)  ASPRF
     CHARACTER(FIPLEN3)  AFIP

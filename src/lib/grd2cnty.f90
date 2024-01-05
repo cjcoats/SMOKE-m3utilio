@@ -1,7 +1,7 @@
 
-SUBROUTINE GRD2CNTY( IDXINV, IDXSPC, NCNTY, CNVFAC,&
-&                     GRDDAT, CNYDAT, SGFLAG, SGFAC,&
-&                     FIPTOSG, SGDAT )
+SUBROUTINE GRD2CNTY( IDXINV, IDXSPC, NCNTY, CNVFAC, &
+                     GRDDAT, CNYDAT, SGFLAG, SGFAC, &
+                     FIPTOSG, SGDAT )
 
     !************************************************************************
     !  subroutine GRD2CNTY body starts at line
@@ -133,22 +133,22 @@ SUBROUTINE GRD2CNTY( IDXINV, IDXSPC, NCNTY, CNVFAC,&
 
         !.....  Divide surrogate value by sum on cell
         DO F = 1, NSRGFIPS
-            DO N = 1, NCELLS( F )
+        DO N = 1, NCELLS( F )
 
-                C = FIPCELL( N,F )
-                IF( SRGFRAC( SRGID,N,F ) .EQ. 0. ) THEN
-                    WRITE( MESG,94010 )                             &
-                           'WARNING: Area surrogate is 0. for ' //  &
-                           CRLF() // BLANK10 //                     &
-                           'Country/state/county' // SRGFIPS( F ) //&
-                           'and cell', C
-                    CALL M3MSG2( MESG )
+            C = FIPCELL( N,F )
+            IF( SRGFRAC( SRGID,N,F ) .EQ. 0. ) THEN
+                WRITE( MESG,94010 )                             &
+                       'WARNING: Area surrogate is 0. for ' //  &
+                       CRLF() // BLANK10 //                     &
+                       'Country/state/county' // SRGFIPS( F ) //&
+                       'and cell', C
+                CALL M3MSG2( MESG )
 
-                ELSE IF( SRGSUM( C ) .NE. 0. ) THEN
-                    SRGFRAC( SRGID,N,F ) = SRGFRAC( SRGID,N,F ) / SRGSUM( C )
-                END IF
+            ELSE IF( SRGSUM( C ) .NE. 0. ) THEN
+                SRGFRAC( SRGID,N,F ) = SRGFRAC( SRGID,N,F ) / SRGSUM( C )
+            END IF
 
-            END DO      ! End loop on cells in county
+        END DO          ! End loop on cells in county
         END DO          ! End loop on counties in domain
 
         FIRSTIME = .FALSE.
@@ -159,11 +159,11 @@ SUBROUTINE GRD2CNTY( IDXINV, IDXSPC, NCNTY, CNVFAC,&
     IF( IDXSPC .GT. 0 ) THEN
         IDX = IDXSPC
 
-        !.....  Pollutant index
+    !.....  Pollutant index
     ELSE IF( IDXINV .GT. 0 ) THEN
         IDX = IDXINV
 
-        !.....  If this pollutant or species is not valid for current call, return
+    !.....  If this pollutant or species is not valid for current call, return
     ELSE
         RETURN
 

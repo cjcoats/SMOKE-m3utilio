@@ -19,7 +19,7 @@ SUBROUTINE WRDAYMSG( JDATE, MESG )
     !**************************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !         System
     ! File: @(#)$Id$
     !
     ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
@@ -49,15 +49,10 @@ SUBROUTINE WRDAYMSG( JDATE, MESG )
     INTEGER     , INTENT (IN) :: JDATE    ! Julian date
     CHARACTER(*), INTENT(OUT) :: MESG     ! message buffer
 
-    !...........   Local variables
-    INTEGER         DAY          !  day of week number
-
     !***********************************************************************
     !   begin body of subroutine WRDAYMSG
 
-    DAY = WKDAY( JDATE )
-
-    MESG= 'Processing '// TRIM( DAYS( DAY ) )// ' '// MMDDYY( JDATE )
+    MESG= 'Processing '// TRIM( DAYS( WKDAY( JDATE ) ) )// ' '// MMDDYY( JDATE )
     CALL M3MSG2( MESG )
 
     RETURN

@@ -62,12 +62,11 @@ INTEGER FUNCTION CVTRDTYPE( SMKROAD, RLASAFLAG, ULASAFLAG )
     INTEGER, PARAMETER :: URBANCOLL       = 17      ! urban collector
     INTEGER, PARAMETER :: URBANLOCAL      = 19      ! urban local
 
-    !....  LOCAL VARIABLES and their descriptions:
-    LOGICAL :: EFLAG      = .FALSE.       ! true: error found
-
-    CHARACTER(300)          MESG          !  message buffer
-
     CHARACTER(16), PARAMETER :: PROGNAME = 'CVTRDTYPE'     ! program name
+
+    !....  LOCAL VARIABLES and their descriptions:
+
+    CHARACTER(300)  MESG          !  message buffer
 
     !***********************************************************************
     !   begin body of function CVTRDTYPE
@@ -93,18 +92,14 @@ INTEGER FUNCTION CVTRDTYPE( SMKROAD, RLASAFLAG, ULASAFLAG )
         ELSE
             CVTRDTYPE = M6LOCAL
         END IF
+
       CASE DEFAULT
-        EFLAG = .TRUE.
-
-        WRITE( MESG, '(A,I8,A)' ) 'ERROR: Road type ', SMKROAD,&
-                             ' is not recognized.'
+        WRITE( MESG, '(A,I8,A)' ) 'ERROR: Road type ', SMKROAD, ' is not recognized.'
         CALL M3MESG( MESG )
-    END SELECT
-
-    IF( EFLAG ) THEN
         MESG = 'Problem converting road type'
         CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
-    END IF
+
+    END SELECT
 
     RETURN
 

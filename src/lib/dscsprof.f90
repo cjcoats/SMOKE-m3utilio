@@ -308,8 +308,7 @@ SUBROUTINE DSCSPROF( FDEV, NIPOL, EINAM )
                     WRITE(MESG,94010)&
                       'INTERNAL ERROR: The', TMPNSPEC, 'species '//&
                       'per pollutant limit was exceeded by ' //&
-                      'pollutant '//TRIM(POLNAM)//' in ' // PROGNAME
-                    CALL M3MSG2( MESG )
+                      'pollutant '// POLNAM
                     CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 
                 END IF
@@ -371,8 +370,7 @@ SUBROUTINE DSCSPROF( FDEV, NIPOL, EINAM )
             K = INDX1A( J )
 
             !.....  Find species in list of valid species per pollutant
-            N = INDEX1( SPECNMA( K ), NSPECA( I ),&
-                        TMPNAMES( 1,I )            )
+            N = INDEX1( SPECNMA( K ), NSPECA( I ), TMPNAMES( 1,I )            )
 
             IF ( N .GT. 0 ) THEN
 
