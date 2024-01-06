@@ -261,9 +261,9 @@ SUBROUTINE RDXCLUDE( FDEV )
     RETURN
 
     !.........  Error message for reaching the end of file too soon
-999 MESG = 'End of file reached unexpectedly. ' //&
-           'Check format of non-HAP' // CRLF() // BLANK5 //&
-           'inclusions/exclusions file.'
+999 CONTINUE
+    MESG = 'End of file reached unexpectedly. ' //&
+           CRLF() // BLANK5 // 'Check format of non-HAP inclusions/exclusions file.'
     CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 
     !******************  FORMAT  STATEMENTS   ******************************

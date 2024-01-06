@@ -77,7 +77,7 @@ SUBROUTINE RDMXREF( MDEV, NCTY, GRIDCTY )
     INTEGER :: IOS  = 0                   ! I/O status
     INTEGER :: IREC = 0                   ! record counter
     INTEGER :: NREF = 0                   ! number of ref. counties
-    INTEGER :: NLINES = 0                 ! number of lines
+    INTEGER :: NLINES                     ! number of lines
 
     INTEGER REFCOUNTY                     ! ref. county FIPS code
     INTEGER INVCOUNTY                     ! inv. county FIPS code
@@ -114,7 +114,7 @@ SUBROUTINE RDMXREF( MDEV, NCTY, GRIDCTY )
 
         IDX( I ) = I
 
-    !.........  Read line
+        !.........  Read line
         READ( MDEV, 93000, END=999, IOSTAT=IOS ) LINE
 
         IREC = IREC + 1
@@ -127,12 +127,12 @@ SUBROUTINE RDMXREF( MDEV, NCTY, GRIDCTY )
             CYCLE
         END IF
 
-    !.........  Skip blank or comment lines
+        !.........  Skip blank or comment lines
         IF( BLKORCMT( LINE ) ) CYCLE
 
         CALL PARSLINE( LINE, 6, SEGMENT )
 
-    !.........  Check the format of input
+        !.........  Check the format of input
         IF( .NOT. CHKINT( SEGMENT(1) ) ) EFLAG = .TRUE.
         IF( .NOT. CHKINT( SEGMENT(2) ) ) EFLAG = .TRUE.
         IF( .NOT. CHKINT( SEGMENT(3) ) ) EFLAG = .TRUE.
@@ -149,7 +149,7 @@ SUBROUTINE RDMXREF( MDEV, NCTY, GRIDCTY )
             CYCLE
         END IF
 
-    !.........  Convert inventory county to integer
+        !.........  Convert inventory county to integer
         CO = STR2INT( SEGMENT( 1 ) )
         ST = STR2INT( SEGMENT( 2 ) )
         CT = STR2INT( SEGMENT( 3 ) )
@@ -160,17 +160,17 @@ SUBROUTINE RDMXREF( MDEV, NCTY, GRIDCTY )
         CT = STR2INT( SEGMENT( 6 ) )
         REFCOUNTY = CO*100000 + ST*1000 + CT
 
-    !.........  Store values in unsorted array
+        !.........  Store values in unsorted array
         MCREFRAW( I,1 ) = INVCOUNTY
         MCREFRAW( I,2 ) = REFCOUNTY
 
-    !.........  Skip any entries equal to zero due to blank lines
+        !.........  Skip any entries equal to zero due to blank lines
         IF( REFCOUNTY == 0 .OR. INVCOUNTY == 0 ) CYCLE
 
-    !.........  Check if current inventory county is duplicate (match previous)
+        !.........  Check if current inventory county is duplicate (match previous)
         IF( INVCOUNTY /= PICOUNTY ) THEN
 
-    !.........  Check that current county is inside the grid (and in the inventory)
+            !.........  Check that current county is inside the grid (and in the inventory)
             WRITE( INVCNTY,'(I12.12)' ) INVCOUNTY
             K = FINDC( INVCNTY, NCTY, GRIDCTY )
 

@@ -15,7 +15,7 @@ SUBROUTINE READWR3( INFILE, OUTFILE, VNAME, LAYSVAL, &
     !  REVISION  HISTORY:
     !       Version ??/???? by ???
     !       Version 11/2023 by CJC:  USE M3UTILIO, ".f90" source format,
-    !       INTENT, and related changes
+    !       INTENT, fix bug: IF...ELSE IF, and related changes
     !**************************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
@@ -71,9 +71,7 @@ SUBROUTINE READWR3( INFILE, OUTFILE, VNAME, LAYSVAL, &
             STATUS = 1
             MESG = 'ERROR: Could not read "' // TRIM( VNAME ) // '" from file.'
             CALL M3MESG( MESG )
-        END IF
-
-        IF( .NOT. WRITE3( OUTFILE, VNAME, LAYSVAL, JDATE, JTIME, INTVAL ) ) THEN
+        ELSE IF( .NOT. WRITE3( OUTFILE, VNAME, LAYSVAL, JDATE, JTIME, INTVAL ) ) THEN
             STATUS = 1
             MESG = 'ERROR: Could not write "' // TRIM( VNAME ) // '" from file.'
             CALL M3MESG( MESG )
@@ -85,9 +83,7 @@ SUBROUTINE READWR3( INFILE, OUTFILE, VNAME, LAYSVAL, &
             STATUS = 1
             MESG = 'ERROR: Could not read "' // TRIM( VNAME ) // '" from file.'
             CALL M3MESG( MESG )
-        END IF
-
-        IF( .NOT. WRITE3( OUTFILE, VNAME, LAYSVAL, JDATE, JTIME, REALVAL ) ) THEN
+        ELSE IF( .NOT. WRITE3( OUTFILE, VNAME, LAYSVAL, JDATE, JTIME, REALVAL ) ) THEN
             STATUS = 1
             MESG = 'ERROR: Could not write "' // TRIM( VNAME ) // '" from file.'
             CALL M3MESG( MESG )

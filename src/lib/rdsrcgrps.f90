@@ -238,12 +238,12 @@ SUBROUTINE RDSRCGRPS( SGDEV, SPCFLAG, TSFLAG )
             CYCLE
         END IF
 
-    !.............  Skip blank lines or comments
+        !.........  Skip blank lines or comments
         IF( BLKORCMT( LINE ) ) CYCLE
 
         CALL PARSLINE( LINE, MXCOL, SEGMENT )
 
-        IF( .NOT. CHKINT( SEGMENT( 2 ) ) ) CYCLE      ! skip header lines
+        IF( .NOT. CHKINT( SEGMENT( 2 ) ) ) CYCLE          !~ skip header lines
 
         TSCC = SEGMENT( 3 )
         CALL FLTRNEG( TSCC )
@@ -254,7 +254,7 @@ SUBROUTINE RDSRCGRPS( SGDEV, SPCFLAG, TSFLAG )
         CPNTID = SEGMENT( 5 )
         CALL FLTRNEG( CPNTID )
 
-    !.............  Skip records that don't apply to current category
+        !.........  Skip records that don't apply to current category
         IF( BFLAG .AND.                 &
             ( TSCC /= ' ' .OR.          &
               CPLTID /= ' ' .OR.        &
@@ -263,11 +263,11 @@ SUBROUTINE RDSRCGRPS( SGDEV, SPCFLAG, TSFLAG )
             ( CPLTID /= ' ' .OR.        &
               CPNTID /= ' ' ) ) CYCLE
 
-    !.............  Check group number
+        !.........  Check group number
         IF( CHKINT( SEGMENT( 1 ) ) ) THEN
             INUM = STR2INT( SEGMENT( 1 ) )
 
-    !.................  Reserve group number zero
+            !.................  Reserve group number zero
             IF( INUM == 0 ) THEN
                 EFLAG = .TRUE.
                 WRITE( MESG,94010 ) 'ERROR: Group number 0 ' //     &
@@ -284,7 +284,7 @@ SUBROUTINE RDSRCGRPS( SGDEV, SPCFLAG, TSFLAG )
             CYCLE
         END IF
 
-    !.............  Check FIPS code
+        !.........  Check FIPS code
         IF( .NOT. USEEXPGEO() .AND.                 &
             .NOT. CHKINT( SEGMENT( 2 ) ) ) THEN
             EFLAG = .TRUE.
@@ -296,12 +296,12 @@ SUBROUTINE RDSRCGRPS( SGDEV, SPCFLAG, TSFLAG )
         ELSE
             CFIP = SEGMENT( 2 )
 
-    !.................  Standardize character version of FIPS code
+            !.................  Standardize character version of FIPS code
             CALL FLTRNEG( CFIP )
             CALL PADZERO( CFIP )
 
-    !.................  Check if FIPS code matches inventory or
-    !                   surrogates (for biogenics)
+            !.................  Check if FIPS code matches inventory or
+            !                   surrogates (for biogenics)
             IF( USEEXPGEO() .OR. CFIP( FIPEXPLEN3+4:FIPEXPLEN3+6 ) /= '000' ) THEN
                 IF( BFLAG ) THEN
                     J = FINDC( CFIP, NSRGFIPS, SRGFIPS )
@@ -319,13 +319,13 @@ SUBROUTINE RDSRCGRPS( SGDEV, SPCFLAG, TSFLAG )
             END IF
         END IF
 
-    !.............  Standardize SCC code
+        !.........  Standardize SCC code
         CALL PADZERO( TSCC )
 
-    !.............  Check SCC code
+        !.........  Check SCC code
         IF( .NOT. BFLAG ) THEN
 
-    !.................  Check if SCC matches inventory
+            !.............  Check if SCC matches inventory
             IF( TSCC .NE. REPEAT( '0', SCCLEN3 ) ) THEN
                 J = FINDC( TSCC, NINVSCC, INVSCC )
 
@@ -340,11 +340,11 @@ SUBROUTINE RDSRCGRPS( SGDEV, SPCFLAG, TSFLAG )
 
         END IF
 
-    !.............  Increment count of valid lines and check it
+        !.........  Increment count of valid lines and check it
         N = N + 1
-        IF( N .GT. NLINES ) CYCLE      ! Ensure no overflow
+        IF( N .GT. NLINES ) CYCLE          !~ Ensure no overflow
 
-    !.............  Store fields from source groups file
+        !.........  Store fields from source groups file
         INDEXA  ( N ) = N
         IGRPNUMA( N ) = INUM
         CGRPSRCA( N ) = CFIP // TSCC // ADJUSTR( CPLTID ) // ADJUSTR( CPNTID )
@@ -588,23 +588,23 @@ SUBROUTINE RDSRCGRPS( SGDEV, SPCFLAG, TSFLAG )
         K = 0
         DO I = 1, NSRC
 
-    !.................  Skip sources that aren't elevated
+            !.................  Skip sources that aren't elevated
             IF( GROUPID( I ) == 0 ) CYCLE
 
-    !.................  Build combo group ID using stack group number and
-    !                   source group index for current source
+            !.................  Build combo group ID using stack group number and
+            !                   source group index for current source
             WRITE( COMBOGRP, '(I8.8, I8.8)' ) GROUPID( I ), ISRCGRP( I )
 
-    !.................  Check if combo group has already been assigned
+            !.................  Check if combo group has already been assigned
             INDX = INDEX1( COMBOGRP, K, COMBOGRPS )
             IF( INDX > 0 ) THEN
 
-    !.....................  Assign source to existing group
+            !.....................  Assign source to existing group
                 ELEVGRPID( I ) = INDX
 
             ELSE
 
-    !.....................  Create new combo group
+                !.....................  Create new combo group
                 K = K + 1
                 COMBOGRPS( K ) = COMBOGRP
                 ELEVGRPID( I ) = K
@@ -617,8 +617,8 @@ SUBROUTINE RDSRCGRPS( SGDEV, SPCFLAG, TSFLAG )
 
         DEALLOCATE( COMBOGRPS )
 
-    !.............  Build lists mapping new elevated groups to original stack groups
-    !               and source groups
+        !.............  Build lists mapping new elevated groups to original stack groups
+        !               and source groups
         ALLOCATE( ELEVSTKGRP( NELEVGRPS ),          &
                   ELEVSRCGRP( NELEVGRPS ),          &
                   ELEVSTKCNT( NELEVGRPS ),          &
@@ -628,7 +628,7 @@ SUBROUTINE RDSRCGRPS( SGDEV, SPCFLAG, TSFLAG )
 
         DO I = 1, NSRC
 
-    !.................  Skip sources that aren't elevated
+        !.................  Skip sources that aren't elevated
             IF( GROUPID( I ) == 0 ) CYCLE
 
             INDX = ELEVGRPID( I )
@@ -656,12 +656,12 @@ SUBROUTINE RDSRCGRPS( SGDEV, SPCFLAG, TSFLAG )
 
     IF( BFLAG ) THEN
 
-    !.............  Loop through FIPS codes from surrogates
+        !.............  Loop through FIPS codes from surrogates
         DO F = 1, NSRGFIPS
 
             GIDX = ISRCGRP( F )
 
-    !.................  Loop through grid cells for FIPS code
+            !.................  Loop through grid cells for FIPS code
             DO N = 1, NCELLS( F )
 
                 C = FIPCELL( N,F )

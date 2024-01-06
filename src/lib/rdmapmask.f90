@@ -99,8 +99,7 @@ SUBROUTINE RDMAPMASK( ENAME, NMAPVAR, MAPVARS, MAPFILES, NSRC,&
 
             MESG = 'INTERNAL ERROR: Prevented overflow for read '// &
                    'of variable "' // TRIM( VBUF ) // '"'
-            CALL M3MSG2( MESG )
-            CALL M3EXIT( PROGNAME, 0, 0, ' ', 2 )
+            CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 
         END IF
 
@@ -118,9 +117,8 @@ SUBROUTINE RDMAPMASK( ENAME, NMAPVAR, MAPVARS, MAPFILES, NSRC,&
         END IF
 
         !.........  Set temporary environment variable to use for reading
-        !               pollutant file. Also, get the header description.
-        CALL OPENPHYS( PROGNAME, PNAME, FSREAD3, MAPFILES( K ),&
-                       EFLAG )
+        !           pollutant file. Also, get the header description.
+        CALL OPENPHYS( PROGNAME, PNAME, FSREAD3, MAPFILES( K ), EFLAG )
 
         NSPARSE = NROWS3D
 
@@ -130,8 +128,7 @@ SUBROUTINE RDMAPMASK( ENAME, NMAPVAR, MAPVARS, MAPFILES, NSRC,&
                  SRCID( NSPARSE ), STAT=IOS )
         CALL CHECKMEM( IOS, 'ETMP,SRCID', PROGNAME )
 
-        CALL RDINVPOL( PNAME, NSPARSE, 1, VBUF, M3REAL, SRCID,&
-                       ETMP, SFLAG )
+        CALL RDINVPOL( PNAME, NSPARSE, 1, VBUF, M3REAL, SRCID, ETMP, SFLAG )
 
         IF( SFLAG ) EFLAG = .TRUE.
         IF( EFLAG ) CYCLE

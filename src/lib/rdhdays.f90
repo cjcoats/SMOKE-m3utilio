@@ -83,7 +83,7 @@ SUBROUTINE RDHDAYS( FDEV, SDATE, EDATE )
     INTEGER         REGN                      ! tmp region code
     INTEGER         YY                        ! tmp year
 
-    LOGICAL      :: EFLAG = .FALSE.           ! true: error found
+    LOGICAL         EFLAG                     ! true: error found
 
     CHARACTER(80)   LINE                      ! Read buffer for a line
     CHARACTER(300)  MESG                      ! Message buffer
@@ -94,6 +94,7 @@ SUBROUTINE RDHDAYS( FDEV, SDATE, EDATE )
     !   Begin body of subroutine RDHDAYS
 
     !.......  Get the number of lines in the holidays file
+    EFLAG  = .FALSE.
     NLINES = GETFLINE( FDEV, 'Holidays file' )
 
     !.......  Allocate memory for the unsorted holidays data

@@ -122,8 +122,8 @@ SUBROUTINE PROCSPRO( NMSPC, SPCNAM )
         K = FINDC( SBUF, NMSPC, SPCNAM )
 
         IF( K .LE. 0 ) THEN
-            MESG = 'INTERNAL ERROR: model species "' //        &
-            TRIM( SBUF ) // '" not found in sorted ' //      &
+            MESG = 'INTERNAL ERROR: model species "' //     &
+            TRIM( SBUF ) // '" not found in sorted ' //     &
                 'names list developed for this pollutant'
             CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 

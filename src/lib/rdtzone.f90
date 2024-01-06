@@ -15,7 +15,7 @@ SUBROUTINE RDTZONE( FDEV, NDIM, NZS, NZF, TZONE0,       &
     !
     !  REVISION  HISTORY:
     !       Version ??/???? by ???
-    !       Version 11/2023 by CJC:  USE M3UTILIO, ".f90" source format, 
+    !       Version 11/2023 by CJC:  USE M3UTILIO, ".f90" source format,
     !       INTENT, and related changes
     !****************************************************************************/
     !
@@ -70,7 +70,7 @@ SUBROUTINE RDTZONE( FDEV, NDIM, NZS, NZF, TZONE0,       &
     INTEGER         IOS                     ! i/o status
     INTEGER         IREC                    ! record counter
 
-    LOGICAL      :: EFLAG = .FALSE.         ! error flag
+    LOGICAL         EFLAG                   ! error flag
 
     CHARACTER(300)  LINE        !  Input line from POINT file
     CHARACTER(300)  MESG        !  message buffer
@@ -80,6 +80,7 @@ SUBROUTINE RDTZONE( FDEV, NDIM, NZS, NZF, TZONE0,       &
     !***********************************************************************
     !   begin body of subroutine RDTZONE
 
+    EFLAG = .FALSE.
     TZONE0 = 5          !  default:  EST
     NZS    = 0
     NZF    = 0
@@ -91,9 +92,8 @@ SUBROUTINE RDTZONE( FDEV, NDIM, NZS, NZF, TZONE0,       &
 
         IF ( IOS .GT. 0 ) THEN
             EFLAG = .TRUE.
-            WRITE( MESG, 94010 )                                        &
-                   'I/O error', IOS,  'reading time zones file ' //     &
-                   'at line', IREC
+            WRITE( MESG, 94010 ) 'I/O error', IOS,       &
+                   'reading time zones file at line', IREC
             CALL M3MESG( MESG )
             CYCLE
         END IF
@@ -163,7 +163,5 @@ SUBROUTINE RDTZONE( FDEV, NDIM, NZS, NZF, TZONE0,       &
     !.......   Internal buffering formats...... 94xxx
 
 94010 FORMAT( 10( A, :, I8, :, 1X ) )
-
-94120 FORMAT( I5.5 )
 
 END  SUBROUTINE RDTZONE

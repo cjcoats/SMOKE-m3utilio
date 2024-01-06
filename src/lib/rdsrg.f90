@@ -310,8 +310,7 @@ SUBROUTINE RDSRG( VFLAG, FDEV, SRGFMT, SRGNROWS, SRGNCOLS )
         END IF
 
       CASE DEFAULT
-        MESG = 'INTERNAL ERROR: Surrogate format "' // SRGFMT //    &
-               '" not understood'
+        MESG = 'INTERNAL ERROR: Surrogate format "' // SRGFMT // '" not understood'
         CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 
     END SELECT

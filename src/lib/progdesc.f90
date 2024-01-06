@@ -287,7 +287,7 @@ SUBROUTINE PROGDESC( LDEV, INPROGNM )
 
       CASE( 'UAM2NCF' )
         WRITE( LDEV,92000 )&
-        ' ',&
+        ' ',                                                            &
         'Program UAM2NCF converts a UAM gridded, hourly emissions ',    &
         'into an I/O API  gridded, hourly emissions file.  Program has',&
         'been tested for the lat-lon projection only.',                 &

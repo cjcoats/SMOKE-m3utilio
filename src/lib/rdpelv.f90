@@ -167,7 +167,7 @@ SUBROUTINE RDPELV( FDEV, NSRC, ASCIFLAG, NMAJOR, NPING )
 
         !.........  Error if ASCII elevated file being created and no PELV file
         !.........  Note that when called from Laypoint, ASCIFLAG is never true,
-        !               even if Laypoint is being run for UAM-style explicit plumerise
+        !           even if Laypoint is being run for UAM-style explicit plumerise
         IF( ASCIFLAG .AND. FDEV .LE. 0 ) THEN
             EFLAG = .TRUE.
             MESG = 'ERROR: No PELV file input, but it is ' //       &
@@ -180,15 +180,15 @@ SUBROUTINE RDPELV( FDEV, NSRC, ASCIFLAG, NMAJOR, NPING )
                    'PELV input file.'
 
             !.........  For CMAQ-style, change array to make all sources potentially
-            !               elevated when there is no PELV file used
+            !           elevated when there is no PELV file used
         ELSE IF( FDEV .LE. 0 ) THEN
             NMAJOR = NSRC
             LMAJOR = .TRUE.              ! array
             MESG = 'NOTE: All non-PinG sources are potentially '//  &
                    'elevated'
 
-            !.........  For CMAQ-style, with a PELV file, change all to major, but
-            !               give a warning.
+            !.........  For CMAQ-style, with a PELV file, change all to major
+            !           but give a warning.
         ELSE
             NMAJOR = NSRC
             LMAJOR = .TRUE.          ! array

@@ -136,10 +136,8 @@ SUBROUTINE RDSREF( FDEV )
     I = INDEX1( CATEGORY, 3, LOCCATS )
 
     IF( I .LE. 0 ) THEN
-        MESG = 'INTERNAL ERROR: category "' // TRIM( CATEGORY ) //&
-               '" is not valid '
+        MESG = 'INTERNAL ERROR: category "' // TRIM( CATEGORY ) // '" is not valid '
         CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
-
     END IF
 
     !.........  Sort the actual list of pollutant/emis type names and store it
@@ -164,6 +162,9 @@ SUBROUTINE RDSREF( FDEV )
     !.........  Use reference to inventory county mapping file
     MESG   = 'Use the county cross-reference mapping file'
     REFLAG = ENVYN( 'USE_REF_COUNTY_MAP_YN', MESG, .FALSE., IOS )
+    IF ( IOS .GT. 0 ) THEN
+        CALL M3EXIT( PROGNAME,0,0, 'Bad env vble "USE_REF_COUNTY_MAP_YN"', 2 )
+    END IF
     IF( REFLAG ) THEN
 
         !.............  Read and store ref-inv counties mapping
@@ -332,23 +333,22 @@ SUBROUTINE RDSREF( FDEV )
                     CFIP = MCREFSORT( J1,1 )                   ! mapped inventory county
                 END IF
 
-                !.................  Adjust these for proper sorting and matching with profiles
-                !                   file.
+                !.........  Adjust these for proper sorting and matching with profiles file.
                 SPCODE = ADJUSTR( SPCODE )
                 CPOA   = ADJUSTL( CPOA   )
 
-                !.................  Skip all point entries for nonpoint sectors
+                !.........  Skip all point entries for nonpoint sectors
                 IF ( CATEGORY /= 'POINT' .AND. PLT /= ' ' ) CYCLE
 
-                !.................  Post-process x-ref information to scan for '-9', pad
-                !                   with zeros, compare SCC version master list, and compare
-                !                   pollutant/emission type name with master list.
+                !.........  Post-process x-ref information to scan for '-9', pad
+                !           with zeros, compare SCC version master list, and compare
+                !           pollutant/emission type name with master list.
                 CALL FLTRXREF( CFIP, CSIC, TSCC, CPOA, CMCT,        &
                                IDUM, IDUM, JSPC, PFLAG, SKIPREC )
 
                 SKIPPOL = ( SKIPPOL .OR. PFLAG )
 
-                !.................  Filter the case where the pollutant code is not present
+                !.......... Filter the case where the pollutant code is not present
                 IF( CPOA .EQ. ' ' ) THEN
                     EFLAG = .TRUE.
                     WRITE( MESG, 94010 )                                &
@@ -362,10 +362,10 @@ SUBROUTINE RDSREF( FDEV )
 
                 IF( SKIPREC ) CYCLE                  ! Skip this record
 
-                !.................  Write pollutant position to character string
+                !.........  Write pollutant position to character string
                 WRITE( CPOS, '(I5.5)' ) JSPC
 
-                !.................  Check for bad cross-reference code
+                !.........  Check for bad cross-reference code
                 IF( SPCODE .EQ. ' ' ) THEN
                     WRITE( MESG, 94010 )                                    &
                       'WARNING: Skipping blank profile code in cross-'//    &
@@ -375,8 +375,8 @@ SUBROUTINE RDSREF( FDEV )
 
                 END IF
 
-                !.................  If SIC is defined, make sure SCC is not and fill SCC
-                !                   with SIC value and special identifier
+                !.........  If SIC is defined, make sure SCC is not and fill SCC
+                !           with SIC value and special identifier
                 IF( CSIC /= SICZERO .AND. TSCC /= SCCZERO ) THEN
                     WRITE( MESG,94010 ) 'WARNING: Both SCC and SIC ' //     &
                            'values are given at line', I, '.'//CRLF() //    &
@@ -525,8 +525,7 @@ SUBROUTINE RDSREF( FDEV )
 
     !.........  Error message for reaching the end of file too soon
 999 MESG = 'End of file reached unexpectedly. ' //              &
-           'Check format of speciation' // CRLF() // BLANK5 //  &
-           'cross-reference file.'
+           CRLF() // BLANK5 // 'Check format of speciation cross-reference file.'
     CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 
     !******************  FORMAT  STATEMENTS   ******************************

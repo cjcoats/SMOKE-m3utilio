@@ -466,64 +466,60 @@ SUBROUTINE RDINVCHR( CATEGORY, INFILE, FDEV, NSRC, NVARS, VNAMES )
 
         ENDDO              ! End loop of unread variables
 
-            !.......  Read in and store data from ASCII file...
+        !.......  Read in and store data from ASCII file...
 
-            !.......  Read in number of header lines and file format
+        !.......  Read in number of header lines and file format
         READ( FDEV, * ) NCOL, FILFMT
         CALL PARSLINE( FILFMT( 2:LEN_TRIM( FILFMT )-1 ), MXITEMS, FMTSEGS )
 
-            !.......  Read past header
+        !.......  Read past header
         DO J = 1, NCOL
             READ( FDEV, '(A)' ) HEADER( J )
         ENDDO
 
-            !C............  Read in and store common ASCII source characteristics
-            !               over all source categories
+        !C............  Read in and store common ASCII source characteristics
+        !               over all source categories
 
-            !......  Determine if source type code is present
+        !......  Determine if source type code is present
         J = INDEX1( 'Source type code', NCOL, HEADER )
         STPIN = ( J > 0 )
 
-            !.......  Determine if plant description is present
+        !.......  Determine if plant description is present
         J = INDEX1( 'Integrate flag', NCOL, HEADER )
         ITGIN = ( J .GT. 0 )
 
-            !.......  Determine if plant description is present
+        !.......  Determine if plant description is present
         J = INDEX1( 'Additional extended', NCOL, HEADER )
        EXTIN = ( J .GT. 0 )
 
-            !.......  If source type code not present but has been requested,
-            !               deallocate memory for array
+        !.......  If source type code not present but has been requested,
+        !         deallocate memory for array
         IF( .NOT. STPIN .AND. STPFLAG ) THEN
 
             MESG = 'WARNING: Source type code requested, but '//    &
                    'is not present in ASCII inventory file'
-            !                CALL M3MSG2( MESG )
 
             DEALLOCATE( CSRCTYP )
             NULLIFY( CSRCTYP )
         END IF
 
-            !.......  If integrate columns not present but has been requested,
-            !               deallocate memory for array
+        !.......  If integrate columns not present but has been requested,
+        !         deallocate memory for array
         IF( .NOT. ITGIN .AND. ITGFLAG ) THEN
 
             MESG = 'WARNING: Integrate flag requested, ' //         &
                    'but is not present in ASCII inventory file'
-            !                CALL M3MSG2( MESG )
 
             DEALLOCATE( CINTGR )
             NULLIFY( CINTGR )
         END IF
 
             !.......  If extended columns not present but has been requested,
-            !               deallocate memory for array
+            !         deallocate memory for array
         IF( .NOT.EXTIN .AND. EXTFLAG ) THEN
 
             MESG = 'WARNING: Additional extended requested, ' //    &
                    'but is not present in ASCII inventory file'
-            !                CALL M3MSG2( MESG )
-
             DEALLOCATE( CEXTORL )
             NULLIFY( CEXTORL )
         END IF
@@ -556,7 +552,6 @@ SUBROUTINE RDINVCHR( CATEGORY, INFILE, FDEV, NSRC, NVARS, VNAMES )
 
                 MESG = 'WARNING: MACT requested, but ' //       &
                        'is not present in ASCII inventory file'
-            !                    CALL M3MSG2( MESG )
 
                 DEALLOCATE( CMACT )
                 NULLIFY( CMACT )
@@ -564,7 +559,7 @@ SUBROUTINE RDINVCHR( CATEGORY, INFILE, FDEV, NSRC, NVARS, VNAMES )
             END IF
 
             !.......  If boiler not present but has been requested, then
-            !                   internal err
+            !         internal err
             IF( .NOT. NAIIN .AND. NAIFLAG ) THEN
 
                 MESG = 'WARNING: NAICS requested, but ' //      &
@@ -577,7 +572,7 @@ SUBROUTINE RDINVCHR( CATEGORY, INFILE, FDEV, NSRC, NVARS, VNAMES )
             END IF
 
             !.......  If DOE plant ID not present but has been requested, then
-            !                   internal err
+            !         internal err
             IF( .NOT. ORSIN .AND. ORSFLAG ) THEN
 
                 MESG = 'WARNING: ORIS ID requested, but ' //        &
@@ -588,7 +583,7 @@ SUBROUTINE RDINVCHR( CATEGORY, INFILE, FDEV, NSRC, NVARS, VNAMES )
             END IF
 
             !.......  If SIC not present but has been requested, then
-            !                   internal err
+            !         internal err
             IF( .NOT. SICIN .AND. SICFLAG ) THEN
 
                 MESG = 'WARNING: SIC requested, but ' //  &
@@ -602,7 +597,7 @@ SUBROUTINE RDINVCHR( CATEGORY, INFILE, FDEV, NSRC, NVARS, VNAMES )
 
             DO S = 1, NSRC
 
-            !.......  Read source information from record of inventory file
+                !.......  Read source information from record of inventory file
                 FMTITEM = 1
                 CALL BUILD_FMTSEG( FMTSEGS( FMTITEM ) )
                 READ( FDEV, FMTSEG, ADVANCE='NO', END=999 ) ID
@@ -616,7 +611,7 @@ SUBROUTINE RDINVCHR( CATEGORY, INFILE, FDEV, NSRC, NVARS, VNAMES )
                 IF( SICIN ) CALL READ_NEXT_VAL( CSIC )
                 IF(EXTIN ) CALL READ_NEXT_VAL( CEXT )
 
-            !.......  Advance to next line
+                !.......  Advance to next line
                 READ( FDEV, *, END=999 )
 
                 IF( FIPFLAG ) CIFIP( S ) = CFIP
@@ -648,7 +643,7 @@ SUBROUTINE RDINVCHR( CATEGORY, INFILE, FDEV, NSRC, NVARS, VNAMES )
 
             DO S = 1, NSRC
 
-            !.......  Read source information from record of inventory file
+                !.......  Read source information from record of inventory file
                 FMTITEM = 1
                 CALL BUILD_FMTSEG( FMTSEGS( FMTITEM ) )
                 READ( FDEV, FMTSEG, ADVANCE='NO', END=999 ) ID
@@ -692,7 +687,7 @@ SUBROUTINE RDINVCHR( CATEGORY, INFILE, FDEV, NSRC, NVARS, VNAMES )
           CASE ( 'POINT' )
 
             !.......  Determine number of plant characteristics. Assumes SCC is
-            !                   the first variable after the final source characteristic
+            !         the first variable after the final source characteristic
             J = INDEX1( 'SCC', NCOL, HEADER )
             NC = J - 4              ! Four because Source ID, FIPS, Plant ID,  SCC
 
@@ -742,7 +737,7 @@ SUBROUTINE RDINVCHR( CATEGORY, INFILE, FDEV, NSRC, NVARS, VNAMES )
             END IF
 
             !.......  If boiler not present but has been requested, then
-            !                   internal err
+            !           internal err
             IF( .NOT. NAIIN .AND. NAIFLAG ) THEN
 
                 MESG = 'WARNING: NAICS requested, but ' //      &
@@ -755,7 +750,7 @@ SUBROUTINE RDINVCHR( CATEGORY, INFILE, FDEV, NSRC, NVARS, VNAMES )
             END IF
 
             !.......  If DOE plant ID not present but has been requested, then
-            !                   internal err
+            !           internal err
             IF( .NOT. ORSIN .AND. ORSFLAG ) THEN
 
                 MESG = 'WARNING: ORIS ID requested, but ' //        &
@@ -765,7 +760,7 @@ SUBROUTINE RDINVCHR( CATEGORY, INFILE, FDEV, NSRC, NVARS, VNAMES )
             END IF
 
             !.......  If boiler not present but has been requested, then
-            !                   internal err
+            !           internal err
             IF( .NOT. BLRIN .AND. BLRFLAG ) THEN
 
                 MESG = 'WARNING: Boiler requested, but ' //     &
@@ -775,7 +770,7 @@ SUBROUTINE RDINVCHR( CATEGORY, INFILE, FDEV, NSRC, NVARS, VNAMES )
             END IF
 
             !.......  If NEI unique ID not present but has been requested, then
-            !                   internal err
+            !           internal err
             IF( .NOT. NEIIN .AND. NEIFLAG ) THEN
 
                 MESG = 'WARNING: NEI unique ID requested, but ' //  &
@@ -799,7 +794,7 @@ SUBROUTINE RDINVCHR( CATEGORY, INFILE, FDEV, NSRC, NVARS, VNAMES )
             END IF
 
             !.......  If SIC not present but has been requested, then
-            !                   internal err
+            !           internal err
             IF( .NOT. SICIN .AND. SICFLAG ) THEN
 
                 MESG = 'WARNING: SIC requested, but ' //&
@@ -908,8 +903,8 @@ SUBROUTINE RDINVCHR( CATEGORY, INFILE, FDEV, NSRC, NVARS, VNAMES )
 
 CONTAINS
 
-    !.......  This internal subprogram checks to make sure the ASCII inventory
-    !               file has not been corrupted, and if it has, stops the program
+    !.....  This internal subprogram checks to make sure the ASCII inventory
+    !       file has not been corrupted, and if it has, stops the program
     SUBROUTINE CHECK_CORRUPTED
 
         !....................................................
@@ -932,12 +927,12 @@ CONTAINS
 
     !----------------------------------------------------------------------
 
-    !.......  This internal subprogram build a format specification string
-    !               from the given format fragment
+    !.....  This internal subprogram build a format specification string
+    !       from the given format fragment
     SUBROUTINE BUILD_FMTSEG( FMTFRAGMENT )
 
         !.......  Subprogram arguments
-        CHARACTER(*) FMTFRAGMENT
+        CHARACTER(*), INTENT (IN) :: FMTFRAGMENT
 
         !....................................................
 
@@ -947,12 +942,12 @@ CONTAINS
 
     !----------------------------------------------------------------------
 
-    !.......  This internal subprogram reads the next string value from
-    !               the current record in the inventory file
+    !.....  This internal subprogram reads the next string value from
+    !       the current record in the inventory file
     SUBROUTINE READ_NEXT_VAL( VARIABLE )
 
         !.......  Subprogram arguments
-        CHARACTER(*) VARIABLE
+        CHARACTER(*), INTENT(  OUT) :: VARIABLE
 
         !....................................................
 
@@ -969,8 +964,7 @@ CONTAINS
         RETURN
 
 998     MESG = 'End of file reached unexpectedly. ' //&
-               'Check format of ASCII' // CRLF() // BLANK5 //&
-               'inventory file.'
+               CRLF() // BLANK5 // 'Check format of ASCII inventory file.'
 
         CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 

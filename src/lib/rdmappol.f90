@@ -80,7 +80,7 @@ SUBROUTINE RDMAPPOL( NSRC, NVARS, NPVAR, VARNAMS, OUTVALS )
     CHARACTER(256)     MESG       ! message buffer
     CHARACTER(NAMLEN3) VBUF       ! tmp variable name buffer
 
-    CHARACTER(16), PARAMETER :: RNAME    = 'IOAPI_DAT'     ! logical name for reading pols
+    CHARACTER(16), PARAMETER :: RNAME    = 'IOAPI_DAT'      ! logical name for reading pols
     CHARACTER(16), PARAMETER :: PROGNAME = 'RDMAPPOL'       !  program name
 
     !***********************************************************************

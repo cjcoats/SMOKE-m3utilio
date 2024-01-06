@@ -42,7 +42,7 @@ SUBROUTINE RDSTCY( FDEV, NDIM, INCNTYS )
     !.........  This module contains the arrays for state and county summaries
     USE MODSTCY, ONLY: LSTCYPOP, STCYPOPYR, USEDAYLT,   &
                        NCOUNTRY, NSTATE,   NCOUNTY,     &
-                       CTRYCOD,  STATCOD,  CNTYCOD,     &    
+                       CTRYCOD,  STATCOD,  CNTYCOD,     &
                        CTRYNAM,  STATNAM,  CNTYNAM,     &
                        CTRYPOPL, STATPOPL, CNTYPOPL,    &
                        CNTYTZON, CNTYTZNM
@@ -125,6 +125,9 @@ SUBROUTINE RDSTCY( FDEV, NDIM, INCNTYS )
     IF( FIRSTIME ) THEN
         MESG = 'Default time zone for sources'
         TZONE0 = ENVINT( 'SMK_DEFAULT_TZONE', MESG, 5, IOS )
+        IF ( IOS .GT. 0 ) THEN
+            CALL M3EXIT( PROGNAME,0,0, 'Bad env vble "SMK_DEFAULT_TZONE"', 2 )
+        END IF
         FIRSTIME = .FALSE.
     END IF
 
@@ -150,20 +153,20 @@ SUBROUTINE RDSTCY( FDEV, NDIM, INCNTYS )
             CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
         END IF
 
-        !.............  Look for header lines
+        !......  Look for header lines
         IF( LINE( 1:1 ) .EQ. CINVHDR ) THEN
 
-            !.................  Look for population header, and if found...
+            !..........  Look for population header, and if found...
             L2 = LEN_TRIM( LINE )
             IF( LINE( 2:11 ) .EQ. 'POPULATION' ) THEN
 
-                !.....................  If space for year is blank, then error
+                !.......  If space for year is blank, then error
                 IF( LINE( 12:L2 ) .EQ. ' ' ) THEN
 
                     MESG = 'Year must be included at end of #POPULATION  header.'
                     CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 
-                !.....................  If space for year is integer, then convert and store it
+                !.......  If space for year is integer, then convert and store it
                 ELSE IF( CHKINT( LINE( 12:L2 ) ) ) THEN
                     LSTCYPOP = .TRUE.
                     STCYPOPYR = STR2INT( LINE( 12:L2 ) )
@@ -173,7 +176,7 @@ SUBROUTINE RDSTCY( FDEV, NDIM, INCNTYS )
                            'for year ', STCYPOPYR
                     CALL M3MSG2( MESG )
 
-                !.....................  If space for year is non-integer, then error
+                !.......  If space for year is non-integer, then error
                 ELSE
 
                     MESG = 'Non-integer year value at end of #POPULATION  header.'
@@ -181,7 +184,7 @@ SUBROUTINE RDSTCY( FDEV, NDIM, INCNTYS )
 
                 END IF
 
-                !.................  Population header not found
+                !..........  Population header not found
             ELSE
                 MESG = 'NOTE: No population data will be read ' //      &
                        'from country/state/county file.'
@@ -193,12 +196,12 @@ SUBROUTINE RDSTCY( FDEV, NDIM, INCNTYS )
 
         END IF
 
-        !.............  Search for packets in every line for error checking
+        !......  Search for packets in every line for error checking
         FOUNDCTR = ( INDEX( LINE, CTRYPKT ) .GT. 0 )
         FOUNDSTA = ( INDEX( LINE, STATPKT ) .GT. 0 )
         FOUNDCNY = ( INDEX( LINE, CNTYPKT ) .GT. 0 )
 
-        !.............  Error if country packet is found twice
+        !......  Error if country packet is found twice
         IF ( FOUNDCTR .AND. ISKIPCTR .GT. 0 ) THEN
             EFLAG = .TRUE.
             WRITE( MESG,94010 ) 'ERROR: Country packet found ' //   &
@@ -206,7 +209,7 @@ SUBROUTINE RDSTCY( FDEV, NDIM, INCNTYS )
                    ISKIPCTR
             CALL M3MSG2( MESG )
 
-        !.............  Store position and order if found for the first time
+        !......  Store position and order if found for the first time
         ELSE IF( FOUNDCTR ) THEN
             K = K + 1
             ISKIPCTR     = IREC
@@ -214,14 +217,14 @@ SUBROUTINE RDSTCY( FDEV, NDIM, INCNTYS )
             SECTION( K ) = CTRYPKT
         END IF
 
-        !.............  Error if state packet is found twice
+        !......  Error if state packet is found twice
         IF ( FOUNDSTA .AND. ISKIPSTA .GT. 0 ) THEN
             EFLAG = .TRUE.
             WRITE( MESG,94010 ) 'ERROR: State packet found ' //     &
                    'again at line', IREC, 'but also at line', ISKIPSTA
             CALL M3MSG2( MESG )
 
-        !.............  Store position and order if found for the first time
+        !......  Store position and order if found for the first time
         ELSE IF( FOUNDSTA ) THEN
             K = K + 1
             ISKIPSTA     = IREC
@@ -229,14 +232,14 @@ SUBROUTINE RDSTCY( FDEV, NDIM, INCNTYS )
             SECTION( K ) = STATPKT
         END IF
 
-        !.............  Error if county packet is found twice
+        !......  Error if county packet is found twice
         IF ( FOUNDCNY .AND. ISKIPCNY .GT. 0 ) THEN
             EFLAG = .TRUE.
             WRITE( MESG,94010 ) 'ERROR: County packet found ' //    &
                    'again at line', IREC, 'but also at line', ISKIPCNY
             CALL M3MSG2( MESG )
 
-        !.............  Store position and order if found for the first time
+        !......  Store position and order if found for the first time
         ELSE IF( FOUNDCNY ) THEN
             K = K + 1
             ISKIPCNY     = IREC
@@ -251,8 +254,7 @@ SUBROUTINE RDSTCY( FDEV, NDIM, INCNTYS )
     !.........  Make sure the file had all sections
     IF( K .NE. 3 ) THEN
         EFLAG = .TRUE.
-        MESG = 'ERROR: Country, state, and county sections must ' //&
-               'be present in file'
+        MESG = 'ERROR: Country, state, and county sections must be present in file'
         CALL M3MESG( MESG )
     END IF
 
@@ -292,7 +294,7 @@ SUBROUTINE RDSTCY( FDEV, NDIM, INCNTYS )
     NDIMST = NSTAT
     IF( FILTER ) THEN
 
-        !.............  First count the number of states
+        !......  First count the number of states
         LSTA = -9
         N    = 0
         DO I = 1, NDIM
@@ -372,14 +374,12 @@ SUBROUTINE RDSTCY( FDEV, NDIM, INCNTYS )
         COU = STR2INT( LINE( 1:1 ) )
         IF( COU .LT. LCOU ) THEN
             EFLAG = .TRUE.
-            WRITE( MESG,94010 ) 'ERROR: Unsorted country code '//   &
-                   'at line', IREC
+            WRITE( MESG,94010 ) 'ERROR: Unsorted country code at line', IREC
             CALL M3MESG( MESG )
 
         ELSE IF( COU .EQ. LCOU ) THEN
             EFLAG = .TRUE.
-            WRITE( MESG,94010 ) 'ERROR: Duplicate country code '//  &
-                   'at line', IREC
+            WRITE( MESG,94010 ) 'ERROR: Duplicate country code at line', IREC
             CALL M3MESG( MESG )
         END IF
 
@@ -412,7 +412,7 @@ SUBROUTINE RDSTCY( FDEV, NDIM, INCNTYS )
         STA = MAX( STR2INT( LINE( 2:3 ) ), 0 )
         COUST = COU * 100 + STA
 
-        !.............  Find state code in valid list
+        !......  Find state code in valid list
         IF( FILTER ) THEN
             J = FIND1( COUST, NDIMST, INSTATE )
             IF( J .LE. 0 ) CYCLE
@@ -420,14 +420,12 @@ SUBROUTINE RDSTCY( FDEV, NDIM, INCNTYS )
 
         IF( COUST .LT. LCOUST ) THEN
             EFLAG = .TRUE.
-            WRITE( MESG,94010 ) 'ERROR: Unsorted state code '//     &
-                   'at line', IREC
+            WRITE( MESG,94010 ) 'ERROR: Unsorted state code at line', IREC
             CALL M3MESG( MESG )
 
         ELSE IF( COUST .EQ. LCOUST ) THEN
             EFLAG = .TRUE.
-            WRITE( MESG,94010 ) 'ERROR: Duplicate state code '//    &
-                   'at line', IREC
+            WRITE( MESG,94010 ) 'ERROR: Duplicate state code at line', IREC
             CALL M3MESG( MESG )
         END IF
 
@@ -446,7 +444,7 @@ SUBROUTINE RDSTCY( FDEV, NDIM, INCNTYS )
 
         IF( FILTER ) THEN
 
-            !.................  Loop through input states and report missing
+            !..........  Loop through input states and report missing
             DO N = 1, NDIMST
                 WRITE( FBUF, '(I12)' ) INSTATE( N ) * 1000
                 J = INDEX1( FBUF, K, STATCOD )
@@ -496,7 +494,7 @@ SUBROUTINE RDSTCY( FDEV, NDIM, INCNTYS )
         FIP = COU * 100000 + STA * 1000 + CNY
         WRITE( CFIP, '(I12.12)' ) FIP
 
-        !.............  If input codes have been provided, find current code in the
+        !......  If input codes have been provided, find current code in the
         !               list, or skip to next iteration
         IF( FILTER ) THEN
 
@@ -506,38 +504,36 @@ SUBROUTINE RDSTCY( FDEV, NDIM, INCNTYS )
 
         END IF
 
-        !.............  Find the time zone in the list and retrieve the integer value
+        !......  Find the time zone in the list and retrieve the integer value
         J = INDEX1( TZN, MXTZONE, TZONNAM )
 
         IF( FIP .LT. LFIP ) THEN
             EFLAG = .TRUE.
-            WRITE( MESG,94010 ) 'ERROR: Unsorted county code '//    &
-                   'at line', IREC
+            WRITE( MESG,94010 ) 'ERROR: Unsorted county code at line', IREC
             CALL M3MESG( MESG )
 
         ELSE IF( FIP .EQ. LFIP ) THEN
             EFLAG = .TRUE.
-            WRITE( MESG,94010 ) 'ERROR: Duplicate county code '//   &
-                   'at line', IREC
+            WRITE( MESG,94010 ) 'ERROR: Duplicate county code at line', IREC
             CALL M3MESG( MESG )
         END IF
 
-        !.............  Store the county-specific information
+        !......  Store the county-specific information
         K = K + 1
 
         IF( K .LE. NDIMCY ) THEN
 
-            !.................  Store region code and name
+            !..........  Store region code and name
             CNTYCOD( K ) = CFIP
             CNTYNAM( K ) = ADJUSTL( LINE( 5:24 ) )
 
-            !.................  Store population data, if included
+            !..........  Store population data, if included
             IF( LSTCYPOP ) CNTYPOPL( K ) = POP
 
-            !.................  Store the status of the daylight time exemptions
+            !..........  Store the status of the daylight time exemptions
             USEDAYLT( K ) = ( DLCHR .EQ. ' ' )
 
-            !.................  If the time zone is not defined, apply default.
+            !..........  If the time zone is not defined, apply default.
             IF( J .GT. 0 ) THEN
                 CNTYTZON( K ) = TZONNUM( J )
 
@@ -553,7 +549,7 @@ SUBROUTINE RDSTCY( FDEV, NDIM, INCNTYS )
 
             END IF
 
-            !.................  Store time zone name (do not apply default time zone)
+            !..........  Store time zone name (do not apply default time zone)
             CNTYTZNM( K ) = TZN
 
         END IF
@@ -607,7 +603,7 @@ SUBROUTINE RDSTCY( FDEV, NDIM, INCNTYS )
             CSTA = CFIP
             CSTA( STALEN3+1:FIPLEN3 ) = REPEAT( '0', FIPLEN3-STALEN3+1 )
 
-            !.................  Add to country population
+            !..........  Add to country population
             F = INDEX1( CCOU, NCOUNTRY, CTRYCOD )
             IF ( F .GT. 0 ) THEN
                 CTRYPOPL( F ) = CTRYPOPL( F ) + CNTYPOPL( J )
@@ -618,7 +614,7 @@ SUBROUTINE RDSTCY( FDEV, NDIM, INCNTYS )
                 CALL M3EXIT( PROGNAME, 0, 0, ' ', 2 )
             END IF
 
-            !.................  Add to state population
+            !..........  Add to state population
             F = INDEX1( CSTA, NSTATE, STATCOD )
             IF ( F .GT. 0 ) THEN
                 STATPOPL( F ) = STATPOPL( F ) + CNTYPOPL( J )
@@ -659,13 +655,12 @@ SUBROUTINE RDSTCY( FDEV, NDIM, INCNTYS )
 CONTAINS    !!-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 
-    !..............  This internal subprogram checks the read status and reports
-    !                and error if there was one.  It sets EFLAG and skips to
-    !                next record
+    !.....  This internal subprogram checks the read status and reports
+    !       an error and exits if there was one.
 
     LOGICAL FUNCTION CHECK_READ_STATUS()
 
-        !.............................................................................
+        !...............................................................
 
         CHECK_READ_STATUS = .TRUE.
         IF( IOS .NE. 0 ) THEN
@@ -674,11 +669,12 @@ CONTAINS    !!-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
                   'I/O error', IOS, 'reading country, state,  '//   &
                   'county names file at line', IREC
             CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
-            CHECK_READ_STATUS = .FALSE.
 
         END IF
 
-        !.............................................................................
+        RETURN
+
+        !...............................................................
 
 94010   FORMAT( 10( A, :, I8, :, 1X ) )
 

@@ -239,7 +239,5 @@ SUBROUTINE NORMTPRO
 
     RETURN
 
-    !******************  FORMAT  STATEMENTS   ******************************
-
 END SUBROUTINE NORMTPRO
 

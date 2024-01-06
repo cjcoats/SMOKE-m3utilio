@@ -180,8 +180,8 @@ SUBROUTINE PARSLINE( LINE, N, SEGMENT )
                 K = 1
 
             !......  If hit another non-space delimiter without having
-            !                 hit another field with contents, then iterate the
-            !                 field count to create a blank space.
+            !        hit another field with contents, then iterate the
+            !        field count to create a blank space.
             ELSE IF( CBUF .NE. DELIMLST( 2 ) .AND.&
                      NOSPACDLIM                   ) THEN
                 NCNT = NCNT + 1
@@ -212,14 +212,14 @@ SUBROUTINE PARSLINE( LINE, N, SEGMENT )
             END IF
 
             !......  If start of field was a number, but adjacent character is not
-            !               a delimiter, then turn field into an alpha
+            !        a delimiter, then turn field into an alpha
         ELSE IF( NUMBER .AND. .NOT. THISNMBR .AND. IXP .LE. 0 ) THEN
             ALPHA  = .TRUE.
             NUMBER = .FALSE.
             K = 1
 
             !......  If start of field was a number or alpha, and this char is a
-            !               delimiter, then end of the field has been reached
+            !        delimiter, then end of the field has been reached
         ELSE IF( IXP .GT. 0 ) THEN
             ALPHA = .FALSE.
             NUMBER = .FALSE.

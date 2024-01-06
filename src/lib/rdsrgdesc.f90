@@ -15,7 +15,7 @@ SUBROUTINE RDSRGDESC( FDEV )
     !  REVISION  HISTORY:
     !       Created 8/2005 by B. Baek
     !       Version 11/2023 by CJC:  USE M3UTILIO and related changes,
-    !       ".f90" free source format, Bug-fix for SORTI2
+    !       ".f90" free source format, Bug-fixes for SORTI2, READ...END=
     !**************************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
@@ -90,16 +90,14 @@ SUBROUTINE RDSRGDESC( FDEV )
 
     !.........  Read surrogate files in SRGDESC file and store
     N = 0
-    IREC = 0
     DO I = 1, NLINES
 
-        READ ( FDEV, 93000, END=999, IOSTAT=IOS ) LINE
-        IREC = IREC + 1
+        READ ( FDEV, 93000, END=998, IOSTAT=IOS ) LINE
 
         IF ( IOS .GT. 0 ) THEN
             WRITE( MESG, 94010)                             &
                   'I/O error', IOS, 'reading SRGDESC '//    &
-                  'surrogate description file at line', IREC
+                  'surrogate description file at line', I
             CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
         END IF
 
@@ -120,7 +118,7 @@ SUBROUTINE RDSRGDESC( FDEV )
         SRGFDES( N ) = ADJUSTL( SEGMENT( 3 ) )
         SRGFNAM( N ) = ADJUSTL( SEGMENT( 4 ) )
 
-999 END DO
+    END DO
 
     NT = N
     NTSRGDSC = NT
@@ -139,7 +137,7 @@ SUBROUTINE RDSRGDESC( FDEV )
 
         IF( SSC .NE. LSSC ) THEN
             NSRGS = NSRGS + 1
-            LSSC = SSC
+            LSSC  = SSC
         END IF
 
     END DO

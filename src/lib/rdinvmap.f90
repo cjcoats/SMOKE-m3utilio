@@ -90,7 +90,7 @@ SUBROUTINE RDINVMAP( INAME, IDEV, ENAME, ANAME, SDEV )
     !   begin body of subroutine RDINVMAP
 
     !......  Determine path of map file, which will set relative path
-    !          for files listed in map
+    !        for files listed in map
     MESG = 'Inventory map file'
     CALL ENVSTR( INAME, MESG, ' ', APHYS, IOS )
     IF( IOS .NE. 0 ) THEN
@@ -110,7 +110,7 @@ SUBROUTINE RDINVMAP( INAME, IDEV, ENAME, ANAME, SDEV )
     END DO
 
     !......  Read map file and check that all of the components are
-    !          in place
+    !        in place
     IREC = 0
     NPOLCNT = 0
     DO
@@ -177,7 +177,7 @@ SUBROUTINE RDINVMAP( INAME, IDEV, ENAME, ANAME, SDEV )
             END IF
 
         !......  For /DATMAP/ packet, set special flag, allocate
-        !              memory for pollutant names and files, and initialize
+        !        memory for pollutant names and files, and initialize
         ELSE IF( J4 .GT. 0 ) THEN
             RPFLAG = .TRUE.
 
@@ -190,7 +190,7 @@ SUBROUTINE RDINVMAP( INAME, IDEV, ENAME, ANAME, SDEV )
             CYCLE
 
         !......  For /END/ packet, ensure count of pollutants in file
-        !              matched the number listed in the /NPOL/ packet
+        !        matched the number listed in the /NPOL/ packet
         ELSE IF( J5 .GT. 0 ) THEN
             RPFLAG = .FALSE.
 
@@ -206,7 +206,7 @@ SUBROUTINE RDINVMAP( INAME, IDEV, ENAME, ANAME, SDEV )
         END IF
 
         !......  If pollutant read flag is true, then read pollutant
-        !              name and store it's file.
+        !        name and store it's file.
         IF( RPFLAG ) THEN
 
             NPOLCNT = NPOLCNT + 1

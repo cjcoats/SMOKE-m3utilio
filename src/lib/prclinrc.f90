@@ -297,12 +297,10 @@ SUBROUTINE PRCLINRC( IREC, NSEGS, LINE, SEGMENT )
                             RPT_%AVEDAY = .FALSE.
 
                         ELSE
-                            L = LEN_TRIM( DAYYN )
                             WRITE( MESG,94010 )&
-                              'WARNING: Unrecognized /AVEDAY/ ' //&
-                              'settting "' // DAYYN( 1:L ) //&
-                              '" at line', IREC, '. Setting to ' //&
-                              'default of FALSE.'
+                              'WARNING: Unrecognized /AVEDAY/ settting "' //&
+                              TRIM( DAYYN ) // '" at line', IREC,           &
+                              '. Setting to default of FALSE.'
                             CALL M3MSG2( MESG )
                             RPT_%AVEDAY = .FALSE.
 
@@ -702,10 +700,9 @@ SUBROUTINE PRCLINRC( IREC, NSEGS, LINE, SEGMENT )
 
             ELSE
                 IF( FIRSTLOOP ) THEN
-                    L = LEN_TRIM( SEGMENT( 2 ) )
                     WRITE( MESG, 94010 )&
                         'WARNING: Arrangement type "'//&
-                        SEGMENT( 2 )( 1:L )// '" at line', IREC,&
+                        TRIM( SEGMENT( 2 ) )// '" at line', IREC,&
                         ' is not known.' // CRLF()// BLANK10 //&
                         'Will use no arrangement.'
                     CALL M3MSG2( MESG )
@@ -783,10 +780,9 @@ SUBROUTINE PRCLINRC( IREC, NSEGS, LINE, SEGMENT )
 
             ELSE
                 IF( FIRSTLOOP ) THEN
-                    L = LEN_TRIM( SEGMENT( 2 ) )
                     WRITE( MESG,94010 )&
                       'WARNING: Speciation type "'//&
-                      SEGMENT( 2 )( 1:L )// '" at line', IREC,&
+                      TRIM( SEGMENT( 2 ) )// '" at line', IREC,&
                       'is not known.' // CRLF()// BLANK10 //&
                       'Will assume mass-based speciation.'
                     CALL M3MSG2( MESG )

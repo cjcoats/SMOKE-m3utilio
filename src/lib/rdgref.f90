@@ -156,8 +156,8 @@ SUBROUTINE RDGREF( FDEV )
         IF( BLKORCMT( LINE ) ) CYCLE
 
         !.......  Depending on source category, transfer line to temporary
-        !               fields.  In cases where blanks are allowed, do not use
-        !               STR2INT to prevent warning messages.
+        !         fields.  In cases where blanks are allowed, do not use
+        !         STR2INT to prevent warning messages.
         SELECT CASE( CATEGORY )
 
           CASE( 'AREA' )
@@ -167,7 +167,7 @@ SUBROUTINE RDGREF( FDEV )
             TSCC = FIELDARR( 2 )
 
             !.......  Post-process x-ref information to scan for '-9', pad
-            !                   with zeros, compare SCC version master list.
+            !         with zeros, compare SCC version master list.
             CALL FLTRXREF( CFIP, CDUM, TSCC, ' ', CDUM2,        &
                            IDUM, IDUM, IDUM, LDUM, SKIPREC )
 
@@ -180,8 +180,8 @@ SUBROUTINE RDGREF( FDEV )
             TSCC = FIELDARR( 2 )
 
             !.......  Post-process x-ref information to scan for '-9', pad
-            !                   with zeros.  Do not include SCC in call below because
-            !                   right SCC will not work.
+            !         with zeros.  Do not include SCC in call below because
+            !         right SCC will not work.
             CALL FLTRXREF( CFIP, CDUM, TSCC, ' ', CDUM2,        &
                            IDUM, IDUM, IDUM, LDUM, SKIPREC )
 
@@ -196,7 +196,7 @@ SUBROUTINE RDGREF( FDEV )
         END IF
 
         !.......  If this record is in error, or should be skipped because
-        !               it doesn't match any sources, go to next iteration
+        !         it doesn't match any sources, go to next iteration
         IF( EFLAG .OR. SKIPREC ) CYCLE
 
         !.......  Convert surrogate code to an integer

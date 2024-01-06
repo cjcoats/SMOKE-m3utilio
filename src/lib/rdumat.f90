@@ -13,7 +13,7 @@ SUBROUTINE RDUMAT( FNAME, NSRC, NMAT1, NMAT2, NU, IU, CU )
     !
     !  REVISION  HISTORY:
     !       Version ??/???? by ???
-    !       Version 11/2023 by CJC:  USE M3UTILIO, ".f90" source format, and 
+    !       Version 11/2023 by CJC:  USE M3UTILIO, ".f90" source format, and
     !       related changes
     !****************************************************************************/
     !

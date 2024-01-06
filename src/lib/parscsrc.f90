@@ -65,12 +65,12 @@ SUBROUTINE PARSCSRC( INSTRING, MAXN, STARTS, ENDS, OUTCOL, NARR, STRARRAY )
         IF( OUTCOL( I ) ) THEN
             J = J + 1
 
-    !......  Retrieve and left-justify contents of this part of string
+            !......  Retrieve and left-justify contents of this part of string
             L1 = STARTS( I )
             L2 = ENDS  ( I )
             BUFFER = ADJUSTL( INSTRING( L1:L2 ) )
 
-    !......  Convert missing entries to blanks
+            !......  Convert missing entries to blanks
             IF( BUFFER .EQ. EMCMISS3 ) BUFFER = ' '
 
             STRARRAY( J ) = BUFFER

@@ -121,7 +121,7 @@ SUBROUTINE RDEPROC( FDEV )
             CYCLE
         END IF
 
-    !.......  Skip any blank and comment lines
+        !.......  Skip any blank and comment lines
         IF( BLKORCMT( LINE ) ) THEN
             NTLINES = NTLINES - 1
             CYCLE
@@ -130,15 +130,15 @@ SUBROUTINE RDEPROC( FDEV )
         LINE = ADJUSTL( LINE )
         L1 = LEN_TRIM( LINE )
 
-    !.......  If previous line was continued, add this lines columns to number
-    !               from previous line; otherwise, count columns in just this line
+        !.......  If previous line was continued, add this lines columns to number
+        !               from previous line; otherwise, count columns in just this line
         IF( .NOT. NEWLINE ) THEN
             NCOLS = NCOLS + GETNLIST( L1, LINE )
         ELSE
             NCOLS = GETNLIST( L1, LINE )
         END IF
 
-    !.......  Check for continuation character in current line
+        !.......  Check for continuation character in current line
         IF( LINE( L1:L1 ) == CONTCHAR ) THEN
             NEWLINE = .FALSE.
             NTLINES = NTLINES - 1
@@ -305,7 +305,7 @@ SUBROUTINE RDEPROC( FDEV )
     END DO
 
     !.......  Create an index that references between the emission types and the
-    !           list of unique pollutants
+    !         list of unique pollutants
     DO I = 1, NIACT
 
         DO K = 1, NETYPE( I )

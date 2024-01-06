@@ -1,6 +1,6 @@
 
 SUBROUTINE SETSRCDY( NSRC, SDATE, TZONES, LDAYSAV, MFLAG,&
-&                     DAYBEGT, DAYENDT )
+                     DAYBEGT, DAYENDT )
 
     !***********************************************************************
     !  subroutine SETSRCDY body starts at line < >

@@ -439,6 +439,33 @@ Since SMOKE scripts always set environment variable `PROMPTFLAG` to
 script-style [*OPEN3*](https://cjcoats.github.io/ioapi/OPEN3.html) and
 [*GETEFILE*](https://cjcoats.github.io/ioapi/GETEFILE.html)
 
+I/O API functions
+[`STR2INT,STR2REAL,STR2DBLE`](https://cjcoats.github.io/ioapi/STR2S.html)
+were originally developed for use in SMOKE (starting with the SMOKE
+prototpe version 0.2 (1993), where they are used to read
+`INTEGER,REAL,REAL*8` numbers from character strings with error
+checking, returning `IMISS3` or `BADVAL3` in case of errors.  As such,
+the  new-fangled SMOKE `CHKINT` and `CHKREAL` are superfluous; such
+sequences
+as 
+<pre>
+    IF( .NOT. CHKINT( SEGMENT( 2 ) ) ... ) THEN
+        ...
+    ELSE
+        IMON = STR2INT( SEGMENT( 2 ) )
+        ...
+    END IF
+</pre>
+are more complicated **and much more expensive** than
+<pre>
+    IMON = STR2INT( SEGMENT( 2 ) )
+    IF( IMON .EQ. IMISS3 ) THEN
+        ...
+    END IF
+</pre>
+The original coding should be preferred.
+
+
 
 ### NOTES  (*btw, GitHub has a Markdown-formatting bug that shows up here*)
 

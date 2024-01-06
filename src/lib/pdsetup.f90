@@ -1,7 +1,6 @@
 
 SUBROUTINE PDSETUP( INFILE, ESDATE, ESTIME, EEDATE, EETIME,     &
-        TZONE, NIPPA, EANAM, NPOA, NENTRY,        &
-        EFLAG, PNAME, PDESC )
+        TZONE, NIPPA, EANAM, NPOA, NENTRY, EFLAG, PNAME, PDESC )
 
     !***********************************************************************
     !  subroutine body starts at line

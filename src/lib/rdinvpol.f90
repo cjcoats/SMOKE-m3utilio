@@ -1,6 +1,5 @@
 
-SUBROUTINE RDINVPOL( FILNAM, NCNT, VCNT, VNAMES, VTYPES, SRCID,&
-&                     POLDAT, EFLAG )
+SUBROUTINE RDINVPOL( FILNAM, NCNT, VCNT, VNAMES, VTYPES, SRCID, POLDAT, EFLAG )
 
     !***********************************************************************
     !  subroutine body starts at line 82

@@ -16,7 +16,7 @@ INTEGER FUNCTION RDTPROF( FDEV, PROFTYPE, UFLAG )
     !
     !  REVISION  HISTORY:
     !       Copied from RDTPROF.F version 1.3 by M Houyoux 1/99
-    !       Version 11/2023 by CJC:  USE M3UTILIO, ".f90" source format, and 
+    !       Version 11/2023 by CJC:  USE M3UTILIO, ".f90" source format, and
     !       related changes
     !***********************************************************************
     !
@@ -40,49 +40,49 @@ INTEGER FUNCTION RDTPROF( FDEV, PROFTYPE, UFLAG )
     !****************************************************************************
     USE M3UTILIO
 
-    !.........  MODULES for public variables
-    !.........  For temporal profiles
+    !.....  MODULES for public variables
+    !.....  For temporal profiles
     USE MODTMPRL, ONLY: HRLFAC, WEKFAC, MONFAC, MONFAC_ORG, &
                         HRLREF, WEKREF, MONREF, METPROFLAG
 
     IMPLICIT NONE
 
-    !...........   INCLUDES:
+    !.....   INCLUDES:
 
     INCLUDE 'EMCNST3.h90'       !  emissions constant parameters
 
-    !.........  SUBROUTINE ARGUMENTS
+    !.....  SUBROUTINE ARGUMENTS
     INTEGER     , INTENT (IN) :: FDEV         ! unit number for profiles file
     CHARACTER(*), INTENT (IN) :: PROFTYPE     ! 'MONTHLY', 'WEEKLY', etc.
     LOGICAL     , INTENT (IN) :: UFLAG        ! true: use uniform profiles
 
-    !..........  EXTERNAL FUNCTIONS:
+    !......  EXTERNAL FUNCTIONS:
 
     LOGICAL, EXTERNAL :: BLKORCMT
 
-    !.........  Local parameters
+    !.....  Local parameters
     INTEGER, PARAMETER :: NDTYPE = 9          ! no. diurnal profile types
     CHARACTER(16), PARAMETER :: PROGNAME = 'RDTPROF'     ! program name
     CHARACTER( 9), PARAMETER :: DIURTYPE( NDTYPE ) =                &
                      (/ 'WEEKDAY  ', 'WEEKEND  ', 'MONDAY   ',      &
-                         'TUESDAY  ', 'WEDNESDAY', 'THURSDAY ',     &
-                         'FRIDAY   ', 'SATURDAY ', 'SUNDAY   '   /)
+                        'TUESDAY  ', 'WEDNESDAY', 'THURSDAY ',      &
+                        'FRIDAY   ', 'SATURDAY ', 'SUNDAY   '   /)
 
-    !.........  Unsorted temporal profiles
+    !.....  Unsorted temporal profiles
     INTEGER, ALLOCATABLE :: CODEA( : )        !  list of profile codes
     INTEGER, ALLOCATABLE :: INDXA( : )        !  list of subscripts
     INTEGER, ALLOCATABLE :: WT   ( : )        !  weight factors
 
     REAL   , ALLOCATABLE :: PFACA( :,: )      !  returned table of factors
 
-    !.........  Local, sorted temporal profile codes
+    !.....  Local, sorted temporal profile codes
     INTEGER, ALLOCATABLE :: TMPREF( : )
 
-    !...........   Local arrays
+    !.....   Local arrays
     INTEGER         DNPROF( NDTYPE )      ! no. diurnal profiles of each type
     INTEGER         DNSKIP( NDTYPE )      ! no. lines to skip in input file
 
-    !...........   SCRATCH LOCAL VARIABLES and their descriptions:
+    !.....   SCRATCH LOCAL VARIABLES and their descriptions:
 
     INTEGER         I, J, K, L, N        !  counters and indices
 
@@ -100,42 +100,42 @@ INTEGER FUNCTION RDTPROF( FDEV, PROFTYPE, UFLAG )
     !***********************************************************************
     !   begin body of subroutine  RDTPROF
 
-    !.........  Initialize counts for each call of  function
+    !.....  Initialize counts for each call of  function
     NPROF = 0
     NSKIP = 0
 
-    !.........  If using uniform profiles...
+    !.....  If using uniform profiles...
     IF( UFLAG ) THEN
 
         NPROF = 1
 
-        !.........  Otherwise, if not overriding with uniform profiles...
+    !.....  Otherwise, if not overriding with uniform profiles...
     ELSE
 
-        !.............  Determine the number of entries for the requested profile type
-        !.............  For monthly and weekly, send the requested type name directly...
+        !.....  Determine the number of entries for the requested profile type
+        !.....  For monthly and weekly, send the requested type name directly...
         IF( PROFTYPE .EQ. 'MONTHLY' .OR.&
             PROFTYPE .EQ. 'WEEKLY'       ) THEN
 
             CALL COUNT_TPROF( PROFTYPE, NSKIP, NPROF )
 
-            !.............  For diurnal, check for all profile types, and ensure that
-            !               each type has the same number of profiles
+            !.....  For diurnal, check for all profile types, and ensure that
+            !       each type has the same number of profiles
         ELSE
 
-            !.................  Initialize count of diurnal profiles of each type
+            !.....  Initialize count of diurnal profiles of each type
             DNPROF = 0               !  array
 
-            !.................  Search for the nine different possible profiles
+            !.....  Search for the nine different possible profiles
             DO I = 1, 9
 
                 CALL COUNT_TPROF( DIURTYPE( I ), DNSKIP( I ), DNPROF( I ) )
 
-                !.....................  When profiles of current type are found...
+                !.....  When profiles of current type are found...
                 IF( DNPROF( I ) .GT. 0 ) THEN
 
-                    !.........................  Ensure that this total is consistent with all other
-                    !                           diurnal temporal profiles
+                    !.....  Ensure that this total is consistent with all other
+                    !       diurnal temporal profiles
                     IF( NPROF .GT. 0  .AND.             &
                         NPROF .NE. DNPROF( I ) ) THEN
 
@@ -147,13 +147,13 @@ INTEGER FUNCTION RDTPROF( FDEV, PROFTYPE, UFLAG )
                            '" packet has', DNPROF( I )
                         CALL M3MSG2( MESG )
 
-                    !.........................  Otherwise, initialize number of diurnal profiles
+                    !.....  Otherwise, initialize number of diurnal profiles
                     ELSE
                         NPROF = DNPROF( I )
 
                     END IF
 
-                    !.........................  Message about profiles being used
+                    !.....  Message about profiles being used
                     IF( DNPROF( I ) .GT. 0 ) THEN
 
                         MESG = 'NOTE: Storing '// TRIM( DIURTYPE( I ) ) // ' temporal profiles'
@@ -165,10 +165,9 @@ INTEGER FUNCTION RDTPROF( FDEV, PROFTYPE, UFLAG )
 
             END DO
 
-            !.................  Ensure that appropriate diurnal temporal profiles are
-            !                   available
-            !.................  If weekday diurnal is not provided and monday-friday is not
-            !                   either, then error.
+            !.....  Ensure that appropriate diurnal temporal profiles are available
+            !.....  If weekday diurnal is not provided and monday-friday is not
+            !       either, then error.
             IF( DNPROF( 1 ) .EQ. 0 .AND.    &
               ( DNPROF( 3 ) .EQ. 0 .OR.     &
                 DNPROF( 4 ) .EQ. 0 .OR.     &
@@ -185,8 +184,8 @@ INTEGER FUNCTION RDTPROF( FDEV, PROFTYPE, UFLAG )
 
             END IF
 
-            !.................  If weekend diurnal and weekday diurnal are not provided,
-            !                   and saturday or sunday are not available, then error
+            !.....  If weekend diurnal and weekday diurnal are not provided,
+            !       and saturday or sunday are not available, then error
             IF( DNPROF( 1 ) .EQ. 0 .AND.    &
                 DNPROF( 2 ) .EQ. 0 .AND.    &
               ( DNPROF( 8 ) .EQ. 0 .OR.     &
@@ -210,8 +209,8 @@ INTEGER FUNCTION RDTPROF( FDEV, PROFTYPE, UFLAG )
 
     END IF       !  End if uniform profiles or not
 
-    !.........  Allocate memory for sorted arrays, depending on profile type.
-    !.........  Initialize factors to 1.0
+    !.....  Allocate memory for sorted arrays, depending on profile type.
+    !.....  Initialize factors to 1.0
     SELECT CASE( PROFTYPE )
 
       CASE( 'DIURNAL' )
@@ -249,8 +248,8 @@ INTEGER FUNCTION RDTPROF( FDEV, PROFTYPE, UFLAG )
 
     END SELECT
 
-    !.........  Check for profiles. Note that the arrays should have still been
-    !           allocated with zero dimension.
+    !.....  Check for profiles. Note that the arrays should have still been
+    !       allocated with zero dimension.
     IF( NPROF .EQ. 0 ) THEN
 
         MESG = 'WARNING: No temporal profiles of type "' // &
@@ -262,14 +261,14 @@ INTEGER FUNCTION RDTPROF( FDEV, PROFTYPE, UFLAG )
 
     END IF
 
-    !.........  Allocate memory for unsorted arrays
+    !.....  Allocate memory for unsorted arrays
     ALLOCATE( INDXA( NPROF ),       &
               CODEA( NPROF ),       &
               WT( NFAC + 1 ),       &
               PFACA( NFAC + 1, NPROF ), STAT=IOS )
     CALL CHECKMEM( IOS, 'PFACA', PROGNAME )
 
-    !.........  If using uniform profiles, set these
+    !.....  If using uniform profiles, set these
     IF( UFLAG ) THEN
 
         CODEA( 1 ) = 1
@@ -277,7 +276,7 @@ INTEGER FUNCTION RDTPROF( FDEV, PROFTYPE, UFLAG )
         PFACA( 1:NFAC,1 ) = 1.
         PFACA( NFAC+1,1 ) = REAL( NFAC )
 
-        !.............  Store as sorted profiles, depending on profile type
+        !.....  Store as sorted profiles, depending on profile type
         SELECT CASE( PROFTYPE )
 
           CASE( 'DIURNAL' )
@@ -297,15 +296,15 @@ INTEGER FUNCTION RDTPROF( FDEV, PROFTYPE, UFLAG )
 
         END SELECT
 
-        !.........  If not using uniform profiles, read and store profiles
+        !.....  If not using uniform profiles, read and store profiles
     ELSE
 
-        !.............  Depending on profile type....
+        !.....  Depending on profile type....
         SELECT CASE( PROFTYPE )
 
           CASE( 'DIURNAL' )
 
-            !.................  Weekday diurnal
+            !.....  Weekday diurnal
             IF( DNPROF( 1 ) .GT. 0 ) THEN
 
                 CALL READ_TPROF ( DNSKIP( 1 ), NPROF )
@@ -321,7 +320,7 @@ INTEGER FUNCTION RDTPROF( FDEV, PROFTYPE, UFLAG )
 
             END IF
 
-            !.................  Weekend diurnal. Read, store, and make sure consistent with
+            !.....  Weekend diurnal. Read, store, and make sure consistent with
             !                   previously read profile codes.
             IF( DNPROF( 2 ) .GT. 0 ) THEN
 
@@ -339,7 +338,7 @@ INTEGER FUNCTION RDTPROF( FDEV, PROFTYPE, UFLAG )
 
             END IF
 
-            !.................  Each day of the week diurnal
+            !.....  Each day of the week diurnal
             DO I = 3, 9
 
                 IF( DNPROF( I ) .GT. 0 ) THEN
@@ -359,12 +358,12 @@ INTEGER FUNCTION RDTPROF( FDEV, PROFTYPE, UFLAG )
 
             END DO
 
-        !............  Weekly profiles
+        !......  Weekly profiles
           CASE( 'WEEKLY' )
             CALL READ_TPROF ( NSKIP, NPROF )
             CALL STORE_TPROF( NPROF, NFAC, WEKREF, WEKFAC )
 
-        !............  Monthly profiles
+        !......  Monthly profiles
           CASE( 'MONTHLY' )
 
             CALL READ_TPROF ( NSKIP, NPROF )
@@ -380,10 +379,10 @@ INTEGER FUNCTION RDTPROF( FDEV, PROFTYPE, UFLAG )
     END IF      ! End of uniform profiles or not
 
 
-    !.........  Deallocate unsorted arrays
+    !.....  Deallocate unsorted arrays
     DEALLOCATE( INDXA, CODEA, WT, PFACA )
 
-    !.........  Deallocate other local memory, if needed
+    !.....  Deallocate other local memory, if needed
     IF( ALLOCATED( TMPREF ) ) DEALLOCATE( TMPREF )
 
     RDTPROF = NPROF
@@ -392,7 +391,7 @@ INTEGER FUNCTION RDTPROF( FDEV, PROFTYPE, UFLAG )
 
     !******************  FORMAT  STATEMENTS   ******************************
 
-    !...........   Internal buffering formats............ 94xxx
+    !.....   Internal buffering formats...... 94xxx
 
 94010 FORMAT( 10 ( A, :, I8, :, 1X ) )
 
@@ -400,17 +399,17 @@ INTEGER FUNCTION RDTPROF( FDEV, PROFTYPE, UFLAG )
 
 CONTAINS
 
-        !.............  This internal subprogram counts the number of temporal
+        !.....  This internal subprogram counts the number of temporal
         !               profiles of a certain type
 
     SUBROUTINE COUNT_TPROF( PTYPE, NSKIP, NPROF )
 
-        !.............  Subroutine arguments
+        !.....  Subroutine arguments
         CHARACTER(*), INTENT (IN) :: PTYPE            ! profile type
         INTEGER     , INTENT(OUT) :: NSKIP            ! number of lines to skip
         INTEGER     , INTENT(OUT) :: NPROF            ! number of profiles
 
-        !.............  Local variables
+        !.....  Local variables
         INTEGER  I, J, K, L
 
         INTEGER         IREC                    ! record counter
@@ -423,25 +422,25 @@ CONTAINS
 
         !----------------------------------------------------------------------
 
-        !.............  Initialize output values
+        !.....  Initialize output values
         NSKIP = 0
         NPROF = 0
 
-        !.............  Ensure that profile type name has not yet been found
+        !.....  Ensure that profile type name has not yet been found
         FOUND = .FALSE.
 
         I    = 0
         IREC = 0
         L    = LEN_TRIM( PTYPE )
-        !.............  Head of counting read loop
+        !.....  Head of counting read loop
         DO
 
-            !.................  Read line of profile.  Use END in case the profile type
-            !                   requested is not in the file - such as weekend
+            !.....  Read line of profile.  Use END in case the profile type
+            !       requested is not in the file - such as weekend
             READ( FDEV, 93000, END=111, IOSTAT=IOS ) LINE
             IREC = IREC + 1
 
-            !.................  Check read error status
+            !.....  Check read error status
             IF( IOS .GT. 0 ) THEN
                 EFLAG = .TRUE.
                 WRITE( MESG,94010 ) 'I/O error', IOS,&
@@ -453,14 +452,13 @@ CONTAINS
 
             IF( BLKORCMT( LINE ) ) CYCLE
 
-            !.................  Scan line for profile type (e.g., /MONTHLY/)
+            !.....  Scan line for profile type (e.g., /MONTHLY/)
             IF( .NOT. FOUND ) THEN
                 J = INDEX( LINE, PTYPE( 1:L ) )
                 IF( J .GT. 0 ) FOUND = .TRUE.
                 NSKIP = IREC
 
-            !.................  Count records of input profile type, and look of end of
-            !                   section
+            !.....  Count records of input profile type, and look of end of section
             ELSE
 
                 K = INDEX( LINE, '/END/' )
@@ -480,11 +478,11 @@ CONTAINS
 
         !-------------------    FORMAT  STATEMENTS   ---------------------------
 
-        !...........   Formatted file I/O formats............ 93xxx
+        !.....   Formatted file I/O formats...... 93xxx
 
 93000   FORMAT( A )
 
-        !...........   Internal buffering formats............ 94xxx
+        !.....   Internal buffering formats...... 94xxx
 
 94010   FORMAT( 10 ( A, :, I8, :, 1X ) )
 
@@ -493,16 +491,16 @@ CONTAINS
     !----------------------------------------------------------------------
     !----------------------------------------------------------------------
 
-    !.............  This internal subprogram reads the temporal profiles of
+    !.....  This internal subprogram reads the temporal profiles of
     !               a given type, and stores in unsorted order
 
     SUBROUTINE READ_TPROF( NSKIP, NPROF )
 
-        !.............  Subroutine arguments
+        !.....  Subroutine arguments
         INTEGER, INTENT (IN) :: NSKIP           ! number of lines before profiles
         INTEGER, INTENT (IN) :: NPROF           ! number of profiles expected
 
-        !.............  Local variables
+        !.....  Local variables
         INTEGER    I, J, K
 
         INTEGER         IREC                ! record counter
@@ -516,19 +514,19 @@ CONTAINS
 
         !----------------------------------------------------------------------
 
-        !.............  Initialize profiles and factors
+        !.....  Initialize profiles and factors
         CODEA = 0           ! array
         INDXA = 0           ! array
         PFACA = 0.          ! array
 
-        !.............  Skip irrelevant lines in input profiles file
+        !.....  Skip irrelevant lines in input profiles file
         CALL SKIPL( FDEV, NSKIP )
 
-        !.............  Read unsorted entries of the requested profile type
+        !.....  Read unsorted entries of the requested profile type
         IREC = NSKIP
         DO I = 1, NPROF
 
-            !.................  Loop until non-blank or comment line
+            !.....  Loop until non-blank or comment line
             DO
                 READ( FDEV, 93000, IOSTAT=IOS ) LINE
                 IREC = IREC + 1
@@ -547,7 +545,7 @@ CONTAINS
             CODEA( I ) = STR2INT( LINE( 1:5 ) )
             INDXA( I ) = I
 
-            !.................  Check for bad cross-reference code
+            !.....  Check for bad cross-reference code
             IF( .NOT. METPROFLAG .AND. CODEA( I ) == 99999 ) THEN
                 WRITE( MESG, 94010 )&
                     'ERROR: CAN NOT USE temporal profile code ',&
@@ -557,7 +555,7 @@ CONTAINS
                 CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
             END IF
 
-            !.................  Convert columns from ASCII to integer in groups of 4
+            !.....  Convert columns from ASCII to integer in groups of 4
             J    = 6
             K    = 9                     !  j:k spans 4 characters
             ISUM = 0
@@ -567,7 +565,7 @@ CONTAINS
                 K       = K + 4
             END DO
 
-            !.................  Final field is 1-character wider than others
+            !.....  Final field is 1-character wider than others
             WT( NFAC + 1 ) = STR2INT( LINE( J:K+1 ) )
 
             IF ( WT( NFAC+1 ) .NE. 0 ) THEN
@@ -585,11 +583,11 @@ CONTAINS
 
         !-------------------    FORMAT  STATEMENTS   ---------------------------
 
-        !...........   Formatted file I/O formats............ 93xxx
+        !.....   Formatted file I/O formats...... 93xxx
 
 93000   FORMAT( A )
 
-        !...........   Internal buffering formats............ 94xxx
+        !.....   Internal buffering formats...... 94xxx
 
 94010   FORMAT( 10 ( A, :, I8, :, 1X ) )
 
@@ -598,25 +596,25 @@ CONTAINS
     !----------------------------------------------------------------------
     !----------------------------------------------------------------------
 
-    !.............  This internal subprogram writes a warning message for
-    !               duplicate entries in the cross-reference file.
+    !.....  This internal subprogram writes a warning message for
+    !       duplicate entries in the cross-reference file.
     SUBROUTINE STORE_TPROF( N, M, CODES, PFACS )
 
-        !.............  Subroutine arguments
+        !.....  Subroutine arguments
         INTEGER, INTENT (IN) :: N                     ! number of profiles
         INTEGER, INTENT (IN) :: M                     ! number of facs per profile
         INTEGER, INTENT(OUT) :: CODES( N )            ! profile codes
         REAL   , INTENT(OUT) :: PFACS( M, N )         ! profile factors
 
-        !.............  Local variables
+        !.....  Local variables
         INTEGER  I, J, K
 
         !----------------------------------------------------------------------
 
-        !.............  Sort requested profile type
+        !.....  Sort requested profile type
         CALL SORTI1( N, INDXA, CODEA )
 
-        !.............  Store in sorted order
+        !.....  Store in sorted order
         DO I = 1, N
 
             K = INDXA( I )
@@ -635,17 +633,17 @@ CONTAINS
     !----------------------------------------------------------------------
     !----------------------------------------------------------------------
 
-    !.............  This internal subprogram unsures that the temporal profile
-    !               codes are consistent
+    !.....  This internal subprogram unsures that the temporal profile
+    !       codes are consistent
     SUBROUTINE CHECK_PROFCODE( PTYPE, N, REFCODES, CODES )
 
-        !.............  Subroutine arguments
+        !.....  Subroutine arguments
         CHARACTER(*), INTENT (IN) :: PTYPE                 ! profile type
         INTEGER     , INTENT (IN) :: N                     ! number of profiles
         INTEGER     , INTENT (IN) :: REFCODES( N )         ! reference profile codes
         INTEGER     , INTENT (IN) :: CODES   ( N )         ! profile codes to check
 
-        !.............  Local variables
+        !.....  Local variables
         INTEGER  I
 
         CHARACTER(300) MESG

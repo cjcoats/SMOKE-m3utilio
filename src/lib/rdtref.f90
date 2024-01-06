@@ -17,7 +17,7 @@ SUBROUTINE RDTREF( FDEV, FFORMAT )
     !
     !  REVISION  HISTORY:
     !       Created 1/99 by M. Houyoux
-    !       Version 11/2023 by CJC:  USE M3UTILIO, ".f90" source format, and 
+    !       Version 11/2023 by CJC:  USE M3UTILIO, ".f90" source format, and
     !       related changes
     !****************************************************************************/
     !
@@ -175,9 +175,6 @@ SUBROUTINE RDTREF( FDEV, FFORMAT )
 
     !.......  Get the number of lines in the file
     NLINES = GETFLINE( FDEV, 'Temporal cross reference file' )
-
-    !.......  Initialize character strings
-    SEGMENT = ' '      ! array
 
     !.......  First pass through file.  Determine format and count the number
     !         of lines matching SCC list and pol/act list.  Do this so that

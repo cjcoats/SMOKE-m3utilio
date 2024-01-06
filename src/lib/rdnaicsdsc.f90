@@ -118,7 +118,7 @@ SUBROUTINE RDNAICSDSC( FDEV )
         CALL PADZERO( TNAICS )
 
         !.........  Find NAICSS in inventory list, and if it's in the inventory,
-        !               store the description.
+        !           store the description.
         J = FINDC( TNAICS, NINVNAICS, INVNAICS )
         IF ( J .GT. 0 ) THEN
             NAICSDESC( J ) = ADJUSTL( SEGMENT( 2 ) )
