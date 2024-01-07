@@ -20,7 +20,7 @@ SUBROUTINE WRRMAT( NSRC, NMSPC, FDEV, FILNAM, INDX, REPEM,&
     !****************************************************************************/
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !       System
     ! File: @(#)$Id$
     !
     ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
@@ -42,12 +42,12 @@ SUBROUTINE WRRMAT( NSRC, NMSPC, FDEV, FILNAM, INDX, REPEM,&
 
     IMPLICIT NONE
 
-    !.......   INCLUDES
+    !.....   INCLUDES
 
     INCLUDE 'EMCNST3.h90'       !  emissions constat parameters
     INCLUDE 'SETDECL.h90'       !  FileSetAPI variables and functions
 
-    !.......  Subroutine arguments and their descriptions:
+    !.....  Subroutine arguments and their descriptions:
     INTEGER     , INTENT (IN) :: NSRC               ! no. of source
     INTEGER     , INTENT (IN) :: NMSPC              ! no. model species
     INTEGER     , INTENT (IN) :: FDEV               ! supplement file unit no.
@@ -61,7 +61,7 @@ SUBROUTINE WRRMAT( NSRC, NMSPC, FDEV, FILNAM, INDX, REPEM,&
     CHARACTER(*), INTENT (IN) :: SPROF ( NSRC )     ! speciation profile IDs
     CHARACTER(*), INTENT (IN) :: VNAMES( NMSPC )     ! variable names for spcs
 
-    !.......   Other local variables
+    !.....   Other local variables
     INTEGER                 I, L, L2, S
 
     LOGICAL, SAVE :: FIRSTIME = .TRUE.      ! true: first time subroutine called
@@ -76,19 +76,19 @@ SUBROUTINE WRRMAT( NSRC, NMSPC, FDEV, FILNAM, INDX, REPEM,&
     !***********************************************************************
     !   begin body of program WRRMAT
 
-    !.......  The first time this routine is called, write out the supplement file
+    !.....  The first time this routine is called, write out the supplement file
     IF( FIRSTIME ) THEN
 
-        !.......  Generate format
+        !.....  Generate format
         WRITE( OUTFMT, 94020 ) SCCLEN3, SPNLEN3
 
-        !.......  Write out header
+        !.....  Write out header
         WRITE( FDEV, 93010 ) 3, TRIM( OUTFMT )
         WRITE( FDEV, 93000 ) 'SRCID   Source index'
         WRITE( FDEV, 93000 ) 'CSCC    Source category code '
         WRITE( FDEV, 93000 ) 'SPROF   Speciation profile number'
 
-        !.......  Write out records for the ASCII supplement file
+        !.....  Write out records for the ASCII supplement file
         DO S = 1, NSRC
             WRITE( FDEV, OUTFMT ) INDX( S ), CSCC( S ), SPROF( S )
         END DO
@@ -97,13 +97,13 @@ SUBROUTINE WRRMAT( NSRC, NMSPC, FDEV, FILNAM, INDX, REPEM,&
 
     END IF
 
-    !.......  Initialize message to use in case there is an error
+    !.....  Initialize message to use in case there is an error
 
     MESG = 'Problem writing to output file "' // TRIM( FILNAM )//'"'
 
     L = LEN_TRIM( MESG )
 
-    !.......  Write the I/O API variables for the non-speciation data
+    !.....  Write the I/O API variables for the non-speciation data
 
     IF( .NOT. WRITESET( FILNAM,'SRCID',ALLFILES, 0,0,INDX ) ) THEN
         MESG = MESG( 1:L ) // ' for variable "SRCID"'
@@ -125,7 +125,7 @@ SUBROUTINE WRRMAT( NSRC, NMSPC, FDEV, FILNAM, INDX, REPEM,&
         CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
     END IF
 
-    !.......  Write the I/O API variables for the speciation factors
+    !.....  Write the I/O API variables for the speciation factors
 
     DO I = 1, NMSPC
 
@@ -140,13 +140,13 @@ SUBROUTINE WRRMAT( NSRC, NMSPC, FDEV, FILNAM, INDX, REPEM,&
 
     !******************  FORMAT  STATEMENTS   ******************************
 
-    !.......   Formatted file I/O formats...... 93xxx
+    !.....   Formatted file I/O formats...... 93xxx
 
 93000 FORMAT( A )
 
 93010 FORMAT( I2, A )
 
-    !.......   Internal buffering formats...... 94xxx
+    !.....   Internal buffering formats...... 94xxx
 
 94010 FORMAT( 10( A, :, I8, :, 1X ) )
 

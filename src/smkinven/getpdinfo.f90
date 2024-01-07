@@ -49,9 +49,6 @@ SUBROUTINE GETPDINFO( FDEV, TZONE, INSTEP, OUTSTEP, TYPNAM,    &
     !.......  This module contains the information about the source category
     USE MODINFO, ONLY: NIPPA, NSPDAT, EANAM, NCOMP, VAR_FORMULA,  VNAME
 
-    !.......  This module contains data for day- and hour-specific data
-    USE MODDAYHR, ONLY: MXPDPT
-
     !.......  This module contains the lists of unique inventory information
     USE MODLISTS, ONLY: NUNIQCAS, UCASNKEP, UNIQCAS, UCASIDX, ITNAMA, SCASIDX
 
@@ -91,6 +88,8 @@ SUBROUTINE GETPDINFO( FDEV, TZONE, INSTEP, OUTSTEP, TYPNAM,    &
     !.......  Local arrays...
     INTEGER         EASTAT( NIPPA )       ! true: act/pol present in data
     INTEGER         SPSTAT( MXSPDAT )         ! true: special data variable used
+
+    INTEGER, ALLOCATABLE :: MXPDPT( : )         ! true: special data variable used
 
     !.......  Other local variables
     INTEGER         I, J, N, V, NV, IV, L, LL              ! counters and indices
@@ -154,14 +153,13 @@ SUBROUTINE GETPDINFO( FDEV, TZONE, INSTEP, OUTSTEP, TYPNAM,    &
     END IF
 
     !.......  Get the dates (in the output time zone) from the files,
-    !           flag the pollutants of interest, and flag the special variables
-    !           contained in the file.
+    !         flag the pollutants of interest, and flag the special variables
+    !         contained in the file.
     CALL RDLOOPPD( FDEV, TZONE, INSTEP, OUTSTEP, MXPDSRC, DFLAG,    &
                    FNAME, SDATE, STIME, NSTEPS, FILFMT,             &
                    EASTAT, SPSTAT )
 
-    !.......  Allocate memory and initialize for the maximum number of
-    !           records per time step
+    !.......  Initialize for the maximum number of records per time step
     ALLOCATE( MXPDPT( NSTEPS ), STAT=IOS )
     CALL CHECKMEM( IOS, 'MXPDPT', PROGNAME )
     MXPDPT = 0      ! array
@@ -170,7 +168,7 @@ SUBROUTINE GETPDINFO( FDEV, TZONE, INSTEP, OUTSTEP, TYPNAM,    &
     CALL M3MSG2( MESG )
 
     !.......  Get the maximum number of records per time step - i.e., populate
-    !           MXPDSRC
+    !         MXPDSRC
     CALL RDLOOPPD( FDEV, TZONE, INSTEP, OUTSTEP, MXPDSRC, DFLAG,    &
                    FNAME, SDATE, STIME, NSTEPS, FILFMT,             &
                    EASTAT, SPSTAT )
@@ -199,33 +197,29 @@ SUBROUTINE GETPDINFO( FDEV, TZONE, INSTEP, OUTSTEP, TYPNAM,    &
             EAIDX( N ) = V
             CIDX   = EASTAT( V )
             NPPCAS = UCASNKEP( CIDX )
-            IF( NPPCAS > 1 ) THEN
-                DO J = 2, NPPCAS
-                    NCIDX   = UCASIDX( CIDX ) + J - 1
-                    POLNAM = ITNAMA( SCASIDX( NCIDX ) )
-                    NV = INDEX1( POLNAM, NIPPA, EANAM )
-                    IF( INDEXINT1( NV, NIPPA, EAIDX ) < 1 .AND. NV > 0 ) THEN
-                        N = N + 1
-                        EAIDX( N ) = NV
-                    END IF
-                END DO
-            END IF
+            DO J = 2, NPPCAS
+                NCIDX   = UCASIDX( CIDX ) + J - 1
+                POLNAM = ITNAMA( SCASIDX( NCIDX ) )
+                NV = INDEX1( POLNAM, NIPPA, EANAM )
+                IF( INDEXINT1( NV, NIPPA, EAIDX ) < 1 .AND. NV > 0 ) THEN
+                    N = N + 1
+                    EAIDX( N ) = NV
+                END IF
+            END DO
         END IF
 
     END DO
 
     !......  Add new computed pollutants
-    IF( NCOMP > 0 ) THEN
-        DO I = 1, NCOMP
-            POLNAM = VNAME( I )
-            NV = INDEX1( POLNAM, NIPPA, EANAM )
-            IV = FIND1( NV, N, EAIDX )
-            IF( NV > 0 .AND. IV < 1 ) THEN        ! only add if it doesn't exit in PDAY
-                N = N + 1
-                EAIDX( N ) = NV
-            END IF
-        END DO
-    END IF
+    DO I = 1, NCOMP
+        POLNAM = VNAME( I )
+        NV = INDEX1( POLNAM, NIPPA, EANAM )
+        IV = FIND1( NV, N, EAIDX )
+        IF( NV > 0 .AND. IV < 1 ) THEN        ! only add if it doesn't exit in PDAY
+            N = N + 1
+            EAIDX( N ) = NV
+        END IF
+    END DO
 
     NPDVAR = N
 
@@ -258,7 +252,6 @@ SUBROUTINE GETPDINFO( FDEV, TZONE, INSTEP, OUTSTEP, TYPNAM,    &
 
     END IF
 
-    !.......  Deallocate global memory that is no longer needed
     DEALLOCATE( MXPDPT )
 
     RETURN

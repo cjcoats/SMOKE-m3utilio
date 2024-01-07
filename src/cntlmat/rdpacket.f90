@@ -19,7 +19,7 @@ SUBROUTINE RDPACKET( FDEV, PKTTYP, USEPOL, IREC, PKTINFO, CFLAG, EFLAG )
     !***********************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !       System
     ! File: @(#)$Id$
     !
     ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
@@ -38,17 +38,17 @@ SUBROUTINE RDPACKET( FDEV, PKTTYP, USEPOL, IREC, PKTINFO, CFLAG, EFLAG )
     !***************************************************************************
     USE M3UTILIO
 
-    !.......  MODULES for public variables
-    !.......  This module contains the information about the source category
+    !.....  MODULES for public variables
+    !.....  This module contains the information about the source category
     USE MODINFO, ONLY: NIPPA, EANAM
 
     IMPLICIT NONE
 
-    !.......   INCLUDES
+    !.....   INCLUDES
     INCLUDE 'EMCNST3.h90'       !  emissions constant parameters
     INCLUDE 'CPKTDAT.h90'       !  control packet contents
 
-    !.......   SUBROUTINE ARGUMENTS:
+    !.....   SUBROUTINE ARGUMENTS:
     INTEGER        , INTENT (IN) :: FDEV          ! in file unit number
     CHARACTER(*)   , INTENT (IN) :: PKTTYP        ! packet type
     LOGICAL     , INTENT(IN OUT) :: USEPOL( NIPPA )     ! true: use pollutant
@@ -57,17 +57,17 @@ SUBROUTINE RDPACKET( FDEV, PKTTYP, USEPOL, IREC, PKTINFO, CFLAG, EFLAG )
     LOGICAL        , INTENT(OUT) :: CFLAG         ! true: line is a comment
     LOGICAL        , INTENT(OUT) :: EFLAG         ! error flag
 
-    !.......   EXTERNAL FUNCTIONS:
+    !.....   EXTERNAL FUNCTIONS:
     LOGICAL, EXTERNAL :: BLKORCMT
 
-    !.......   Local parameters
+    !.....   Local parameters
     CHARACTER(16), PARAMETER :: PROGNAME = 'RDPACKET'     ! program name
     INTEGER      , PARAMETER :: MXSEG    = 17       ! number of potential line segments
 
-    !.......   Other arrays
+    !.....   Other arrays
     CHARACTER(20) SEGMENT( MXSEG )          ! Segments of parsed packet lines
 
-    !.......   Other local variables
+    !.....   Other local variables
     INTEGER         K              ! index
     INTEGER         LC, LN         ! line positions for using comments
     INTEGER         IOS            ! i/o error status
@@ -94,16 +94,16 @@ SUBROUTINE RDPACKET( FDEV, PKTTYP, USEPOL, IREC, PKTINFO, CFLAG, EFLAG )
 
     END IF
 
-    !.......  Check for comment and blank lines
+    !.....  Check for comment and blank lines
     CFLAG = .FALSE.
     IF( BLKORCMT( LINE ) ) THEN
         CFLAG = .TRUE.
         RETURN
     END IF
 
-    !.......  Parse the line of data into segments based on the rules
-    !           for "list-formatted" in fortran, but not requiring
-    !           quotes around the text strings
+    !.....  Parse the line of data into segments based on the rules
+    !       for "list-formatted" in fortran, but not requiring
+    !       quotes around the text strings
     CALL PARSLINE( LINE, MXSEG, SEGMENT )
 
     LC = INDEX( LINE, '!' )
@@ -113,7 +113,7 @@ SUBROUTINE RDPACKET( FDEV, PKTTYP, USEPOL, IREC, PKTINFO, CFLAG, EFLAG )
     PKTINFO%COMMENT = " "
     IF ( LC .GT. 0 ) PKTINFO%COMMENT = LINE( LC+1:LN )
 
-    !.......  Process the line of data, depending on packet type
+    !.....  Process the line of data, depending on packet type
     SELECT CASE( PKTTYP )
 
       CASE( 'CTG' )
@@ -132,8 +132,8 @@ SUBROUTINE RDPACKET( FDEV, PKTTYP, USEPOL, IREC, PKTINFO, CFLAG, EFLAG )
         PKTINFO%CHAR4=           ' '
         PKTINFO%CHAR5=           ' '
 
-        !.......  Check to see if cutoff value is missing, and give error
-        !           if it is.
+        !.....  Check to see if cutoff value is missing, and give error
+        !       if it is.
         IF ( PKTINFO%FAC1 .LT. 0 ) THEN
             EFLAG = .TRUE.
             WRITE( MESG, 94020 ) 'ERROR: CUTOFF value missing '//   &
@@ -141,8 +141,8 @@ SUBROUTINE RDPACKET( FDEV, PKTTYP, USEPOL, IREC, PKTINFO, CFLAG, EFLAG )
             CALL M3MSG2( MESG )
         END IF
 
-        !.......  Check to see if last column is blank. If blank, then
-        !           set PKTINFO%FAC4 = -9 and issue warning.
+        !.....  Check to see if last column is blank. If blank, then
+        !       set PKTINFO%FAC4 = -9 and issue warning.
         IF ( SEGMENT( 7 ) .EQ. ' ' ) THEN
             PKTINFO%FAC4 = -9
             WRITE( MESG, 94020 ) 'WARNING: RACT value missing from'//   &
@@ -187,8 +187,8 @@ SUBROUTINE RDPACKET( FDEV, PKTTYP, USEPOL, IREC, PKTINFO, CFLAG, EFLAG )
         PKTINFO%CHAR5=           SEGMENT( 13 )
         PKTINFO%CMCT =           ' '
 
-        !.......  Check to see if both CAP and REPLACE are missing. If so, issue
-        !           a warning.
+        !.....  Check to see if both CAP and REPLACE are missing. If so, issue
+        !       a warning.
         IF ( PKTINFO%FAC2 .LT. 0 .AND. PKTINFO%FAC3 .LT. 0 ) THEN
             EFLAG = .TRUE.
             WRITE( MESG, 94020 ) 'ERROR: Neither CAP or REPLACE '//&
@@ -250,7 +250,7 @@ SUBROUTINE RDPACKET( FDEV, PKTTYP, USEPOL, IREC, PKTINFO, CFLAG, EFLAG )
 
     END SELECT
 
-    !.......  Set status of pollutants for current packet
+    !.....  Set status of pollutants for current packet
     K = INDEX1( PKTINFO%CPOL, NIPPA, EANAM )
     IF( K .GT. 0 ) THEN
         USEPOL( K ) = .TRUE.
@@ -263,17 +263,17 @@ SUBROUTINE RDPACKET( FDEV, PKTTYP, USEPOL, IREC, PKTINFO, CFLAG, EFLAG )
 
     RETURN
 
-    !.......  End of file reached unexpectedly
+    !.....  End of file reached unexpectedly
 999 MESG = 'End of control packets file reached unexpectedly'
     CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 
     !******************  FORMAT  STATEMENTS   ******************************
 
-    !.......   Formatted file I/O formats...... 93xxx
+    !.....   Formatted file I/O formats...... 93xxx
 
 93000 FORMAT( A )
 
-    !.......   Internal buffering formats...... 94xxx
+    !.....   Internal buffering formats...... 94xxx
 
 94010 FORMAT( 10( A, :, I8, :, 1X ) )
 94020 FORMAT( A, I8 )

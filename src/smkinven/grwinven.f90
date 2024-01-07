@@ -357,8 +357,8 @@ PROGRAM GRWINVEN
         NCPVARS( I ) = NVARSET
 
         !.......  For projection and control matrices, interpret variable
-        !               names and compare to pollutant list. Determine whether
-        !               matrix applies to the inventory or not.
+        !         names and compare to pollutant list. Determine whether
+        !         matrix applies to the inventory or not.
         N = 0
         DO V = 1, NVARSET
 
@@ -377,8 +377,7 @@ PROGRAM GRWINVEN
 
                 WRITE( MESG,94010 ) 'WARNING: variable "'//TRIM( VARBUF ) // &
                       '" in matrix', I,    &
-                      CRLF() // BLANK10 // 'does not apply to ' //    &
-                      'any inventory pollutants.'
+                      CRLF() // BLANK10 // 'does not apply to any inventory pollutants.'
                 CALL M3MSG2( MESG )
 
             END IF
@@ -387,16 +386,15 @@ PROGRAM GRWINVEN
 
         !......  Give error if a matrix doesn't match with any pollutants
         IF( N .EQ. NVARSET ) THEN
-            WRITE( MESG,94010 ) 'No variables in matrix',    &
-                                I, 'apply to the inventory'
+            WRITE( MESG,94010 ) 'No variables in matrix', I, 'apply to the inventory'
             CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
         END IF
 
         !.......  When a projection matrix is encountered...
         IF( CTYPEA( I ) .EQ. CTYPPROJ ) THEN
 
-            !.......  Check if there is more than one projection matrix (this
-            !                   is not allowed)
+            !.......  Check if there is more than one projection matrix 
+            !         (this is not allowed)
             IF( PFLAG ) THEN
 
                 EFLAG = .TRUE.
@@ -441,7 +439,7 @@ PROGRAM GRWINVEN
 
     !.......  Give warning if no control or projection matrices entered
     !.......  This is valid if the program is only being used for format
-    !           conversion to IDA format
+    !         conversion to IDA format
     ELSE IF( NCMAT .EQ. 0 ) THEN
         MESG = 'WARNING: No control or projection matrices. '
         CALL M3MSG2( MESG )
@@ -449,8 +447,8 @@ PROGRAM GRWINVEN
     END IF
 
     !.......  Sort control matrices in order of precedence, and sort sorted list.
-    !           The sort must make sure that when two matrices of the same type
-    !           are present, the input order is maintained.
+    !         The sort must make sure that when two matrices of the same type
+    !         are present, the input order is maintained.
     CALL SORTI2( NCMAT, CINDXA, CTYPEA, CCNTRA )
 
     DO I = 1, NCMAT
@@ -460,7 +458,7 @@ PROGRAM GRWINVEN
     END DO
 
     !.......  Allocate memory for control factors that apply to all pollutants
-    !           and/or activities
+    !         and/or activities
 
     ALLOCATE( CFACALL( NSRC, NCALL ),    &
                  CFAC( NSRC ),    &
@@ -473,9 +471,9 @@ PROGRAM GRWINVEN
     RPEN = 0.
 
     !.......  Read in control matrix variables that are "all".  First, store
-    !           position of data in storage array, then read.
+    !         position of data in storage array, then read.
     !.......  NOTE - lowercase variable names are used to permit pollutants
-    !           named "ALL" and "PFAC"
+    !         named "ALL" and "PFAC"
     N = 0
     DO I = 1, NCMAT
 
@@ -684,7 +682,7 @@ PROGRAM GRWINVEN
             K = INDEX1( VARBUF, NCPVARS( J ), CPVNAMS( 1,J ) )
 
             !.......  Read in pollutant-specific array for multiplicative
-            !                   and projection matrices
+            !         and projection matrices
 
             IF( K .GT. 0 ) THEN
 

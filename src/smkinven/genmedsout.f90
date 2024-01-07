@@ -79,7 +79,7 @@ SUBROUTINE GENMEDSOUT( FDEV, FNAME, TZONE, TYPNAM )
     LOGICAL       :: DFLAG    = .FALSE.      ! true: day-specific
     LOGICAL       :: EFLAG    = .FALSE.      ! true: error found
 
-    CHARACTER(300) :: MESG = ' '             ! message buffer
+    CHARACTER(300) :: MESG                   ! message buffer
     CHARACTER(200)   NAMTMP                  ! file name buffer
 
     CHARACTER(16), PARAMETER :: PROGNAME = 'GENMEDSOUT'     !  program name
@@ -89,7 +89,7 @@ SUBROUTINE GENMEDSOUT( FDEV, FNAME, TZONE, TYPNAM )
 
     !.......  Allocate memory for daily or hourly output arrays
     ALLOCATE( LPDSRC( NSRC ),           &
-              PDEMOUT( NSRC,NIPPA ),    &
+             PDEMOUT( NSRC,NIPPA ),     &
               IDXSRC( NSRC,1 ), STAT=IOS )
     CALL CHECKMEM( IOS, 'IDXSRC', PROGNAME )
     LPDSRC  = .FALSE.

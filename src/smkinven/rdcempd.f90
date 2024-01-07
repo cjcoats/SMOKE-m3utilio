@@ -628,7 +628,7 @@ SUBROUTINE RDCEMPD( FDEV, TZONE, TSTEP, MXPDSRC, GETSIZES,      &
 
             !.......  Loop through sources that match this ORIS/boiler
             !.......  Store hourly emissions using weights for CEM pollutants;
-            !                   otherwise calculate hourly emissions using annual CEM factor
+            !         otherwise calculate hourly emissions using annual CEM factor
             DO I = 0, NS - 1
                 S = OBSRCNM( S1 + I )
 
@@ -725,32 +725,31 @@ SUBROUTINE RDCEMPD( FDEV, TZONE, TSTEP, MXPDSRC, GETSIZES,      &
         .NOT. GETCOUNT .AND.    &
         NCALL == MXCALL      ) THEN
 
+        DO PTR = 1, NSTEPS
         DO MASOBPOS = 1, NOBRLIST
-            DO PTR = 1, NSTEPS
-                IF( .NOT. MASLIST( MASOBPOS,PTR ) ) THEN
-                    INVOBPOS = FINDC( OBRLIST( MASOBPOS ),    &
-                                      NORISBLR, ORISBLR )
-                    IF( INVOBPOS <= 0 ) CYCLE
 
-                    NS = OBSRCNT( INVOBPOS )
-                    S1 = OBSRCBG( INVOBPOS )
+            IF( .NOT. MASLIST( MASOBPOS,PTR ) ) THEN
+                INVOBPOS = FINDC( OBRLIST( MASOBPOS ), NORISBLR, ORISBLR )
+                IF( INVOBPOS <= 0 ) CYCLE
 
-                    DO I = 0, NS - 1
-                        S = OBSRCNM( S1 + I )
+                NS = OBSRCNT( INVOBPOS )
+                S1 = OBSRCBG( INVOBPOS )
 
-                        DO V = 1, NIPPA
-                            EMISVAL = 0.
-                            CALL STORE_SOURCE_DATA( S, PTR,    &
-                                                    V, EMISVAL )
-                        END DO
+                DO I = 0, NS - 1
+                    S = OBSRCNM( S1 + I )
 
-                        FLOWVAL = 0.
-                        CALL STORE_SOURCE_DATA( S, PTR, FLOWPOS,    &
-                                                FLOWVAL )
-
+                    DO V = 1, NIPPA
+                        EMISVAL = 0.
+                        CALL STORE_SOURCE_DATA( S, PTR, V, EMISVAL )
                     END DO
-                END IF
-            END DO
+
+                    FLOWVAL = 0.
+                    CALL STORE_SOURCE_DATA( S, PTR, FLOWPOS, FLOWVAL )
+
+                END DO
+            END IF
+
+        END DO
         END DO
 
     END IF

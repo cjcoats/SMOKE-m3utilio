@@ -115,16 +115,16 @@ SUBROUTINE RDDATAORLFR( LINE, READDATA, READPOL, NDATPERLN, &
         HDRFLAG = .FALSE.
     END IF
 
-    !.......  Give error if #DATA line has not defined the pollutants that
-    !           are contained in the day-specific data file. NOTE: This code
-    !           will not be reached until after the last header line)
+    !.....  Give error if #DATA line has not defined the pollutants that
+    !       are contained in the day-specific data file. NOTE: This code
+    !       will not be reached until after the last header line)
     IF ( NDAT < 0 ) THEN
         WRITE( MESG, 94010 ) 'First data line reached in ORL '//    &
                'FIRE file with required #DATA header found.'
         CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 
-    !.......  Otherwise, the READPOL array has been redfined and now can
-    !           be populated with the TMPNAM array set by the GETHDR routine
+    !.....  Otherwise, the READPOL array has been redfined and now can
+    !       be populated with the TMPNAM array set by the GETHDR routine
     ELSE IF ( FIRSTDATA ) THEN
 
         FIRSTDATA = .FALSE.
@@ -136,8 +136,8 @@ SUBROUTINE RDDATAORLFR( LINE, READDATA, READPOL, NDATPERLN, &
     !.......  Separate line into segments
     CALL PARSLINE( LINE, NSEG, SEGMENT )
 
-    !.......  Use the file format definition to parse the line into
-    !           the various data fields
+    !.....  Use the file format definition to parse the line into
+    !       the various data fields
     DESC   = SEGMENT( 5 )                  ! fire description
     LAT    = SEGMENT( 6 )                  ! fire latitude
     LON    = SEGMENT( 7 )                  ! fire longitude

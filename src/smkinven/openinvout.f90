@@ -1,6 +1,5 @@
 
-SUBROUTINE OPENINVOUT( A2PFLAG, GRDNM, ENAME, ANAME, IDEV,    &
-    &                      SDEV, ADEV, VARPATH )
+SUBROUTINE OPENINVOUT( A2PFLAG, GRDNM, ENAME, ANAME, IDEV, SDEV, ADEV, VARPATH )
 
     !*************************************************************************
     !  subroutine body starts at line 119
@@ -45,8 +44,8 @@ SUBROUTINE OPENINVOUT( A2PFLAG, GRDNM, ENAME, ANAME, IDEV,    &
 
     !.......  MODULES for public variables
     !.......  This module contains the information about the source category
-    USE MODINFO, ONLY: CATEGORY, CATDESC, NSRC, BYEAR,    &
-                       NIPOL, NPPOL, NIACT, NPACT, NCHARS,    &
+    USE MODINFO, ONLY: CATEGORY, CATDESC, NSRC, BYEAR,      &
+                       NIPOL, NPPOL, NIACT, NPACT, NCHARS,  &
                        JSCC, JSTACK, NCOMP, VAR_FORMULA
 
     !.......  This module is required by the FileSetAPI

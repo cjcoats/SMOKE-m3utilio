@@ -18,7 +18,7 @@ SUBROUTINE WCNTLREP( CDEV, GDEV, LDEV, MDEV )
     !***************************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !       System
     ! File: %W%
     !
     ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
@@ -37,37 +37,37 @@ SUBROUTINE WCNTLREP( CDEV, GDEV, LDEV, MDEV )
     !***************************************************************************
     USE M3UTILIO
 
-    !.......  MODULES for public variables
-    !.......  This module contains the inventory arrays
+    !.....  MODULES for public variables
+    !.....  This module contains the inventory arrays
     USE MODSOURC, ONLY: CSOURC
 
-    !.......  This module contains the control packet data and control matrices
+    !.....  This module contains the control packet data and control matrices
     USE MODCNTRL, ONLY: NVCMULT, PNAMMULT, RPTDEV, PCTLFLAG
 
-    !.......  This module contains the information about the source category
+    !.....  This module contains the information about the source category
     USE MODINFO, ONLY: CATEGORY, CRL, NSRC, NCHARS
 
     IMPLICIT NONE
 
-    !.......   INCLUDES
+    !.....   INCLUDES
 
     INCLUDE 'EMCNST3.h90'       !  emissions constant parameters
 
-    !.......   SUBROUTINE ARGUMENTS
+    !.....   SUBROUTINE ARGUMENTS
 
     INTEGER     , INTENT (IN) :: CDEV       ! file unit no. for tmp CTL file
     INTEGER     , INTENT (IN) :: GDEV       ! file unit no. for tmp CTG file
     INTEGER     , INTENT (IN) :: LDEV       ! file unit no. for tmp ALW file
     INTEGER     , INTENT (IN) :: MDEV       ! file unit no. for tmp MACT file
 
-    !.......  Local arrays
+    !.....  Local arrays
     INTEGER             OUTTYPES( NVCMULT,6 )     ! var type:int/real
 
     CHARACTER(NAMLEN3)  OUTNAMES( NVCMULT,6 )     ! var names
     CHARACTER(IOULEN3)  OUTUNITS( NVCMULT,6 )     ! var units
     CHARACTER(MXDLEN3)  OUTDESCS( NVCMULT,6 )     ! var descriptions
 
-    !.......   Other local variables
+    !.....   Other local variables
     INTEGER          S, V      ! counters and indices
 
     INTEGER          CIDX       ! control plant index
@@ -85,40 +85,40 @@ SUBROUTINE WCNTLREP( CDEV, GDEV, LDEV, MDEV )
     !***********************************************************************
     !   begin body of subroutine WCNTLREP
 
-    !.......  Rewind temporary files
+    !.....  Rewind temporary files
     IF( CDEV .GT. 0 ) REWIND( CDEV )
     IF( GDEV .GT. 0 ) REWIND( GDEV )
     IF( LDEV .GT. 0 ) REWIND( LDEV )
     IF( MDEV .GT. 0 ) REWIND( MDEV )
 
-    !.......  Open reports file
+    !.....  Open reports file
     IF( MAX( CDEV, GDEV, LDEV, MDEV ) .GT. 0 ) THEN
         RPTDEV( 2 ) = PROMPTFFILE( 'Enter logical name for SUMMARY CONTROLS REPORT',&
                                    .FALSE., .TRUE., CRL // 'CSUMREP', PROGNAME )
         ODEV = RPTDEV( 2 )
     END IF
 
-    !.......  For each pollutant that receives controls, obtain variable
-    !             names for control efficiency, rule effectiveness, and, in the
-    !             case of AREA sources, rule penetration. These variable names
-    !             will be used in reading the inventory file.
+    !.....  For each pollutant that receives controls, obtain variable
+    !       names for control efficiency, rule effectiveness, and, in the
+    !       case of AREA sources, rule penetration. These variable names
+    !       will be used in reading the inventory file.
 
-    !.......  Check that NVCMULT does not equal 0, otherwise some systems will get confused
+    !.....  Check that NVCMULT does not equal 0, otherwise some systems will get confused
     IF( NVCMULT == 0 ) RETURN
 
     CALL BLDENAMS( CATEGORY, NVCMULT, 6, PNAMMULT, OUTNAMES, OUTUNITS, OUTTYPES, OUTDESCS )
 
-    !.......  Read in indices from temporary files. No error checking is
-    !             performed because it is assumed that the program has already
-    !             successfully written the temporary files.
+    !.....  Read in indices from temporary files. No error checking is
+    !       performed because it is assumed that the program has already
+    !       successfully written the temporary files.
 
-    !.......  Loop through pollutants
+    !.....  Loop through pollutants
     DO V = 1, NVCMULT
 
-    !.......  Loop through sources and output
+        !.....  Loop through sources and output
         DO S = 1, NSRC
 
-    !.......  If MACT packet applies for this pollutant
+            !.....  If MACT packet applies for this pollutant
             IF( PCTLFLAG( V, 4 ) ) THEN
 
                 READ( MDEV,* ) CIDX, PNAM, E_IN, E_OUT, FAC
@@ -127,7 +127,7 @@ SUBROUTINE WCNTLREP( CDEV, GDEV, LDEV, MDEV )
 
             END IF
 
-    !.......  If CONTROL packet applies for this pollutant
+            !.....  If CONTROL packet applies for this pollutant
             IF( PCTLFLAG( V, 1 ) ) THEN
 
                 READ( CDEV,* ) CIDX, PNAM, E_IN, E_OUT, FAC
@@ -136,7 +136,7 @@ SUBROUTINE WCNTLREP( CDEV, GDEV, LDEV, MDEV )
 
             END IF
 
-    !.......  If CTG packet applies for this pollutant
+            !.....  If CTG packet applies for this pollutant
             IF( PCTLFLAG( V, 2 ) ) THEN
                 READ( GDEV,* ) CIDX, PNAM, E_IN, E_OUT, FAC
 
@@ -144,18 +144,18 @@ SUBROUTINE WCNTLREP( CDEV, GDEV, LDEV, MDEV )
 
             END IF
 
-    !.......  If ALLOWABLE packet applies for this pollutant
+            !.....  If ALLOWABLE packet applies for this pollutant
             IF( PCTLFLAG( V, 3 ) ) THEN
 
                 READ( LDEV,* ) CIDX, PNAM, E_IN, E_OUT, FAC
 
-    !.......  Interpret control information and write message
+                !.....  Interpret control information and write message
                 CALL CONTROL_MESG( ODEV, 'ALLOWABLE', S, CIDX, PNAM, E_IN, E_OUT, FAC )
 
             END IF
 
-    !.......  If REACTIVITY packet applies for this pollutant
-    ! note: must be added
+            !.....  If REACTIVITY packet applies for this pollutant
+            ! note: must be added
 
         END DO
     END DO
@@ -164,7 +164,7 @@ SUBROUTINE WCNTLREP( CDEV, GDEV, LDEV, MDEV )
 
     !******************  FORMAT  STATEMENTS   ******************************
 
-    !.......   Internal buffering formats...... 94xxx
+    !.....   Internal buffering formats...... 94xxx
 
 94010 FORMAT( 10( A, :, I8, :, 1X ) )
 
@@ -172,11 +172,11 @@ SUBROUTINE WCNTLREP( CDEV, GDEV, LDEV, MDEV )
 
 CONTAINS
 
-    !.......  This internal subprogram
+    !.....  This internal subprogram
     SUBROUTINE CONTROL_MESG( FDEV, CTYPE, SMKID, CIDX, PNAM,&
                              EMIS_IN, EMIS_OUT, FACTOR )
 
-        !.......  Subprogram arguments
+        !.....  Subprogram arguments
         INTEGER     , INTENT (IN) :: FDEV             ! output unit number
         CHARACTER(*), INTENT (IN) :: CTYPE            ! control type
         INTEGER     , INTENT (IN) :: SMKID            ! smoke ID
@@ -186,7 +186,7 @@ CONTAINS
         REAL        , INTENT (IN) :: EMIS_OUT         ! emissions after control
         REAL        , INTENT (IN) :: FACTOR           ! EMIS_IN*FACTOR = EMIS_OUT
 
-        !.......  Local variables
+        !.....  Local variables
         INTEGER           L, L2
 
         INTEGER, SAVE ::  PSMKID = 0           ! previous smoke ID
@@ -198,10 +198,10 @@ CONTAINS
 
         !----------------------------------------------------------------------
 
-        !.......  Skip records that are not controlled
+        !.....  Skip records that are not controlled
         IF( CIDX .EQ. 0 ) RETURN
 
-        !.......  Write message for pollutant for each new pollutant
+        !.....  Write message for pollutant for each new pollutant
         IF( PNAM .NE. LNAM ) THEN
 
             MESG = 'Source controls for pollutant ' // PNAM
@@ -212,8 +212,8 @@ CONTAINS
 
         END IF
 
-        !.......  Only write out header line if source is different from previous
-        !               or if the message for a new pollutant was written
+        !.....  Only write out header line if source is different from previous
+        !       or if the message for a new pollutant was written
         IF( SMKID .NE. PSMKID .OR. PNAM .NE. LNAM ) THEN
 
             CALL FMTCSRC( CSOURC( S ), NCHARS, BUFFER, L2 )
@@ -224,12 +224,12 @@ CONTAINS
 
         LNAM = PNAM
 
-        !.......  Write warning if source is controled and factor is 1.0
+        !.....  Write warning if source is controled and factor is 1.0
         IF( FACTOR .EQ. 1. ) THEN
             WRITE( MESG,93380 ) CTYPE, EMIS_IN, EMIS_OUT
             WRITE( FDEV,93000 ) TRIM( MESG )
 
-        !.......  Otherwise, write standard control message
+        !.....  Otherwise, write standard control message
         ELSE
             WRITE( MESG,93400 ) CTYPE, EMIS_IN, EMIS_OUT, FACTOR
             WRITE( FDEV,93000 ) TRIM( MESG )
@@ -240,7 +240,7 @@ CONTAINS
 
     !*************  SUBPROGRAM FORMAT  STATEMENTS   **************************
 
-    !.......   Formatted file I/O formats...... 93xxx
+    !.....   Formatted file I/O formats...... 93xxx
 
 93000   FORMAT( A )
 

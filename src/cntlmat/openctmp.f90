@@ -20,7 +20,7 @@ SUBROUTINE OPENCTMP( PKTTYP, IDEV )
     !***************************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !       System
     ! File: @(#)$Id$
     !
     ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
@@ -41,16 +41,16 @@ SUBROUTINE OPENCTMP( PKTTYP, IDEV )
 
     IMPLICIT NONE
 
-    !.......   INCLUDES
+    !.....   INCLUDES
     INCLUDE 'EMCNST3.h90'       !  emissions constant parameters
 
-    !.......   SUBROUTINE ARGUMENTS:
+    !.....   SUBROUTINE ARGUMENTS:
 
     CHARACTER(*), INTENT (IN) :: PKTTYP       ! packet type
     INTEGER     , INTENT(OUT) :: IDEV         ! logical file number
 
 
-    !.......   Other local variables
+    !.....   Other local variables
 
     INTEGER          IOS                       ! i/o status
     INTEGER, SAVE :: LP                        ! length of tmp file path
@@ -120,7 +120,7 @@ SUBROUTINE OPENCTMP( PKTTYP, IDEV )
 
     RETURN
 
-    !.......  Open file error
+    !.....  Open file error
 1006 MESG = 'Could not open temporary ASCII file for control info.'
     CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 

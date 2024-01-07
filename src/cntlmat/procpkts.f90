@@ -28,7 +28,7 @@ SUBROUTINE PROCPKTS( PDEV, CDEV, GDEV, LDEV, MDEV, WDEV, CPYEAR,    &
     !************************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !       System
     ! File: @(#)$Id$
     !
     ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
@@ -47,29 +47,29 @@ SUBROUTINE PROCPKTS( PDEV, CDEV, GDEV, LDEV, MDEV, WDEV, CPYEAR,    &
     !***************************************************************************
     USE M3UTILIO
 
-    !.......  MODULES for public variables
-    !.......  This module contains the inventory arrays
+    !.....  MODULES for public variables
+    !.....  This module contains the inventory arrays
     USE MODSOURC, ONLY: CSOURC
 
-    !.......  This module is for cross reference tables
+    !.....  This module is for cross reference tables
     USE MODXREF, ONLY: ASGNINDX
 
-    !.......  This module contains the control packet data and control matrices
+    !.....  This module contains the control packet data and control matrices
     USE MODCNTRL, ONLY: PNAMMULT, PNAMPROJ, FACTOR,                     &
                         BACKOUT, DATVAL, GRPINDX, GRPFLAG, GRPSTIDX,    &
                         GRPCHAR, GRPINEM, GRPOUTEM, POLSFLAG,           &
                         NVPROJ, NVCMULT, PCTLFLAG
 
-    !.......  This module contains the information about the source category
+    !.....  This module contains the information about the source category
     USE MODINFO, ONLY: CATEGORY, NSRC, NIPPA, NIPOL, NIACT, NPPOL,      &
                        EINAM, EANAM, ACTVTY
 
     IMPLICIT NONE
 
-    !.......   INCLUDES
+    !.....   INCLUDES
     INCLUDE 'EMCNST3.h90'       !  emissions constant parameters
 
-    !.......   SUBROUTINE ARGUMENTS:
+    !.....   SUBROUTINE ARGUMENTS:
 
     INTEGER     , INTENT (IN) :: PDEV          ! file unit no. for tmp PROJ file
     INTEGER     , INTENT (IN) :: CDEV          ! file unit no. for tmp CTL file
@@ -86,12 +86,12 @@ SUBROUTINE PROCPKTS( PDEV, CDEV, GDEV, LDEV, MDEV, WDEV, CPYEAR,    &
     LOGICAL     , INTENT(OUT) :: LPTMP         ! true: projection tmp file written
     LOGICAL     , INTENT(OUT) :: LCTMP         ! true: control tmp file written
 
-    !.......  Reshaped inventory pollutants and associated variables
-    !        INTEGER         NGRP                    ! number of pollutant groups
-    !        INTEGER         NGSZ                    ! number of pollutants per group
-    !        INTEGER               , ALLOCATABLE:: IPSTAT ( : )       ! pol status (0|1)
+    !.....  Reshaped inventory pollutants and associated variables
+    !       INTEGER         NGRP                    ! number of pollutant groups
+    !       INTEGER         NGSZ                    ! number of pollutants per group
+    !       INTEGER               , ALLOCATABLE:: IPSTAT ( : )       ! pol status (0|1)
 
-    !.......   Other local variables
+    !.....   Other local variables
 
     INTEGER         I, J, K, L, L1, L2, S, V          ! counters and indices
 
@@ -103,7 +103,7 @@ SUBROUTINE PROCPKTS( PDEV, CDEV, GDEV, LDEV, MDEV, WDEV, CPYEAR,    &
     INTEGER         VIDXPROJ( NIPPA )         ! pollutant flags for projection
 
     LOGICAL       :: DSFLAG   = .FALSE.       ! true: this call to ASGNCNTL has data-specific match
-    LOGICAL       :: EFLAG    = .FALSE.       ! error flag
+    LOGICAL          EFLAG                    ! error flag
     LOGICAL, SAVE :: FIRSTIME = .TRUE.        ! true: first time routine called
     LOGICAL, SAVE :: OFLAG(NPACKET) = .FALSE.       ! true: tmp file has not been opened
     LOGICAL       :: CCHEK                    ! temporary control tmp file status per packet
@@ -131,19 +131,20 @@ SUBROUTINE PROCPKTS( PDEV, CDEV, GDEV, LDEV, MDEV, WDEV, CPYEAR,    &
         FIRSTIME = .FALSE.
 
     END IF
-
-    !.......  Reactivity packet...
+    
+    EFLAG    = .FALSE.
+    !.....  Reactivity packet...
     IF( PKTTYP .EQ. 'REACTIVITY' ) THEN
 
-        !.......  Get environment variable setting for reactivity pollutant
+        !.....  Get environment variable setting for reactivity pollutant
         MESG = 'Pollutant for creating reactivity matrix'
         CALL ENVSTR( 'REACTIVITY_POL', MESG, 'VOC', RPOL, IOS )
         IF ( IOS .GT. 0 ) THEN
             CALL M3EXIT( PROGNAME,0,0, 'Bad env vble "REACTIVITY_POL"', 2 )
         END IF
 
-        !.......  Make sure that the pollutant for the reactivity packet is
-        !               in the inventory
+        !.....  Make sure that the pollutant for the reactivity packet is
+        !       in the inventory
         J = INDEX1( RPOL, NIPOL, EINAM )
         IF( J .LE. 0 ) THEN
 
@@ -158,22 +159,22 @@ SUBROUTINE PROCPKTS( PDEV, CDEV, GDEV, LDEV, MDEV, WDEV, CPYEAR,    &
 
         END IF
 
-        !.......  Generate reactivity matrices
+        !.....  Generate reactivity matrices
         USEPOL = .TRUE.          ! array
         CALL GENREACT( CPYEAR, ENAME, RPOL, USEPOL )
 
         SFLAG = .TRUE.
 
-    !.......  If projection or control packet, then allocate memory for
-    !           needed arrays, pollutant-specific arrays, and output matrices.
+    !.....  If projection or control packet, then allocate memory for
+    !       needed arrays, pollutant-specific arrays, and output matrices.
     ELSE
 
         !......  Allocate arrays for managing output pollutants/activities
         !......  Create array for names of pollutants that receive projections
 
-        !.......  Create array of flags indicating which controls are
-        !                   applied to each pollutant receiving at least one type
-        !                   of control or projection
+        !.....  Create array of flags indicating which controls are
+        !       applied to each pollutant receiving at least one type
+        !       of control or projection
         IF( .NOT. ALLOCATED( PNAMMULT ) ) THEN
 
         !......  Create array for names of pollutants that receive controls
@@ -187,7 +188,7 @@ SUBROUTINE PROCPKTS( PDEV, CDEV, GDEV, LDEV, MDEV, WDEV, CPYEAR,    &
 
         END IF
 
-        !.......  Allocate for work output factor for both projection and control
+        !.....  Allocate for work output factor for both projection and control
         IF( .NOT. ALLOCATED( FACTOR ) ) THEN
             ALLOCATE( ASGNINDX( NSRC ),     &
                         FACTOR( NSRC ), STAT=IOS )
@@ -196,10 +197,10 @@ SUBROUTINE PROCPKTS( PDEV, CDEV, GDEV, LDEV, MDEV, WDEV, CPYEAR,    &
         ASGNINDX = 0
         FACTOR = 1.          !  array
 
-        !.......  Allocate for work arrays for multiplicative controls
+        !.....  Allocate for work arrays for multiplicative controls
         IF( PKTTYP .NE. 'PROJECTION' ) THEN
 
-            !.......  Allocate main work arrays
+            !.....  Allocate main work arrays
             IF( .NOT. ALLOCATED( BACKOUT ) ) THEN
                 ALLOCATE( BACKOUT( NSRC ),&
                           DATVAL( NSRC,NPPOL ), STAT=IOS )
@@ -208,7 +209,7 @@ SUBROUTINE PROCPKTS( PDEV, CDEV, GDEV, LDEV, MDEV, WDEV, CPYEAR,    &
             BACKOUT = 0.               ! array
             DATVAL  = 0.               ! array
 
-            !.......  Allocate first set of reporting arrays
+            !.....  Allocate first set of reporting arrays
             IF( .NOT. ALLOCATED( GRPINDX ) ) THEN
                 ALLOCATE( GRPINDX( NSRC ), STAT=IOS )
                 CALL CHECKMEM( IOS, 'GRPINDX', PROGNAME )
@@ -220,10 +221,10 @@ SUBROUTINE PROCPKTS( PDEV, CDEV, GDEV, LDEV, MDEV, WDEV, CPYEAR,    &
                 GRPINDX  = 0              ! array
             END IF
 
-            !.......  If haven't already, get set up for group reporting...
+            !.....  If haven't already, get set up for group reporting...
             IF ( .NOT. ALLOCATED( GRPFLAG ) ) THEN
 
-            !......  Count the number of groups in the inventory
+                !......  Count the number of groups in the inventory
                 IF( CATEGORY .EQ. 'POINT' ) THEN
 
                     PPLT = ' '
@@ -293,22 +294,16 @@ SUBROUTINE PROCPKTS( PDEV, CDEV, GDEV, LDEV, MDEV, WDEV, CPYEAR,    &
 
         END IF           ! For multiplicative control packets
 
-        !.......  Create array for indicating the status of pollutants at each
-        !                   iteration
-        !                ALLOCATE( IPSTAT( NGSZ ), STAT=IOS )
-        !                CALL CHECKMEM( IOS, 'IPSTAT', PROGNAME )
-
-        !            IPSTAT = 0                  ! Array
+        !.....  Create array for indicating the status of pollutants at each iteration
 
     END IF           ! For reactivity or not
 
-    !.......  If the packet does not have pol/act-specific entries, then
-    !              create using the "all" keyword.
-    !.......  For projection matrix only for now...
+    !.....  If the packet does not have pol/act-specific entries, then
+    !       create using the "all" keyword.
+    !.....  For projection matrix only for now...
     IF ( PKTTYP .EQ. 'PROJECTION' .AND. .NOT. LPSASGN ) THEN
 
-        CALL ASGNCNTL( NSRC, WDEV, PKTTYP, 'all', DSFLAG,&
-                       ASGNINDX )
+        CALL ASGNCNTL( NSRC, WDEV, PKTTYP, 'all', DSFLAG, ASGNINDX )
 
         IF ( .NOT. OFLAG(1) ) THEN
             CALL OPENCTMP( PKTTYP, PDEV )
@@ -318,23 +313,23 @@ SUBROUTINE PROCPKTS( PDEV, CDEV, GDEV, LDEV, MDEV, WDEV, CPYEAR,    &
 
         SFLAG = .TRUE.
 
-    !.......  For projection for specific pollutants and multiplicative controls...
+    !.....  For projection for specific pollutants and multiplicative controls...
     ELSE IF ( PKTTYP .NE. 'REACTIVITY' ) THEN
 
-        !.......  Loop through the pollutant groups...
+        !.....  Loop through the pollutant groups...
 
-        !.......  Apply the current packets to appropriate sources and pollutants
-        !               in the inventory.
-        !.......  Write temporary ASCII files containing the indices to the
-        !               control data tables.  This is because we only want to write out
-        !               the I/O API control matrices for the pollutants that are
-        !               actually affected by controls, but don't know which pollutants
-        !               to open the output file(s) with until all of the pollutants have
-        !               been processed.
+        !.....  Apply the current packets to appropriate sources and pollutants
+        !       in the inventory.
+        !.....  Write temporary ASCII files containing the indices to the
+        !       control data tables.  This is because we only want to write out
+        !       the I/O API control matrices for the pollutants that are
+        !       actually affected by controls, but don't know which pollutants
+        !       to open the output file(s) with until all of the pollutants have
+        !       been processed.
 
         DO V = 1, NIPPA
 
-            !.......  Skip pollutants that do not apply to this packet.
+            !.....  Skip pollutants that do not apply to this packet.
             IF( .NOT. USEPOL( V ) ) CYCLE
 
             SELECT CASE( PKTTYP )
@@ -342,13 +337,11 @@ SUBROUTINE PROCPKTS( PDEV, CDEV, GDEV, LDEV, MDEV, WDEV, CPYEAR,    &
               CASE( 'PROJECTION' )
 
                 !......  Generate projection matrix
-                CALL ASGNCNTL( NSRC, WDEV, PKTTYP, EANAM( V ),&
-                               DSFLAG, ASGNINDX )
+                CALL ASGNCNTL( NSRC, WDEV, PKTTYP, EANAM( V ), DSFLAG, ASGNINDX )
                 IF( DSFLAG ) POLSFLAG = .TRUE.
 
                 VIDXPROJ = 0         ! array
-                CALL UPDATE_POLLIST( V, ASGNINDX, 0, VIDXPROJ,&
-                                     NVPROJ, PNAMPROJ )
+                CALL UPDATE_POLLIST( V, ASGNINDX, 0, VIDXPROJ, NVPROJ, PNAMPROJ )
 
                 IF ( .NOT. OFLAG(1) ) THEN
                     CALL OPENCTMP( PKTTYP, PDEV )
@@ -361,11 +354,9 @@ SUBROUTINE PROCPKTS( PDEV, CDEV, GDEV, LDEV, MDEV, WDEV, CPYEAR,    &
               CASE( 'CTG' )
 
                 VIDXMULT = 0     ! array
-                CALL ASGNCNTL( NSRC, WDEV, PKTTYP, EANAM( V ),&
-                               DSFLAG, ASGNINDX )
+                CALL ASGNCNTL( NSRC, WDEV, PKTTYP, EANAM( V ), DSFLAG, ASGNINDX )
 
-                CALL UPDATE_POLLIST( V, ASGNINDX, 2, VIDXMULT,&
-                                     NVCMULT, PNAMMULT )
+                CALL UPDATE_POLLIST( V, ASGNINDX, 2, VIDXMULT, NVCMULT, PNAMMULT )
                 IF ( .NOT. OFLAG(2) ) THEN
                     CALL OPENCTMP( PKTTYP, GDEV )
                     OFLAG(2) = .TRUE.
@@ -378,8 +369,8 @@ SUBROUTINE PROCPKTS( PDEV, CDEV, GDEV, LDEV, MDEV, WDEV, CPYEAR,    &
 
               CASE( 'CONTROL' )
 
-                !.......  Skip activities because they
-                !         do not have the base-year control effectiveness
+                !.....  Skip activities because they
+                !       do not have the base-year control effectiveness
                 J = INDEX1( EANAM( V ), NIACT, ACTVTY )
                 IF ( J .GT. 0 ) THEN
                     MESG = 'Skipping activity "' //                 &
@@ -439,7 +430,7 @@ SUBROUTINE PROCPKTS( PDEV, CDEV, GDEV, LDEV, MDEV, WDEV, CPYEAR,    &
 
     END IF           ! End select on pol-specific packet or not
 
-    !.......   Rewind tmp files
+    !.....   Rewind tmp files
     IF( PDEV .GT. 0 ) REWIND( PDEV )
     IF( CDEV .GT. 0 ) REWIND( CDEV )
     IF( GDEV .GT. 0 ) REWIND( GDEV )
@@ -450,11 +441,11 @@ SUBROUTINE PROCPKTS( PDEV, CDEV, GDEV, LDEV, MDEV, WDEV, CPYEAR,    &
 
     !******************  FORMAT  STATEMENTS   ******************************
 
-    !.......   Formatted file I/O formats...... 93xxx
+    !.....   Formatted file I/O formats...... 93xxx
 
 93000 FORMAT( A )
 
-    !.......   Internal buffering formats...... 94xxx
+    !.....   Internal buffering formats...... 94xxx
 
 94010 FORMAT( 10( A, :, I8, :, 1X ) )
 
@@ -462,12 +453,11 @@ SUBROUTINE PROCPKTS( PDEV, CDEV, GDEV, LDEV, MDEV, WDEV, CPYEAR,    &
 
 CONTAINS
 
-    !.......  This internal subprogram flags pollutants that have any
-    !               controls applied.
-    SUBROUTINE UPDATE_POLLIST( POLID, IDX, CFLG, VIDX,&
-                               NPCNT, PNAMES )
+    !.....  This internal subprogram flags pollutants that have any
+    !       controls applied.
+    SUBROUTINE UPDATE_POLLIST( POLID, IDX, CFLG, VIDX, NPCNT, PNAMES )
 
-        !.......  Subprogram arguments
+        !.....  Subprogram arguments
         INTEGER     , INTENT (IN) :: POLID                    ! pollutant index
         INTEGER     , INTENT (IN) :: IDX(NSRC)          ! index to data tables
         INTEGER     , INTENT (IN) :: CFLG                    ! control flag
@@ -475,16 +465,16 @@ CONTAINS
         INTEGER , INTENT (IN OUT) :: NPCNT                   ! pollutant/act count
         CHARACTER(*), INTENT (IN OUT) :: PNAMES(NIPPA)           ! pollutant/act names
 
-        !.......  Local variables
+        !.....  Local variables
         INTEGER   I, S           ! counters and indices
         LOGICAL   ::      SRCLOOP= .TRUE.           ! true: pollutant 'I' does not
                 ! have controls applied
 
         !----------------------------------------------------------------------
 
-        !.......  For current pollutant, loop through sources until a source with
-        !               controls is encountered. Terminate loop when all sources have
-        !               been examined.
+        !.....  For current pollutant, loop through sources until a source with
+        !       controls is encountered. Terminate loop when all sources have
+        !       been examined.
         SRCLOOP = .TRUE.
         S = 0
         DO WHILE( SRCLOOP .AND. S .LT. NSRC )
@@ -494,7 +484,7 @@ CONTAINS
                     ! exit source loop
         END DO          ! end source loop
 
-        !.......  Check to see if current pollutant has controls applied
+        !.....  Check to see if current pollutant has controls applied
         IF ( SRCLOOP ) THEN               ! no controls
             VIDX( POLID ) = 0
 

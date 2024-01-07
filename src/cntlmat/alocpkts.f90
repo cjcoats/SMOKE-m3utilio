@@ -20,7 +20,7 @@ SUBROUTINE ALOCPKTS( FDEV, WDEV, INYEAR, CPYEAR, PKTCNT, PKTBEG,    &
     !**************************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !       System
     ! File: @(#)$Id$
     !
     ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
@@ -39,8 +39,8 @@ SUBROUTINE ALOCPKTS( FDEV, WDEV, INYEAR, CPYEAR, PKTCNT, PKTBEG,    &
     !***************************************************************************
     USE M3UTILIO
 
-    !.......  MODULES for public variables
-    !.......  This module contains the control packet data and control matrices
+    !.....  MODULES for public variables
+    !.....  This module contains the control packet data and control matrices
     USE MODCNTRL, ONLY: CUTCTG, FACCTG, FACMACT, FACRACT,               &
                         ICTLEQUP, CCTLSIC, FACCEFF, FACREFF,            &
                         FACRLPN, CALWSIC, FACALW, EMCAPALW,             &
@@ -52,13 +52,13 @@ SUBROUTINE ALOCPKTS( FDEV, WDEV, INYEAR, CPYEAR, PKTCNT, PKTBEG,    &
 
     IMPLICIT NONE
 
-    !.......   INCLUDES
+    !.....   INCLUDES
     INCLUDE 'EMCNST3.h90'       !  emissions constant parameters
 
-    !.......   SUBROUTINE ARGUMENTS:
-    !.......   Note: LPTMP and LCTMP needed only because PKTLOOP call needs them.
-    !          They will not be set until after tmp files are written after
-    !          calling PROCPKTS later in the main routine.
+    !....   SUBROUTINE ARGUMENTS:
+    !....   Note: LPTMP and LCTMP needed only because PKTLOOP call needs them.
+    !       They will not be set until after tmp files are written after
+    !       calling PROCPKTS later in the main routine.
 
     INTEGER     , INTENT (IN) :: FDEV          ! in file unit number
     INTEGER     , INTENT (IN) :: WDEV          ! errors/warning file
@@ -70,10 +70,10 @@ SUBROUTINE ALOCPKTS( FDEV, WDEV, INYEAR, CPYEAR, PKTCNT, PKTBEG,    &
     LOGICAL     , INTENT(OUT) :: LPTMP         ! true: projection tmp file written
     LOGICAL     , INTENT(OUT) :: LCTMP         ! true: control tmp file written
 
-    !.......   EXTERNAL FUNCTIONS:
+    !.....   EXTERNAL FUNCTIONS:
     LOGICAL, EXTERNAL :: BLKORCMT
 
-    !.......   Logical names and unit numbers
+    !.....   Logical names and unit numbers
 
     INTEGER         PDEV          ! file unit no. for tmp PROJ file
     INTEGER         CDEV          ! file unit no. for tmp CTL file
@@ -81,7 +81,7 @@ SUBROUTINE ALOCPKTS( FDEV, WDEV, INYEAR, CPYEAR, PKTCNT, PKTBEG,    &
     INTEGER         LDEV          ! file unit no. for tmp ALW file
     INTEGER         MDEV          ! file unit no. for tmp MACT file
 
-    !.......   Other local variables
+    !.....   Other local variables
 
     INTEGER         I, J, K, L, L1, L2          ! counters and indices
 
@@ -103,20 +103,20 @@ SUBROUTINE ALOCPKTS( FDEV, WDEV, INYEAR, CPYEAR, PKTCNT, PKTBEG,    &
     !***********************************************************************
     !   Begin body of subroutine ALOCPKTS
 
-    !.......  Initialize packet count for all valid packets
+    !.....  Initialize packet count for all valid packets
     PKTCNT = 0       ! array
 
-    !.......  Write status message
+    !.....  Write status message
     MESG = 'Scanning control/projection packets input file...'
     CALL M3MSG2( MESG )
 
-    !.......  Loop through control packets file and scan for packets. For each
-    !           packet type, count the number of entries.
-    !.......  For the projection packet, only pay attention to those that
-    !           have the same INYEAR.
-    !.......  Multiple packets of the same type are not permitted.  For
-    !           projections, this means that multiple packets for the same INYEAR
-    !           are not permitted.
+    !.....  Loop through control packets file and scan for packets. For each
+    !       packet type, count the number of entries.
+    !.....  For the projection packet, only pay attention to those that
+    !       have the same INYEAR.
+    !.....  Multiple packets of the same type are not permitted.  For
+    !       projections, this means that multiple packets for the same INYEAR
+    !       are not permitted.
 
     IREC = 0
     DO                    ! head of FDEV read loop
@@ -134,10 +134,10 @@ SUBROUTINE ALOCPKTS( FDEV, WDEV, INYEAR, CPYEAR, PKTCNT, PKTBEG,    &
 
         END IF
 
-        !.......  Skip blank lines and comment lines
+        !.....  Skip blank lines and comment lines
         IF( BLKORCMT( LINE ) ) CYCLE
 
-        !.......  If inside packet...
+        !.....  If inside packet...
         IF( INSIDE ) THEN
 
             J = INDEX( LINE, '!' )
@@ -145,13 +145,13 @@ SUBROUTINE ALOCPKTS( FDEV, WDEV, INYEAR, CPYEAR, PKTCNT, PKTBEG,    &
             I = INDEX( LINE( 1:J ), '/END/' )
             J = INDEX( LINE( 1:J ), '/'     )
 
-            !.......  Check for /END/ of packet
+            !.....  Check for /END/ of packet
             IF( I .GT. 0 ) THEN
                 INSIDE = .FALSE.
 
-            !.......  Encountered slash but not /END/
-            !                   It may be part of a point source characteristic, so check if
-            !                   it's at the beginning of the line
+            !.....  Encountered slash but not /END/
+            !       It may be part of a point source characteristic, so check if
+            !       it's at the beginning of the line
             ELSEIF( I .LE. 0 .AND. J .GT. 0 ) THEN
                 IF( J .EQ. 1 .OR. LINE( 1:J ) .EQ. ' ' ) THEN
                     WRITE( MESG,94010 ) 'Problem at line', IREC,                &
@@ -160,31 +160,31 @@ SUBROUTINE ALOCPKTS( FDEV, WDEV, INYEAR, CPYEAR, PKTCNT, PKTBEG,    &
                     CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
                 END IF
 
-            !.......  For valid packets, count records
+            !.....  For valid packets, count records
             ELSEIF( VALID ) THEN
 
                 PKTCNT( K ) = PKTCNT( K ) + 1           ! Increment for packet K
 
             END IF
 
-        !.......  If outside packet, look for next packet header
+        !.....  If outside packet, look for next packet header
         ELSE
 
             L  = LEN_TRIM( LINE )
             L1 = INDEX( LINE, '/' )
             L2 = INDEX( LINE( L1+1:L ), '/' ) + 1
 
-            !.......  Well-formed packet
+            !.....  Well-formed packet
             IF( L1 .GT. 0 .AND. L2 .GT. L1 + 1 ) THEN
 
-                !.......  Check if this packet is in list, with special treatment
-                !                       for reactivity and projection packets.  Return position
-                !                       K in parameter list of valid packet names, the control
-                !                       packet year (if applicable), and a year-specific flag.
+                !.....  Check if this packet is in list, with special treatment
+                !       for reactivity and projection packets.  Return position
+                !       K in parameter list of valid packet names, the control
+                !       packet year (if applicable), and a year-specific flag.
                 CALL CHECK_PACKET( LINE, L1, L2, INYEAR, K, CPYEAR, YRSPEC )
 
-                !.......  Print message because this year-specific packet does
-                !                       not apply to the inventory file
+                !.....  Print message because this year-specific packet does
+                !       not apply to the inventory file
                 IF( K .LE. 0 .AND. YRSPEC ) THEN
                     WRITE( MESG,94010 )                             &
                            'WARNING: Packet ' // LINE( L1:L2 ) //   &
@@ -195,7 +195,7 @@ SUBROUTINE ALOCPKTS( FDEV, WDEV, INYEAR, CPYEAR, PKTCNT, PKTBEG,    &
                     INSIDE = .TRUE.
                     VALID = .FALSE.
 
-                !.......  Otherwise when K < 0, packet is not known
+                !.....  Otherwise when K < 0, packet is not known
                 ELSE IF( K .LE. 0 ) THEN
                     MESG = 'WARNING: Packet ' // LINE( L1:L2 ) //       &
                            ' is not recognized. It will be skipped.'
@@ -203,7 +203,7 @@ SUBROUTINE ALOCPKTS( FDEV, WDEV, INYEAR, CPYEAR, PKTCNT, PKTBEG,    &
                     INSIDE = .TRUE.
                     VALID = .FALSE.
 
-                !.......  When K is found, make sure it's the first time
+                !.....  When K is found, make sure it's the first time
                 ELSE IF( PKTCNT( K ) .GT. 0 ) THEN
                     EFLAG = .TRUE.
                     WRITE( MESG,94010 )                                 &
@@ -213,7 +213,7 @@ SUBROUTINE ALOCPKTS( FDEV, WDEV, INYEAR, CPYEAR, PKTCNT, PKTBEG,    &
                     INSIDE = .TRUE.
                     VALID = .FALSE.
 
-                !.......  Otherwise, store the line number this packet starts on
+                !.....  Otherwise, store the line number this packet starts on
                 ELSE
                     INSIDE = .TRUE.
                     VALID = .TRUE.
@@ -221,7 +221,7 @@ SUBROUTINE ALOCPKTS( FDEV, WDEV, INYEAR, CPYEAR, PKTCNT, PKTBEG,    &
 
                 END IF
 
-            !.......  Badly-formed packet
+            !.....  Badly-formed packet
             ELSE IF( L1 .GT. 0 .AND. L2 .LE. L1 ) THEN
 
                 WRITE( MESG,94010 )                             &
@@ -238,14 +238,14 @@ SUBROUTINE ALOCPKTS( FDEV, WDEV, INYEAR, CPYEAR, PKTCNT, PKTBEG,    &
 
 101 CONTINUE            ! Exit from read loop
 
-    !.......  Abort of there was an error
+    !.....  Abort of there was an error
     IF( EFLAG ) THEN
         MESG = 'Problem reading control packets file'
         CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
     END IF
 
-    !.......  Allocate memory for control packet inputs...
-    !.......  CTG packet
+    !.....  Allocate memory for control packet inputs...
+    !.....  CTG packet
     J = PKTCNT( 1 )
     ALLOCATE( CUTCTG( J ),      &
               FACCTG( J ),      &
@@ -259,7 +259,7 @@ SUBROUTINE ALOCPKTS( FDEV, WDEV, INYEAR, CPYEAR, PKTCNT, PKTBEG,    &
     FACRACT = 0.      ! array
     CTGCOMT = " "     ! array
 
-    !.......  CONTROL packet
+    !.....  CONTROL packet
     J = PKTCNT( 2 )
     ALLOCATE( ICTLEQUP( J ),      &
                CCTLSIC( J ),      &
@@ -277,7 +277,7 @@ SUBROUTINE ALOCPKTS( FDEV, WDEV, INYEAR, CPYEAR, PKTCNT, PKTBEG,    &
     CTLRPLC = .FALSE.      ! array
     CTLCOMT = " "     ! array
 
-    !.......  ALLOWABLE packet
+    !.....  ALLOWABLE packet
     J = PKTCNT( 3 )
     ALLOCATE( CALWSIC( J ),      &
                FACALW( J ),      &
@@ -291,7 +291,7 @@ SUBROUTINE ALOCPKTS( FDEV, WDEV, INYEAR, CPYEAR, PKTCNT, PKTBEG,    &
     EMREPALW = 0.     ! array
     ALWCOMT = " "     ! array
 
-    !.......  REACTIVITY packet
+    !.....  REACTIVITY packet
     J = PKTCNT( 5 )
     ALLOCATE( CREASIC( J ),      &
              EMREPREA( J ),      &
@@ -309,7 +309,7 @@ SUBROUTINE ALOCPKTS( FDEV, WDEV, INYEAR, CPYEAR, PKTCNT, PKTBEG,    &
     CSPFREA  = ' '     ! array
     REACOMT = " "     ! array
 
-    !.......  PROJECTION packet
+    !.....  PROJECTION packet
     J = PKTCNT( 6 )
     ALLOCATE( CPRJSIC( J ),      &
                 PRJFC( J ),      &
@@ -319,7 +319,7 @@ SUBROUTINE ALOCPKTS( FDEV, WDEV, INYEAR, CPYEAR, PKTCNT, PKTBEG,    &
     PRJFC   = 0.      ! array
     PRJCOMT = " "     ! array
 
-    !.......  MACT packet
+    !.....  MACT packet
     J = PKTCNT( 7 )
     ALLOCATE( CMACSRCTYP( J ),      &
                 MACEXEFF( J ),      &
@@ -333,7 +333,7 @@ SUBROUTINE ALOCPKTS( FDEV, WDEV, INYEAR, CPYEAR, PKTCNT, PKTBEG,    &
     MACNWFRC = 0.      ! array
     MACCOMT = " "     ! array
 
-    !.......  Make sure that at least one packet is defined
+    !.....  Make sure that at least one packet is defined
     J = 0
     DO I = 1, NPACKET
         J = J + PKTCNT( I )
@@ -344,31 +344,31 @@ SUBROUTINE ALOCPKTS( FDEV, WDEV, INYEAR, CPYEAR, PKTCNT, PKTBEG,    &
         CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
     END IF
 
-    !.......  Now determine memory needed the cross-referencing portion of the
-    !           packets for each packet type.
-    !.......  For point sources, the memory needed is not necessarily equal to the
-    !           number of lines in the packet, because the SIC codes need to be
-    !           expanded to SCC codes.  So, for point sources process the packets to
-    !           find SIC NE 0 and SCC EQ 0, and expand the memory requirements
-    !           accordingly.
+    !.....  Now determine memory needed the cross-referencing portion of the
+    !       packets for each packet type.
+    !.....  For point sources, the memory needed is not necessarily equal to the
+    !       number of lines in the packet, because the SIC codes need to be
+    !       expanded to SCC codes.  So, for point sources process the packets to
+    !       find SIC NE 0 and SCC EQ 0, and expand the memory requirements
+    !       accordingly.
 
     ACTION = 'COUNT'
     CALL PKTLOOP( FDEV, PDEV, CDEV, GDEV, LDEV, MDEV, WDEV, &
                   CPYEAR, ACTION, BLANK5, PKTCNT, PKTBEG,   &
                   XRFCNT, LPTMP, LCTMP )
 
-    !.......  Rewind file
+    !.....  Rewind file
     REWIND( FDEV )
 
     RETURN
 
     !******************  FORMAT  STATEMENTS   ******************************
 
-    !.......   Formatted file I/O formats...... 93xxx
+    !.....   Formatted file I/O formats...... 93xxx
 
 93000 FORMAT( A )
 
-    !.......   Internal buffering formats...... 94xxx
+    !.....   Internal buffering formats...... 94xxx
 
 94010 FORMAT( 10( A, :, I8, :, 1X ) )
 
@@ -376,11 +376,11 @@ SUBROUTINE ALOCPKTS( FDEV, WDEV, INYEAR, CPYEAR, PKTCNT, PKTBEG,    &
 
 CONTAINS
 
-    !.......  This internal subprogram checks the packet header(s) to find
-    !               valid packets in the input file.
+    !.....  This internal subprogram checks the packet header(s) to find
+    !       valid packets in the input file.
     SUBROUTINE CHECK_PACKET( LINE, L1, L2, INYEAR, PKTIDX, OUTYEAR, YFLAG )
 
-        !.......  Subprogram arguments
+        !.....  Subprogram arguments
         CHARACTER(*), INTENT (IN) :: LINE             ! local size for dimensioning
         INTEGER     , INTENT (IN) :: L1               ! start of packet in LINE
         INTEGER     , INTENT (IN) :: L2               ! end of packet in LINE
@@ -389,7 +389,7 @@ CONTAINS
         INTEGER     , INTENT(OUT) :: OUTYEAR          ! year generated by packet(s)
         LOGICAL     , INTENT(OUT) :: YFLAG            ! flag for year-specific pkt
 
-        !.......  Local variables
+        !.....  Local variables
         INTEGER    I, J, L, S1, S2            ! indices
         INTEGER    IOS                     ! i/o status
 
@@ -402,18 +402,18 @@ CONTAINS
 
         !----------------------------------------------------------------------
 
-        !.......  Initialize outputs
+        !.....  Initialize outputs
         OUTYEAR = 0
         YFLAG   = .FALSE.
 
-        !.......  If spaces are between slashes, reset comparison accordingly
+        !.....  If spaces are between slashes, reset comparison accordingly
         S1 = L1 + 1
         S2 = L2 - 1
         BUFFER = LINE( S1:S2 )
         J = INDEX( BUFFER, ' ' )
         IF( J .GT. 0 ) BUFFER = BUFFER( 1:J-1 )
 
-        !.......  Find packet in LINE in list of packets
+        !.....  Find packet in LINE in list of packets
         PKTIDX = 0
         DO I = 1, NPACKET
 
@@ -424,18 +424,18 @@ CONTAINS
 
         END DO
 
-        !.......  If packet is not recognized, return
+        !.....  If packet is not recognized, return
         IF( PKTIDX .LE. 0 ) RETURN
 
-        !.......  Otherwise, continue...
+        !.....  Otherwise, continue...
 
-        !.......  Check for year information...
+        !.....  Check for year information...
         L = L1 + LEN_TRIM( PKTLIST( PKTIDX ) ) + 1
         IF( L2 .GT. L ) THEN
 
             READ( LINE( L+1:L2 ), *, IOSTAT=IOS ) SYEAR, OUTYEAR
 
-            !.......  Misformated year information
+            !.....  Misformated year information
             IF( IOS .GT. 0 ) THEN
 
                 EFLAG = .TRUE.
@@ -445,14 +445,14 @@ CONTAINS
                 PKTIDX = -1
                 RETURN
 
-            !.......  Start year of packet does not apply (warning)
+            !.....  Start year of packet does not apply (warning)
             ELSE IF( SYEAR .NE. INYEAR ) THEN
 
                 ! NOTE: It is not this simple, because there might be multiple inventory years
                 !      in the input inventory.  Instead of comparing to the base year, compare
                 !      to a list of base years generated in GETSINFO.  The projection packet
                 !      data tables should then contain the start year.
-                !.......  Get type of projection entries: with year or without it (EPS)
+                !.....  Get type of projection entries: with year or without it (EPS)
                 MESG = 'Projection entries in year-specific format'
                 YFLAG = ENVYN( 'PROJECTION_YR_SPEC', MESG, .TRUE., IOS )
                 IF ( IOS .GT. 0 ) THEN
@@ -464,13 +464,13 @@ CONTAINS
 
                 SAVYEAR = OUTYEAR
 
-            !.......  Start and end year are the same... (warning)
+            !.....  Start and end year are the same... (warning)
             ELSE IF( SYEAR .EQ. OUTYEAR ) THEN
                 MESG = 'WARNING: Input year and output year are the same.'
                 CALL M3MSG2( MESG )
                 RETURN
 
-            !.......  Start year is fine, but output year disagrees with other pkt
+            !.....  Start year is fine, but output year disagrees with other pkt
             ELSE IF( SFLAG .AND. OUTYEAR .NE. SAVYEAR ) THEN             ! (warning)
                 WRITE( MESG,94010 )                                     &
                        'WARNING: Output year', OUTYEAR, 'from ' //      &
@@ -482,7 +482,7 @@ CONTAINS
                 PKTIDX = -1
                 RETURN
 
-            !.......  Packet is good
+            !.....  Packet is good
             ELSE
 
                 SFLAG   = .TRUE.            ! year-specific has been encountered
@@ -499,7 +499,7 @@ CONTAINS
 
         !------------------- SUBPROGRAM FORMAT STATEMENTS ----------------------
 
-        !.......   Internal buffering formats...... 94xxx
+        !.....   Internal buffering formats...... 94xxx
 
 94010   FORMAT( 10( A, :, I8, :, 1X ) )
 

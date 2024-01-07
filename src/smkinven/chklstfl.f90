@@ -146,12 +146,12 @@ SUBROUTINE CHKLSTFL( NLINE, FNAME, NLSTSTR, FILFMT )
             CYCLE
         END IF
 
-    !.......  Open INFILE
+        !.......  Open INFILE
         TDEV = JUNIT()
 
         OPEN( TDEV, FILE=INFILE, STATUS='OLD', IOSTAT=IOS )
 
-    !.......  Check for problems opening raw input file
+        !.......  Check for problems opening raw input file
         IF( IOS /= 0 ) THEN
             WRITE( MESG,94010 ) 'Problem at line ', J, 'of ' //     &
                TRIM( FNAME ) // '.  Could not open file:' //        &
@@ -159,11 +159,11 @@ SUBROUTINE CHKLSTFL( NLINE, FNAME, NLSTSTR, FILFMT )
             CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
         END IF
 
-    !.......  Determine format of INFILE
+        !.......  Determine format of INFILE
         FILFMT( J ) = GETFORMT( TDEV, EXTFORMAT )
         CLOSE( TDEV )
 
-    !.......  Set flag based on format
+        !.......  Set flag based on format
         IF( FILFMT( J ) == EMSFMT ) EMSFLAG = .TRUE.
         IF( FILFMT( J ) == FF10FMT    .OR.    &
             FILFMT( J ) == MEDSFMT    .OR.    &
@@ -172,7 +172,7 @@ SUBROUTINE CHKLSTFL( NLINE, FNAME, NLSTSTR, FILFMT )
             FILFMT( J ) == ORLFIREFMT .OR.    &
             FILFMT( J ) == ORLDYFRFMT     ) ORLFLAG = .TRUE.
 
-    !.......  Check that file formats are consistent
+        !.......  Check that file formats are consistent
         IF( EMSFLAG .AND. FILFMT( J ) /= EMSFMT ) THEN
             WRITE( MESG,94010 )    &
                    'ERROR: In SMOKE list-formatted inventory file, '    &

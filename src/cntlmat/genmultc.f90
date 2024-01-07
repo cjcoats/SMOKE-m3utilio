@@ -508,7 +508,7 @@ SUBROUTINE GENMULTC( CDEV, GDEV, LDEV, MDEV, NCPE, PYEAR,   &
         IF ( CFLAG .AND. PCTLFLAG( I, 1 ) ) THEN
 
             !......  Allocate arrays to store control eff., rule eff. and
-            !                  rule penetration for each source
+            !        rule penetration for each source
             IF( ALLOCATED( CEFF ) ) THEN
                 DEALLOCATE( CEFF, REFF, RPEN )
             END IF
@@ -604,8 +604,8 @@ SUBROUTINE GENMULTC( CDEV, GDEV, LDEV, MDEV, NCPE, PYEAR,   &
                         FACTOR( S ) = FACTOR( S ) * FAC
 
                         !.......  For this calculation, put entire
-                        !                           additional reduction (REFF, RPEN, CEFF)
-                        !                           into new CEFF and use base REFF and RPEN
+                        !         additional reduction (REFF, RPEN, CEFF)
+                        !         into new CEFF and use base REFF and RPEN
                         CEFF( S ) = 1 - FACTOR( S )                      ! simplify, while awaiting correct formula
                         REFF( S ) = 1.                      ! Set to 1, while awaiting correct formula
                         RPEN( S ) = 1.                      ! Set to 1, while awaiting correct formula
@@ -614,8 +614,8 @@ SUBROUTINE GENMULTC( CDEV, GDEV, LDEV, MDEV, NCPE, PYEAR,   &
 
                     END IF
 
-                    !.......  Write out report entry if control packet entry
-                    !                     has been applied
+                    !.....  Write out report entry if control packet entry
+                    !       has been applied
                     IF( LREPORT ) THEN
 
                         SELECT CASE( CATEGORY )
@@ -955,31 +955,44 @@ SUBROUTINE GENMULTC( CDEV, GDEV, LDEV, MDEV, NCPE, PYEAR,   &
         WRITE( RDEV,93000 ) REPEAT( '-', I )
 
         PIDX = 0
-        DO S = 1, NSRC
-            K   = GRPSTIDX( S )
-            IDX = GRPINDX ( K )
+        J    = FIPLEN3
 
-            IF( IDX .NE. PIDX .AND.     &
-                GRPFLAG( IDX )      ) THEN
+        SELECT CASE( CATEGORY )
 
-                J = FIPLEN3 + 1
-                SELECT CASE( CATEGORY )
-                  CASE ( 'AREA' , 'MOBILE' )
-                    CSRC = GRPCHAR( S )
-                    WRITE( RDEV, 93410 )                        &
-                        CSRC( 1:STALEN3 ),                      &
-                        CSRC( STALEN3+1:STALEN3+SCCLEN3 ),      &
-                        ( GRPINEM ( IDX,I ), GRPOUTEM( IDX,I ), I = 1, NVCMULT )
-                  CASE ( 'POINT' )
-                    CSRC = CSOURC( S )
-                    WRITE( RDEV, 93412 )                        &
-                        CSRC( 1:FIPLEN3 ), CSRC( J:FPLLEN3 ),   &
-                        ( GRPINEM ( IDX,I ), GRPOUTEM( IDX,I ), I = 1, NVCMULT )
-                END SELECT
+            CASE ( 'AREA' , 'MOBILE' )
 
-                PIDX = IDX
-            END IF
-        END DO
+                DO S = 1, NSRC
+                    K   = GRPSTIDX( S )
+                    IDX = GRPINDX ( K )
+
+                    IF( IDX .NE. PIDX .AND. GRPFLAG( IDX )      ) THEN
+                        CSRC = GRPCHAR( S )
+                        WRITE( RDEV, 93410 )                        &
+                            CSRC( 1:STALEN3 ),                      &
+                            CSRC( STALEN3+1:STALEN3+SCCLEN3 ),      &
+                            ( GRPINEM ( IDX,I ), GRPOUTEM( IDX,I ), I = 1, NVCMULT )
+
+                        PIDX = IDX
+                    END IF
+                END DO
+
+            CASE ( 'POINT' )
+
+                DO S = 1, NSRC
+                    K   = GRPSTIDX( S )
+                    IDX = GRPINDX ( K )
+
+                    IF( IDX .NE. PIDX .AND. GRPFLAG( IDX )      ) THEN
+                        CSRC = CSOURC( S )
+                        WRITE( RDEV, 93412 )                        &
+                            CSRC( 1:FIPLEN3 ), CSRC( J:FPLLEN3 ),   &
+                            ( GRPINEM ( IDX,I ), GRPOUTEM( IDX,I ), I = 1, NVCMULT )
+
+                        PIDX = IDX
+                    END IF
+                END DO
+
+        END SELECT
 
     END IF
 
@@ -998,7 +1011,7 @@ SUBROUTINE GENMULTC( CDEV, GDEV, LDEV, MDEV, NCPE, PYEAR,   &
     END IF
 
     !......  Change input temporary file unit numbers to be output files for
-    !          report processing.
+    !        report processing.
     IF( CDEV .GT. 0 ) CDEV = ODEV( 1 )
     IF( GDEV .GT. 0 ) GDEV = ODEV( 2 )
     IF( LDEV .GT. 0 ) LDEV = ODEV( 3 )

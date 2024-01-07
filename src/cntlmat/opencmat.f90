@@ -19,7 +19,7 @@ SUBROUTINE OPENCMAT( ENAME, MATTYP, MNAME )
     !***************************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !       System
     ! File: @(#)$Id$
     !
     ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
@@ -38,11 +38,11 @@ SUBROUTINE OPENCMAT( ENAME, MATTYP, MNAME )
     !***************************************************************************
     USE M3UTILIO
 
-    !.......  MODULES for public variables
-    !.......  This module contains the control packet data and control matrices
+    !.....  MODULES for public variables
+    !.....  This module contains the control packet data and control matrices
     USE MODCNTRL, ONLY: NVCMULT, PNAMMULT
 
-    !.......  This module contains the information about the source category
+    !.....  This module contains the information about the source category
     USE MODINFO, ONLY: CATEGORY, CATLEN, CRL, NSRC
 
     !.......This module is required by the FileSetAPI
@@ -50,25 +50,25 @@ SUBROUTINE OPENCMAT( ENAME, MATTYP, MNAME )
 
     IMPLICIT NONE
 
-    !.......   INCLUDES
+    !.....   INCLUDES
     INCLUDE 'EMCNST3.h90'       !  emissions constant parameters
     INCLUDE 'SETDECL.h90'       !  FileSetAPI variables and functions
 
-    !.......  SUBROUTINE ARGUMENTS
+    !.....  SUBROUTINE ARGUMENTS
     CHARACTER(*), INTENT (IN) :: ENAME          ! emissions inven logical name
     CHARACTER(*), INTENT (IN) :: MATTYP         ! matrix type
     CHARACTER(*), INTENT(OUT) :: MNAME          ! controls file name
 
-    !.......   EXTERNAL FUNCTIONS and their descriptions:
+    !.....   EXTERNAL FUNCTIONS and their descriptions:
     CHARACTER(IODLEN3), EXTERNAL :: GETCFDSC
     INTEGER           , EXTERNAL :: GETIFDSC
     CHARACTER(16)     , EXTERNAL :: VERCHAR
 
-    !.......   LOCAL PARAMETERS
+    !.....   LOCAL PARAMETERS
     CHARACTER(50), PARAMETER :: CVSW     = '$Name SMOKEv5.0_Jun2023$'     ! CVS release tag
     CHARACTER(16), PARAMETER :: PROGNAME = 'OPENCMAT'     ! program name
 
-    !.......  Other local variables
+    !.....  Other local variables
     INTEGER          J, N               !  counters and indices
     INTEGER          IOS                !  i/o status
     INTEGER					 NVARS              !  number of output variables
@@ -81,7 +81,7 @@ SUBROUTINE OPENCMAT( ENAME, MATTYP, MNAME )
     !***********************************************************************
     !   begin body of subroutine OPENCMAT
 
-    !.......  Get header information from inventory file
+    !.....  Get header information from inventory file
 
     IF ( .NOT. DESCSET( ENAME,-1 ) ) THEN
         MESG = 'Could not get description of file "'&
@@ -92,10 +92,10 @@ SUBROUTINE OPENCMAT( ENAME, MATTYP, MNAME )
     IFDESC2 = GETCFDSC( FDESC3D, '/FROM/', .TRUE. )
     IFDESC3 = GETCFDSC( FDESC3D, '/VERSION/', .TRUE. )
 
-    !.......  Initialize I/O API output file headers
+    !.....  Initialize I/O API output file headers
     CALL HDRMISS3
 
-    !.......  Set I/O API header parms that need values
+    !.....  Set I/O API header parms that need values
     NROWS3D = NSRC
     NVARSET = NVCMULT
 
@@ -107,9 +107,9 @@ SUBROUTINE OPENCMAT( ENAME, MATTYP, MNAME )
     FDESC3D( 11 ) = '/INVEN FROM/ ' // IFDESC2
     FDESC3D( 12 ) = '/INVEN VERSION/ ' // IFDESC3
 
-    !.......  Deallocate, then allocate, output arrays
-    !.......  Also deallocate the number of variables per file so
-    !           that this will be set automatically by openset
+    !.....  Deallocate, then allocate, output arrays
+    !.....  Also deallocate the number of variables per file so
+    !       that this will be set automatically by openset
     IF( ALLOCATED( VTYPESET ) ) DEALLOCATE( VNAMESET, VTYPESET, VUNITSET, VDESCSET  )
     DEALLOCATE( VARS_PER_FILE )
 
@@ -121,7 +121,7 @@ SUBROUTINE OPENCMAT( ENAME, MATTYP, MNAME )
               VDESCSET( NVARS ), STAT=IOS )
     CALL CHECKMEM( IOS, 'VNAMESET...VDESCSET', PROGNAME )
 
-    !.......  Set up non-speciation variables
+    !.....  Set up non-speciation variables
     N = 0
 
     DO J = 1,NVARSET
@@ -157,8 +157,8 @@ SUBROUTINE OPENCMAT( ENAME, MATTYP, MNAME )
     MESG = 'Enter logical name for control matrix...'
     CALL M3MSG2( MESG )
 
-    !.......  Open control matrix.
-    !.......  Using NAMBUF is needed for HP to ensure string length consistencies
+    !.....  Open control matrix.
+    !.....  Using NAMBUF is needed for HP to ensure string length consistencies
     MESG = 'I/O API ' // MATTYP // ' CONTROL MATRIX'
 
     NAMBUF = PROMPTSET( MESG, FSUNKN3, CRL // 'CMAT', PROGNAME )

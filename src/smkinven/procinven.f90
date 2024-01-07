@@ -121,7 +121,6 @@ SUBROUTINE PROCINVEN( NRAWBP, UDEV, YDEV, CDEV, LDEV )
         CALL M3EXIT( PROGNAME,0,0, 'Bad env vble "ALLOW_NEGATIVE"', 2 )
     END IF
 
-
     MXERR  = ENVINT( ERRSET  , ' ', 100, I )
     IF ( IOS .GT. 0 ) THEN
         CALL M3EXIT( PROGNAME,0,0, 'Bad env vble ERRSET', 2 )
@@ -160,11 +159,11 @@ SUBROUTINE PROCINVEN( NRAWBP, UDEV, YDEV, CDEV, LDEV )
     TMPSTAT = 0      ! array
 
     !.......  Store pollutant/activity-specific data in sorted order. Ensure that
-    !           any duplicates are aggregated.
+    !         any duplicates are aggregated.
     !.......  Give warnings or errors when duplicates are encountered
     !.......  Note that pollutants  activities  are stored in output order
-    !           because they've been previously sorted in part based on their
-    !           position in the master array of output pollutants/activities
+    !         because they've been previously sorted in part based on their
+    !         position in the master array of output pollutants/activities
     K = 0
     PIPCOD = IMISS3       ! Previous iteration pollutant code
     PCAS   = IMISS3       ! Previous CAS number
@@ -181,7 +180,7 @@ SUBROUTINE PROCINVEN( NRAWBP, UDEV, YDEV, CDEV, LDEV )
         TMPSTAT( POLCOD ) = 2
 
         !.......  If current source, pollutant, and CAS number match previous,
-        !               print duplicate error or warning message
+        !         print duplicate error or warning message
         IF( S      == LS     .AND.    &
             POLCOD == PIPCOD .AND.    &
             CASNUM == PCAS         ) THEN
@@ -281,7 +280,7 @@ SUBROUTINE PROCINVEN( NRAWBP, UDEV, YDEV, CDEV, LDEV )
 
         !.......  Convert 0-100 based values to 0-1 based values.
         !.......  Check control efficiency, rule effectiveness, and rule
-        !               penetration and if missing, set to default value.
+        !         penetration and if missing, set to default value.
         !.......  CE default = 0., RP default = 1., RE default = 1.
         !.......  Control efficiency
         IF ( NCE > 0 ) THEN
@@ -346,7 +345,7 @@ SUBROUTINE PROCINVEN( NRAWBP, UDEV, YDEV, CDEV, LDEV )
             IPOSCOD( K ) = POLCOD
 
         !.......  If the existing value is defined, sum with new emissions
-        !               or activity and use weighted average for control factors
+        !         or activity and use weighted average for control factors
         ELSE
 
             EMISN    = 0.
@@ -366,8 +365,8 @@ SUBROUTINE PROCINVEN( NRAWBP, UDEV, YDEV, CDEV, LDEV )
                     EMISO_DY = POLVAL( K, NDY )
                     POLVAL( K, NDY ) = EMISO_DY + EMISN_DY
 
-                    !.......  Use average day emissions for weighting if
-                    !                           annual emissions are not available.
+                    !.....  Use average day emissions for weighting if
+                    !       annual emissions are not available.
                     IF( EMISN == 0. ) EMISN = EMISN_DY
                     IF( EMISO == 0. ) EMISO = EMISO_DY
                 END IF
@@ -384,8 +383,8 @@ SUBROUTINE PROCINVEN( NRAWBP, UDEV, YDEV, CDEV, LDEV )
 
             END IF
 
-            !.......  Weight the control efficiency, rule effectiveness, and
-            !                   rule penetration based on the emission values
+            !.....  Weight the control efficiency, rule effectiveness, and
+            !       rule penetration based on the emission values
             IF ( NCE > 0 )    &
                 POLVAL( K,NCE ) = ( POLVAL( K,NCE )*EMISO +    &
                                     POLVLA( J,NCE )*EMISN  ) * EMISI
@@ -423,8 +422,8 @@ SUBROUTINE PROCINVEN( NRAWBP, UDEV, YDEV, CDEV, LDEV )
         CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
     END IF
 
-    !.......  Print warnings about changed control efficiency, rule
-    !           effectiveness, and rule penetration
+    !.....  Print warnings about changed control efficiency, rule
+    !       effectiveness, and rule penetration
     IF( CE_100_FLAG ) THEN
         MESG = 'WARNING: Some base year control efficiency values'//    &
                ' that were input as 100%' // CRLF() // BLANK10 //       &
@@ -456,14 +455,14 @@ SUBROUTINE PROCINVEN( NRAWBP, UDEV, YDEV, CDEV, LDEV )
     !.......  Deallocate memory for unsorted pollutant arrays
     DEALLOCATE( POLVLA, IPOSCODA, INDEXA, INRECA, ICASCODA )
 
-    !.......  Use sign of INVSTAT and value of TMPSTAT to set type (pol/act) and
-    !           indicator of whether it's present or not
+    !.....  Use sign of INVSTAT and value of TMPSTAT to set type (pol/act) and
+    !       indicator of whether it's present or not
     DO I = 1, MXIDAT
         INVSTAT( I ) = INVSTAT( I ) * TMPSTAT( I )
     END DO
 
-    !.......  Call adjustment routine to create area-to-point sources and
-    !           read in nonhap exclusion file
+    !.....  Call adjustment routine to create area-to-point sources and
+    !       read in nonhap exclusion file
     CALL ADJUSTINV( K, UDEV, YDEV, CDEV, LDEV )
 
     RETURN

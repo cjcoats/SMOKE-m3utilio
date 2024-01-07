@@ -87,7 +87,7 @@ SUBROUTINE PROCINVSRCS( NRAWSRCS )
     END SELECT
 
     !.......  Loop through sources to store sorted arrays
-    !           for output to I/O API file.
+    !         for output to I/O API file.
     !.......  Keep case statement outside the loops to speed processing
     SELECT CASE ( CATEGORY )
       CASE( 'AREA' )

@@ -20,7 +20,7 @@ SUBROUTINE OPENRMAT( ENAME, RPOL, SFLAG, LFLAG,&
     !****************************************************************************/
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !       System
     ! File: @(#)$Id$
     !
     ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
@@ -39,8 +39,8 @@ SUBROUTINE OPENRMAT( ENAME, RPOL, SFLAG, LFLAG,&
     !***************************************************************************
     USE M3UTILIO
 
-    !.......  MODULES for public variables
-    !.......  This module contains the information about the source category
+    !.....  MODULES for public variables
+    !.....  This module contains the information about the source category
     USE MODINFO, ONLY: CATEGORY, CATLEN, CRL, NSRC
 
     !.......This module is required by the FileSetAPI
@@ -48,21 +48,21 @@ SUBROUTINE OPENRMAT( ENAME, RPOL, SFLAG, LFLAG,&
 
     IMPLICIT NONE
 
-    !.......   INCLUDES
+    !.....   INCLUDES
     INCLUDE 'EMCNST3.h90'       !  emissions constant parameters
     INCLUDE 'SETDECL.h90'       !  FileSetAPI variables and functions
 
-    !.......   EXTERNAL FUNCTIONS and their descriptions:
+    !.....   EXTERNAL FUNCTIONS and their descriptions:
     CHARACTER(IODLEN3), EXTERNAL :: GETCFDSC
     INTEGER           , EXTERNAL :: GETIFDSC
     CHARACTER(16)     , EXTERNAL :: VERCHAR
 
-    !.......   LOCAL PARAMETERS
+    !.....   LOCAL PARAMETERS
     INTEGER      , PARAMETER :: NBASVAR  = 4
     CHARACTER(16), PARAMETER :: PROGNAME = 'OPENRMAT'     ! program name
     CHARACTER(50), PARAMETER :: CVSW     = '$Name SMOKEv5.0_Jun2023$'     ! CVS release tag
 
-    !.......  SUBROUTINE ARGUMENTS
+    !.....  SUBROUTINE ARGUMENTS
     CHARACTER(*), INTENT (IN) :: ENAME          ! emissions inven logical name
     CHARACTER(*), INTENT (IN) :: RPOL           ! pollutant for matrices
     LOGICAL     , INTENT (IN) :: SFLAG          ! true: open mass-based file
@@ -78,7 +78,7 @@ SUBROUTINE OPENRMAT( ENAME, RPOL, SFLAG, LFLAG,&
     CHARACTER(*), INTENT(OUT) :: SVNAMES( NMSPC )       ! species mass out vars
     CHARACTER(*), INTENT(OUT) :: LVNAMES( NMSPC )       ! species mole out vars
 
-    !.......  Other local variables
+    !.....  Other local variables
     INTEGER          I, J               !  counters and indices
     INTEGER          IOS                !  i/o status
 
@@ -91,7 +91,7 @@ SUBROUTINE OPENRMAT( ENAME, RPOL, SFLAG, LFLAG,&
     !***********************************************************************
     !   begin body of subroutine OPENRMAT
 
-    !.......  Get header information from inventory file
+    !.....  Get header information from inventory file
 
     IF ( .NOT. DESCSET( ENAME,-1 ) ) THEN
         MESG = 'Could not get description of file "' // TRIM( ENAME ) // '".'
@@ -101,14 +101,14 @@ SUBROUTINE OPENRMAT( ENAME, RPOL, SFLAG, LFLAG,&
     IFDESC2 = GETCFDSC( FDESC3D, '/FROM/',    .TRUE. )
     IFDESC3 = GETCFDSC( FDESC3D, '/VERSION/', .TRUE. )
 
-    !.......  Initialize variable names for I/O API files
+    !.....  Initialize variable names for I/O API files
     SVNAMES = ' '      ! Array
     LVNAMES = ' '      ! Array
 
-    !.......  Initialize I/O API output file headers
+    !.....  Initialize I/O API output file headers
     CALL HDRMISS3
 
-    !.......  Set I/O API header parms that need values
+    !.....  Set I/O API header parms that need values
     NVARSET = MIN( NBASVAR + NMSPC, MXVARS3 )
     NROWS3D = NSREAC
     NTHIK3D = NSRC
@@ -132,11 +132,11 @@ SUBROUTINE OPENRMAT( ENAME, RPOL, SFLAG, LFLAG,&
               VDESCSET( NVARSET ), STAT=IOS )
     CALL CHECKMEM( IOS, 'VNAMESET...VDESCSET', PROGNAME )
 
-    !.......  Also deallocate the number of variables per file so
-    !           that this will be set automatically by openset
+    !.....  Also deallocate the number of variables per file so
+    !       that this will be set automatically by openset
     DEALLOCATE( VARS_PER_FILE )
 
-    !.......  Set up non-speciation variables
+    !.....  Set up non-speciation variables
     J = 1
     VNAMESET( J ) = 'SRCID'
     VTYPESET( J ) = M3INT
@@ -161,8 +161,8 @@ SUBROUTINE OPENRMAT( ENAME, RPOL, SFLAG, LFLAG,&
     VUNITSET( J ) = 'fraction'
     VDESCSET( J ) = 'Reactivity control market penetration'
 
-    !.......  Make sure program has not been modified improperly to cause a
-    !           hard-to-detect error
+    !.....  Make sure program has not been modified improperly to cause a
+    !       hard-to-detect error
 
     IF( J .NE. NBASVAR ) THEN
         MESG = 'INTERNAL ERROR: Number of variables NBASVAR is ' // &
@@ -171,16 +171,16 @@ SUBROUTINE OPENRMAT( ENAME, RPOL, SFLAG, LFLAG,&
         CALL M3EXIT( PROGNAME, 0, 0, ' ', 2 )
     END IF
 
-    !.......  Set speciation variables for I/O API header
+    !.....  Set speciation variables for I/O API header
     CPOL = ADJUSTL( RPOL )
     DO I = 1, NMSPC
 
         J = J + 1
 
-        !.......  Set SVNAMES and LVNAMES here instead of VNAME3D, so that it
-        !               will be easier to change these to have different name roots
-        !               if needed in the future
-        !.......  Check total number of output variables with I/O API max.
+        !.....  Set SVNAMES and LVNAMES here instead of VNAME3D, so that it
+        !       will be easier to change these to have different name roots
+        !       if needed in the future
+        !.....  Check total number of output variables with I/O API max.
         IF( J .LE. MXVARS3 ) THEN
             VTYPESET( J ) = M3REAL
             VDESCSET( J ) = CPOL // SPJOIN // SPECIES( I )
@@ -191,10 +191,10 @@ SUBROUTINE OPENRMAT( ENAME, RPOL, SFLAG, LFLAG,&
 
     END DO
 
-    !.......  Error if number of variables is passed maximum because we can't
-    !           store the names of the variables.
-    !.......  DO NOT end program here because it will be ended when the write
-    !           attempt is made for these extra variables.
+    !.....  Error if number of variables is passed maximum because we can't
+    !       store the names of the variables.
+    !.....  DO NOT end program here because it will be ended when the write
+    !       attempt is made for these extra variables.
     IF( J .GT. MXVARS3 ) THEN
 
         WRITE( MESG, 94010 )                                &
@@ -207,7 +207,7 @@ SUBROUTINE OPENRMAT( ENAME, RPOL, SFLAG, LFLAG,&
     MESG = 'Enter logical name(s) for ...'
     CALL M3MSG2( MESG )
 
-    !.......  Set up variables specifically for mass-based file, and open it
+    !.....  Set up variables specifically for mass-based file, and open it
     IF( SFLAG ) THEN
 
         FDESC3D( 4 ) = '/SMATTYPE/ ' // ' Mass'
@@ -228,7 +228,7 @@ SUBROUTINE OPENRMAT( ENAME, RPOL, SFLAG, LFLAG,&
 
     ENDIF
 
-    !.......  Set up variables specifically for mole-based file, and open it
+    !.....  Set up variables specifically for mole-based file, and open it
     IF( LFLAG ) THEN
 
         FDESC3D( 4 ) = '/SMATTYPE/ ' // ' Mole'
@@ -249,7 +249,7 @@ SUBROUTINE OPENRMAT( ENAME, RPOL, SFLAG, LFLAG,&
 
     ENDIF
 
-    !.......  Open the supplementary file (for SCCs and SPROFs)
+    !.....  Open the supplementary file (for SCCs and SPROFs)
 
     MESG = 'ASCII REACTIVITY MATRIX SUPPLEMENT file for ' // RPOL
 
@@ -260,7 +260,7 @@ SUBROUTINE OPENRMAT( ENAME, RPOL, SFLAG, LFLAG,&
 
     !******************  FORMAT  STATEMENTS   ******************************
 
-    !.......   Internal buffering formats...... 94xxx
+    !.....   Internal buffering formats...... 94xxx
 
 94010 FORMAT( 10( A, :, I8, :, 1X ) )
 

@@ -20,7 +20,7 @@ SUBROUTINE WRCTMP( IDEV, POLID, IDX, VIDX, LOUTANY )
     !***********************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !       System
     ! File: @(#)$Id$
     !
     ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
@@ -38,13 +38,13 @@ SUBROUTINE WRCTMP( IDEV, POLID, IDX, VIDX, LOUTANY )
     !
     !***************************************************************************
 
-    !.......  MODULES for public variables
-    !.......  This module contains the information about the source category
+    !.....  MODULES for public variables
+    !.....  This module contains the information about the source category
     USE MODINFO, ONLY: NSRC, NIPPA
 
     IMPLICIT NONE
 
-    !.......   SUBROUTINE ARGUMENTS:
+    !.....   SUBROUTINE ARGUMENTS:
 
     INTEGER     , INTENT (IN) :: IDEV               ! logical file name
     INTEGER     , INTENT (IN) :: POLID              ! pollutant number
@@ -52,7 +52,7 @@ SUBROUTINE WRCTMP( IDEV, POLID, IDX, VIDX, LOUTANY )
     INTEGER     , INTENT (IN) :: VIDX( NIPPA )      ! pollutant/act flags
     LOGICAL     , INTENT(OUT) :: LOUTANY            ! true: at least one pollutant output
 
-    !.......   Other local variables
+    !.....   Other local variables
 
     INTEGER   S       ! indices
 
@@ -67,7 +67,7 @@ SUBROUTINE WRCTMP( IDEV, POLID, IDX, VIDX, LOUTANY )
     ENDIF
 
     !...... Write indices to control factor packets to a temporary file
-    !               for only those pollutants that have controls
+    !       for only those pollutants that have controls
     IF ( VIDX( POLID ) .EQ. 1 ) THEN
         DO S = 1, NSRC
 

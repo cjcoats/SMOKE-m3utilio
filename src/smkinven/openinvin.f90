@@ -150,8 +150,7 @@ SUBROUTINE OPENINVIN( CATEGORY, ADEV, DDEV, HDEV, RDEV, SDEV,   &
 
         IF( SCCMAPFLAG ) THEN
             MESG = 'Enter logical name for reference SCC input file'
-            MDEV = PROMPTFFILE( MESG, .TRUE., .TRUE., 'SCCXREF',    &
-                            PROGNAME )
+            MDEV = PROMPTFFILE( MESG, .TRUE., .TRUE., 'SCCXREF', PROGNAME )
             CALL RDSCCMAP( MDEV )
 
             MESG = 'Exclude SCCs not found in SCCXREF input file'
@@ -257,8 +256,8 @@ SUBROUTINE OPENINVIN( CATEGORY, ADEV, DDEV, HDEV, RDEV, SDEV,   &
     IF( .NOT. IFLAG .AND.    &
         .NOT. DFLAG .AND.    &
         .NOT. HFLAG .AND.    &
-        .NOT. APIFLAG .AND.    &
-        .NOT. NCDFLAG      ) THEN
+        .NOT. APIFLAG .AND.  &
+        .NOT. NCDFLAG        ) THEN
 
         MESG = 'ERROR: Environment settings indicate no files are to be read'
         CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )

@@ -1,8 +1,8 @@
 
-SUBROUTINE RDDATAORLPT( LINE, READDATA, READPOL, IYEAR, DESC,    &
+SUBROUTINE RDDATAORLPT( LINE, READDATA, READPOL, IYEAR, DESC,       &
                         ERPTYP, SRCTYP, HT, DM, TK, FL, VL, SIC,    &
-                        MACT, NAICS, CTYPE, LAT, LON, UTMZ,    &
-                        NEID, CORS, BLID, FUGHT, FUGAR,    &
+                        MACT, NAICS, CTYPE, LAT, LON, UTMZ,         &
+                        NEID, CORS, BLID, FUGHT, FUGAR,             &
                         EXTORL, HDRFLAG, EFLAG )
 
     !***********************************************************************
@@ -82,10 +82,9 @@ SUBROUTINE RDDATAORLPT( LINE, READDATA, READPOL, IYEAR, DESC,    &
     LOGICAL,            INTENT (OUT) :: EFLAG                     ! error flag
 
     !.......   Local parameters, indpendent
-    INTEGER      , PARAMETER :: MXPOLFIL = 60      ! arbitrary maximum pollutants in file
-    INTEGER      , PARAMETER :: NSEG     = 75          ! number of segments in line
-    CHARACTER(16), PARAMETER :: PROGNAME = 'RDDATAORLPT'     ! Program name
-
+    INTEGER      , PARAMETER :: MXPOLFIL = 60               ! arbitrary maximum pollutants in file
+    INTEGER      , PARAMETER :: NSEG     = 75               ! number of segments in line
+    CHARACTER(16), PARAMETER :: PROGNAME = 'RDDATAORLPT'    ! Program name
 
     !.......   Other local variables
     INTEGER         I, L, L1, LL           ! counters and indices
@@ -106,8 +105,7 @@ SUBROUTINE RDDATAORLPT( LINE, READDATA, READPOL, IYEAR, DESC,    &
 
     !.......  Scan for header lines and check to ensure all are set
     !           properly
-    CALL GETHDR( MXPOLFIL, .TRUE., .TRUE., .FALSE.,    &
-                 LINE, ICC, INY, NPOL, IOS )
+    CALL GETHDR( MXPOLFIL, .TRUE., .TRUE., .FALSE., LINE, ICC, INY, NPOL, IOS )
 
     !.......  Interpret error status
     IF( IOS == 4 ) THEN

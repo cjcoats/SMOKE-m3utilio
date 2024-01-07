@@ -60,15 +60,15 @@ SUBROUTINE GETHDR( MXDATA, CFLAG, YFLAG, DFLAG,    &
 
     !.......   SUBROUTINE ARGUMENTS
     !.......   NOTE that NDROP and EDROP are not used at present
-    INTEGER     , INTENT (IN) :: MXDATA      ! max no data variables allowed
-    LOGICAL     , INTENT (IN) :: CFLAG       ! true: country header expected
-    LOGICAL     , INTENT (IN) :: YFLAG       ! true: year header expected
-    LOGICAL     , INTENT (IN) :: DFLAG       ! true: data names header expected
-    CHARACTER(*), INTENT(IN OUT):: LINE      ! full record in string
-    INTEGER     , INTENT(OUT) :: ICC         ! country code
-    INTEGER     , INTENT(OUT) :: INY         ! inventory year
-    INTEGER     , INTENT(OUT) :: NPOA        ! no. data names
-    INTEGER     , INTENT(OUT) :: EOS         ! error status
+    INTEGER     , INTENT(IN   ) :: MXDATA      ! max no data variables allowed
+    LOGICAL     , INTENT(IN   ) :: CFLAG       ! true: country header expected
+    LOGICAL     , INTENT(IN   ) :: YFLAG       ! true: year header expected
+    LOGICAL     , INTENT(IN   ) :: DFLAG       ! true: data names header expected
+    CHARACTER(*), INTENT(INOUT) :: LINE      ! full record in string
+    INTEGER     , INTENT(  OUT) :: ICC         ! country code
+    INTEGER     , INTENT(  OUT) :: INY         ! inventory year
+    INTEGER     , INTENT(  OUT) :: NPOA        ! no. data names
+    INTEGER     , INTENT(  OUT) :: EOS         ! error status
 
     !.......   EXTERNAL FUNCTIONS and their descriptions:
     INTEGER, EXTERNAL :: GETNLIST
@@ -133,8 +133,7 @@ SUBROUTINE GETHDR( MXDATA, CFLAG, YFLAG, DFLAG,    &
         !.......  Check for inventory type
         IF ( BUFFER(2:5) .EQ. 'TYPE' ) THEN
 
-        !.......  Try to find activity in name of data, otherwise, assume
-        !                   emissions
+        !.......  Try to find activity in name of data, otherwise, assume emissions
             I = INDEX( BUFFER, 'ACTIVITY' )
             IF( I .GT. 0 ) THEN
                 ACT_FLAG = .TRUE.
@@ -180,9 +179,9 @@ SUBROUTINE GETHDR( MXDATA, CFLAG, YFLAG, DFLAG,    &
             END IF
 
         !.......  Check for units field to be used and compare to valid units
-        !               from master input list
+        !         from master input list
         !.......  Compute conversion factors for adjusting emissions in reader
-        !               routines
+        !         routines
         ELSE IF ( BUFFER(2:6) .EQ. 'UNITS' ) THEN         ! read in units
 
         !.......  Get the number of units fields and allocate memory
@@ -344,7 +343,7 @@ SUBROUTINE GETHDR( MXDATA, CFLAG, YFLAG, DFLAG,    &
         END IF
 
         !.......  If this is a header line, return here without checking that
-        !               all of the valid header fields are set properly
+        !         all of the valid header fields are set properly
         RETURN
 
     END IF
@@ -352,7 +351,7 @@ SUBROUTINE GETHDR( MXDATA, CFLAG, YFLAG, DFLAG,    &
     EOS = -1
 
     !.......  If the line is not a header line, make sure that all of the
-    !           important header lines have been read in...
+    !         important header lines have been read in...
 
     !.......  Check for country header
     IF( CFLAG .AND. ICC .LT. 0 ) THEN

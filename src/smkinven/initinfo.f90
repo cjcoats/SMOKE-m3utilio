@@ -161,14 +161,14 @@ SUBROUTINE INITINFO( FILFMT )
     CALL CHECKMEM( IOS, 'IDUMARR', PROGNAME )
 
     !.......  Get dummy output pollutant variable names to use for determining
-    !           the positions of the fields in the pollutant-specific variable(s)
+    !         the positions of the fields in the pollutant-specific variable(s)
 
     CALL BLDENAMS( CATEGORY, 1, NPPOL, 'DUM', ENAMES, CDUMARR,    &
                    IDUMARR, CDUMARR )
 
     !.......  Based on the order of the output names, find the positions in the
-    !           second dimension of the pollutant-specific data (e.g., POLVLA
-    !           and POLVAL)
+    !         second dimension of the pollutant-specific data (e.g., POLVLA
+    !         and POLVAL)
     DO I = 1, NPPOL
         IF( ENAMES( I )(1:NAMLEN3)  .EQ. 'DUM' )    NEM = I
         IF( ENAMES( I )(1:CPRTLEN3) .EQ. AVEDAYRT ) NDY = I

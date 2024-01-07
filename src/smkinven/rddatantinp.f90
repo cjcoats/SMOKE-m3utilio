@@ -64,7 +64,7 @@ SUBROUTINE RDDATAORLNP( LINE, READDATA, READPOL, IYEAR, SIC,    &
 
     !.......   Local parameters
     INTEGER      , PARAMETER :: MXDATFIL = 60      ! arbitrary max no. data variables
-    INTEGER      , PARAMETER :: NSEG = 60          ! number of segments in line
+    INTEGER      , PARAMETER :: NSEG     = 60      ! number of segments in line
     CHARACTER(16), PARAMETER :: PROGNAME = 'RDDATAORLNP'     ! Program name
 
 

@@ -132,7 +132,7 @@ SUBROUTINE GENREACT( PYEAR, ENAME, RPOL, USEPOL )
 
     CHARACTER(SPNLEN3) SPCODE     ! tmp speciation profile code
 
-    LOGICAL       :: EFLAG    = .FALSE.      ! true: error has occurred
+    LOGICAL          EFLAG                   ! true: error has occurred
     LOGICAL, SAVE :: FIRSTIME = .TRUE.       ! true: first call to subroutine
     LOGICAL       :: LFLAG    = .FALSE.      ! true: link will be included in report
     LOGICAL, SAVE :: LAVEDAY  = .FALSE.      ! true: use average day emissions
@@ -151,6 +151,7 @@ SUBROUTINE GENREACT( PYEAR, ENAME, RPOL, USEPOL )
     !***********************************************************************
     !   begin body of subroutine GENREACT
 
+    EFLAG    = .FALSE.
     IF( FIRSTIME ) THEN
 
         !.......  Get environment variables that control subroutine behavior
@@ -231,17 +232,16 @@ SUBROUTINE GENREACT( PYEAR, ENAME, RPOL, USEPOL )
     !.......  For pollutant in subroutine argument...
 
     !.......  Determine which reactivity packet goes to each source
-    CALL ASGNCNTL( NSRC, 1, 'REACTIVITY', USEPOL, RPOL,&
-                   IDUM, ISREA )
+    CALL ASGNCNTL( NSRC, 1, 'REACTIVITY', USEPOL, RPOL, IDUM, ISREA )
 
     ! NOTE:
     !.......  Please note that the indexing for MCWID, HCWID, and HINDX
-    !           is confusing. The main confusing aspect is that the
-    !           +1's are added to index past the "Source" column, which
-    !           is not a part of the MCWID (which is just for the
-    !           source characteristics).  The +2's are added to index
-    !           past the "Source" column and to the column after the
-    !           last NCOUT column (last column of source chars).
+    !         is confusing. The main confusing aspect is that the
+    !         +1's are added to index past the "Source" column, which
+    !         is not a part of the MCWID (which is just for the
+    !         source characteristics).  The +2's are added to index
+    !         past the "Source" column and to the column after the
+    !         last NCOUT column (last column of source chars).
 
     !.......  Initialize valid columns
     LF = .FALSE.      ! array
@@ -410,8 +410,8 @@ SUBROUTINE GENREACT( PYEAR, ENAME, RPOL, USEPOL )
     CALL PROCSPRO( NMSPC, SPCNAMES( 1,V ) )
 
     !.......  Allocate memory for the compressed reactivity matrix.  Use data
-    !           structures for point sources, but this routine can be used for area
-    !           sources or mobile sources as well.
+    !         structures for point sources, but this routine can be used for area
+    !         sources or mobile sources as well.
     !.......  Allocate memory for names of output variables
 
     ALLOCATE(   PCRIDX( NSREAC ),       &
@@ -438,8 +438,8 @@ SUBROUTINE GENREACT( PYEAR, ENAME, RPOL, USEPOL )
 
     !.......  Read emissions for current pollutant from the inventory file
     !.......  Note that average day read will not work if RPOL is
-    !           more than 13 characters - must use BLDENAMS routine to
-    !           do this correctly.
+    !         more than 13 characters - must use BLDENAMS routine to
+    !         do this correctly.
     IF( LAVEDAY ) THEN
         VNAM = AVEDAYRT // RPOL( 1:MIN( LEN_TRIM( RPOL ), 13 ) )
     ELSE
@@ -449,7 +449,7 @@ SUBROUTINE GENREACT( PYEAR, ENAME, RPOL, USEPOL )
     CALL RDMAPPOL( NSRC, 1, 1, VNAM, EMIS )
 
     !.......  Loop through all sources and store reactivity information for
-    !           those that have it
+    !         those that have it
     YFAC = YR2DAY( BYEAR )      ! for loop below
     N = 0
     DO S = 1, NSRC

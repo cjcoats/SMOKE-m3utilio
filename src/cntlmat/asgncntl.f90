@@ -376,12 +376,12 @@ SUBROUTINE ASGNCNTL( NSRCIN, WDEV, PKTTYP, PNAM, DATSPFLAG, SINDX )
         END IF
 
         !.......  Try for any CHAR5 non-blank // SCC match; then
-        !                           any CHAR4 non-blank // SCC match; then
-        !                           any CHAR3 non-blank // SCC match; then
-        !                           any CHAR2 non-blank // SCC match; then
-        !                           any CHAR1 non-blank // SCC match; then
-        !                           any PLANT non-blank // SCC match; then
-        !                           any PLANT non-blank        match
+        !           any CHAR4 non-blank // SCC match; then
+        !           any CHAR3 non-blank // SCC match; then
+        !           any CHAR2 non-blank // SCC match; then
+        !           any CHAR1 non-blank // SCC match; then
+        !           any PLANT non-blank // SCC match; then
+        !           any PLANT non-blank        match
 
         IF( F6 .GT. 0 .AND. ICTL16(F6,V) .NE. IMISS3 ) THEN
             IDX = ICTL16( F6,V )
@@ -429,11 +429,11 @@ SUBROUTINE ASGNCNTL( NSRCIN, WDEV, PKTTYP, PNAM, DATSPFLAG, SINDX )
         IF ( MACTFLAG ) THEN
 
             !.......  Try for pollutant-specific FIPS code, SCC,  MACT match; then
-            !                           pollutant-specific FIPS code  MACT match; then
-            !                           pollutant-specific Cy/st code, SCC,  MACT match; then
-            !                           pollutant-specific Cy/st code  MACT match; then
-            !                           pollutant-specific SCC  MACT match; then
-            !                           pollutant-specific MACT match
+            !           pollutant-specific FIPS code  MACT match; then
+            !           pollutant-specific Cy/st code, SCC,  MACT match; then
+            !           pollutant-specific Cy/st code  MACT match; then
+            !           pollutant-specific SCC  MACT match; then
+            !           pollutant-specific MACT match
             F5 = FINDC( CMFPSC, TXCNT( 37 ), CHRT37 )
             F4 = FINDC( CMFP  , TXCNT( 36 ), CHRT36 )
             F3 = FINDC( CMSTSC, TXCNT( 35 ), CHRT35 )
@@ -486,11 +486,11 @@ SUBROUTINE ASGNCNTL( NSRCIN, WDEV, PKTTYP, PNAM, DATSPFLAG, SINDX )
             END IF
 
             !.......  Try for any FIPS code, SCC,  MACT match; then
-            !                           any FIPS code  MACT match; then
-            !                           any Cy/st code, SCC,  MACT match; then
-            !                           any Cy/st code  MACT match; then
-            !                           any SCC  MACT match; then
-            !                           any MACT match
+            !           any FIPS code  MACT match; then
+            !           any Cy/st code, SCC,  MACT match; then
+            !           any Cy/st code  MACT match; then
+            !           any SCC  MACT match; then
+            !           any MACT match
             IF( F5 .GT. 0 .AND. ICTL37(F5,V) .NE. IMISS3 ) THEN
                 IDX = ICTL37( F5,V )
                 IF( PKTTYP == 'MACT' ) CALL CHECK_SRC_TYPE
@@ -638,8 +638,8 @@ SUBROUTINE ASGNCNTL( NSRCIN, WDEV, PKTTYP, PNAM, DATSPFLAG, SINDX )
 
 CONTAINS
 
-    !.......  This internal subprogram stores the index of the control
-    !               data tables for each source and pollutant
+    !.....  This internal subprogram stores the index of the control
+    !       data tables for each source and pollutant
     SUBROUTINE SETSOURCE_CONTROL_INDEX
 
     !----------------------------------------------------------------------
@@ -652,8 +652,8 @@ CONTAINS
     !..............
     !..............
 
-    !.......  This internal subprogram reports when SCC matches are
-    !               used instead of SIC matches.
+    !.....  This internal subprogram reports when SCC matches are
+    !       used instead of SIC matches.
     SUBROUTINE REPORT_SCC_USE( CHARTNUM )
 
         !.......  Internal subprogram arguments.
@@ -731,8 +731,7 @@ CONTAINS
           CASE DEFAULT
             MESG = 'INTERNAL ERROR: Case "'// TRIM( CHARTNUM )//        &
                    '" unknown in internal subprogram REPORT_SCC_USE'
-            CALL M3MSG2( MESG )
-            CALL M3EXIT( PROGNAME, 0, 0, ' ', 2 )
+            CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 
         END SELECT
 
@@ -836,9 +835,9 @@ CONTAINS
 
         END IF
 
-        !.......  Try for any FIPS code  SIC matches; then
-        !                   any Cy/st code  SIC matches; then
-        !                   any SIC matches; then
+        !.....  Try for any FIPS code  SIC matches; then
+        !       any Cy/st code  SIC matches; then
+        !       any SIC matches; then
         IF( F5.GT. 0 .AND. ICTL31(F5,V) .NE. IMISS3 ) THEN
             IDX = ICTL31( F5,V )
             CALL SETSOURCE_CONTROL_INDEX
@@ -884,8 +883,8 @@ CONTAINS
     !..............
     !..............
 
-    !.......  This internal subprogram assigns the cross-reference
-    !               information by SCC and all combos. All variables are inherited.
+    !.....  This internal subprogram assigns the cross-reference
+    !       information by SCC and all combos. All variables are inherited.
 
     SUBROUTINE SET_BY_SCC( ISTAT )
 
@@ -893,9 +892,9 @@ CONTAINS
 
         !----------------------------------------------------------------------
 
-        !.......  Try for pollutant-specific FIPS code  SCC matches; then
-        !                       pollutant-specific Cy/st code  SCC matches; then
-        !                       pollutant-specific SCC matches
+        !.....  Try for pollutant-specific FIPS code  SCC matches; then
+        !       pollutant-specific Cy/st code  SCC matches; then
+        !       pollutant-specific SCC matches
 
         F11= FINDC( CFIPS_D, TXCNT( 9 ), CHRT09 )
         F10= FINDC( CFIPS_C, TXCNT( 25), CHRT08C )
@@ -1009,8 +1008,8 @@ CONTAINS
         END IF
 
         !.......  Try for any FIPS code  SCC matches; then
-        !                       any Cy/st code  SCC matches; then
-        !                       any SCC matches; then
+        !           any Cy/st code  SCC matches; then
+        !           any SCC matches; then
 
         IF( F11 .GT. 0 .AND. ICTL09(F11,V) .NE. IMISS3 ) THEN
             IDX = ICTL09( F11,V )

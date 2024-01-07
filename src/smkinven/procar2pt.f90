@@ -124,15 +124,15 @@ SUBROUTINE PROCAR2PT( NRAWBP )
     !   begin body of subroutine PROCAR2PT
 
     !.......  Determine total number of sources to be added; if source only
-    !           has one location, can use existing arrays and don't need to
-    !           create additional memory for it
+    !         has one location, can use existing arrays and don't need to
+    !         create additional memory for it
     NA2PSRCS = 0
     NA2PRECS = 0
     NREPSRCS = 0
 
     DO S = 1, NSRC
         IF( AR2PTTBL( S ) /= 0 ) THEN
-            NA2PSRCS = NA2PSRCS + AR2PTCNT( S ) - 1
+            NA2PSRCS = NA2PSRCS +  AR2PTCNT( S ) - 1
             NA2PRECS = NA2PRECS + (AR2PTCNT( S ) - 1)*NPCNT( S )
             NREPSRCS = NREPSRCS + NPCNT( S )
         END IF
@@ -197,8 +197,8 @@ SUBROUTINE PROCAR2PT( NRAWBP )
                  POLVAL, CSOURC, CSCC, CMACT, CSRCTYP, CNAICS,    &
                 CEXTORL, CINTGR, CSHAPE )
 
-        !.......  Deallocate original X and Y location arrays
-        !               Don't need to store old values since they aren't set
+        !.....  Deallocate original X and Y location arrays
+        !       Don't need to store old values since they aren't set
         DEALLOCATE( XLOCA, YLOCA, CELLID  )
 
         !.......  Allocate memory for larger sorted arrays
@@ -295,8 +295,8 @@ SUBROUTINE PROCAR2PT( NRAWBP )
                     REPPOL( REPPOS )  = IPOSCOD( K )
                     REPORIGEMIS( REPPOS ) = POLVAL( K,NEM )
 
-                    !.......  If not adding sources, factor should be 1.0, so skip
-                    !                           adjusting emissions
+                    !.....  If not adding sources, factor should be 1.0, so skip
+                    !       adjusting emissions
                     IF( FACTOR /= 1. ) THEN
                         POLVAL( K,NEM ) = POLVAL( K,NEM ) * FACTOR
                         POLVAL( K,NDY ) = POLVAL( K,NDY ) * FACTOR
@@ -389,8 +389,8 @@ SUBROUTINE PROCAR2PT( NRAWBP )
 
         ELSE
 
-            !.......  Not processing current source, but if we're adding sources,
-            !                   then need to copy information to new arrays
+            !.....  Not processing current source, but if we're adding sources,
+            !       then need to copy information to new arrays
             IF( NA2PSRCS > 0 ) THEN
 
                 NEWSRCPOS = NEWSRCPOS + 1
