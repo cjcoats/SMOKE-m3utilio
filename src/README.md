@@ -316,6 +316,10 @@ extremely tedious task ;-( ) [See `PERMUTI`, below.]
 
 Many constants were moved from `DATA` statements to `PARAMETER` statements.
 
+For file-name and variable-name arguments, *src/filesetapi/* routines
+`OPENSET`, `CLOSESET`, `READSET`, 'WRITESET` and `DESCSET`
+inappropriately check  `LEN(NAME)` instead of `LEN_TRIM(NAME)`.
+
 In many places, constructs involving `CHARACTER`-string lengths of the
 form `FOO( 1 : LEN_TRIM( FOO ) )` are replaced by the cheaper,
 much-simpler, and  more readable but equivalent `TRIM( FOO )`.  Likeise,
@@ -417,6 +421,17 @@ that sorts its array-arguments `ARR1` etc. in-place, on the basis of
 the `INDX` array returned by the `SORTI`, without the need for extra
 temporary scratch-arrays.  Note that retrofitting `PERMUTI` would be a
 major task.
+
+There is a new *filesetapi* implementation found mostly in 
+*src/filesetapi/modfileset.new.f90* that (a)&nbsp;eliminates
+*src/inc/SETDECL.h90* in favor of `USE MODFILESET` and moves
+routines `OPENSET, DESCSET, CLOSESET, PROMPTSET` that manipulate
+fileset data structures into the `CONTAINS` part of the module,
+together with now-`PRIVATE` worker routines `CREATESET, CHKFILESET,
+CHKSETDESC, APPENDNAME`. For this, the *Makefile*s need to be
+modified to eliminate source-files for the now-`CONTAIN`ed routines, and
+the rest of the SMOKE codes edited to `USE MODFILESET` where they now
+`INCLUDE SETDECL.h90`.
 
 The "generate new files in a file-set" constructs ensuring that file
 sizes do not exceed the (netCDF-2, 1990's) 2GB file size limit have not

@@ -102,7 +102,7 @@ LOGICAL FUNCTION CREATESET( FIDX, RNAME, PHYSNAME, FSTATUS )
                     WRITE( FDESC3D( J - 1 ),93010 ) '/FILE POSITION/', I
                     WRITE( FDESC3D( J ),    93010 ) '/NUMBER OF VARIABLES/', NVARSET
 
-                !..........  Save position for writing subsequent info
+                    !..........  Save position for writing subsequent info
                     FDESCPOS = J - 1
                     EXIT
                 END IF

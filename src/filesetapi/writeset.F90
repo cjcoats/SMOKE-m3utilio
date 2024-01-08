@@ -79,15 +79,16 @@ LOGICAL FUNCTION WRITESET( ROOTNAME, VNAME, FILENUM, JDATE, JTIME, BUFFER )
     !---------------------------------
 
     !......  Check length of file name
-    IF( LEN( ROOTNAME ) > 16 ) THEN
+    IF( LEN_TRIM( ROOTNAME ) > 16 ) THEN
         MESG = 'Max file name length (16) exceeded for "' // ROOTNAME // '"'
         CALL M3MSG2( MESG )
         WRITESET = .FALSE.
         RETURN
     END IF
+    ROOTNAME16 = ROOTNAME
 
     !......  Check length of variable name
-    IF( LEN( VNAME ) > 16 ) THEN
+    IF( LEN_TRIM( VNAME ) > 16 ) THEN
         MESG = 'Max variable name length (16) exceeded for "' // VNAME // '"'
         CALL M3MSG2( MESG )
         WRITESET = .FALSE.
@@ -96,7 +97,6 @@ LOGICAL FUNCTION WRITESET( ROOTNAME, VNAME, FILENUM, JDATE, JTIME, BUFFER )
     VNAME16 = VNAME
 
     !......  Get file index
-    ROOTNAME16 = ROOTNAME
     FILEIDX = INDEX1( ROOTNAME16, MXFILE3, RNAMES )
 
     !......  If file is not open, exit with error

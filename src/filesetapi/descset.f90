@@ -134,14 +134,14 @@ LOGICAL FUNCTION DESCSET( ROOTNAME, FILENUM )
     !......  Check if a single file is requested
     IF( FILENUM /= ALLFILES ) THEN
 
-    !......  Make sure file number is positive
+        !......  Make sure file number is positive
         IF( FILENUM < 1 ) THEN
             MESG = 'File number must be positive or "ALLFILES"'
             CALL M3MSG2( MESG )
             DESCSET = .FALSE.
             RETURN
 
-    !......  Check that number is not greater than total number of files
+        !......  Check that number is not greater than total number of files
         ELSE IF( FILENUM > SIZE( FILE_INFO( FILEIDX )%LNAMES ) ) THEN
             WRITE( MESG,92010 ) 'Invalid file number requested; ' //    &
                    'file set "' // TRIM( ROOTNAME ) // '" contains ',   &
@@ -151,20 +151,20 @@ LOGICAL FUNCTION DESCSET( ROOTNAME, FILENUM )
             RETURN
         ELSE
 
-    !......  Set logical file name
+            !......  Set logical file name
             LNAME = FILE_INFO( FILEIDX )%LNAMES( FILENUM )
 
-    !......  Try to get file description
+            !......  Try to get file description
             IF( .NOT. DESC3( LNAME ) ) THEN
                 DESCSET = .FALSE.
                 RETURN
             END IF
 
-    !......  Store file set information
+            !......  Store file set information
             NFILESET = 1
             NVARSET = NVARS3D
 
-    !......  Allocate variable information arrays
+            !......  Allocate variable information arrays
             ALLOCATE( VARS_PER_FILE( NFILESET ),    &
                       VTYPESET( NVARSET ),          &
                       VNAMESET( NVARSET ),          &
@@ -172,7 +172,7 @@ LOGICAL FUNCTION DESCSET( ROOTNAME, FILENUM )
                       VDESCSET( NVARSET ), STAT=IOS )
             CALL CHECKMEM( IOS, 'VARS_PER_FILE...VDESCSET', FUNCNAME )
 
-    !......  Store info for this file
+            !......  Store info for this file
             VARS_PER_FILE( 1 ) = NVARS3D
             VTYPESET( 1:NVARS3D ) = VTYPE3D( 1:NVARS3D )
             VNAMESET( 1:NVARS3D ) = VNAME3D( 1:NVARS3D )
@@ -181,14 +181,14 @@ LOGICAL FUNCTION DESCSET( ROOTNAME, FILENUM )
         END IF
     ELSE
 
-    !......  Open first file of set
+        !......  Open first file of set
         LNAME = FILE_INFO( FILEIDX )%LNAMES( 1 )
         IF( .NOT. DESC3( LNAME ) ) THEN
             DESCSET = .FALSE.
             RETURN
         END IF
 
-    !......  Get total number of files from file header
+        !......  Get total number of files from file header
         NFILESTR = GETCFDSC( FDESC3D, '/NUMBER OF FILES/', .TRUE. )
         NFILEINT = STR2INT( NFILESTR )
         IF( NFILEINT == IMISS3 ) THEN
@@ -198,7 +198,7 @@ LOGICAL FUNCTION DESCSET( ROOTNAME, FILENUM )
             RETURN
         END IF
 
-    !......  Get total number of variables from file header
+        !......  Get total number of variables from file header
         NVARSTR  = GETCFDSC( FDESC3D, '/NUMBER OF VARIABLES/', .TRUE. )
         NVARINT  = STR2INT( NVARSTR )
         IF( NVARINT == IMISS3 ) THEN
@@ -208,11 +208,11 @@ LOGICAL FUNCTION DESCSET( ROOTNAME, FILENUM )
             RETURN
         END IF
 
-    !......  Store file set information from header
+        !......  Store file set information from header
         NFILESET = NFILEINT
         NVARSET = NVARINT
 
-    !......  Allocate variable information arrays
+        !......  Allocate variable information arrays
         ALLOCATE( VARS_PER_FILE( NFILESET ),    &
                   VTYPESET( NVARSET ),          &
                   VNAMESET( NVARSET ),          &
@@ -220,7 +220,7 @@ LOGICAL FUNCTION DESCSET( ROOTNAME, FILENUM )
                   VDESCSET( NVARSET ), STAT=IOS )
         CALL CHECKMEM( IOS, 'VARS_PER_FILE...VDESCSET', FUNCNAME )
 
-    !......  Store info for this file
+        !......  Store info for this file
         VARS_PER_FILE( 1 ) = NVARS3D
         VTYPESET( 1:NVARS3D ) = VTYPE3D( 1:NVARS3D )
         VNAMESET( 1:NVARS3D ) = VNAME3D( 1:NVARS3D )
@@ -228,19 +228,19 @@ LOGICAL FUNCTION DESCSET( ROOTNAME, FILENUM )
         VDESCSET( 1:NVARS3D ) = VDESC3D( 1:NVARS3D )
         VARPOS = NVARS3D + 1
 
-    !......  Loop through remaining files
+        !......  Loop through remaining files
         DO I = 2, NFILESET
 
-    !......  Set logical file name
+            !......  Set logical file name
             LNAME = FILE_INFO( FILEIDX )%LNAMES( I )
 
-    !......  Try to get file description
+            !......  Try to get file description
             IF( .NOT. DESC3( LNAME ) ) THEN
                 DESCSET = .FALSE.
                 RETURN
             END IF
 
-    !......  Store current file description
+            !......  Store current file description
             VARS_PER_FILE( I ) = NVARS3D
             VTYPESET( VARPOS:VARPOS + NVARS3D - 1 ) = VTYPE3D( 1:NVARS3D )
             VNAMESET( VARPOS:VARPOS + NVARS3D - 1 ) = VNAME3D( 1:NVARS3D )

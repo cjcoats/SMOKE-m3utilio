@@ -1,6 +1,5 @@
 
-CHARACTER(16) FUNCTION PROMPTSET( PROMPT, FMODE, DEFAULT,&
-&                                  CALLER )
+CHARACTER(16) FUNCTION PROMPTSET( PROMPT, FMODE, DEFAULT, CALLER )
 
     !***********************************************************************
     !  Function body starts at line 39
@@ -83,7 +82,7 @@ CHARACTER(16) FUNCTION PROMPTSET( PROMPT, FMODE, DEFAULT,&
     IF( PROMPTON ) THEN
 
         !......  Construct actual prompt
-        WRITE( BUFFER,94000 ) TRIM( PROMPT ), ' [', TRIM( DEFAULT ), '] >>'
+        BUFFER = TRIM( PROMPT ) // ' [' // TRIM( DEFAULT ) // '] >>'
 
         !......  Loop until valid name is given and file set is opened
         DO

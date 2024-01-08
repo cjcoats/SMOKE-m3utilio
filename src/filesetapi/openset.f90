@@ -106,7 +106,7 @@ LOGICAL FUNCTION OPENSET( ROOTNAME, FSTATUS, PGNAME )
     END IF
 
     !......  Check length of file name
-    IF( LEN( ROOTNAME ) > 16 ) THEN
+    IF( LEN_TRIM( ROOTNAME ) > 16 ) THEN
         MESG = 'Max file name length (16) exceeded for "' // ROOTNAME // '"'
         CALL M3MSG2( MESG )
         OPENSET = .FALSE.
@@ -347,7 +347,7 @@ LOGICAL FUNCTION OPENSET( ROOTNAME, FSTATUS, PGNAME )
             FILE_INFO( FILEIDX )%VARS( 1:NVARS3D,2 ) = LNAME
             VARPOS = NVARS3D + 1
 
-        !......  Loop through remaining files in set
+            !......  Loop through remaining files in set
             DO I = 2, NFILEINT
 
                 !........  Create new logical and physical file names
@@ -403,7 +403,7 @@ LOGICAL FUNCTION OPENSET( ROOTNAME, FSTATUS, PGNAME )
 
     ELSE IF( FSTATUS == FSNEW3 ) THEN
 
-    !......  For status new, neither file should exist
+        !......  For status new, neither file should exist
         IF( FILEEXIST .OR. SETEXIST ) THEN
             MESG = ROOTNAME16 // ':' // TRIM( ENVNAME )
             CALL M3MSG2( MESG )
@@ -413,7 +413,7 @@ LOGICAL FUNCTION OPENSET( ROOTNAME, FSTATUS, PGNAME )
             OPENSET = .FALSE.
             RETURN
 
-    !......  Otherwise, try to create new files
+        !......  Otherwise, try to create new files
         ELSE
             IF( .NOT. CREATESET( FILEIDX, ROOTNAME16, ENVNAME, FSTATUS ) ) THEN
                 CALL CLEANUP( FILEIDX )
@@ -424,24 +424,24 @@ LOGICAL FUNCTION OPENSET( ROOTNAME, FSTATUS, PGNAME )
 
     ELSE IF( FSTATUS == FSUNKN3 ) THEN
 
-    !......  If file or set exists, try to open it
+        !......  If file or set exists, try to open it
         IF( FILEEXIST .OR. SETEXIST ) THEN
 
-    !......  Allocate memory for logical file names and variables
+            !......  Allocate memory for logical file names and variables
             ALLOCATE( FILE_INFO( FILEIDX )%LNAMES( NFILESET ),     &
                       FILE_INFO( FILEIDX )%VARS( NVARSET,2 ),   STAT=IOS )
             CALL CHECKMEM( IOS, 'FILE_INFO%VARS', FUNCNAME )
 
-    !......  Loop through individual files in the set
+            !......  Loop through individual files in the set
             VARPOS = 1
             DO I = 1, NFILESET
 
-    !........  Set necessary file description values
+                !........  Set necessary file description values
                 NVARS3D = VARS_PER_FILE( I )
                 VTYPE3D( 1:NVARS3D ) = VTYPESET( VARPOS:VARPOS + NVARS3D - 1 )
                 VNAME3D( 1:NVARS3D ) = VNAMESET( VARPOS:VARPOS + NVARS3D - 1 )
 
-    !..........  Create new logical and physical file names if needed
+                !..........  Create new logical and physical file names if needed
                 IF( NFILESET > 1 ) THEN
                     WRITE( INTBUF, '(I2)' ) I
                     INTBUF = ADJUSTL( INTBUF )
@@ -453,7 +453,7 @@ LOGICAL FUNCTION OPENSET( ROOTNAME, FSTATUS, PGNAME )
                         RETURN
                     END IF
 
-    !..........  Set new env. variable
+                !..........  Set new env. variable
                     IF( .NOT. SETENVVAR( LNAME, TEMPNAME ) ) THEN
                         CALL CLEANUP( FILEIDX )
                         OPENSET = .FALSE.
@@ -463,22 +463,22 @@ LOGICAL FUNCTION OPENSET( ROOTNAME, FSTATUS, PGNAME )
                     LNAME = ROOTNAME16
                 END IF
 
-    !........  Try to open file
+                !........  Try to open file
                 IF( .NOT. OPEN3( LNAME, FSTATUS, FUNCNAME ) ) THEN
                     CALL CLEANUP( FILEIDX )
                     OPENSET = .FALSE.
                     RETURN
                 END IF
 
-    !........  Store logical file names and variables
+                !........  Store logical file names and variables
                 FILE_INFO(FILEIDX)%LNAMES( I ) = LNAME
                 FILE_INFO(FILEIDX)%VARS( VARPOS:VARPOS+NVARS3D-1,1 ) = VNAME3D( 1:NVARS3D )
                 FILE_INFO(FILEIDX)%VARS( VARPOS:VARPOS+NVARS3D-1,2 ) = LNAME
                 VARPOS = VARPOS + NVARS3D
 
-            END DO      ! loop over individual files
+            END DO          ! loop over individual files
 
-    !......  Otherwise, try to create new files
+        !......  Otherwise, try to create new files
         ELSE
             IF( .NOT. CREATESET( FILEIDX, ROOTNAME16, ENVNAME, FSTATUS ) ) THEN
                 CALL CLEANUP( FILEIDX )
@@ -489,13 +489,13 @@ LOGICAL FUNCTION OPENSET( ROOTNAME, FSTATUS, PGNAME )
 
     ELSE IF( FSTATUS == FSCREA3 ) THEN
 
-    !......  If file or set exists, delete it
+        !......  If file or set exists, delete it
         IF( FILEEXIST .OR. SETEXIST ) THEN
 
-    !......  Loop through files in set
+            !......  Loop through files in set
             DO I = 1, NFILESET
 
-    !........  If more than one file, generate subsequent file names
+                !........  If more than one file, generate subsequent file names
                 IF( NFILESET > 1 ) THEN
                     CALL APPENDNAME( ENVNAME, I, TEMPNAME, EFLAG )
                     IF( EFLAG ) THEN
@@ -507,10 +507,10 @@ LOGICAL FUNCTION OPENSET( ROOTNAME, FSTATUS, PGNAME )
                     TEMPNAME = ENVNAME
                 END IF
 
-    !........  Check that file exists
+                !........  Check that file exists
                 INQUIRE( FILE = TEMPNAME, EXIST = TEMPEXIST )
 
-    !........  Try to delete files
+                !........  Try to delete files
                 IF( TEMPEXIST ) THEN
                     IOS = RMFILE( TEMPNAME )
                     IF( IOS /= 0 ) THEN
@@ -525,7 +525,7 @@ LOGICAL FUNCTION OPENSET( ROOTNAME, FSTATUS, PGNAME )
             END DO
         END IF
 
-    !......  Try to create new files
+        !......  Try to create new files
         IF( .NOT. CREATESET( FILEIDX, ROOTNAME16, ENVNAME, FSTATUS ) ) THEN
             CALL CLEANUP( FILEIDX )
             OPENSET = .FALSE.
