@@ -24,7 +24,7 @@ SUBROUTINE BLDMRGIDX
     !***********************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !         System
     ! File: @(#)$Id$
     !
     ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
@@ -59,7 +59,7 @@ SUBROUTINE BLDMRGIDX
 
     !.......   Call allocated arrays
     !.......   Group index counter for each source-category-specific list of
-    !              pollutants and activities.
+    !         pollutants and activities.
     INTEGER     KM( NIPPA )        !  mobile
 
     !.......   Allocatable arrays

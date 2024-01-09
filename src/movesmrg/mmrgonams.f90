@@ -15,12 +15,12 @@ SUBROUTINE MRGONAMS
     !
     !  REVISION  HISTORY:
     !       Created 2/99 by M. Houyoux
-    !       Version 11/2023 by CJC:  USE M3UTILIO, conversion to ".f90",  and
-    !       related changes
+    !       Version 11/2023 by CJC:  USE M3UTILIO, conversion to ".f90",
+    !       fix MOLEFLAG bug, and related changes
     !***********************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !         System
     ! File: @(#)$Id$
     !
     ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
@@ -50,8 +50,8 @@ SUBROUTINE MRGONAMS
 
     INTEGER         IOS               ! tmp I/O status
 
-    LOGICAL      :: KFLAG = .FALSE.              ! true: simplied output file names
-    LOGICAL      :: MOLEFLAG = .FALSE.           ! true: outputting moles
+    LOGICAL         KFLAG                        ! true: simplied output file names
+    LOGICAL         MOLEFLAG                     ! true: outputting moles
 
     CHARACTER(300)  MESG        ! message buffer
 
@@ -107,6 +107,7 @@ SUBROUTINE MRGONAMS
             !         which inputs were used
 
             !.......  Set flag if any of the output species are mole-based
+            MOLEFLAG = .FALSE.
             DO I = 1, NUNITS
 
                 J = INDEX( GRDUNIT( I ), 'mole' )
@@ -145,7 +146,7 @@ SUBROUTINE MRGONAMS
 CONTAINS
 
     !.......  This internal subprogram trims and concatonates the first
-    !               string with the second string
+    !         string with the second string
     SUBROUTINE TRIM_AND_CONCAT( PART1, PART2 )
 
         !.......  Subprogram arguments

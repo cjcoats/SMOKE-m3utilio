@@ -144,7 +144,7 @@ SUBROUTINE PREPLM( EMLAYS, HMIX, HTS, PSFC, TS, DDZF, QV, TA,       &
     END DO
 
     !.......  Set the 1st level vertical THETV gradient to the 2nd layer value
-    !           This overrides the layer 1 gradient determined above
+    !         This overrides the layer 1 gradient determined above
     DTHDZ( 1 ) = DTHDZ( 2 )
 
     M    = MAX( 1, LSTK - 2 )

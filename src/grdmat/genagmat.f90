@@ -544,14 +544,8 @@ CONTAINS
 
     SUBROUTINE OPEN_SRGFILE
 
-        !.......  Set logical file name
-        IF( .NOT. SETENVVAR( 'SRGPRO_PATH', NAMBUFT )) THEN
-            MESG = 'Could not set logical name of file ' // TRIM( NAMBUFT )
-            CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
-        END IF
-
         !.......  Get the number of lines in the surrogate description file desription file
-        GDEV = GETEFILE( 'SRGPRO_PATH',.TRUE., .TRUE., PROGNAME )
+        GDEV = GETEFILE( NAMBUFT,.TRUE., .TRUE., PROGNAME )
 
         IF( GDEV .LT. 0 ) THEN
             MESG = 'Could not open input surrogate file' // TRIM( NAMBUFT )
@@ -559,13 +553,6 @@ CONTAINS
         END IF
 
         REWIND( GDEV )
-
-        NLINES = GETFLINE( GDEV, 'Reading surrogate files' )
-
-        IF( .NOT. SETENVVAR( 'SRGPRO_PATH', NAMBUF )) THEN
-            MESG = 'Could not set logical file name of ' // TRIM( NAMBUF )
-            CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
-        END IF
 
         RETURN
 

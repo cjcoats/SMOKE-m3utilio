@@ -16,8 +16,9 @@ SUBROUTINE CHKNONHAP( PNAM, EFLAG )
     !  SUBROUTINES AND FUNCTIONS CALLED:
     !
     !  REVISION  HISTORY:
-    !    Version ??/???? by ???
-    !    Version 11/2023 by CJC:  USE M3UTILIO and related changes
+    !       Version ??/???? by ??? 
+    !       Version 11/2023 by CJC:  USE M3UTILIO, conversion to ".f90", and
+    !       related changes
     !****************************************************************************/
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling

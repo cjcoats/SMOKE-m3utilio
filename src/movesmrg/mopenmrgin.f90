@@ -20,7 +20,7 @@ SUBROUTINE OPENMRGIN
     !***********************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !         System
     ! File: @(#)$Id$
     !
     ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
@@ -139,7 +139,7 @@ SUBROUTINE OPENMRGIN
     OUTGRDNM = GDNAM3D
 
     !.......  Check or initialize the grid; do not allow subgrids
-    !           when using a variable grid
+    !         when using a variable grid
     IF( VARFLAG ) THEN
         CALL CHKGRID( 'general', 'GRIDDESC', 0, EFLAG )
     ELSE
@@ -158,13 +158,13 @@ SUBROUTINE OPENMRGIN
     CALL RDINVMAP( INAME, IDEV, MENAME, DUMNAME, MSDEV )
 
     !.......  Store source-category-specific header information,
-    !           including the inventory pollutants in the file (if any).  Note that
-    !           the I/O API header info is passed by include file and the
-    !           results are stored in module MODINFO.
+    !         including the inventory pollutants in the file (if any).  Note that
+    !         the I/O API header info is passed by include file and the
+    !         results are stored in module MODINFO.
     CALL GETSINFO( MENAME )
 
     !.......  Ensure that there is at least one activity in the inventory
-    !           file, or else this program does not need to be run
+    !         file, or else this program does not need to be run
     IF( NIACT == 0 ) THEN
         MESG = 'No activities are found in the inventory file!  Program cannot be used.'
         CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
@@ -192,7 +192,7 @@ SUBROUTINE OPENMRGIN
         CALL RDMAPPOL( NSRC, 1, 1, 'SPEED', SPEED )
 
         !.......  Make sure inventory has VMT as activity (won't be using this
-        !               data but it needs to be there to make emission processes work)
+        !         data but it needs to be there to make emission processes work)
         M = INDEX1( 'VMT', NMAP, MAPNAM )
         IF( M <= 0 ) THEN
             MESG = 'Mobile inventory does not include VMT data'
@@ -239,7 +239,7 @@ SUBROUTINE OPENMRGIN
     END IF
 
     !.......  Build unique lists of SCCs and country/state/county codes
-    !           from the inventory arrays
+    !         from the inventory arrays
     CALL GENUSLST
 
     !.......  Get number of sources from MODINFO and store in MODMERGE variable
@@ -251,7 +251,7 @@ SUBROUTINE OPENMRGIN
     IF( RPDFLAG .OR. RPHFLAG .OR. RPSFLAG .OR. ONIFLAG  ) THEN
 
         !.......  Open all temporal files for either by-day or standard
-        !               processing.
+        !         processing.
         !.......  Compare headers to make sure files are consistent.
         CALL OPEN_TMP_FILES( 'MOBILE', MFLAG_BD, MTNAME, MSDATE)
 
@@ -261,7 +261,7 @@ SUBROUTINE OPENMRGIN
     END IF
 
     !.......  Open gridding matrix, compare number of sources, and
-    !           compare grid information
+    !         compare grid information
     MGNAME = PROMPTMFILE( 'Enter logical name for the MOBILE GRIDDING MATRIX',&
                           FSREAD3, 'MGMAT', PROGNAME )
 
@@ -277,7 +277,7 @@ SUBROUTINE OPENMRGIN
     CALL CHKSRCNO( 'mobile', 'MGMAT', NTHIK3D, NMSRC, EFLAG )
 
     !.......  Check the grid definition; do not allow subgrids if using
-    !           a variable grid
+    !         a variable grid
     IF( VARFLAG ) THEN
         CALL CHKGRID( 'mobile', 'GMAT', 0, EFLAG )
     ELSE
@@ -287,7 +287,7 @@ SUBROUTINE OPENMRGIN
     MNGMAT = NCOLS3D
 
     !.......  Open mole-based speciation matrix, compare number of sources, and store
-    !           speciation variable descriptions.
+    !         speciation variable descriptions.
     MSNAME_L = PROMPTSET( 'Enter logical name for the MOLE-BASED SPECIATION MATRIX',&
                           FSREAD3, 'MSMAT_L', PROGNAME )
 
@@ -305,7 +305,7 @@ SUBROUTINE OPENMRGIN
     CALL STORE_VUNITS( 1, 1, MNSMATV_L, .TRUE., MSVUNIT_L )
 
     !.......  Open mass-based speciation matrix, compare number of sources, and store
-    !           speciation variable descriptions.
+    !         speciation variable descriptions.
     MSNAME_S = PROMPTSET( 'Enter logical name for the MASS-BASED SPECIATION MATRIX',&
                           FSREAD3, 'MSMAT_S', PROGNAME )
 
@@ -383,8 +383,8 @@ SUBROUTINE OPENMRGIN
     PDEV = PROMPTFFILE( MESG, .TRUE., .TRUE., 'INVTABLE', PROGNAME )
 
     !.......  Get country, state, and county names no matter what, because it is
-    !           needed to allocate memory for the state and county totals, even
-    !           when they aren't going to be output
+    !         needed to allocate memory for the state and county totals, even
+    !         when they aren't going to be output
     MESG = 'Enter logical name for COUNTRY, STATE, AND COUNTY file'
     CDEV = PROMPTFFILE( MESG, .TRUE., .TRUE., 'COSTCY', PROGNAME )
 
@@ -479,14 +479,14 @@ SUBROUTINE OPENMRGIN
     END IF
 
     !.......  If there were any errors inputing files or while comparing
-    !           with one another, then abort
+    !         with one another, then abort
     IF( EFLAG ) THEN
         MESG = 'Problems opening input files. See ERROR(S) above.'
         CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
     END IF
 
     !.......  If we are using temporalized emissions, then update date/time and
-    !           duration using environment variable settings, then prompt.
+    !         duration using environment variable settings, then prompt.
     CALL GETM3EPI( TZONE, SDATE, STIME, TSTEP, NSTEPS )
     TSTEP = 10000       ! only 1-hour time steps supported
     EDATE = SDATE
@@ -529,8 +529,8 @@ SUBROUTINE OPENMRGIN
 CONTAINS
 
     !.......  This subprogram updates the time (episode) information
-    !               and compares to the existing information, if it has been
-    !               previously set.
+    !         and compares to the existing information, if it has been
+    !         previously set.
     SUBROUTINE UPDATE_TIME_INFO( FILNAM, CHKTZONE )
 
         !.......  Subprogram arguments
@@ -632,9 +632,9 @@ CONTAINS
         !----------------------------------------------------------------------
         !----------------------------------------------------------------------
         !.......  This subprogram opens the temporal emissions files. If their
-        !               are multiple files, it compares the files to make sure that they
-        !               are consistent with each other.  The number of sources
-        !               are compared to the master number of sources.
+        !         are multiple files, it compares the files to make sure that they
+        !         are consistent with each other.  The number of sources
+        !         are compared to the master number of sources.
     SUBROUTINE OPEN_TMP_FILES( LOCCAT, LBDSTAT, FNAME, SDATE )
 
         !.......  Subprogram arguments
@@ -768,7 +768,7 @@ CONTAINS
             END IF
 
             !.......  For first file, store the pollutant names and units for
-            !                   making comparisons with other files.
+            !         making comparisons with other files.
             IF( D .EQ. 1 ) THEN
 
                 LOCNVAR = NVARS3D
@@ -806,7 +806,7 @@ CONTAINS
         !.......  Write message and set error if any inconsistencies
         IF( NFLAG ) THEN
         ! bbh               EFLAG = .TRUE.          ! removed to prevent false errer of odd nubmer
-        !                                     of species for tmp files
+        !         of species for tmp files
             MESG = 'WARNING: ' // LOCCAT // ' source hourly ' //&
                    'emission files have inconsistent ' //&
                    CRLF() // BLANK10 // 'number of variables.'
@@ -845,7 +845,7 @@ CONTAINS
     !----------------------------------------------------------------------
     !----------------------------------------------------------------------
     !.......  This subprogram initializes and checks the inventory year
-    !               of the emissions and the projection status
+    !         of the emissions and the projection status
     SUBROUTINE CHECK_INVYEAR( FNAME, PRJFLAG, IODESC )
 
         !.......  Subprogram arguments
@@ -866,9 +866,9 @@ CONTAINS
         STRICT = .TRUE.
 
         !.......  First determine whether to abort when projected year does not
-        !               match.  This is used for reactivity matrices, which will
-        !               always have a projection year, even if the inventory isn't
-        !               projected.
+        !         match.  This is used for reactivity matrices, which will
+        !         always have a projection year, even if the inventory isn't
+        !         projected.
         IF( .NOT. PRJFLAG ) THEN
             BUFFER = GETCFDSC( FDESC3D, '/FROM/', .FALSE. )
             IF( BUFFER .EQ. 'OPENRMAT' ) STRICT = .FALSE.
@@ -942,7 +942,7 @@ CONTAINS
     !----------------------------------------------------------------------
     !----------------------------------------------------------------------
     !.......  This subprogram updates the met information and compares to
-    !               the existing information, if it has been previously set.
+    !         the existing information, if it has been previously set.
     SUBROUTINE CHECK_MET_INFO( CATDESC )
 
         !.......  Subprogram arguments
@@ -973,7 +973,7 @@ CONTAINS
         ENDIF
 
         !.......  If met information has already been initialized, then compare
-        !               existing to this file.
+        !         existing to this file.
         IF( OFLAG ) THEN
 
             METTMP = GETCFDSC( FDESC3D, '/MET SCENARIO/', .TRUE. )
@@ -1018,7 +1018,7 @@ CONTAINS
     !----------------------------------------------------------------------
     !----------------------------------------------------------------------
     !.......  This subprogram stores I/O API NetCDF variable descriptions into
-    !               a local array based on indices in subprogram call.
+    !         a local array based on indices in subprogram call.
     SUBROUTINE STORE_VDESCS( ISTART,INCRMT,NDESC,LFSET,DESCS )
 
         INCLUDE 'SETDECL.h90'           !  FileSetAPI variables and functions
@@ -1028,7 +1028,7 @@ CONTAINS
         INTEGER     , INTENT (IN) :: INCRMT           ! increment of VDESCS for names
         INTEGER     , INTENT (IN) :: NDESC            ! number of descriptions
         LOGICAL     , INTENT (IN) :: LFSET            ! number of descriptions
-        CHARACTER(*), INTENT(OUT) :: DESCS( NDESC )        ! stored variable descriptions
+        CHARACTER(*), INTENT(OUT) :: DESCS( NDESC )   ! stored variable descriptions
 
         !.......  Local variables
         INTEGER  I, J
@@ -1055,7 +1055,7 @@ CONTAINS
     !----------------------------------------------------------------------
     !----------------------------------------------------------------------
     !.......  This subprogram stores I/O API NetCDF variable units into
-    !               a local array based on indices in subprogram call.
+    !         a local array based on indices in subprogram call.
     SUBROUTINE STORE_VUNITS( ISTART,INCRMT,NUNIT,LFSET,UNITS )
 
         INCLUDE 'SETDECL.h90'           !  FileSetAPI variables and functions

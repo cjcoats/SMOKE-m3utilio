@@ -258,7 +258,7 @@ CONTAINS        !    !******************  INTERNAL SUBPROGRAMS  ****************
             IF ( .NOT. INSPCIFY .OR. LIN_SPCIFY ) CYCLE
 
             !.......  Store the maximum number of ANDs, set the number of ORs (the
-            !                   number of records), and update the number of variables
+            !         number of records), and update the number of variables
             SELECT CASE( PKT_IDX )
               CASE( ELG_IDX )
                 NGRPCRIT = SPCF_NOR
@@ -286,7 +286,7 @@ CONTAINS        !    !******************  INTERNAL SUBPROGRAMS  ****************
                         EISTAT( J ) = .TRUE.
 
                     !...........  If pollutant found without ranking, increase
-                    !                           pollutant value counter
+                    !             pollutant value counter
                     ELSE IF ( J .GT. 0 ) THEN
                         IF ( .NOT. EISTAT(J) ) NALLPOL = NALLPOL + 1
                         EISTAT( J ) = .TRUE.
@@ -300,7 +300,7 @@ CONTAINS        !    !******************  INTERNAL SUBPROGRAMS  ****************
                 MXELVCHK = MAX( MXELVCHK, SPCF_NAND )
 
                 !.......  Search segments for a match with pollutant names, and
-                !                       increase counter if found
+                !         increase counter if found
                 N = 0
                 DO I = 1, NS, 4
                     N = N + 1
@@ -310,14 +310,14 @@ CONTAINS        !    !******************  INTERNAL SUBPROGRAMS  ****************
                     J = INDEX1( SEGMENT( I1 ), NIPOL, EINAM )
 
                     !...........  If pollutant found with ranking, increase pollutant
-                    !                           ranking counter
+                    !             ranking counter
                     IF ( J             .GT. 0     .AND.    &
                          SEGMENT( I2 ) .EQ. 'TOP'       ) THEN
                         IF ( .NOT. EISTAT(J) ) NALLPOL = NALLPOL + 1
                         EISTAT( J ) = .TRUE.
 
                     !...........  If pollutant found without ranking, increase
-                    !                           pollutant value counter
+                    !             pollutant value counter
                     ELSE IF ( J .GT. 0 ) THEN
                         IF ( .NOT. EISTAT(J) ) NALLPOL = NALLPOL + 1
                         EISTAT( J ) = .TRUE.

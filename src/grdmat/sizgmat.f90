@@ -574,7 +574,7 @@ SUBROUTINE SIZGMAT( CATEGORY, NSRC, VFLAG, DEFSRGID, SRGFLAG,       &
             F     = FINDC( CFIP, NSRGFIPS, SRGFIPS )
 
             !.......  Retrieve the cell intersection info from the
-            !               surrogates tables from MODSURG
+            !         surrogates tables from MODSURG
             IF ( F .GT. 0 ) THEN
 
                 NCEL = NCELLS( F )
@@ -600,8 +600,8 @@ SUBROUTINE SIZGMAT( CATEGORY, NSRC, VFLAG, DEFSRGID, SRGFLAG,       &
 
         END IF
         !
-        !.......  Count all county/cell intersections for all sources.  This
-        !               is needed for ungridding matrix.
+        !.......  Count all county/cell intersections for all sources.
+        !         This is needed for ungridding matrix.
         DO N = 1, NCEL
 
             NMATXU = NMATXU + 1

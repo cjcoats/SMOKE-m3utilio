@@ -1,7 +1,7 @@
 
-SUBROUTINE SETFRAC( SRCID, SRGIDX, TGTSRG, CELIDX, FIPIDX, NC,&
-&                    REPORT, CSRC, DEFSRG, SRGFLAG, OUTID1,&
-&                    OUTID2, FRAC, SFLAG )
+SUBROUTINE SETFRAC( SRCID, SRGIDX, TGTSRG, CELIDX, FIPIDX, NC,  &
+                    REPORT, CSRC, DEFSRG, SRGFLAG, OUTID1,      &
+                    OUTID2, FRAC, SFLAG )
 
     !***********************************************************************
     !  subroutine body starts at line

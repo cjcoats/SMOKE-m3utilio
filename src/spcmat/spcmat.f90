@@ -11,9 +11,9 @@ PROGRAM SPCMAT
     !  SUBROUTINES AND FUNCTIONS CALLED:
     !
     !  REVISION  HISTORY:
-    !    Copied from spcpmat.F 1/99 by M. Houyoux
-    !    Version 11/2023 by CJC:  USE M3UTILIO and related changes
-    !
+    !       Copied from spcpmat.F 1/99 by M. Houyoux 
+    !       Version 11/2023 by CJC:  USE M3UTILIO, conversion to ".f90", and
+    !       related changes
     !***********************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
@@ -333,11 +333,11 @@ PROGRAM SPCMAT
         !.......  Rename emission factors if necessary
         IF( OUTPUTHC /= ' ' ) THEN
             DO J = 1, NIACT
-                DO I = 1, SIZE( EMTNAM,1 )
-                    IF( EMTNAM( I,J ) == INPUTHC ) THEN
-                        EMTNAM( I,J ) = OUTPUTHC
-                    END IF
-                END DO
+            DO I = 1, SIZE( EMTNAM,1 )
+                IF( EMTNAM( I,J ) == INPUTHC ) THEN
+                    EMTNAM( I,J ) = OUTPUTHC
+                END IF
+            END DO
             END DO
         END IF
 
@@ -356,7 +356,7 @@ PROGRAM SPCMAT
     NOPOL = NIPOL + NEPOL
 
     !.......  Allocate memory for pollutant names, emission types, and associated
-    !    pollutants
+    !       pollutants
     DEALLOCATE( EANAM )
     ALLOCATE( EANAM( NIPPA ),    &
               EAIDX( NIPPA ),    &
@@ -380,7 +380,7 @@ PROGRAM SPCMAT
 
     !.......  Create array of pollutant names from emission types and pollutants
     !.......  Loop through emission types and add pollutants to master list
-    !    in order of appearance
+    !       in order of appearance
     J  = 0
     NP = 0
     DO I = 1, NIACT
@@ -465,7 +465,7 @@ PROGRAM SPCMAT
     END IF
 
     !.......  Create input and output pollutant names based on output
-    !    emission types/pollutants names for input and output.
+    !         emission types/pollutants names for input and output.
     J = 0
     K = 0
     LT = LEN_TRIM( ETJOIN )
@@ -610,7 +610,7 @@ PROGRAM SPCMAT
              SPECID( MXSPFUL ),                  &
            MOLEFACT( MXSPFUL ),                  &
            MASSFACT( MXSPFUL ),                  &
-           MASSONAM( 0:MXTAG, MXSPEC, NIPPA  ),                  &
+           MASSONAM( 0:MXTAG, MXSPEC, NIPPA  ),  &
            MOLEONAM( 0:MXTAG, MXSPEC, NIPPA ), STAT=IOS )
     CALL CHECKMEM( IOS, 'INPRF...MOLEONAM', PROGNAME )
     MOLEFACT = 0.0
@@ -618,7 +618,7 @@ PROGRAM SPCMAT
 
     !.......  Open speciation matrix file(s).  Depending on MASSOUT and MOLEOUT,
     !    the mass-based and/or mole-based files will be set up and opened.
-    CALL OPENSMAT( ENAME, MASSOUT, MOLEOUT, NOPOL, MXSPEC,    &
+    CALL OPENSMAT( ENAME, MASSOUT, MOLEOUT, NOPOL, MXSPEC,     &
                    MXTAG, EANAM, EAIDX, SPCNAMES, MOLUNITS,    &
                    UDEV, SNAME, LNAME, MASSONAM, MOLEONAM )
 

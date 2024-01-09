@@ -21,7 +21,7 @@ SUBROUTINE HOURMET( NSRC, CNTYSRC, TA, QV, PRES, JDATE, JTIME,  &
     !***************************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !         System
     ! File: @(#)$Id$
     !
     ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
@@ -124,7 +124,7 @@ SUBROUTINE HOURMET( NSRC, CNTYSRC, TA, QV, PRES, JDATE, JTIME,  &
     DO S = 1, NSRC
 
         !.......  Apply ungridding matrix from a (possible) subgrid to data on base
-        !           grid.  If no subgrid, then XOFF and YOFF will be 1 and no problem.
+        !         grid.  If no subgrid, then XOFF and YOFF will be 1 and no problem.
         LL = FINDC( CNTYSRC( S ), NSRGFIPS, SRGFIPS )
 
         IF( LL < 1 ) CYCLE
@@ -159,9 +159,9 @@ SUBROUTINE HOURMET( NSRC, CNTYSRC, TA, QV, PRES, JDATE, JTIME,  &
 
             !.......  Calculate RH using Temp. Pressure and mixing ratio values
             IF( HFLAG ) THEN
-                RHVAL = QV( C ) / ( QV( C ) + 1 )                 ! Specific Humidity
+                RHVAL = QV( C ) / ( QV( C ) + 1 )                   ! Specific Humidity
             ELSE
-                RHVAL = CALCRELHUM( TA( C ), PRES( C ), QV( C ) )             ! relative humidity
+                RHVAL = CALCRELHUM( TA( C ), PRES( C ), QV( C ) )   ! relative humidity
             END IF
 
             !.......  Store RH into temperature bins
@@ -200,8 +200,8 @@ SUBROUTINE HOURMET( NSRC, CNTYSRC, TA, QV, PRES, JDATE, JTIME,  &
         TEMPVAL = TEMPVAL / N            ! averaged Temp by source
 
         !.......  Calculate time slot in output array for this time step
-        !               Appropriate 24 hour time will be day starting time (12 AM in local
-        !               time zone ) subtracted from met data time (in GMT)
+        !         Appropriate 24 hour time will be day starting time (12 AM in local
+        !         time zone ) subtracted from met data time (in GMT)
         TIMESLOT = 1 + ( JTIME - DAYBEGT( S ) ) / 10000
 
         !.......  Restore daylight saving time if necessay
@@ -211,8 +211,8 @@ SUBROUTINE HOURMET( NSRC, CNTYSRC, TA, QV, PRES, JDATE, JTIME,  &
         END IF
 
         !.......  If timeslot is less than zero, add 24; if better data comes
-        !               along, the old data will get overwritten (helps in case of
-        !               one running one day)
+        !         along, the old data will get overwritten (helps in case of
+        !         one running one day)
         IF( TIMESLOT <= 0 ) THEN
             TIMESLOT = TIMESLOT + 24
         END IF

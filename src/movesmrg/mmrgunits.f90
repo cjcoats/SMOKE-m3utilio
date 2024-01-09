@@ -18,7 +18,7 @@ SUBROUTINE MRGUNITS
     !***********************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !         System
     ! File: @(#)$Id$
     !
     ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
@@ -90,10 +90,10 @@ SUBROUTINE MRGUNITS
     !.......  Allocate memory for units conversion factors and units.
 
     !.......  If using speciation, allocate arrays to number of species;
-    !           otherwise, use total number of activities and pollutants.
-    !           This approach assumes that each species has the same units
-    !           regardless of which pollutant it comes from, i.e.
-    !           ALD2 from VOC must have the same units as ALD2 from ACETALD
+    !         otherwise, use total number of activities and pollutants.
+    !         This approach assumes that each species has the same units
+    !         regardless of which pollutant it comes from, i.e.
+    !         ALD2 from VOC must have the same units as ALD2 from ACETALD
     NUNITS = NMSPC
 
     ALLOCATE( GRDFAC( NUNITS ),         &
@@ -110,7 +110,7 @@ SUBROUTINE MRGUNITS
 
     !.......  Loop through pollutants, and create output units accordingly
     !.......  For speciation, use the first unit for the speciation units from
-    !           a given pollutants speciation factors
+    !         a given pollutants speciation factors
     DO V = 1, NUNITS
 
         !.......  Initialize the output units
@@ -152,7 +152,7 @@ SUBROUTINE MRGUNITS
         FAC2 = UNITFAC( EMUNIT, GRDBUF, .FALSE. )
 
         !.......  In case E.V. setting was bogus rebuild output units based
-        !               on which factors were valid
+        !         on which factors were valid
         !.......  Also set negative factors (from unknown conversions) to 1.
         CALL CORRECT_UNITS( GNUM_I, GDEN_I, GNUM, GDEN, GRDBUF )
 
@@ -169,11 +169,11 @@ SUBROUTINE MRGUNITS
         FAC1 = UNITFAC( SPCUNIT_S( V ), TOTBUF, .TRUE. )          ! speciation
 
         !.......  Get factors for the denominators for the totals.  Note that
-        !               the hourly data are output as daily totals.
+        !         the hourly data are output as daily totals.
         FAC2 = UNITFAC( TOTUNIT_I, TOTBUF, .FALSE. )
 
         !.......  In case E.V. setting was bogus rebuild output units based
-        !               on which factors were valid
+        !         on which factors were valid
         !.......  Also set negative factors (from unknown conversions) to 1.
         CALL CORRECT_UNITS( TNUM_I, TDEN_I, TNUM, TDEN, TOTBUF )
 

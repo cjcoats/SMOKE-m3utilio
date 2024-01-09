@@ -20,7 +20,7 @@ SUBROUTINE MRGVNAMS
     !***********************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !         System
     ! File: @(#)$Id$
     !
     ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
@@ -90,7 +90,7 @@ SUBROUTINE MRGVNAMS
     CALL RDCODNAM( PDEV )
 
     !.......  Check if list of pollutants from MEPROC file contains
-    !           any HAPs
+    !         any HAPs
     DO I = 1, MNIPPA
         J = INDEX1( MEANAM( I ), MXIDAT, INVDNAM )
 
@@ -177,7 +177,7 @@ SUBROUTINE MRGVNAMS
     END DO
 
     !.......  Allocate memory for array of sorted process/pollutant names and
-    !           for pollutants only
+    !         for pollutants only
     ALLOCATE( EANAM( NIPPA ),    &
               EINAM( NIPPA ), STAT=IOS )
     CALL CHECKMEM( IOS, 'EANAM,EINAM', PROGNAME )
@@ -200,8 +200,8 @@ SUBROUTINE MRGVNAMS
     END DO
 
     !.......  Loop through variable descriptions, find position of
-    !           of pollutant for output, and store concatenated position with
-    !           species name.  Make sure the same name is not stored twice.
+    !         of pollutant for output, and store concatenated position with
+    !         species name.  Make sure the same name is not stored twice.
     NCNT = 0
     CALL BUILD_VDESC_UNSORT( NCNT, MNSMATV_L, MSVDESC_L )
 
@@ -227,12 +227,12 @@ SUBROUTINE MRGVNAMS
     END DO
 
     !.......  Create array of sorted unique species, sorted in order of their
-    !           associated pollutants, and then in alphabetical order by species...
+    !         associated pollutants, and then in alphabetical order by species...
     !
     !.......  Allocate memory with the number of variables in the speciation
-    !           matrices, which will always be >= needed space
+    !         matrices, which will always be >= needed space
     !.......  Also allocate memory for the index between the master species names
-    !           and the master pollutant names
+    !         and the master pollutant names
     ALLOCATE( EMNAM( NSMATV ),    &
               EMIDX( NSMATV ),    &
           SPCUNIT_L( NSMATV ),    &
@@ -247,7 +247,7 @@ SUBROUTINE MRGVNAMS
 
     !.......  Create index between master species names and master inventory names
     !.......  If there are multiple pollutants per species, the last pollutant
-    !           will be put in the index.
+    !         will be put in the index.
     !.......  Also create the speciation units per pollutant
     DO I = 1, NSMATV
 
@@ -261,7 +261,7 @@ SUBROUTINE MRGVNAMS
         EMIDX( K ) = J
 
         !.......  Find speciation name in one of the speciation matrices and
-        !               set units accordingly.  Set it based on the first one found.
+        !         set units accordingly.  Set it based on the first one found.
         IF( SPCUNIT_L( K ) .EQ. ' ' ) THEN
 
             M = INDEX1( TSVDESC( I ), MNSMATV_L, MSVDESC_L )
@@ -275,7 +275,7 @@ SUBROUTINE MRGVNAMS
     END DO
 
     !.......  Switch speciation matrix between moles and mass based on
-    !           the setting of  MRG_GRDOUT_UNIT and MRG_TOTOUT_UNIT
+    !         the setting of  MRG_GRDOUT_UNIT and MRG_TOTOUT_UNIT
     IF( INDEX( GRDENV, 'mole' ) < 1 ) THEN
         SPCUNIT_L = SPCUNIT_S
     END IF
@@ -302,7 +302,7 @@ SUBROUTINE MRGVNAMS
 CONTAINS
 
     !.......  This internal subprogram builds the unsorted list of unique
-    !               pollutant-to-species speciation variable descriptions.
+    !         pollutant-to-species speciation variable descriptions.
 
     SUBROUTINE BUILD_VDESC_UNSORT( NCNT, NVARS, VDESCS )
 
@@ -415,8 +415,8 @@ CONTAINS
 
     !.......  Build list of species
     !.......  To do this, must only condense the pol-to-species list, in case
-    !           multiple pollutants are creating the same species.  Condense by
-    !           removing later-appearing duplicates
+    !         multiple pollutants are creating the same species.  Condense by
+    !         removing later-appearing duplicates
 
     SUBROUTINE BUILD_SPECIES_ARRAY( LSMATV,LOCDESC,LMSPC,LOCNAM)
 
@@ -434,8 +434,8 @@ CONTAINS
         !----------------------------------------------------------------------
 
         !.......  Populate array by looping through master list of pol-to-species in
-        !               output order, and if that entry is there for local subroutine
-        !               arguments, and if the species hasn't been added yet, then add it.
+        !         output order, and if that entry is there for local subroutine
+        !         arguments, and if the species hasn't been added yet, then add it.
         NCNT = 0
         DO I = 1, NSMATV
 
@@ -445,7 +445,7 @@ CONTAINS
             N = NSMATV - I
 
             !.......  Search remaining list of pollutants-to-species for current
-            !                   iteration's value.
+            !         iteration's value.
             IPTR = MIN( I+1,NSMATV )
             J = INDEX1( TSVDESC( I ), N, TSVDESC( IPTR ) )
 
@@ -455,7 +455,7 @@ CONTAINS
             K  = INDEX1( TSVDESC( I )( L1+1:L2 ), NCNT, LOCNAM )
 
             !.......  If pollutant-to- species is not found, make sure that
-            !                   species only is not
+            !         species only is not
             IF( J .LE. 0 .AND. K .LE. 0 ) THEN
                 NCNT = NCNT + 1
                 LOCNAM( NCNT ) = TSVDESC( I )( L1+1:L2 )

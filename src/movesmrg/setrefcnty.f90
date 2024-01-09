@@ -1,4 +1,4 @@
-
+ 
 SUBROUTINE SETREFCNTY
 
     !***********************************************************************
@@ -66,9 +66,9 @@ SUBROUTINE SETREFCNTY
     CHARACTER(FIPLEN3)  GRDFIP( NSRC )
 
     !.......  Arrays for building list of reference county sources
-    INTEGER           , ALLOCATABLE :: SRCREFIDX( : )      ! ref. county index for each source
-    CHARACTER(FIPLEN3), ALLOCATABLE :: INVCNTY( : )        ! inventory counties sorted by reference county
-    CHARACTER(FIPLEN3), ALLOCATABLE :: REFCNTY( : )        ! list of sorted reference counties
+    INTEGER           SRCREFIDX( NSRC )        ! ref. county index for each source
+    CHARACTER(FIPLEN3)  INVCNTY( NINVC )        ! inventory counties sorted by reference county
+    CHARACTER(FIPLEN3)  REFCNTY( NREFC )        ! list of sorted reference counties
 
     !.......  Other local variables
     INTEGER   I, J, K, S      ! indexes and counters
@@ -108,11 +108,8 @@ SUBROUTINE SETREFCNTY
     CALL RDMXREF( XDEV, NGRDFIP, GRDFIP )
 
     !.......  Build list of inventory counties sorted by reference county
-    ALLOCATE( INVCNTY( NINVC ),&
-              REFCNTY( NREFC ),&
-             NREFSRCS( NREFC ),&
-            SRCREFIDX( NSRC ), STAT=IOS )
-    CALL CHECKMEM( IOS, 'INVCNTY...SRCREFIDX', PROGNAME )
+    ALLOCATE( NREFSRCS( NREFC ), STAT=IOS )
+    CALL CHECKMEM( IOS, 'NREFSRCS', PROGNAME )
 
     DO I = 1, NINVC
         INVCNTY( I ) = MCREFSORT( I,1 )
@@ -199,8 +196,6 @@ SUBROUTINE SETREFCNTY
         NREFSRCS( REFIDX ) = K
 
     END DO
-
-    DEALLOCATE( INVCNTY, REFCNTY, SRCREFIDX )
 
     !.......  Read fuel month reference file
     CALL RDFMREF( MDEV )

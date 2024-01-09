@@ -130,20 +130,19 @@ SUBROUTINE GENMGMAT( ENAME, GNAME, UNAME, FDEV, MXSCEL, MXCSRC,     &
     REAL   , ALLOCATABLE :: VMT_CL_INV( : )     ! inverse of VMT by county or link
     CHARACTER(FIPLEN3), ALLOCATABLE :: vmt_label ( : )     ! FIPS codes
 
-    !.......   Temporary array for flagging sources that are outside the
-    !              domain
+    !.......   Temporary array for flagging sources that are outside the domain
     LOGICAL     INDOMAIN( NMSRC )     ! true: src is in the domain
 
-    !.......   Arrays for links intersecting with cells
-    !.......   Note that the NGRID dimension could conceivably be too small if
-    !              a link winds through the whole domain, but this is a case that
-    !              is not worth going to extra trouble for.
+    !.....   Arrays for links intersecting with cells
+    !.....   Note that the NGRID dimension could conceivably be too small if
+    !        a link winds through the whole domain, but this is a case that
+    !        is not worth going to extra trouble for.
     INTEGER     ACEL( NGRID )        ! number of cell intersctns per src
     REAL        AFAC( NGRID )        ! fraction of link in cell
 
     CHARACTER(FIPLEN3)  FIPNOSRG( NINVIFIP )      ! cy/st/co codes w/o surrogates
-    CHARACTER(SRCLEN3)    LKOGRD( NMSRC )     ! link srcs outside
-        !    the grid
+    CHARACTER(SRCLEN3)    LKOGRD( NMSRC )     ! link srcs outside the grid
+
     !.......   Temporary arrays for storing surrogate codes to use
     INTEGER     SURGID1( NSRC )     ! primary surrogate code
     INTEGER     SURGID2( NSRC )     ! secondary surrogate code
@@ -352,14 +351,13 @@ SUBROUTINE GENMGMAT( ENAME, GNAME, UNAME, FDEV, MXSCEL, MXCSRC,     &
                 ' through sources to generate gridding matrix'
             CALL M3MSG2( MESG )
 
-
             !.......  Allocate memory for indices to surrogates tables for each source
             ALLOCATE( TPLINE( NTL ), STAT=IOS )
             CALL CHECKMEM( IOS, 'TPLINE', PROGNAME )
 
             !.......  If surrogates are needed, read and store the gridding surrogates,
-            !               allocate memory for the surrogate assignments, and assign
-            !               surrogates to each source.
+            !         allocate memory for the surrogate assignments, and assign
+            !         surrogates to each source.
             NT = 0
             TPLINE = ' '
             TSRGFNAM = ' '
@@ -491,7 +489,7 @@ SUBROUTINE GENMGMAT( ENAME, GNAME, UNAME, FDEV, MXSCEL, MXCSRC,     &
             END IF       ! End if assigned point location or not
 
             !.......  Find FIP/RoadWayType adjustment for FIP and RWT
-            !                ADJ = ADJMV( NADJ1, FIP, RWT, ADJFIP, ADJRWT, ADJFAC1 )
+            !         ADJ = ADJMV( NADJ1, FIP, RWT, ADJFIP, ADJRWT, ADJFAC1 )
 
             !.......  Process for link source...
             IF ( CLNK .NE. ' ' ) THEN
@@ -519,7 +517,7 @@ SUBROUTINE GENMGMAT( ENAME, GNAME, UNAME, FDEV, MXSCEL, MXCSRC,     &
                     CYCLE
 
                 !.......  If link is outside the grid, store its information and
-                !                       go to next loop iteration
+                !         go to next loop iteration
                 ELSE IF( NCEL .EQ. 0 ) THEN
 
                     NLKOGRD = NLKOGRD + 1
@@ -565,7 +563,7 @@ SUBROUTINE GENMGMAT( ENAME, GNAME, UNAME, FDEV, MXSCEL, MXCSRC,     &
                     END IF
 
                     !.......  Check that the maximum number of src-cell intersections
-                    !                           is okay
+                    !         is okay
                     IF ( J .LE. NMATX ) THEN
 
                         IDXSRT( J ) = J
@@ -732,7 +730,7 @@ SUBROUTINE GENMGMAT( ENAME, GNAME, UNAME, FDEV, MXSCEL, MXCSRC,     &
     END IF
 
     !.......  Sort the scratch gridding matrix arrays to organize by cell and by
-    !           source.
+    !         source.
     CALL SORTI2( NCOEF, IDXSRT, IC, IS )
 
     !.......  Compress scratch gridding matrix into output representation
@@ -863,10 +861,8 @@ SUBROUTINE GENMGMAT( ENAME, GNAME, UNAME, FDEV, MXSCEL, MXCSRC,     &
         IF( CNTMAX .GT. MXCCL ) THEN
             WRITE( MESG,94010 )&
              'INTERNAL ERROR: Ungridding matrix not written'&
-             // CRLF() // BLANK10 //&
-             'Arrays would have overflowed.'&
-             // CRLF() // BLANK10 //&
-             'Current maximum cells per county/link (MXCCL) =',&
+             // CRLF() // BLANK10 // 'Arrays would have overflowed.'&
+             // CRLF() // BLANK10 // 'Current maximum cells per county/link (MXCCL) =',&
              MXCCL, '.' // CRLF() // BLANK10 //&
              'Actual  maximum cells per county/link    =',&
              CNTMAX, '.'
@@ -892,7 +888,7 @@ SUBROUTINE GENMGMAT( ENAME, GNAME, UNAME, FDEV, MXSCEL, MXCSRC,     &
                 CYCLE
 
             !......  Store the number of cells per source as the number of cell
-            !                  intersections with the county or link
+            !        intersections with the county or link
             ELSE
                 NU( S ) = CNT_CL( N )
             END IF
@@ -958,14 +954,8 @@ CONTAINS
 
     SUBROUTINE OPEN_SRGFILE
 
-        !.......  Set logical file name
-        IF( .NOT. SETENVVAR( 'SRGPRO_PATH', NAMBUFT )) THEN
-            MESG = 'Could not set logical  name of file ' // TRIM( NAMBUFT )
-            CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
-        END IF
-
         !.......  Get the number of lines in the surrogate description file desription file
-        GDEV = GETEFILE( 'SRGPRO_PATH',.TRUE., .TRUE., PROGNAME )
+        GDEV = GETEFILE( NAMBUFT,.TRUE., .TRUE., PROGNAME )
 
         IF( GDEV .LT. 0 ) THEN
             MESG = 'Could not open input surrogate file' // TRIM( NAMBUFT )
@@ -973,13 +963,6 @@ CONTAINS
         END IF
 
         REWIND( GDEV )
-
-        NLINES = GETFLINE( GDEV, 'Reading surrogate files' )
-
-        IF( .NOT. SETENVVAR( 'SRGPRO_PATH', NAMBUF )) THEN
-            MESG = 'Could not set logical  name of file ' // TRIM( NAMBUF )
-            CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
-        END IF
 
         RETURN
 

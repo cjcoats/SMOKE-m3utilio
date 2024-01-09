@@ -385,7 +385,7 @@ PROGRAM LAYPOINT
             CALL M3EXIT( PNAME,0,0, 'Bad env vble "FIRE_HFLUX"', 2 )
         END IF
 
-    !.......  Convert BTU/hr to Briggs bouyancy
+        !.......  Convert BTU/hr to Briggs bouyancy
         TMPBFLX = TMPBFLX * BTU2M4PS3      ! array
 
         MESG = 'Daily area burned (acres/day)'
@@ -1754,7 +1754,7 @@ CONTAINS
 
     !.......  This internal subprogram tries to read a variable from an
     !         I/O API file, and aborts if not successful.
-    SUBROUTINE SAFE_READ3( FNAM, VNAM, LAY, JDATE, JTIME, XBUF     )
+    SUBROUTINE SAFE_READ3( FNAM, VNAM, LAY, JDATE, JTIME, XBUF )
 
         !.......  Subprogram arguments
         CHARACTER(*), INTENT(IN   ) :: FNAM            ! logical file name

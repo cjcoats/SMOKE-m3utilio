@@ -69,7 +69,6 @@ SUBROUTINE FIRE_POSTPLM( EMLAYS, S, ZBOT, ZTOP, PRESF, ZZF, TA,    &
     !.......   Local variables
 
     INTEGER       L
-
     INTEGER       LBOT
 
     DOUBLE PRECISION    DDP

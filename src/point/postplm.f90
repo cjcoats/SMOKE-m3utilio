@@ -105,7 +105,7 @@ SUBROUTINE POSTPLM( EMLAYS, S, ZBOT, ZTOP, PRESF, ZZF, TA, ZH, LBOT, LTOP, LFRAC
         END DO
 
     !.......  Note- this check not in original algorithm, but w/o it,
-    !                         can end up with fractions > 1.0
+    !         can end up with fractions > 1.0
     ELSE IF( LBOT == EMLAYS ) THEN        ! plume above top layer
 
         LFRAC( LBOT ) = 1.0

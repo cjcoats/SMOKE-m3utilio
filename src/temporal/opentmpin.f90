@@ -154,8 +154,7 @@ SUBROUTINE OPENTMPIN( UFLAG, PFLAG, ENAME, ANAME, DNAME, HNAME,    &
 
     !.......  Open the time periods that Temporal should process
 
-    MESG = 'Enter logical name for Episode Time Periods file ' //    &
-           'inputs list (or "NONE")'
+    MESG = 'Enter logical name for Episode Time Periods file inputs list (or "NONE")'
     KDEV = PROMPTFFILE( MESG, .TRUE., .TRUE.,'PROCDATES', PROGNAME)
     IF( KDEV == -2 ) THEN
         PFLAG = .FALSE.

@@ -1379,7 +1379,7 @@ CONTAINS
 
         INTEGER     ISTAT
 
-                !.......  body of function NULLDOMP()  .......
+        !.......  body of function NULLDOMP()  .......
 
         ALLOCATE(       IDSTR( 0:0 ),    &
                   DMFAC( 31,12,0:0 ), STAT = ISTAT )

@@ -467,32 +467,32 @@ CONTAINS
     !.......  Routine to open by physical name and give error if problem
     SUBROUTINE OPEN_LNAME_OR_PNAME( FILEDESC, FTYPE, LNAME, FDEV      )
 
-    !.......  Subroutine arguments
-        CHARACTER(*), INTENT  ( IN ) :: FILEDESC      ! file description
-        CHARACTER(*), INTENT  ( IN ) :: FTYPE         ! NETCDF or ASCII
-        CHARACTER(*), INTENT(IN OUT) :: LNAME         ! logical file name
-        INTEGER     , INTENT   (OUT) :: FDEV          ! file unit (if any)
+        !.......  Subroutine arguments
+        CHARACTER(*), INTENT  ( IN ) :: FILEDESC          ! file description
+        CHARACTER(*), INTENT  ( IN ) :: FTYPE             ! NETCDF or ASCII
+        CHARACTER(*), INTENT(IN OUT) :: LNAME             ! logical file name
+        INTEGER     , INTENT   (OUT) :: FDEV              ! file unit (if any)
 
-    !.......  Local variables
+        !.......  Local variables
         INTEGER         L, L2
         INTEGER         IOS
 
-        CHARACTER(128)  DUMSTR           ! dummy string
-        CHARACTER(256)  MESG             ! output string buffer
-        CHARACTER(512)  PHYSNAME         ! output path  file buffer
+        CHARACTER(128)  DUMSTR               ! dummy string
+        CHARACTER(256)  MESG                 ! output string buffer
+        CHARACTER(512)  PHYSNAME             ! output path  file buffer
 
-        LOGICAL ::      ENVFLAG = .FALSE.     ! true: could not set env variable
+        LOGICAL ::      ENVFLAG = .FALSE.         ! true: could not set env variable
 
-    !------------------------------------------------------------------------
+        !------------------------------------------------------------------------
 
         FDEV = 0
         ENVFLAG = .FALSE.
 
-    !.......  Check if logical output file name is defined
+        !.......  Check if logical output file name is defined
         CALL ENVSTR( LNAME, FILEDESC, ' ', DUMSTR, IOS )
 
-    !.......  If not defined, give note, build physical output file name
-    !              and set environment variable
+        !.......  If not defined, give note, build physical output file name
+        !         and set environment variable
         IF( IOS1 .EQ. 0 .AND.&
             IOS2 .EQ. 0 .AND.&
             IOS  .NE. 0       ) THEN
@@ -514,7 +514,7 @@ CONTAINS
 
         IF( .NOT. ENVFLAG ) THEN
 
-    !.......  Logical name is defined, open file.
+            !.......  Logical name is defined, open file.
             SELECT CASE( FTYPE )
               CASE( 'NETCDF' )
                 LNAME = PROMPTSET( 'Enter name for '// FILEDESC,&

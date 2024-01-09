@@ -723,8 +723,7 @@ SUBROUTINE RDCFPRO( CFDEV )
 
 999 MESG = 'End of file'
     MESG = 'End of file reached unexpectedly. ' //&
-           'Check format of CFPRO' // CRLF() // BLANK5 //&
-           'input file.'
+            CRLF() // BLANK5 //'Check format of CFPRO input file.'
     CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 
     !******************  FORMAT  STATEMENTS   ******************************

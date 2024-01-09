@@ -154,23 +154,23 @@ SUBROUTINE RDRPDEMFACS( REFIDX, MONTH )
             CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
         END IF
 
-    !.......  Check for header line
+        !.......  Check for header line
         IF( LINE( 1:12 ) .EQ. 'NUM_TEMP_BIN' ) THEN
             LJ = LEN_TRIM( LINE )
             NEMTEMPS = STR2INT( LINE( 13:LJ ) )
 
         ELSE IF( LINE( 1:21 ) .EQ. 'HUMIDITY_ADJUSTED_NOX' ) THEN
             LJ = LEN_TRIM( LINE )
-            IF( TRIM( LINE( 23:LJ ) ) == 'N' ) NOX_ADJUSTED = .FALSE.      ! Do not apply NOx humidity adj
+            IF( TRIM( LINE( 23:LJ ) ) == 'N' ) NOX_ADJUSTED = .FALSE.          ! Do not apply NOx humidity adj
 
         ELSE IF( LINE( 1:15 ) .EQ. 'MOVESScenarioID' ) THEN
             FOUND = .TRUE.
 
-            SEGMENT = ' '      ! array
+            SEGMENT = ' '          ! array
             CALL PARSLINE( LINE, NSEG, SEGMENT )
 
-    !.......  Count number of pollutants
-            NMVSPOLS = 0         ! Assume that both TOG/NONHAPTOG are existed
+            !.......  Count number of pollutants
+            NMVSPOLS = 0                 ! Assume that both TOG/NONHAPTOG are existed
             DO J = NNONPOL + 1, NSEG
 
                 IF( SEGMENT( J ) .NE. ' ' ) THEN
@@ -191,7 +191,7 @@ SUBROUTINE RDRPDEMFACS( REFIDX, MONTH )
             CALL CHECKMEM( IOS, 'MVSPOLNAMS', PROGNAME )
             MVSPOLNAMS = ''
 
-    !.......  Store pollutant names
+            !.......  Store pollutant names
             DO J = 1, NMVSPOLS
                 MVSPOLNAMS( J ) = SEGMENT( NNONPOL + J )
             END DO
@@ -441,10 +441,10 @@ SUBROUTINE RDRPDEMFACS( REFIDX, MONTH )
 
             ELSE
                 !.......  If the SCC is in the inventory, it means that the
-                !                       emissions factors are out of order and that's a
-                !                       problem; otherwise, for SCCs in the emission
-                !                       factors file that aren't in the inventory, we
-                !                       can skip this line
+                !       emissions factors are out of order and that's a
+                !       problem; otherwise, for SCCs in the emission
+                !       factors file that aren't in the inventory, we
+                !       can skip this line
                 J = FINDC( TSCC, NINVSCC, INVSCC )
                 IF( J .LE. 0 ) THEN
 

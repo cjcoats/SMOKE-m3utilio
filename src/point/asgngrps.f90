@@ -183,8 +183,8 @@ SUBROUTINE ASGNGRPS( NSP, NCRIT, MXCHK, CRITVALS, CRITYPES, NINVGRP )
                 GLM = 0
                 DO I = 1, NLOCGRP
 
-                    !...........  If there are multiple stacks in the local group,
-                    !                           then it's a global group.  Update global arrays.
+                    !.....  If there are multiple stacks in the local group,
+                    !       then it's a global group.  Update global arrays.
                     IF ( GCNT( I ) .GT. 1 ) THEN
 
                         DO J = 1, GCNT( I )
@@ -206,8 +206,8 @@ SUBROUTINE ASGNGRPS( NSP, NCRIT, MXCHK, CRITVALS, CRITYPES, NINVGRP )
 
                 END DO
 
-                !.......  Update global counter. When get to the end, we'll have
-                !                       to reset the groups so that there aren't any holes.
+                !.....  Update global counter. When get to the end, we'll have
+                !       to reset the groups so that there aren't any holes.
                 G = GLM
 
             END IF
@@ -227,9 +227,9 @@ SUBROUTINE ASGNGRPS( NSP, NCRIT, MXCHK, CRITVALS, CRITYPES, NINVGRP )
             G_FL  ( 1 ) = FL
 
         !.......  For the same facility, compare stack parameters to the
-        !               group stack parameters using the tolerances.
+        !         group stack parameters using the tolerances.
         !.......  If there is a match in stack parameters, set flag current source
-        !               with the group number,
+        !         with the group number,
         ELSE
 
             VALS( HT_IDX ) = HT
@@ -238,8 +238,7 @@ SUBROUTINE ASGNGRPS( NSP, NCRIT, MXCHK, CRITVALS, CRITYPES, NINVGRP )
             VALS( VE_IDX ) = VE
             VALS( FL_IDX ) = FL
 
-            !.......  Compare this source to all other groups/sources for this
-            !                   plant
+            !.......  Compare this source to all other groups/sources for this plant
             LGROUP = .FALSE.
             DO I = 1, NLOCGRP
 
@@ -251,15 +250,15 @@ SUBROUTINE ASGNGRPS( NSP, NCRIT, MXCHK, CRITVALS, CRITYPES, NINVGRP )
                     REFS( FL_IDX ) = G_FL( I )
                 END IF
 
-                !.......  Check tolerances. Use REFS for RANK field since RANK
-                !                       can't be used to group stacks (it makes no sense)
+                !.....  Check tolerances. Use REFS for RANK field since RANK
+                !       can't be used to group stacks (it makes no sense)
                 STATUS = EVALCRIT( NSP, NCRIT, MXCHK, VALS, REFS,    &
                                    REFS, CHRS, CRITVALS, COMCHRS,    &
                                    CRITYPES, GPSTAT)
 
-                !.......  If stack parameters meet the criteria, then recompute
-                !                       the group stack parameters as the weighted average.
-                !.......  Exit from loop if a match has been found.
+                !.....  If stack parameters meet the criteria, then recompute
+                !       the group stack parameters as the weighted average.
+                !.....  Exit from loop if a match has been found.
                 IF( STATUS ) THEN
 
                     GCNT( I ) = GCNT( I ) + 1
@@ -336,9 +335,9 @@ SUBROUTINE ASGNGRPS( NSP, NCRIT, MXCHK, CRITVALS, CRITYPES, NINVGRP )
     END IF
 
     !.......  Postprocess group IDs to remove gaps in number and to count the
-    !           number of inventory groups.  If LANYGRP is false, then GROUPID
-    !           will be zeros, so do not want to sort.  GINDEX will be maintained
-    !           as the source number.
+    !         number of inventory groups.  If LANYGRP is false, then GROUPID
+    !         will be zeros, so do not want to sort.  GINDEX will be maintained
+    !         as the source number.
     IF( LANYGRP ) THEN
         CALL SORTI1( NSRC, GINDEX, GROUPID )
     ELSE
@@ -415,7 +414,7 @@ SUBROUTINE ASGNGRPS( NSP, NCRIT, MXCHK, CRITVALS, CRITYPES, NINVGRP )
             GRPCNT( G ) = TGRPCNT( I )
             GRPFIP( G ) = CIFIP  ( I )
         !.......  Otherwise, give warnings if stacks in the same group do not have
-        !               the same stack locations.
+        !         the same stack locations.
         ELSE
 
             CALL FMTCSRC( CSOURC( I ), NCHARS, BUFFER, L2 )

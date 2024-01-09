@@ -79,7 +79,7 @@ SUBROUTINE PLSPRD( DTHDZ, ZF, KZ, CEFSTK, HTMIX, PLTOP, PLBOT )
     DPTH  = SZ0FAC * SIGZ0
 
     !......  Compute plume top and bottom heights; plume is either completely
-    !          within or outside mixing layer
+    !        within or outside mixing layer
     PLTOP = CEFSTK + DPTH/2.
     PLBOT = CEFSTK - DPTH/2.
 
@@ -87,7 +87,7 @@ SUBROUTINE PLSPRD( DTHDZ, ZF, KZ, CEFSTK, HTMIX, PLTOP, PLBOT )
     PLBOT = MAX( 0.0, PLBOT )
 
     !......  Make sure that plume top and bottom heights are less than
-    !          the top layer's top and bottom heights
+    !        the top layer's top and bottom heights
     PLTOP = MIN( ZF( KZ ), PLTOP )
     PLBOT = MIN( ZF( KZ ) - 1., PLBOT )
 

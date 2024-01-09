@@ -220,8 +220,7 @@ SUBROUTINE RDRPVEMFACS( REFIDX, MONTH )
     END IF
 
     IF( NMVSPOLS == 0 ) THEN
-        MESG = 'ERROR: Emission factors file does not contain ' //&
-               'any pollutants'
+        MESG = 'ERROR: Emission factors file does not contain any pollutants'
         CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
     END IF
 
@@ -360,7 +359,7 @@ SUBROUTINE RDRPVEMFACS( REFIDX, MONTH )
             TMPVAL = STR2REAL( SEGMENT( 8 ) )
             IF( TMPVAL .NE. PTMP ) THEN
 
-            !.......  Check that temperatures are sorted
+                !.......  Check that temperatures are sorted
                 IF( TMPVAL .LT. PTMP ) THEN
                     WRITE( MESG, 94010 ) 'ERROR: Temperature value ' //&
                       'at line', IREC, 'of emission factors file is ' //&
@@ -461,10 +460,10 @@ SUBROUTINE RDRPVEMFACS( REFIDX, MONTH )
 
             ELSE
             !.......  If the SCC is in the inventory, it means that the
-            !                       emissions factors are out of order and that's a
-            !                       problem; otherwise, for SCCs in the emission
-            !                       factors file that aren't in the inventory, we
-            !                       can skip this line
+            !           emissions factors are out of order and that's a
+            !           problem; otherwise, for SCCs in the emission
+            !           factors file that aren't in the inventory, we
+            !           can skip this line
                 J = FINDC( TSCC, NINVSCC, INVSCC )
                 IF( J .LE. 0 ) THEN
 

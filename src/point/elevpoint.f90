@@ -601,10 +601,10 @@ PROGRAM ELEVPOINT
     ENDIF
 
     !.......  Loop through sources to determine elevated and PinG sources.  If
-    !           source is in a stack group, use group settings to compare to
-    !           the elevated and/or PinG criteria.
+    !         source is in a stack group, use group settings to compare to
+    !         the elevated and/or PinG criteria.
     !.......  Also, update stack parameters and emissions permanently for
-    !           program duration if source is in an inventory group
+    !         program duration if source is in an inventory group
     NGROUP = 0
     PGRP   = -9
     PEGRP  = -9
@@ -688,10 +688,10 @@ PROGRAM ELEVPOINT
         END IF
 
         !.......  If PELVCONFIG used for elevated sources, check if source matches
-        !               criteria given
+        !         criteria given
         IF(  (ELEVTYPE .EQ. PELVCONFIG_APPROACH-1) ) THEN
 
-        !.......  See if source matches criteria for elevated sources
+            !.......  See if source matches criteria for elevated sources
             EVSTAT = .FALSE.          ! array
             IF ( EVALCRIT( NEVPVAR, NELVCRIT, MXELVCHK, VALS, VALS,     &
                            RANK, CHRS, ELVVALS, ELVCHRS, ELVTYPES,      &
@@ -706,7 +706,7 @@ PROGRAM ELEVPOINT
 
         IF( ELEVTYPE .EQ. PELVCONFIG_APPROACH ) THEN
 
-    !.......  See if source matches criteria for elevated sources
+            !.......  See if source matches criteria for elevated sources
             EVSTAT = .FALSE.      ! array
 
             IF ( FFLAG .AND. SMOLDER( S ) ) THEN
@@ -748,7 +748,7 @@ PROGRAM ELEVPOINT
         END IF         ! End whether PinG approach is to use PELVCONFIG or not
 
         !.......  If source is a major source or a PinG source, but it's not in
-        !               a group, increase the total maximum group count.
+        !         a group, increase the total maximum group count.
         IF( ( LMAJOR( S ) .OR.    &
               LPING ( S )      ) ) THEN
 
@@ -770,7 +770,7 @@ PROGRAM ELEVPOINT
             S    = GINDEX ( J )
             IGRP = GROUPID( S )
 
-    !.......  Select a source that are inside of the grid
+            !.......  Select a source that are inside of the grid
             IF( INGRID( SRCXL( S ), SRCYL( S ), NCOLS, NROWS, COL, ROW ) ) THEN
 
                 IF( (ELEVTYPE .EQ. PELVCONFIG_APPROACH) .OR.    &
@@ -791,7 +791,7 @@ PROGRAM ELEVPOINT
     END IF
 
     !.......  Now reset group arrays for major and PinG sources only. Groups
-    !           are not used by SMOKE for other point sources.
+    !         are not used by SMOKE for other point sources.
 
     !.......  Allocate memory for and save inventory groups in local arrays
     ALLOCATE( LOCGID( NINVGRP ),    &
@@ -813,10 +813,10 @@ PROGRAM ELEVPOINT
     END IF
 
     !.......  Reallocate group arrays based on inventory groups, major, and
-    !           PinG settings.
+    !         PinG settings.
     !.......  The group sorting index is here in case we need to add back
-    !           in the reading of PSPLIT and PGROUP files, which might be
-    !           unsorted.  The WPINGSTK routine uses this index
+    !         in the reading of PSPLIT and PGROUP files, which might be
+    !         unsorted.  The WPINGSTK routine uses this index
     ALLOCATE( GRPGIDA( NGROUP ),    &
                GRPIDX( NGROUP ),    &
                GRPLAT( NGROUP ),    &
@@ -865,13 +865,13 @@ PROGRAM ELEVPOINT
     IF (FFLAG) GRPACRES = BADVAL3
 
     !.......  Loop over sources to fill in group settings with new group numbers
-    !           and to populate group arrays for major and PinG sources.
-    !           Groups that aren't major or PinG sources will be dropped.
+    !         and to populate group arrays for major and PinG sources.
+    !         Groups that aren't major or PinG sources will be dropped.
     !.......  Make sure to keep sources together that share a group ID from
-    !           the inventory grouping.
+    !         the inventory grouping.
     !.......  Source arrays have already been updated with group info.
     !.......  OUTG is used because G is not necessarily going to stay in order
-    !           with the LOCGID construct.
+    !         with the LOCGID construct.
     G = 0
     CHRS = ' '          ! array
     DO S = 1, NSRC
@@ -885,16 +885,16 @@ PROGRAM ELEVPOINT
             !.......  If source is in an inventory group...
             IF ( IGRP .GT. 0 ) THEN
 
-                !.......  If  it has already been assigned a new number,
-                !                      retrieve number for the report.
+                !.....  If  it has already been assigned a new number,
+                !       retrieve number for the report.
                 IF ( LOCSTAT( IGRP ) ) THEN
 
                     GROUPID( S ) = LOCGID( IGRP )
                     OUTG = LOCGID( IGRP )
                     SFLAG = .FALSE.                    ! controller for later in loop
 
-                !.......  Otherwise, group information has not yet been stored and
-                !                       it needs to be
+                !.....  Otherwise, group information has not yet been stored and
+                !       it needs to be
                 ELSE
 
                     !...........  If source is in an inventory group...
@@ -983,8 +983,8 @@ PROGRAM ELEVPOINT
             IF ( RFLAG ) THEN
                 IF ( LPING( S ) ) THEN
 
-                    !....... Evaluate PinG criteria again to get PGSTAT for writing;
-                    !                      if valid, then write report fields
+                    !.....  Evaluate PinG criteria again to get PGSTAT for writing;
+                    !       if valid, then write report fields
                     IF ( EVALCRIT( NEVPVAR, NPNGCRIT, MXPNGCHK, VALS,    &
                                    VALS, RANK, CHRS, PNGVALS, PNGCHRS,    &
                                    PNGTYPES, PGSTAT ) ) THEN
@@ -1004,8 +1004,8 @@ PROGRAM ELEVPOINT
 
                     END IF
 
-                !....... Evaluate elevated criteria again to get PGSTAT for
-                !                      writing; if valid, then write report fields
+                !...... Evaluate elevated criteria again to get PGSTAT for
+                !       writing; if valid, then write report fields
                 ELSE
 
                     IF ( EVALCRIT( NEVPVAR, NELVCRIT, MXELVCHK, VALS,    &
@@ -1178,9 +1178,9 @@ PROGRAM ELEVPOINT
     !           or for elevated source identidied by cutoff method
     IF( NGROUP .GT. 0 ) THEN
 
-    !.......  Make sure that stack parameters are set for all groups
-    !.......  This is a simplistic way of doing this for now,  later
-    !               add call to FIXSTK routine
+        !.......  Make sure that stack parameters are set for all groups
+        !.......  This is a simplistic way of doing this for now,  later
+        !         add call to FIXSTK routine
         MINDM = MINVAL( GRPDM( 1:NGROUP ) )
         MINHT = MINVAL( GRPHT( 1:NGROUP ) )
         MINTK = MINVAL( GRPTK( 1:NGROUP ) )
@@ -1199,8 +1199,8 @@ PROGRAM ELEVPOINT
             END IF
         END IF
 
-    !.......  Give warning if any plume-in-grid stack groups are outside the
-    !               grid
+        !.......  Give warning if any plume-in-grid stack groups are 
+        !         outside the grid
         IF( NEXCLD .GT. 0 ) THEN
             WRITE( MESG,94010 ) 'WARNING: ', NEXCLD,     &
                    'stack groups are outside of grid "' // TRIM( GDNAM3D ) // '"'
@@ -1299,7 +1299,7 @@ CONTAINS
         CHARACTER(32) CHARS ( MXCHRS )         !  source fields for output
 
         !.......  Local subprogram variables
-        INTEGER      K,  L,  L1,  L2,  M,  N          ! indices and counters
+        INTEGER      K,  L,  L1,  L2,  M,  N    ! indices and counters
         INTEGER      MX                         ! max of MXPNGCHK and MXELVCHK
         INTEGER      NC                         ! local no. of src chars to output
         INTEGER   :: NM = 0                     ! local no. of max vals before emis
@@ -1317,7 +1317,7 @@ CONTAINS
 
             !.......  Allocate local memory
             ALLOCATE( LF( MXCHRS ),     &
-               VNAME( NV ),  STAT=IOS )
+                   VNAME( NV ),  STAT=IOS )
             CALL CHECKMEM( IOS,  'VNAME',  PROGNAME )
 
             !.......  Initialize output status of source characteristics
@@ -1419,8 +1419,8 @@ CONTAINS
             DO M = 1,  MXAND
                 DO N = 1,  NV
 
-                    !...........  Check if the status was used to include source
-                    !                           or not
+                    !.........  Check if the status was used to include source
+                    !           or not
                     IF ( STATUS( L, M, N ) ) THEN
 
                         !...........  Exit after this OR
@@ -1507,8 +1507,7 @@ CONTAINS
 
         IF ( .NOT. DESC3( FILNAM ) ) THEN
 
-            MESG = 'Could not get description of file "' //    &
-                   FILNAM( 1:LEN_TRIM( FILNAM ) ) // '"'
+            MESG = 'Could not get description of file "' // TRIM( FILNAM ) // '"'
             CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 
         END IF

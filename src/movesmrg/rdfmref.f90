@@ -104,7 +104,6 @@ SUBROUTINE RDFMREF( ADEV )
 
     !.......  Initialize arrays
     N = 0
-    IDX = 0
     FMREFRAW = 0
     DO I = 1, NLINES
 
@@ -194,7 +193,7 @@ SUBROUTINE RDFMREF( ADEV )
     !.......  If the no. of lines in the file is less than the no. of ref.
     !              counties, then something is wrong, but we'll go through
     !              the function to print out error messages
-    ALLOCATE( FMREFSORT ( NREFF,NREFFLAGS ),&
+    ALLOCATE( FMREFSORT ( NREFF,NREFFLAGS ),    &
               FMREFLIST ( NR,2 ),            STAT=IOS )
     CALL CHECKMEM( IOS, 'FMREFSORT,FMREFLIST', PROGNAME )
     FMREFSORT = ' '

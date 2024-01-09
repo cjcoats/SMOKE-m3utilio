@@ -579,7 +579,7 @@ SUBROUTINE MXGRPEMIS( NINVGRP, TSTEP, SDATE, STIME, NSTEPS )
             CALL SORTR2( NSRC, MXEIDX(1,K), MXEMIS(1,K), RGROUP )
 
             !.......  Reset indices if a source is in a group, invert the
-            !                   order, and change the index to a ranking.
+            !         order, and change the index to a ranking.
             N = 0
             PG = -9
             DO J = NSRC, 1, -1

@@ -18,7 +18,7 @@ SUBROUTINE GETMRGEV
     !***********************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !         System
     ! File: @(#)$Id$
     !
     ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
@@ -98,7 +98,7 @@ SUBROUTINE GETMRGEV
     END IF
 
     !.......  Set merge source category flags (impacts library routines shared
-    !           between Movesmrg and Smkmerge)
+    !         between Movesmrg and Smkmerge)
     AFLAG = .FALSE.
     BFLAG = .FALSE.
     MFLAG = .TRUE.
@@ -157,7 +157,7 @@ SUBROUTINE GETMRGEV
     LREPANY = ( LREPSTA .OR. LREPCNY .OR. LREPSCC .OR. LREPSRC )
 
     !.......  Retrieve variables for setting the output units for gridded and
-    !           country/state/county total data
+    !         country/state/county total data
     BUFFER = 'Units for output gridded emissions'
     CALL ENVSTR( 'MRG_GRDOUT_UNIT', BUFFER, ' ', GRDENV, IOS)
     IF ( IOS .GT. 0 ) THEN
@@ -241,8 +241,7 @@ SUBROUTINE GETMRGEV
         CALL M3EXIT( PROGNAME,0,0, 'Bad env vble "MEMORY_OPTIMIZE_YN"', 2 )
     END IF
 
-    MTMP_OUT = ENVYN( 'MTMP_OUTPUT_YN', 'Output mobile hourly emissions' //&
-                      " ", .FALSE., IOS )
+    MTMP_OUT = ENVYN( 'MTMP_OUTPUT_YN', 'Output mobile hourly emissions ', .FALSE., IOS )
     IF ( IOS .GT. 0 ) THEN
         CALL M3EXIT( PROGNAME,0,0, 'Bad env vble "MTMP_OUTPUT_YN"', 2 )
     END IF
@@ -426,7 +425,7 @@ SUBROUTINE GETMRGEV
     END IF
 
     !.......  If temporal processing, set which source categories get by-day
-    !           processing
+    !         processing
     MFLAG_BD = ( INDEX( TMPBYDAY, 'M' ) .GT. 0 )
 
     !.......  Get name of temperature variable to read from meteorology files

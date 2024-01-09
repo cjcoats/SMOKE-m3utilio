@@ -18,9 +18,9 @@ SUBROUTINE ASGNTAG( SNAM, NSRCIN, NTAG, TAGNAMLOC, TAGIDX )
     !  SUBROUTINE AND FUNCTIONS CALLED:
     !
     !  REVISION  HISTORY:
-    !    Created 2/2009 by M. Houyoux, US EPA
-    !    Version 11/2023 by CJC:  USE M3UTILIO and related changes
-    !
+    !    Created 2/2009 by M. Houyoux, US EPA 
+    !       Version 11/2023 by CJC:  USE M3UTILIO, conversion to ".f90", and
+    !       related changes
     !***************************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
@@ -200,11 +200,11 @@ SUBROUTINE ASGNTAG( SNAM, NSRCIN, NTAG, TAGNAMLOC, TAGIDX )
         IF ( MACTFLAG ) THEN
 
             !.......  Try for pollutant-specific FIPS code, SCC match,  MACT code; then
-            !    pollutant-specific FIPS code  MACT code; then
-            !    pollutant-specific Cy/st code, SCC match,  MACT code; then
-            !    pollutant-specific Cy/st code  MACT code; then
-            !    pollutant-specific SCC match  MACT code; then
-            !    pollutant-specific MACT code
+            !           pollutant-specific FIPS code  MACT code; then
+            !           pollutant-specific Cy/st code, SCC match,  MACT code; then
+            !           pollutant-specific Cy/st code  MACT code; then
+            !           pollutant-specific SCC match  MACT code; then
+            !           pollutant-specific MACT code
             F5 = FINDC( CHK37, TAGXCNT( 37 ), TAGCHRT37 )
             F4 = FINDC( CHK36, TAGXCNT( 36 ), TAGCHRT36 )
             F3 = FINDC( CHK35, TAGXCNT( 35 ), TAGCHRT35 )
@@ -243,11 +243,11 @@ SUBROUTINE ASGNTAG( SNAM, NSRCIN, NTAG, TAGNAMLOC, TAGIDX )
         IF ( SICFLAG ) THEN
 
             !.......  Try for pollutant-specific FIPS code  SIC match; then
-            !    pollutant-specific FIPS code  left SIC match; then
-            !    pollutant-specific Cy/st code  SIC match; then
-            !    pollutant-specific Cy/st code  left SIC match; then
-            !    pollutant-specific SIC match; then
-            !    pollutant-specific left SIC match
+            !           pollutant-specific FIPS code  left SIC match; then
+            !           pollutant-specific Cy/st code  SIC match; then
+            !           pollutant-specific Cy/st code  left SIC match; then
+            !           pollutant-specific SIC match; then
+            !           pollutant-specific left SIC match
 
             F5 = FINDC( CHK31, TAGXCNT( 31 ), TAGCHRT31 )
             F4 = FINDC( CHK30, TAGXCNT( 30 ), TAGCHRT30 )
@@ -284,8 +284,8 @@ SUBROUTINE ASGNTAG( SNAM, NSRCIN, NTAG, TAGNAMLOC, TAGIDX )
         END IF
 
         !.......  Try for pollutant-specific FIPS code  SCC match; then
-        !    pollutant-specific Cy/st code  SCC match; then
-        !    pollutant-specific SCC match
+        !           pollutant-specific Cy/st code  SCC match; then
+        !           pollutant-specific SCC match
 
         F5 = FINDC( CHK09, TAGXCNT( 9 ), TAGCHRT09 )
         F3 = FINDC( CHK06, TAGXCNT( 6 ), TAGCHRT06 )

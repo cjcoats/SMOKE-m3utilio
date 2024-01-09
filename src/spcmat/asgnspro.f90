@@ -20,9 +20,9 @@ SUBROUTINE ASGNSPRO( MASSOUT, MOLEOUT, REPORT, NSRCIN, UDEV,    &
     !  SUBROUTINES AND FUNCTIONS CALLED:
     !
     !  REVISION  HISTORY:
-    !    Created 2/99 by M. Houyoux
-    !    Version 11/2023 by CJC:  USE M3UTILIO and related changes
-    !
+    !    Created 2/99 by M. Houyoux 
+    !       Version 11/2023 by CJC:  USE M3UTILIO, conversion to ".f90", and
+    !       related changes
     !***************************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
@@ -250,8 +250,8 @@ SUBROUTINE ASGNSPRO( MASSOUT, MOLEOUT, REPORT, NSRCIN, UDEV,    &
     END IF
 
     !.......  Read emissions for current pollutant. If the emissions for a
-    !    source are zero, then the profile is not needed and the
-    !    massmatx and molematx calculations can be skipped.
+    !       source are zero, then the profile is not needed and the
+    !       massmatx and molematx calculations can be skipped.
     !.......  Only do this when emissions (not VMT) in inventory (LVALCHK=TRUE)
     IF( LVALCHK ) CALL RDMAPPOL( NSRCIN, 1, 1, ENAM, EMISTMP )
 
@@ -344,16 +344,16 @@ SUBROUTINE ASGNSPRO( MASSOUT, MOLEOUT, REPORT, NSRCIN, UDEV,    &
             !.................
 
             !.......  In the tables used in the following heirarchy, all cross-
-            !    reference entries are by definition, pollutant- specific.
-            !    The cross-reference tables (e.g,, CHRT02 come from MODXREF)
+            !         reference entries are by definition, pollutant- specific.
+            !         The cross-reference tables (e.g,, CHRT02 come from MODXREF)
 
             !.......  Try for pollutant-specific CHAR5 non-blank// SCC match; then
-            !    pollutant-specific CHAR4 non-blank// SCC or blank match; then
-            !    pollutant-specific CHAR3 non-blank// SCC or blank match; then
-            !    pollutant-specific CHAR2 non-blank// SCC or blank match; then
-            !    pollutant-specific CHAR1 non-blank// SCC or blank match; then
-            !    pollutant-specific PLANT non-blank// SCC match; then
-            !    pollutant-specific PLANT non-blank       match
+            !           pollutant-specific CHAR4 non-blank// SCC or blank match; then
+            !           pollutant-specific CHAR3 non-blank// SCC or blank match; then
+            !           pollutant-specific CHAR2 non-blank// SCC or blank match; then
+            !           pollutant-specific CHAR1 non-blank// SCC or blank match; then
+            !           pollutant-specific PLANT non-blank// SCC match; then
+            !           pollutant-specific PLANT non-blank       match
 
             F6 = 0
             F5 = 0
@@ -422,11 +422,11 @@ SUBROUTINE ASGNSPRO( MASSOUT, MOLEOUT, REPORT, NSRCIN, UDEV,    &
             IF ( MACTFLAG ) THEN
 
                 !.......  Try for pollutant-specific FIPS code, SCC match,  MACT code; then
-                !    pollutant-specific FIPS code  MACT code; then
-                !    pollutant-specific Cy/st code, SCC match,  MACT code; then
-                !    pollutant-specific Cy/st code  MACT code; then
-                !    pollutant-specific SCC match  MACT code; then
-                !    pollutant-specific MACT code
+                !           pollutant-specific FIPS code  MACT code; then
+                !           pollutant-specific Cy/st code, SCC match,  MACT code; then
+                !           pollutant-specific Cy/st code  MACT code; then
+                !           pollutant-specific SCC match  MACT code; then
+                !           pollutant-specific MACT code
                 F5 = FINDC( CHK37, TXCNT( 37 ), CHRT37 )
                 F4 = FINDC( CHK36, TXCNT( 36 ), CHRT36 )
                 F3 = FINDC( CHK35, TXCNT( 35 ), CHRT35 )
@@ -471,11 +471,11 @@ SUBROUTINE ASGNSPRO( MASSOUT, MOLEOUT, REPORT, NSRCIN, UDEV,    &
             IF ( SICFLAG ) THEN
 
                 !.......  Try for pollutant-specific FIPS code  SIC match; then
-                !    pollutant-specific FIPS code  left SIC match; then
-                !    pollutant-specific Cy/st code  SIC match; then
-                !    pollutant-specific Cy/st code  left SIC match; then
-                !    pollutant-specific SIC match; then
-                !    pollutant-specific left SIC match
+                !           pollutant-specific FIPS code  left SIC match; then
+                !           pollutant-specific Cy/st code  SIC match; then
+                !           pollutant-specific Cy/st code  left SIC match; then
+                !           pollutant-specific SIC match; then
+                !           pollutant-specific left SIC match
 
                 F5 = FINDC( CHK31, TXCNT( 31 ), CHRT31 )
                 F4 = FINDC( CHK30, TXCNT( 30 ), CHRT30 )
@@ -518,11 +518,11 @@ SUBROUTINE ASGNSPRO( MASSOUT, MOLEOUT, REPORT, NSRCIN, UDEV,    &
             END IF
 
             !.......  Try for pollutant-specific FIPS code  SCC match; then
-            !    pollutant-specific FIPS code  left SCC match; then
-            !    pollutant-specific Cy/st code  SCC match; then
-            !    pollutant-specific Cy/st code  left SCC match; then
-            !    pollutant-specific SCC match; then
-            !    pollutant-specific left SCC match
+            !           pollutant-specific FIPS code  left SCC match; then
+            !           pollutant-specific Cy/st code  SCC match; then
+            !           pollutant-specific Cy/st code  left SCC match; then
+            !           pollutant-specific SCC match; then
+            !           pollutant-specific left SCC match
 
             F5 = FINDC( CHK09, TXCNT( 9 ), CHRT09 )
             F4 = FINDC( CHK08, TXCNT( 8 ), CHRT08 )
@@ -531,12 +531,12 @@ SUBROUTINE ASGNSPRO( MASSOUT, MOLEOUT, REPORT, NSRCIN, UDEV,    &
             F1 = FINDC( TSCC , TXCNT( 3 ), CHRT03 )
             F0 = FINDC( TSCCL, TXCNT( 2 ), CHRT02 )
 
-            !....... Check for mobile-specific matches that use a TSCC with
-            !    road class of zero and vehicle type. The assignment of
-            !    temporal profile based on  a vehicle type and no road class
-            !    comes after the road class only match (or TSCCL in CHRT08,
-            !    for example) but the match uses the full TSCC (or CHRT09, for
-            !    example).
+            !...... Check for mobile-specific matches that use a TSCC with
+            !       road class of zero and vehicle type. The assignment of
+            !       temporal profile based on  a vehicle type and no road class
+            !       comes after the road class only match (or TSCCL in CHRT08,
+            !       for example) but the match uses the full TSCC (or CHRT09, for
+            !       example).
 
             IF( F5 .GT. 0 .AND. CSPT09(F5,V) .NE. EMCMISS3 ) THEN
                 SPCODE = CSPT09( F5,V )
@@ -654,8 +654,8 @@ SUBROUTINE ASGNSPRO( MASSOUT, MOLEOUT, REPORT, NSRCIN, UDEV,    &
 
 CONTAINS
 
-    !.......  This internal subroutine writes the message when a default
-    !    speciation profile is unavailable for a given pollutant
+    !.....  This internal subroutine writes the message when a default
+    !       speciation profile is unavailable for a given pollutant
     SUBROUTINE REPORT_MISSING_DEFAULT
 
         CALL FMTCSRC( CSRC, NCOUT, BUFFER, L2 )
@@ -668,15 +668,16 @@ CONTAINS
 
         CALL M3MESG( MESG )
 
+        RETURN
     END SUBROUTINE REPORT_MISSING_DEFAULT
 
     !----------------------------------------------------------------------
     !----------------------------------------------------------------------
-    !.......  This internal subprogram searches for the speciation profile
-    !    code in the abriged list (from MODSPRO) and if found, applies
-    !    the speciation factors for all species in that profile to
-    !    the speciation matrices.
-    !.......  Most variables are defined through host association.
+    !.....  This internal subprogram searches for the speciation profile
+    !       code in the abriged list (from MODSPRO) and if found, applies
+    !       the speciation factors for all species in that profile to
+    !       the speciation matrices.
+    !.....  Most variables are defined through host association.
     SUBROUTINE SETSOURCE_SMATS
 
         !.......  Local variables
@@ -880,8 +881,8 @@ CONTAINS
 
             END IF
 
-            !.......  Check if pollutant-to-pollutant conversion factor is available
-            !    by speciation profile, by checking if their count > 0
+            !.....  Check if pollutant-to-pollutant conversion factor is available
+            !       by speciation profile, by checking if their count > 0
             IF( NCNV4 .GT. 0 .AND. VALID ) THEN
 
                 F1 = FINDC( ADJUSTL( CCODE(NP) ), NCNV4, CNVRT04 )
@@ -927,10 +928,10 @@ CONTAINS
                 END IF
 
                 !.......  Try for pollutant-specific FIPS code  SCC match; then
-                !    pollutant-specific Cy/st code  SCC match; then
-                !    pollutant-specific SCC match
-                !    pollutant-specific roadway type match
-                !    pollutant-specific vehicle type match
+                !           pollutant-specific Cy/st code  SCC match; then
+                !           pollutant-specific SCC match
+                !           pollutant-specific roadway type match
+                !           pollutant-specific vehicle type match
 
                 F5 = FINDC( CFIP // SCCORIG , NCNV3, CNVRT03 )
                 F4 = FINDC( CSTA // SCCORIG , NCNV2, CNVRT02 )
@@ -978,8 +979,8 @@ CONTAINS
 
             END IF
 
-            !.......  Now that the default profile has been tried, check one last time
-            !    for K and then apply speciation factors
+            !......  Now that the default profile has been tried, check one last time
+            !        for K and then apply speciation factors
             IF( K .GT. 0 ) THEN
 
                 !.......  Get indices to full speciation table
@@ -1006,6 +1007,7 @@ CONTAINS
 
         END DO      ! Loop over combination profiles, index NP
 
+        RETURN
     END SUBROUTINE SETSOURCE_SMATS
 
 END SUBROUTINE ASGNSPRO

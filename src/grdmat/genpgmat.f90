@@ -118,8 +118,7 @@ SUBROUTINE GENPGMAT( FNAME, NPSRC, NGRID, XLOCA, YLOCA, VFLAG,&
 
         CALL M3MSG2( 'Computing gridding matrix and statistics...' )
 
-        !.......   Compress matrix into I/O representation from scratch
-        !                representation.
+        !.......   Compress matrix into I/O representation from scratch representation.
         !.......   Compute statistics
 
         DO R = 1, NGRID
@@ -149,7 +148,7 @@ SUBROUTINE GENPGMAT( FNAME, NPSRC, NGRID, XLOCA, YLOCA, VFLAG,&
 
         ENDDO        !  end of loop on cells K for this FIP
 
-    !.......  Give error(s) if memory allocation exceeded
+        !.......  Give error(s) if memory allocation exceeded
         IF( K .GT. NPSRC ) THEN
             WRITE( MESG,94010 )         &
                     'INTERNAL ERROR: Number of gridding coefficients K=', K,    &
@@ -164,7 +163,7 @@ SUBROUTINE GENPGMAT( FNAME, NPSRC, NGRID, XLOCA, YLOCA, VFLAG,&
             CALL M3MSG2( MESG )
         ENDIF
 
-    !.......  Stop program if memory exceedance errors were written
+        !.......  Stop program if memory exceedance errors were written
         IF( K .GT. NPSRC .OR. K2 .GT. NPSRC )  CALL M3EXIT( PROGNAME, 0, 0, 'Overflow', 2 )
 
         CALL M3MSG2( 'Writing out GRIDDING MATRIX file...' )

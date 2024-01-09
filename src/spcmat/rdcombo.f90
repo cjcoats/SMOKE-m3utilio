@@ -12,9 +12,9 @@ SUBROUTINE RDCOMBO( CDEV, ENAM )
     !
     !    Version 8/2016 by C.Coats:
     !    Check whether weights sum to 1
-    !    Needed status-checks
-    !    Version 11/2023 by CJC:  USE M3UTILIO and related changes
-    !
+    !    Needed status-checks 
+    !       Version 11/2023 by CJC:  USE M3UTILIO, conversion to ".f90", and
+    !       related changes
     !***************************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
@@ -77,8 +77,8 @@ SUBROUTINE RDCOMBO( CDEV, ENAM )
     INTEGER         NP          !  tmp number of profiles per combo
     INTEGER         NRECS       !  number of records read in current call
 
-    LOGICAL       :: TFLAG                  ! out-of-bounds
-    LOGICAL       :: EFLAG    = .FALSE.     ! true: error detected
+    LOGICAL          TFLAG                  ! out-of-bounds
+    LOGICAL          EFLAG                  ! true: error detected
     LOGICAL, SAVE :: FIRSTIME = .TRUE.
     LOGICAL, SAVE :: FIRSTSTA = .TRUE.
     LOGICAL, SAVE :: CMBCHECK
@@ -95,6 +95,7 @@ SUBROUTINE RDCOMBO( CDEV, ENAM )
     !***********************************************************************
     !   begin body of subroutine RDCOMBO
 
+    EFLAG    = .FALSE.
     !.......  Perform one-time steps
     IF ( FIRSTIME ) THEN
 
@@ -287,8 +288,8 @@ SUBROUTINE RDCOMBO( CDEV, ENAM )
                         ERRCNT(1) <=  MXERR ) THEN
 
                         WRITE( MESG,94010 ) 'ERROR: State-specific '    &
-                          //'record at line',IREC,'comes after '//    &
-                          'county-specific record matching same '//    &
+                          //'record at line',IREC,'comes after '//      &
+                          'county-specific record matching same '//     &
                           'source.'
                         CALL M3MESG( MESG )
                         ERRCNT(1) = ERRCNT(1) + 1

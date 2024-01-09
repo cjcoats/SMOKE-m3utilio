@@ -16,9 +16,9 @@ SUBROUTINE RDTAG( FDEV, NOPOL )
     !  SUBROUTINES AND FUNCTIONS CALLED:
     !
     !  REVISION  HISTORY:
-    !    Created 2/2009 by M. Houyoux
-    !    Version 11/2023 by CJC:  USE M3UTILIO and related changes
-    !
+    !       Created 2/2009 by M. Houyoux 
+    !       Version 11/2023 by CJC:  USE M3UTILIO, conversion to ".f90", and
+    !       related changes
     !***************************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling

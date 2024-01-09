@@ -110,8 +110,7 @@ SUBROUTINE RDSPDIST( SPDEV )
     IF( SCCMAPFLAG )  THEN
         MESG = 'Enter logical name for reference SCC input file '//&
                'for average speed distribution profiles'
-        MDEV = PROMPTFFILE( MESG, .TRUE., .TRUE., 'AVGSPD_SCCXREF',&
-                    PROGNAME )
+        MDEV = PROMPTFFILE( MESG, .TRUE., .TRUE., 'AVGSPD_SCCXREF', PROGNAME )
         CALL RDSCCMAP( MDEV )
 
         MESG = 'Exclude SCCs not found in SCCXREF input file'

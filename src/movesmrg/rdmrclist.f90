@@ -114,7 +114,6 @@ SUBROUTINE RDMRCLIST( FDEV )
     REFFIPA = 0
     MONTHA = 0
     FILESA = ' '
-    IDX = 0
 
     DO I = 1, NLINES
 
@@ -242,9 +241,9 @@ SUBROUTINE RDMRCLIST( FDEV )
     TIDX = 1
     DO I = 1, NREFC
 
-    !.......  Loop through sorted lines in MRCLIST file - the
-    !         FIPS codes are sorted in the same order as the
-    !             reference counties in MCREFIDX
+        !.......  Loop through sorted lines in MRCLIST file -
+        !         the FIPS codes are sorted in the same order as the
+        !         reference counties in MCREFIDX
         FOUND = .FALSE.
         DO
             IF( REFFIP( TIDX ) == MCREFIDX( I,1 ) ) THEN
@@ -277,10 +276,9 @@ SUBROUTINE RDMRCLIST( FDEV )
 
     RETURN
 
-999 MESG = 'End of file'
+999 CONTINUE
     MESG = 'End of file reached unexpectedly. ' //&
-           'Check format of MRCLIST' // CRLF() // BLANK5 //&
-           'input file.'
+           CRLF() // BLANK5 //'Check format of MRCLIST input file.'
     CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
 
     !******************  FORMAT  STATEMENTS   ******************************

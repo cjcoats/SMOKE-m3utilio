@@ -20,7 +20,7 @@ SUBROUTINE INITSTCY
     !***********************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !         System
     ! File: @(#)$Id$
     !
     ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
@@ -111,36 +111,31 @@ SUBROUTINE INITSTCY
         LPGFL = .FALSE.
         ETHFL = .FALSE.
 
-        IGASFL = ENVINT( 'GASOLINE_FUEL_CODE', 'Gasoline fuel ' //&
-                        'type code [ex: 1]', 1, IOS )
+        IGASFL = ENVINT( 'GASOLINE_FUEL_CODE', 'Gasoline fuel type code [ex: 1]', 1, IOS )
         IF ( IOS .GT. 0 ) THEN
             CALL M3EXIT( PROGNAME,0,0, 'Bad env vble "GASOLINE_FUEL_CODE"', 2 )
         END IF
         WRITE( GASFLTYP,'( I2.2)' ) IGASFL
 
-        IDISFL = ENVINT( 'DIESEL_FUEL_CODE', 'Diesel fuel ' //&
-                        'type code [ex: 2]', 2, IOS )
+        IDISFL = ENVINT( 'DIESEL_FUEL_CODE', 'Diesel fuel type code [ex: 2]', 2, IOS )
         IF ( IOS .GT. 0 ) THEN
             CALL M3EXIT( PROGNAME,0,0, 'Bad env vble "DIESEL_FUEL_CODE"', 2 )
         END IF
         WRITE( DISFLTYP,'( I2.2)' ) IDISFL
 
-        ICNGFL = ENVINT( 'CNG_FUEL_CODE', 'CNG fuel ' //&
-                        'type code [ex: 3]', 3, IOS )
+        ICNGFL = ENVINT( 'CNG_FUEL_CODE', 'CNG fuel type code [ex: 3]', 3, IOS )
         IF ( IOS .GT. 0 ) THEN
             CALL M3EXIT( PROGNAME,0,0, 'Bad env vble "CNG_FUEL_CODE"', 2 )
         END IF
         WRITE( CNGFLTYP,'( I2.2)' ) ICNGFL
 
-        ILPGFL = ENVINT( 'LPG_FUEL_CODE', 'LPG fuel ' //&
-                        'type code [ex: 4]', 4, IOS )
+        ILPGFL = ENVINT( 'LPG_FUEL_CODE', 'LPG fuel type code [ex: 4]', 4, IOS )
         IF ( IOS .GT. 0 ) THEN
             CALL M3EXIT( PROGNAME,0,0, 'Bad env vble "LPG_FUEL_CODE"', 2 )
         END IF
         WRITE( LPGFLTYP,'( I2.2)' ) ILPGFL
 
-        IETHFL = ENVINT( 'ETHANOL_FUEL_CODE', 'Ethanol fuel ' //&
-                        'type code [ex: 5]', 5, IOS )
+        IETHFL = ENVINT( 'ETHANOL_FUEL_CODE', 'Ethanol fuel type code [ex: 5]', 5, IOS )
         IF ( IOS .GT. 0 ) THEN
             CALL M3EXIT( PROGNAME,0,0, 'Bad env vble "ETHANOL_FUEL_CODE"', 2 )
         END IF

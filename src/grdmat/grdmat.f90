@@ -258,12 +258,12 @@ PROGRAM GRDMAT
         IVARNAMS( 3 ) = 'CELLID'
         IVARNAMS( 4 ) = 'CSOURC'
 
-    !............  Check to see if point locations are in the AREA
-    !              file (i.e. we have area-to-point sources)
+        !............  Check to see if point locations are in the AREA
+        !              file (i.e. we have area-to-point sources)
         K = INDEX1( 'XLOCA', NVARSET, VNAMESET )
         IF ( K .GT. 0 ) THEN
 
-    !.................  Make sure we're not using a variable grid
+            !.................  Make sure we're not using a variable grid
             IF( VFLAG ) THEN
                 MESG = 'Cannot use area-to-point sources ' //&
                        'with a variable grid.'
@@ -303,8 +303,8 @@ PROGRAM GRDMAT
 
       CASE( 'AREA' )
 
-    !.............  Determine if surrogates are needed by checking whether all cell
-    !               values are defined or not
+        !.............  Determine if surrogates are needed by checking whether all cell
+        !               values are defined or not
         DO S = 1, NSRC
             IF( CELLID( S ) .LE. 0 ) SRGFLAG = .TRUE.
             IF( SRGFLAG ) EXIT
@@ -312,18 +312,18 @@ PROGRAM GRDMAT
 
       CASE( 'MOBILE' )
 
-    !.............  Check for link-based sources when using a variable grid
+        !.............  Check for link-based sources when using a variable grid
         IF( MAXVAL( XLOC1 ) .GT. AMISS3 .AND. VFLAG ) THEN
             MESG = 'Cannot use link-based data with a variable grid.'
             CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
         END IF
 
-    !.............  If all sources are link-based, don't need surrogates (needs to be tested)
-    !            IF( MINVAL( XLOC1 ) .GT. AMISS3 ) THEN
-    !                SRGFLAG = .FALSE.
-    !            ELSE
+        !.............  If all sources are link-based, don't need surrogates (needs to be tested)
+        !            IF( MINVAL( XLOC1 ) .GT. AMISS3 ) THEN
+        !                SRGFLAG = .FALSE.
+        !            ELSE
         SRGFLAG = .TRUE.
-    !            END IF
+        !            END IF
 
       CASE( 'POINT' )
 
@@ -789,16 +789,9 @@ CONTAINS
     !.........  This internal subprogram opens individual surrogate file
 
     SUBROUTINE OPEN_SRGFILE
-        !----------------------------------------------------------------------
-
-        !.........  Set logical file name
-        IF( .NOT. SETENVVAR( 'SRGPRO_PATH', NAMBUFT )) THEN
-            MESG = 'Could not set logical file name of ' // TRIM( NAMBUFT )
-            CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
-        END IF
 
         !.........  Get the number of lines in the surrogate description file desription file
-        GDEV = GETEFILE( 'SRGPRO_PATH',.TRUE., .TRUE., PROGNAME )
+        GDEV = GETEFILE( NAMBUFT,.TRUE., .TRUE., PROGNAME )
 
         IF( GDEV .LT. 0 ) THEN
             MESG = 'Could not open input surrogate file' // TRIM( NAMBUFT )
@@ -806,13 +799,6 @@ CONTAINS
         END IF
 
         REWIND( GDEV )
-
-        NLINES = GETFLINE( GDEV, 'Reading surrogate files' )
-
-        IF( .NOT. SETENVVAR( 'SRGPRO_PATH', NAMBUF )) THEN
-            MESG = 'Could not set logical file name of ' // TRIM( NAMBUF )
-            CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
-        END IF
 
         RETURN
 

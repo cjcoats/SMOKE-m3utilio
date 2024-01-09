@@ -20,7 +20,7 @@ PROGRAM MET4MOVES
     !***********************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-    !                System
+    !         System
     ! File: @(#)$Id$
     ! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
     ! All Rights Reserved
@@ -240,7 +240,7 @@ PROGRAM MET4MOVES
     LDEV = INIT3()
 
     !.......  Write out copyright, version, web address, header info, and prompt
-    !           to continue running the program.
+    !         to continue running the program.
     CALL INITEM( LDEV, CVSW, PROGNAME )
 
     !.......  Get file name for country, state, and county file, with time zones
@@ -342,7 +342,7 @@ PROGRAM MET4MOVES
     END IF
 
     !.......  Find the total number of time steps
-    EPI_NSTEPS = 1 + SECSDIFF( EPI_SDATE,EPI_STIME,EPI_EDATE,EPI_ETIME ) / 3600
+    EPI_NSTEPS = CURREC( EPI_SDATE,EPI_STIME, EPI_EDATE,EPI_ETIME,10000, I,J )
 
     !.......  Get the time zone for output of the emissions
     TZONE = ENVINT( 'OUTZONE', 'Output time zone', 0, IOS )
@@ -459,7 +459,7 @@ PROGRAM MET4MOVES
     END IF
 
     !.......  Allocate memory for and read the gridding surrogates file,
-    !           extracting data for a subgrid, if necessary
+    !         extracting data for a subgrid, if necessary
     CALL M3MSG2( 'Processing gridding surrogate(s)...' )
 
     CALL RDSRG( .FALSE., SDEV, SRGFMT, SRGNROWS, SRGNCOLS )
@@ -550,7 +550,7 @@ PROGRAM MET4MOVES
     ETIME = ETIME*10000
 
     !.......  If the episode ending time is later than calculated end time,
-    !           set the ending date forward one day
+    !         set the ending date forward one day
     IF( EPI_ETIME > ETIME ) THEN
         CALL NEXTIME( EDATE, ETIME, 24*10000 )
     END IF
@@ -739,7 +739,7 @@ PROGRAM MET4MOVES
     CNTYSRC( : ) = MCREFSORT( :, 1 )
 
     !.......  Open and write out the header
-    !           information for SMOKE and MOVES-ready output files
+    !         information for SMOKE and MOVES-ready output files
     !        CALL HDRMISS3
 
     FDESC3D = ''
@@ -809,8 +809,8 @@ PROGRAM MET4MOVES
                       //'min_temp,max_temp,tempBin'
 
     !.......  Estimate possible max no of temp bins
-    !           Lowest ambient temperature ever measured (-128F)
-    !           Highest ambient temperature ever measured (138F)
+    !         Lowest ambient temperature ever measured (-128F)
+    !         Highest ambient temperature ever measured (138F)
     MXTBIN = INT( 350 / PDTEMP )         ! Temp range from -150F to 200F
     NFUEL = 12
     RHTBIN  = 0.0
@@ -876,7 +876,7 @@ PROGRAM MET4MOVES
     LDATE = -9
 
     !.......  Process max/min temperatures and avg RH
-    !           fuelmonth
+    !         fuelmonth
 
     !.......  loop over hours
     DO T = 1, NSTEPS
@@ -1178,7 +1178,7 @@ PROGRAM MET4MOVES
 CONTAINS
 
     !.......  This internal subprogram estimates ref. county level
-    !               min/max Temperatures over fuelmonth
+    !         min/max Temperatures over fuelmonth
 
     SUBROUTINE AVG_REF_COUNTY_TEMP( JDATE, JTIME )
 
@@ -1205,7 +1205,7 @@ CONTAINS
             DO TT = 1,24
 
                 !.......  Skip sources with no days; this can happen when the
-                !                       gridding surrogates do not contain data for all counties
+                !         gridding surrogates do not contain data for all counties
                 TKHOUR( S,TT ) = TKHOUR( S,TT ) / NTKHOUR( S,TT )
 
             END DO
@@ -1231,7 +1231,7 @@ CONTAINS
             ENDIF
 
             !.......  Calculation monthly fuel month max/min temp and avg RH
-            !                   per ref. county
+            !         per ref. county
             NR = FINDC( REFCOUNTY,NREFC, MCREFIDX( :,1 ) )
             NF = FUELMONTH
 

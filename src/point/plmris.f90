@@ -22,6 +22,8 @@ SUBROUTINE  PLMRIS( EMLAYS, LPBL, LSTK, HFX, HMIX, STKDM,           &
     !       Copied from plmris.F 4.4 by M Houyoux 3/99
     !       Updated with code from Jim Godowitch at EPA, 9/03
     !       Updated with code from J. Godowitch and G. Pouliot, 2/05, PARAMETER :: 
+    !       Version 11/2023 by CJC:  USE M3UTILIO, conversion to ".f90", and
+    !       related changes
     !***********************************************************************
     !
     ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
