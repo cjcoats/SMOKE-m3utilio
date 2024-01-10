@@ -59,7 +59,6 @@ SUBROUTINE SETDAYLT
     !.......   Other local variables
 
     INTEGER         J, S            ! counters and indices
-
     INTEGER         FLTR            ! tmp filter value
     INTEGER         IOS             ! i/o status
 
@@ -108,14 +107,6 @@ SUBROUTINE SETDAYLT
     END DO
 
     RETURN
-
-    !******************  FORMAT  STATEMENTS   ******************************
-
-    !.......   Internal buffering formats...... 94xxx
-
-94000 FORMAT( I2.2 )
-
-94010 FORMAT( 10( A, :, I8, :, 1X ) )
 
 END SUBROUTINE SETDAYLT
 

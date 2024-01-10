@@ -256,7 +256,7 @@ SUBROUTINE PROCTPRO( NFLAG, METFLAG, METNAME )
 
     INTEGER, SAVE :: MXWARN = -9999         !  from env vble SMK_MAXWARNING
 
-    !.......   body   ......
+    !.......   body   .................................................................
 
     MESG = 'Processing temporal XREFS and PROFs for '//CATEGORY
     CALL M3MESG( MESG )
@@ -451,31 +451,31 @@ SUBROUTINE PROCTPRO( NFLAG, METFLAG, METNAME )
         CALL FLTRNEG( CFIP )         ! Filter 0 and -9 to blank
         CALL PADZERO( CFIP )         ! Pad with zeros
 
-    !.......  Skip lines that are not valid for this FIP
+        !.......  Skip lines that are not valid for this FIP
 
         JJ = FINDC( CFIP, NFIPKEY, FIPKEYS )
         IF ( JJ .LE. 0 )  CYCLE
 
-    !.......  Post-process x-ref information to scan for '-9',
-    !.......  pad with zeros, compare SCC version master list,
-    !.......  compare SIC version to master list, and compare
-    !.......  pol/act name with master list.
-    !.......  NOTE:  FLTRXREF() does *not* filter by FIP,
-    !.......  and does LINEAR searches for pollutant    !
+        !.......  Post-process x-ref information to scan for '-9',
+        !.......  pad with zeros, compare SCC version master list,
+        !.......  compare SIC version to master list, and compare
+        !.......  pol/act name with master list.
+        !.......  NOTE:  FLTRXREF() does *not* filter by FIP,
+        !.......  and does LINEAR searches for pollutant        !
 
         CALL FLTRXREF( CFIP, CDUM, TSCC, CPOA, CDUM2,    &
                        IDUM, IDUM, JSPC, PFLAG, SKIPREC )
 
-    !.......  Skip lines that are not valid for this inven and src cat
+        !.......  Skip lines that are not valid for this inven and src cat
 
         IF ( SKIPREC )  CYCLE
 
-    !.......  Write pol/act position to a character string
+        !.......  Write pol/act position to a character string
 
         IF ( JSPC .EQ. 0 ) THEN
             CPOS = ZEROS
         ELSE
-            WRITE( CPOS, '(I5.5)' ) JSPC          ! species index into EANAM, from FLTRXREF
+            WRITE( CPOS, '(I5.5)' ) JSPC              ! species index into EANAM, from FLTRXREF
             POLREFFLAG( JSPC ) = .TRUE.
         END IF
 
@@ -813,9 +813,7 @@ SUBROUTINE PROCTPRO( NFLAG, METFLAG, METNAME )
     IF ( MTHCOUNT .GT. 0 ) THEN             !  month-of-year
 
         MTHNAME = CATEGORY(1:1) //  'TPRO_MONTHLY'
-        NMON  = CSVPROF( MTHNAME, 12,    &
-                         MTHIDP, MONFAC,    &
-                         MTHCOUNT, MTHIDS  )
+        NMON  = CSVPROF( MTHNAME, 12, MTHIDP, MONFAC, MTHCOUNT, MTHIDS  )
 
     ELSE
 
@@ -827,9 +825,7 @@ SUBROUTINE PROCTPRO( NFLAG, METFLAG, METNAME )
     IF ( WEKCOUNT .GT. 0 ) THEN             !  day-of-week
 
         WEKNAME = CATEGORY(1:1) //  'TPRO_WEEKLY'
-        NWEK  = CSVPROF( WEKNAME, 7,    &
-                         WEKIDP, WEKFAC,    &
-                         WEKCOUNT, WEKIDS  )
+        NWEK  = CSVPROF( WEKNAME, 7, WEKIDP, WEKFAC, WEKCOUNT, WEKIDS  )
 
     ELSE
 
@@ -871,9 +867,7 @@ SUBROUTINE PROCTPRO( NFLAG, METFLAG, METNAME )
         END DO
 
         DIUNAME = CATEGORY(1:1) //  'TPRO_HOURLY'
-        NHRL  = CSVPROF( DIUNAME, 24,    &
-                         HRLIDP, HRLFAC,    &
-                         DAYCOUNT, MONIDS  )
+        NHRL  = CSVPROF( DIUNAME, 24, HRLIDP, HRLFAC, DAYCOUNT, MONIDS  )
 
     ELSE
 
@@ -885,9 +879,7 @@ SUBROUTINE PROCTPRO( NFLAG, METFLAG, METNAME )
     IF ( DOMCOUNT .GT. 0 ) THEN             !  day-of-month
 
         DOMNAME = CATEGORY(1:1) //  'TPRO_DAILY'
-        NDOM  = CSVDOMP( DOMNAME, SDATE, EDATE,    &
-                         DOMIDP, DOMFAC,    &
-                         DOMCOUNT, DOMIDS  )
+        NDOM  = CSVDOMP( DOMNAME, SDATE, EDATE, DOMIDP, DOMFAC, DOMCOUNT, DOMIDS  )
 
     ELSE
 
@@ -903,8 +895,9 @@ SUBROUTINE PROCTPRO( NFLAG, METFLAG, METNAME )
         CALL ENVSTR( 'HOURLY_TPROF_BASE', MESG, ' ',HOUR_TPROF, IOS )
         CALL UPCASE( HOUR_TPROF )
 
-        IF( .NOT. ( HOUR_TPROF=='MONTH' .OR. HOUR_TPROF=='YEAR' .OR.    &
-                    HOUR_TPROF=='DAY' ) ) THEN
+        IF( .NOT. ( HOUR_TPROF=='MONTH' .OR.    &
+                    HOUR_TPROF=='YEAR'  .OR.    &
+                    HOUR_TPROF=='DAY'    ) ) THEN
             MESG = 'ERROR: MUST define the basis of hourly profiles '//    &
                    'for a correct hourly conversion.'    &
                    //CRLF()//BLANK10//':: Define HOURLY_TPROF_BASE to '//    &
@@ -1216,8 +1209,7 @@ CONTAINS
     !-----------------------------------------------------------------------------------
 
 
-    INTEGER FUNCTION  CSVPROF( FNAME, NFIELDS, IDSTR, TFAC,    &
-                               IDCNT, IDLIST )
+    INTEGER FUNCTION  CSVPROF( FNAME, NFIELDS, IDSTR, TFAC, IDCNT, IDLIST )
 
         !  Open and count the CSV-profile file FNAME.
         !  Allocate  both arguments and local arrays.

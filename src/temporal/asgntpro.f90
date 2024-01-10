@@ -150,7 +150,6 @@ SUBROUTINE ASGNTPRO
     CHARACTER(CHRLEN3)  CPLL                !  tmp plt char 5 (==SCC)
     CHARACTER(CHRLEN3)  CPLZ                !  tmp plt char 5 (==SCC)
 
-
     !.......  CSRCALL from BLDSRC(), listed in order of the search hierarchy
     !.......  See SMOKE documentation, section 6.17:
     !.......  https://www.cmascenter.org/smoke/documentation/3.5/html/ch06s17.html
@@ -200,6 +199,9 @@ SUBROUTINE ASGNTPRO
 
         MESG = 'Use only full SCC matches'
         FULLSCC = ENVYN ( 'FULLSCC_ONLY', MESG, .FALSE., I )
+        IF ( I .GT. 0 ) THEN
+            CALL M3EXIT( PNAME,0,0, 'Bad env vble "FULLSCC_ONLY"', 2 )
+        END IF
 
         !.......  Get error and warning limits from the environment
 

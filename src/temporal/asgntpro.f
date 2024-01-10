@@ -199,6 +199,9 @@ C.............  Retrieve environment variables
 
             MESG = 'Use only full SCC matches'
             FULLSCC = ENVYN ( 'FULLSCC_ONLY', MESG, .FALSE., I )
+            IF ( I .GT. 0 ) THEN
+                CALL M3EXIT( PROGNAME,0,0, 'Bad env vble "FULLSCC_ONLY"', 2 )
+            END IF
 
 C.............  Get error and warning limits from the environment
 

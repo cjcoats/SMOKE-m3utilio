@@ -48,12 +48,12 @@ SUBROUTINE GENHEMIS( IGRP, NGRP, NGSZ, JDATE, JTIME, TZONE, DNAME,    &
     !***************************************************************************
     USE M3UTILIO
 
-    !.......   MODULES for public variables
-    !.......  MODSOURC contains the inventory arrays
-    !......   MODXREF  contains the cross-reference tables
-    !......   MODTMPRL contains the temporal profile tables
-    !.......  MODDAYHR contains data for day- and hour-specific data
-    !.......  MODINFO contains the information about the source category
+    !......   MODULES for public variables
+    !......  MODSOURC contains the inventory arrays
+    !......  MODXREF  contains the cross-reference tables
+    !......  MODTMPRL contains the temporal profile tables
+    !......  MODDAYHR contains data for day- and hour-specific data
+    !......  MODINFO contains the information about the source category
 
     USE MODSOURC, ONLY: TZONES, TPFLAG, CSOURC
 
@@ -70,11 +70,11 @@ SUBROUTINE GENHEMIS( IGRP, NGRP, NGSZ, JDATE, JTIME, TZONE, DNAME,    &
 
     IMPLICIT NONE
 
-    !.......   INCLUDES
+    !......   INCLUDES
 
     INCLUDE 'EMCNST3.h90'       !  emissions constant parameters
 
-    !.......   SUBROUTINE ARGUMENTS
+    !......   SUBROUTINE ARGUMENTS
 
     INTEGER     , INTENT (IN)    :: IGRP          ! pollutant group
     INTEGER     , INTENT (IN)    :: NGRP
@@ -88,9 +88,9 @@ SUBROUTINE GENHEMIS( IGRP, NGRP, NGSZ, JDATE, JTIME, TZONE, DNAME,    &
     CHARACTER(*), INTENT (IN)    :: NAMIN ( NGSZ )          ! inv pol names
     CHARACTER(*), INTENT (IN)    :: NAMOUT( NGSZ )          ! inv pol names
     CHARACTER(*), INTENT (IN)    :: EAREAD2D( NIPPA )       ! tmp inv pol names
-    INTEGER     , INTENT (IN OUT):: LDATE                       ! reset previous
+    INTEGER     , INTENT (IN OUT):: LDATE                   ! reset previous
 
-    !.......   TMAT update variables
+    !......   TMAT update variables
 
     INTEGER, SAVE :: MONTH ( 24, -23:23 )      ! time zone's month 1 ... 12
     INTEGER, SAVE :: DAYOW ( 24, -23:23 )      ! time zone's day-of-week    1 ... 7
@@ -101,7 +101,7 @@ SUBROUTINE GENHEMIS( IGRP, NGRP, NGSZ, JDATE, JTIME, TZONE, DNAME,    &
     REAL, ALLOCATABLE       :: METVAL( : )             ! tmp met-based temporal factors
     REAL                    :: TMPHRLFAC( 24 )         ! tmp hourly factors
 
-    !.......   Other local variables
+    !......   Other local variables
 
     INTEGER          C, H, I, II, IS, J, K, K1, K2, KK, L, L2, M, S, V     !  indices and counters
     INTEGER          IHR
@@ -114,8 +114,6 @@ SUBROUTINE GENHEMIS( IGRP, NGRP, NGSZ, JDATE, JTIME, TZONE, DNAME,    &
     INTEGER          WDAY           ! tmp emissions day of week (1=monday)
     INTEGER          HCORR          ! hour correction factor
     INTEGER          HOUR           ! hour of day (1 ... 24)
-    INTEGER       :: ST = 0         ! resetting time for episode begin
-    INTEGER       :: ED = 0         ! resetting time for episode end
     INTEGER          IOS            ! i/o status
     INTEGER, SAVE :: LTIME = -1     ! time used in previous subroutine call
     INTEGER          MON            ! tmp month number (1=Jan)
@@ -127,24 +125,21 @@ SUBROUTINE GENHEMIS( IGRP, NGRP, NGSZ, JDATE, JTIME, TZONE, DNAME,    &
     INTEGER          EPSBEG         ! tmp episode start hour
     INTEGER          EPSEND         ! tmp episode end hour
 
-    REAL             UFAC                ! tmp units conversion factor
-    REAL             TOT                 ! tmp total value (denominator)
-    REAL          :: NORMFAC   = 0.      ! normalizing factors for hourly factors
-    REAL          :: SUMHRLFAC = 0.      ! tmp partial sum of hourly factors
-    REAL          :: TOTHRLFAC = 0.      ! tmp sum of hourly factors
+    REAL             UFAC           ! tmp units conversion factor
+    REAL             TOT            ! tmp total value (denominator)
+    REAL             NORMFAC        ! normalizing factors for hourly factors
+    REAL             SUMHRLFAC      ! tmp partial sum of hourly factors
+    REAL             TOTHRLFAC      ! tmp sum of hourly factors
 
+    LOGICAL          EFLAG                  ! true: error found
+    LOGICAL          RDFLAG                 ! true: read dy data for this iter
+    LOGICAL          RHFLAG                 ! true: read hr data for this iter
+    LOGICAL          TMATCALC               ! true: need to calculate new TMAT
+    LOGICAL, SAVE :: HFLAG                  ! true: hour-specific data
     LOGICAL, SAVE :: DFLAG                  ! true: day-specific data
-    LOGICAL, SAVE :: EFLAG    = .FALSE.     ! true: error found
     LOGICAL, SAVE :: FIRSTIME = .TRUE.      ! true: first call to subrtn
     LOGICAL, SAVE :: FIRSTSTP = .TRUE.      ! true: first time step
-    LOGICAL, SAVE :: HFLAG                  ! true: hour-specific data
-    LOGICAL, SAVE :: OUTMSG = .TRUE.        ! true: output message for new day
-    LOGICAL       :: RDFLAG = .TRUE.        ! true: read dy data for this iter
     LOGICAL, SAVE :: FIREFLAG=.FALSE.       ! true: read wildfires only
-    LOGICAL       :: RHFLAG = .TRUE.        ! true: read hr data for this iter
-    LOGICAL, SAVE :: TMATCALC               ! true: need to calculate new TMAT
-    LOGICAL, SAVE :: UFLAG  = .FALSE.       ! true: use src-spec hr profiles
-    LOGICAL, SAVE :: WKEMSG = .FALSE.       ! true: wkend-profile msg written
     LOGICAL, SAVE :: ZONE4WM                ! true: src zone for week/mon temp prof
 
     CHARACTER(300)     BUFFER        ! source info buffer
@@ -157,17 +152,20 @@ SUBROUTINE GENHEMIS( IGRP, NGRP, NGSZ, JDATE, JTIME, TZONE, DNAME,    &
     !***********************************************************************
     !   begin body of subroutine GENHEMIS
 
-    !.......  If current date is less than previous date or if the date is the
+    EFLAG  = .FALSE.
+    RDFLAG = .TRUE.
+    RHFLAG = .TRUE.
+    !......  If current date is less than previous date or if the date is the
     !        same but the time is earlier, then we know that the calling
     !        program has started over with a new set of pollutants.  So
     !        reset the flag for first timestep.
     IF( JDATE .LT. LDATE .OR. FIRSTIME .OR.    &
-      ( JDATE .EQ. LDATE .AND. JTIME .LT. LTIME )) FIRSTSTP = .TRUE.
+      ( JDATE .EQ. LDATE .AND. JTIME .LT. LTIME ) )  FIRSTSTP = .TRUE.
 
-    !.......  For the first time the subroutine is called,
+    !......  For the first time the subroutine is called,
     IF( FIRSTIME ) THEN
 
-        !.......  Check source category name
+        !......  Check source category name
         IF( CATEGORY .NE. 'AREA'   .AND.    &
             CATEGORY .NE. 'MOBILE' .AND.    &
             CATEGORY .NE. 'POINT'        ) THEN
@@ -179,7 +177,7 @@ SUBROUTINE GENHEMIS( IGRP, NGRP, NGSZ, JDATE, JTIME, TZONE, DNAME,    &
 
         END IF          ! End category selection
 
-        !.......  Retrieve environment variables
+        !......  Retrieve environment variables
         MXWARN = ENVINT( WARNSET , 'Maximum warning messages', 100, IOS )
         IF ( IOS .GT. 0 ) THEN
             MESG = 'ERROR:  bad env vble "SMK_MAXWARNING"'
@@ -193,34 +191,34 @@ SUBROUTINE GENHEMIS( IGRP, NGRP, NGSZ, JDATE, JTIME, TZONE, DNAME,    &
             CALL M3EXIT( PROGNAME, 0,0, MESG, 2 )
         END IF
 
-        !.......  Define the minimum and maximum time zones in the inventory
+        !......  Define the minimum and maximum time zones in the inventory
         TZMIN = MINVAL( TZONES )
         TZMAX = MAXVAL( TZONES )
 
-        !.......  Adjust TZMIN and TZMAX for possibility of daylight savings
+        !......  Adjust TZMIN and TZMAX for possibility of daylight savings
         TZMIN = TZMIN - 1
         TZMAX = TZMAX + 1
 
-        !.......  Ouput hourly emissions in local time
+        !......  Ouput hourly emissions in local time
         IF( LTFLAG ) THEN
             TZMIN = 0
             TZMAX = 0
         END IF
 
-        !.......  Set flags for daily and hourly data
+        !......  Set flags for daily and hourly data
         DFLAG = ( DNAME .NE. 'NONE' )
         HFLAG = ( HNAME .NE. 'NONE' )
 
         FIRSTIME = .FALSE.
 
-        !.......  Allocate memories for BEGHOUR and ENDHOUR
+        !......  Allocate memories for BEGHOUR and ENDHOUR
         ALLOCATE( STHOUR( NDYSRC ),    &
                   EDHOUR( NDYSRC ), STAT=IOS )
         CALL CHECKMEM( IOS, 'EDHOUR', PROGNAME )
         STHOUR = 0.0
         EDHOUR = 0.0
 
-        !.......  Define whether processing wildfire or not
+        !......  Define whether processing wildfire or not
         IF( INDEX1( 'ACRESBURNED',NIPPA,EAREAD2D ) > 0 ) THEN
             FIREFLAG = .TRUE.
             CALL M3MSG2( 'Processing Wildfire Emissions....' )
@@ -228,38 +226,38 @@ SUBROUTINE GENHEMIS( IGRP, NGRP, NGSZ, JDATE, JTIME, TZONE, DNAME,    &
 
     END IF      ! End of first time section
 
-    !.......  For new date...
+    !......  For new date...
 
     IF( JDATE .NE. LDATE ) THEN
 
-        !.......  Store month and day of week for this output date for
-        !.......  all source's time zones and for the *next* 24 hours in the
+        !......  Store month and day of week for this output date for
+        !......  all source's time zones and for the *next* 24 hours in the
         !        simulation
-        !.......  Use same loop for case where this feature is turned off
+        !......  Use same loop for case where this feature is turned off
         DO I = TZMIN, TZMAX
 
             TDATE = JDATE
             TTIME = 0         ! Set for loop below from 1 to 24
 
-            !.......  Adjust time zone I based on output time zone and correct
+            !......  Adjust time zone I based on output time zone and correct
             !        for negative value.
             K = I - TZONE
             !        IF( K .LT. 0 ) K = 24 + K              !     (e.g., K= -1 -> K= 23)
 
-            !.......  Convert output time to local time of I time zone, adjusted
+            !......  Convert output time to local time of I time zone, adjusted
             !        by output time zone.
             CALL NEXTIME( TDATE, TTIME, -K * 10000 )
 
             DO H = 1, 24
 
-                !.......  When using time zones to set monthly and weekly profiles
-                !.......  NOTE - this is more correct
+                !......  When using time zones to set monthly and weekly profiles
+                !......  NOTE - this is more correct
                 IF( ZONE4WM ) THEN
 
                     CALL DAYMON( TDATE, MON, MDAY )                   ! get month  day-of-month
                     WDAY   = WKDAY( TDATE )                           ! get day-of-week
 
-                !.......  When not using time zones as in previous emissions
+                !......  When not using time zones as in previous emissions
                 !        systems
                 ELSE
                     CALL DAYMON( JDATE, MON, MDAY )
@@ -268,9 +266,9 @@ SUBROUTINE GENHEMIS( IGRP, NGRP, NGSZ, JDATE, JTIME, TZONE, DNAME,    &
 
                 END IF
 
-                !.......  Check if the date is a holiday.  If so, reset the
+                !......  Check if the date is a holiday.  If so, reset the
                 !        day based on the holiday arrays settings.
-                !.......  NOTE - this approach will not work for region-specific
+                !......  NOTE - this approach will not work for region-specific
                 !        setting of holidays.
                 J = FIND1( TDATE, NHOLIDAY, HOLJDATE )
                 IF( J .GT. 0 ) WDAY = HOLALTDY( J )
@@ -286,24 +284,24 @@ SUBROUTINE GENHEMIS( IGRP, NGRP, NGSZ, JDATE, JTIME, TZONE, DNAME,    &
         END DO
 
         ! note: Need to create EMWKDAY and update WRDAYMSG also to use it.
-        !.......  Write message for day of week and date
+        !......  Write message for day of week and date
         CALL WRDAYMSG( JDATE, MESG )
 
     END IF       ! End new date check
 
-    !.......  Initialize day-specific emissions array with average emissions
+    !......  Initialize day-specific emissions array with average emissions
     !        Only need to do this for a new day because the sources with
     !        day-specific data might change for each day.
     EMACV = EMAC      ! array
 
-    !.......  If day-specific emissions, prepare day-corrections.
-    !.......  Read day-specific data for each hour, because different time
+    !......  If day-specific emissions, prepare day-corrections.
+    !......  Read day-specific data for each hour, because different time
     !        zones may be used for different sources and this approach
     !        is much more workable.
     IF( DFLAG ) THEN
 
         RDFLAG = .TRUE.
-        !.......  Read source index for this day
+        !......  Read source index for this day
         IF ( .NOT. READ3( DNAME, 'INDXD', ALLAYS3,JDATE,JTIME, INDXD ) ) THEN
             WRITE( MESG,94010 ) 'WARNING: Could not read "INDXD" '//    &
                  'from file "'// TRIM( DNAME )//'", at', JDATE, ':', JTIME
@@ -313,7 +311,7 @@ SUBROUTINE GENHEMIS( IGRP, NGRP, NGSZ, JDATE, JTIME, TZONE, DNAME,    &
             INDXD = 0           ! array
         END IF              !  if read3() failed on dname
 
-        !.......  Read start and ending hour(ENDHOUR) for wildfire processing
+        !......  Read start and ending hour(ENDHOUR) for wildfire processing
         IF( FIREFLAG ) THEN
             IF( .NOT. READ3( DNAME, 'BEGHOUR', ALLAYS3,JDATE,JTIME, STHOUR ) ) THEN
                 WRITE(MESG,94010)'WARNING: Could not read "BEGHOUR" from "'// &
@@ -333,13 +331,13 @@ SUBROUTINE GENHEMIS( IGRP, NGRP, NGSZ, JDATE, JTIME, TZONE, DNAME,    &
 
     END IF              ! if using day-specific emissions
 
-    !.......  Set integer hour of day for output time
+    !......  Set integer hour of day for output time
     HOUR = 1 + MOD( JTIME / 10000 , 24 )
 
-    !.......  Determine if this TMAT needs to be updated
+    !......  Determine if this TMAT needs to be updated
     TMATCALC = ( JDATE .NE. LDATE .OR. FIRSTSTP )
 
-    !.......  Construct TMAT -- array of effective composite profile coefficients
+    !......  Construct TMAT -- array of effective composite profile coefficients
     IF( TMATCALC ) THEN
 
         CALL MKTMAT( NSRC, IGRP, NGRP, NGSZ, JDATE, JTIME, TZONE,    &
@@ -347,11 +345,11 @@ SUBROUTINE GENHEMIS( IGRP, NGRP, NGSZ, JDATE, JTIME, TZONE, DNAME,    &
 
     END IF             ! if TMAT is to be calculated
 
-    !.......  If hour-specific emissions, profiles, or activity data...
+    !......  If hour-specific emissions, profiles, or activity data...
     IF( HFLAG ) THEN
 
         RHFLAG = .TRUE.
-        !.......  Read source index for this hour
+        !......  Read source index for this hour
         IF( .NOT. READ3( HNAME, 'INDXH', ALLAYS3,JDATE,JTIME, INDXH ) ) THEN
 
             WRITE( MESG,94010 ) 'WARNING: Could not read "INDXH" '//    &
@@ -365,29 +363,29 @@ SUBROUTINE GENHEMIS( IGRP, NGRP, NGSZ, JDATE, JTIME, TZONE, DNAME,    &
 
     END IF      !  End if hour-specific data
 
-    !.......  Precompute hour/zone correction factor
+    !......  Precompute hour/zone correction factor
     HCORR = TZONE + 23
 
-    !.......  Loop through the emissions and emission types and compute the
+    !......  Loop through the emissions and emission types and compute the
     !        hourly emissions, depending on if the input data is a pollutant
     !        or an activity
     DO V = 1, NGSZ
 
         NAMBUF = NAMIN( V )
 
-        !.......  Skip blanks that can occur when NGRP > 1
+        !......  Skip blanks that can occur when NGRP > 1
         IF ( NAMBUF .EQ. ' ' ) CYCLE
 
-        !.......  Find pollutant/activity in list of all.  Use EAREAD2D b/c
+        !......  Find pollutant/activity in list of all.  Use EAREAD2D b/c
         !        EANAM has been update to contain emission types.
-        !.......  NOTE - this is sloppy because NIPPA has a larger dimension
+        !......  NOTE - this is sloppy because NIPPA has a larger dimension
         !        than EAREAD2D for emission types
         PIDX = INDEX1( NAMBUF, NIPPA, EAREAD2D )
 
-        !.......  Set units conversion factor for this pollutant/activity
+        !......  Set units conversion factor for this pollutant/activity
         UFAC = EACNV( PIDX )
 
-        !.......  Read hourly emissions/profile/activity if current pollutant or
+        !......  Read hourly emissions/profile/activity if current pollutant or
         !        emission type has them
         IF( LHSPOA( V ) .AND. RHFLAG ) THEN
 
@@ -401,7 +399,7 @@ SUBROUTINE GENHEMIS( IGRP, NGRP, NGSZ, JDATE, JTIME, TZONE, DNAME,    &
 
         END IF          ! if this pollutant is hour-specific
 
-        !.......  If source-specific profiles are being used, update temporal
+        !......  If source-specific profiles are being used, update temporal
         !        matrix for the current hour
         IF( LHPROF( V ) ) THEN
 
@@ -410,16 +408,16 @@ SUBROUTINE GENHEMIS( IGRP, NGRP, NGSZ, JDATE, JTIME, TZONE, DNAME,    &
 
         END IF
 
-        !.......  For all pollutants and activities...
+        !......  For all pollutants and activities...
 
-        !.......  Apply hourly factors to all sources for current pollutant or
+        !......  Apply hourly factors to all sources for current pollutant or
         !        activity. Also apply units conversion.
         EMIST( :,V ) = UFAC * EMACV( :,V ) * TMAT( :,V,HOUR )
 
-        !.......  If day-specific data are available for current pollutant
+        !......  If day-specific data are available for current pollutant
         IF( LDSPOA( V ) .AND. RDFLAG ) THEN
 
-            !.......  Read day-specific data
+            !......  Read day-specific data
             NAMBUF = NAMIN( V )
             IF( .NOT. READ3( DNAME, NAMBUF, ALLAYS3,JDATE,JTIME, EMACD ) ) THEN
 
@@ -429,14 +427,14 @@ SUBROUTINE GENHEMIS( IGRP, NGRP, NGSZ, JDATE, JTIME, TZONE, DNAME,    &
 
             END IF                  !  if read3() failed on day-specific data
 
-            !.......  Loop through day-specific sources
+            !......  Loop through day-specific sources
             DO I = 1, NDYSRC
 
                 S = INDXD( I )                          ! Get source index
                 IF( S .EQ. 0 ) CYCLE                    ! If no source, skip
                 IF( EMACD( I ) .LE. AMISS3 ) THEN                   ! No day-specific emis
 
-                !.......  write out warning message(s) of overwriting with daily emissions
+                !......  write out warning message(s) of overwriting with daily emissions
                     IF( WARNCNT <= MXWARN ) THEN
                         WARNCNT = WARNCNT + 1
                         CALL FMTCSRC( CSOURC( S ), NCHARS, BUFFER, L2 )
@@ -448,16 +446,16 @@ SUBROUTINE GENHEMIS( IGRP, NGRP, NGSZ, JDATE, JTIME, TZONE, DNAME,    &
                     CYCLE
                 END IF
 
-                !.......  Override annual adjusted emissions with day-specific
+                !......  Override annual adjusted emissions with day-specific
                 !        emissions and hourly profile adjustments
 
                 K   = 1 + MOD( HOUR + HCORR - TZONES( S ), 24 )
                 IHR = HRLPROF( S, DAYOW( HOUR, TZONES( S ) ), PIDX )
 
-                !.......  Re-normalizing hourly temporal factors for wildfires only
+                !......  Re-normalizing hourly temporal factors for wildfires only
                 IF( FIREFLAG ) THEN
 
-                    !.......  Convert local hours to output time zone
+                    !......  Convert local hours to output time zone
                     EPSBEG = 1 + INT( STHOUR( I ) )/10000
                     EPSEND = 1 + INT( EDHOUR( I ) )/10000
                     K1 = 1 + MOD( EPSBEG + HCORR, 24 )
@@ -469,13 +467,13 @@ SUBROUTINE GENHEMIS( IGRP, NGRP, NGSZ, JDATE, JTIME, TZONE, DNAME,    &
 
                     TMPHRLFAC( 1:24 ) = HRLFAC( 1:24,IHR )
 
-                    !.......  Sum of 24 hourly temporal factors and store org hourly factors
+                    !......  Sum of 24 hourly temporal factors and store org hourly factors
                     !        to tmp hourly factors array
                     DO II = 1, 24
                         TOTHRLFAC = TOTHRLFAC + TMPHRLFAC( II )
                     END DO
 
-                    !.......  Sum of hourly temporal factors b/n BENHR and ENDHR
+                    !......  Sum of hourly temporal factors b/n BENHR and ENDHR
                     IF( K1 > K2 ) THEN
 
                         WRITE( MESG,94010 )'ERROR: Fire end hour:', K2,    &
@@ -504,7 +502,7 @@ SUBROUTINE GENHEMIS( IGRP, NGRP, NGSZ, JDATE, JTIME, TZONE, DNAME,    &
 
                     NORMFAC = TOTHRLFAC / SUMHRLFAC
 
-                    !.......  Re-normalizing hourly temporal factors
+                    !......  Re-normalizing hourly temporal factors
                     DO II = 1, 24
                         TMPHRLFAC( II ) = TMPHRLFAC( II ) * NORMFAC
                     END DO
@@ -548,7 +546,7 @@ SUBROUTINE GENHEMIS( IGRP, NGRP, NGSZ, JDATE, JTIME, TZONE, DNAME,    &
 
         END IF          ! if this pollutant is day-specific
 
-        !.......  If hourly data are available for current pollutant/activity and
+        !......  If hourly data are available for current pollutant/activity and
         !        the values are emissions (not profiles), then overwrite with
         !        this data
         IF( RHFLAG .AND. LHSPOA( V ) .AND. .NOT. LHPROF( V ) ) THEN
@@ -571,32 +569,32 @@ SUBROUTINE GENHEMIS( IGRP, NGRP, NGSZ, JDATE, JTIME, TZONE, DNAME,    &
             END DO
         END IF
 
-        !.......  If input data is in an activity (and output an emission type)...
+        !......  If input data is in an activity (and output an emission type)...
         !        E.G. this is for mobile sources
         IF( NAMIN( V ) .NE. NAMOUT( V ) ) THEN
 
-        !.......  Loop through sources and apply emission factors to
-        !        hourly activity for non-diurnal emissions
-        !.......  Apply emission factors tp hourly activity data
-        !.......  Convert to tons (assuming EFs are in grams)
+            !......  Loop through sources and apply emission factors to
+            !        hourly activity for non-diurnal emissions
+            !......  Apply emission factors tp hourly activity data
+            !......  Convert to tons (assuming EFs are in grams)
             EMIST( :,V ) = EMIST( :,V ) * EMFAC( :,V )
 
         END IF                  ! End namin     != namout
 
     END DO                      ! End pollutant loop
 
-    !.......  Reset previous date and time for future iterations
+    !......  Reset previous date and time for future iterations
     LDATE = JDATE
     LTIME = JTIME
 
-    !.......  Set controller to turn off first time step setting
+    !......  Set controller to turn off first time step setting
     FIRSTSTP = .FALSE.
 
     RETURN
 
     !******************  FORMAT  STATEMENTS   ******************************
 
-    !.......   Internal buffering formats...... 94xxx
+    !......   Internal buffering formats...... 94xxx
 
 94010 FORMAT( 10( A, :, I9, :, 1X ) )
 94020 FORMAT( 10( A, :, E10.2, :, 1X ) )
