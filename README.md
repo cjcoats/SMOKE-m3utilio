@@ -69,7 +69,7 @@ program](https://github.com/wvermin/findent), with command-line options:
 </pre>
 The resulting reference code was named `.1.f90`.  The final `.f90` codes
 needed fix-up on loop-nest and comment indentation, etc., as well as
-fixing up numerous botches in the original code, such as 
+fixing up numerous improper-blank botches in the original code, such as 
 <pre>
     "( /", "/ )", ". AND.", ". LT."
 </pre>
@@ -89,7 +89,7 @@ from GitHub.
 There is a reference read-only `.0.f` copy of each of the original GitHub
 source files, e.g., *src/biog/czangle.0.f*.
 
-New "fixed-132 codes go by the "standard" SMOKE naming, e.g., 
+New "fixed-132" codes go by the "standard" SMOKE naming, e.g., 
 *src/biog/czangle.f* Intermediate "scratch" or "improved" versions of
 the codes have other in-fixes, e.g., *src/biog/tmpbeis4.1.f* and 
 *src/biog/tmpbeis4.2.f*. Read-only reference-copy *findent* outputs use
@@ -110,7 +110,7 @@ xxdiff temporal/wrtsup.0.f temporal/wrtsup.f
 Note that **the `.f` and `.f90` codes require different *Makefile* and
 *Makeinclude* files**.  Files `.f.Makefile` and `.f.Makeinclude` are for
 the former, and `.f90.Makefile` and `.f90.Makeinclude` are for the
-latter.  To build SMOKE, in the *src* directory copy the relevant pair
+latter.  To build SMOKE: in your *src* directory, copy the relevant pair
 of these to the standard *Makefile* and *Makeinclude* names, and then
 *make*.  For reference, the original `Makefile` can be found in `Makefile.0`
 
@@ -137,9 +137,9 @@ Error-checking was missing for almost all of the `ENVINT, ENVREAL,
 ENVYN` calls.  This error-checking has now been added, so if the
 user does something inappropriate in a script like assigning a
 non-integer where an environment variable should be an integer:
-
+<PRE>
         setenv IFOO dingbats
-
+</PRE>
 Then the new code now error-checks to detect this invalid value, report
 the problem, and exit (whereas the old code would  have allowed the code
 to continue inappropriately with a potentially-bad value).
@@ -397,6 +397,15 @@ so eliminated "breaks" within phrases and enhanced readability.
 
 
 ### Next Steps
+
+Scripts should be re-coded so that they respect and use the UNIX/LINUX
+exit-status returned by the programs:  according to the standards, this
+status is 0 if the program is successful, and non-zero otherwise.  I/O API
+routine `M3EXIT` terminates the programs with the status given by its
+status-argument; if the program is terminated otherwise (e.g., by a
+segmentation fault), the operating system will set an appropriate exit
+status, also.  The scripting system should terminate as soon as a non-zero
+exit status is encountered.
 
 The set of supported map projections should be expanded to include at
 least the Mercator and polar map projection types, and ideally to
