@@ -304,7 +304,7 @@ quality) original.  This has now been fixed.
 ### Scratch arrays, `PARAMETER`s, `TRIM`, etc.
 
 Fortran-90 provides very simple and flexible array structure for "auto"
-local-variable arrays (which, BTW, provide "leak-proof re-use of
+local-variable arrays (which, BTW, provide "leak-proof" re-use of
 memory).  SMOKE systematically avoids this simplicity, using `ALLOCATE`
 and `DEALLOCATE` for what should be "auto" local-variable arrays. Note
 that  `DEALLOCATE` does not necessarily reverse the effects of the
@@ -456,7 +456,7 @@ script-style [*OPEN3*](https://cjcoats.github.io/ioapi/OPEN3.html) and
 
 I/O API functions
 [`STR2INT,STR2REAL,STR2DBLE`](https://cjcoats.github.io/ioapi/STR2S.html)
-were originally developed for use in SMOKE (starting with the SMOKE
+were **originally developed for use in SMOKE** (starting with the SMOKE
 prototpe version 0.2 (1993), where they are used to read
 `INTEGER,REAL,REAL*8` numbers from character strings with error
 checking, returning `IMISS3` or `BADVAL3` in case of errors.  As such,
@@ -490,10 +490,10 @@ following* are guaranteed to be equal (a problem found especially on
 Cray vector, IBM mainfreame and POWER, Intel x86/x87, and SGI platforms),
 although the naive impression is that they should all be equal:
 <pre>
-        INTEGER, PARAMETER :: A = 1.0 / 3.0
-        INTEGER, PARAMETER :: B = 0.333333333333333333  ! with extra-digit overkill
-        INTEGER, PARAMETER :: C = FLOAT( 1 ) / FLOAT( 3 )
-        INTEGER     D, E, F, G
+        REAL, PARAMETER :: A = 1.0 / 3.0
+        REAL, PARAMETER :: B = 0.333333333333333333  ! with extra-digit overkill
+        REAL, PARAMETER :: C = FLOAT( 1 ) / FLOAT( 3 )
+        REAL     D, E, F, G
         ...
         D = 1.0 / 3.0
         E = FLOAT( 1 ) / FLOAT( 3 )
