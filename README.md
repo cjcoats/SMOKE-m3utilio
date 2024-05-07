@@ -7,7 +7,11 @@ repository.** It contains a GitHub Oct. 28, 2023 version of
 SMOKE (`.0.f`), a `M3UTILIO`ized, I/O API 3.2-ized  (`.f`) of
 SMOKE, an *findent* (`.1.f90`) free-source-format reference version of
 SMOKE constructed from the `.f`, and a cleaned-up `.f90` version of
-SMOKE.
+SMOKE.  This work has been done entirely on my own time (because many
+of these changes should have been donelong ago, and because I hated
+to see something I was originally responsible for in the shape SMOKE
+now is in).  I had no external support for this work whatsoever.
+-- Carlie J. Coats, Jr., Ph.D.
 
 **This code version has not been tested** (I don't have the facilities
 to do that), but it does compile successfully with Intel *ifort* version
