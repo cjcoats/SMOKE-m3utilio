@@ -7,7 +7,11 @@ repository.** It contains a GitHub Oct. 28, 2023 version of
 SMOKE (`.0.f`), a `M3UTILIO`ized, I/O API 3.2-ized  (`.f`) of
 SMOKE, an *findent* (`.1.f90`) free-source-format reference version of
 SMOKE constructed from the `.f`, and a cleaned-up `.f90` version of
-SMOKE.
+SMOKE.  This work has been done entirely on my own time (because many
+of these changes should have been donelong ago, and because I hated
+to see something I was originally responsible for in the shape SMOKE
+now is in).  I had no external support for this work whatsoever.
+-- Carlie J. Coats, Jr., Ph.D.
 
 **This code version has not been tested** (I don't have the facilities
 to do that), but it does compile successfully with Intel *ifort* version
@@ -65,7 +69,7 @@ program](https://github.com/wvermin/findent), with command-line options:
 </pre>
 The resulting reference code was named `.1.f90`.  The final `.f90` codes
 needed fix-up on loop-nest and comment indentation, etc., as well as
-fixing up numerous botches in the original code, such as 
+fixing up numerous improper-blank botches in the original code, such as 
 <pre>
     "( /", "/ )", ". AND.", ". LT."
 </pre>
@@ -85,7 +89,7 @@ from GitHub.
 There is a reference read-only `.0.f` copy of each of the original GitHub
 source files, e.g., *src/biog/czangle.0.f*.
 
-New "fixed-132 codes go by the "standard" SMOKE naming, e.g., 
+New "fixed-132" codes go by the "standard" SMOKE naming, e.g., 
 *src/biog/czangle.f* Intermediate "scratch" or "improved" versions of
 the codes have other in-fixes, e.g., *src/biog/tmpbeis4.1.f* and 
 *src/biog/tmpbeis4.2.f*. Read-only reference-copy *findent* outputs use
@@ -106,7 +110,7 @@ xxdiff temporal/wrtsup.0.f temporal/wrtsup.f
 Note that **the `.f` and `.f90` codes require different *Makefile* and
 *Makeinclude* files**.  Files `.f.Makefile` and `.f.Makeinclude` are for
 the former, and `.f90.Makefile` and `.f90.Makeinclude` are for the
-latter.  To build SMOKE, in the *src* directory copy the relevant pair
+latter.  To build SMOKE: in your *src* directory, copy the relevant pair
 of these to the standard *Makefile* and *Makeinclude* names, and then
 *make*.  For reference, the original `Makefile` can be found in `Makefile.0`
 
@@ -133,9 +137,9 @@ Error-checking was missing for almost all of the `ENVINT, ENVREAL,
 ENVYN` calls.  This error-checking has now been added, so if the
 user does something inappropriate in a script like assigning a
 non-integer where an environment variable should be an integer:
-
+<PRE>
         setenv IFOO dingbats
-
+</PRE>
 Then the new code now error-checks to detect this invalid value, report
 the problem, and exit (whereas the old code would  have allowed the code
 to continue inappropriately with a potentially-bad value).
@@ -304,7 +308,7 @@ quality) original.  This has now been fixed.
 ### Scratch arrays, `PARAMETER`s, `TRIM`, etc.
 
 Fortran-90 provides very simple and flexible array structure for "auto"
-local-variable arrays (which, BTW, provide "leak-proof re-use of
+local-variable arrays (which, BTW, provide "leak-proof" re-use of
 memory).  SMOKE systematically avoids this simplicity, using `ALLOCATE`
 and `DEALLOCATE` for what should be "auto" local-variable arrays. Note
 that  `DEALLOCATE` does not necessarily reverse the effects of the
@@ -394,6 +398,15 @@ so eliminated "breaks" within phrases and enhanced readability.
 
 ### Next Steps
 
+Scripts should be re-coded so that they respect and use the UNIX/LINUX
+exit-status returned by the programs:  according to the standards, this
+status is 0 if the program is successful, and non-zero otherwise.  I/O API
+routine `M3EXIT` terminates the programs with the status given by its
+status-argument; if the program is terminated otherwise (e.g., by a
+segmentation fault), the operating system will set an appropriate exit
+status, also.  The scripting system should terminate as soon as a non-zero
+exit status is encountered.
+
 The set of supported map projections should be expanded to include at
 least the Mercator and polar map projection types, and ideally to
 include the full set of I/O API map projections.  This can easily be
@@ -456,7 +469,7 @@ script-style [*OPEN3*](https://cjcoats.github.io/ioapi/OPEN3.html) and
 
 I/O API functions
 [`STR2INT,STR2REAL,STR2DBLE`](https://cjcoats.github.io/ioapi/STR2S.html)
-were originally developed for use in SMOKE (starting with the SMOKE
+were **originally developed for use in SMOKE** (starting with the SMOKE
 prototpe version 0.2 (1993), where they are used to read
 `INTEGER,REAL,REAL*8` numbers from character strings with error
 checking, returning `IMISS3` or `BADVAL3` in case of errors.  As such,
@@ -490,10 +503,10 @@ following* are guaranteed to be equal (a problem found especially on
 Cray vector, IBM mainfreame and POWER, Intel x86/x87, and SGI platforms),
 although the naive impression is that they should all be equal:
 <pre>
-        INTEGER, PARAMETER :: A = 1.0 / 3.0
-        INTEGER, PARAMETER :: B = 0.333333333333333333  ! with extra-digit overkill
-        INTEGER, PARAMETER :: C = FLOAT( 1 ) / FLOAT( 3 )
-        INTEGER     D, E, F, G
+        REAL, PARAMETER :: A = 1.0 / 3.0
+        REAL, PARAMETER :: B = 0.333333333333333333  ! with extra-digit overkill
+        REAL, PARAMETER :: C = FLOAT( 1 ) / FLOAT( 3 )
+        REAL     D, E, F, G
         ...
         D = 1.0 / 3.0
         E = FLOAT( 1 ) / FLOAT( 3 )
