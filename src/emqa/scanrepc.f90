@@ -71,30 +71,32 @@ SUBROUTINE SCANREPC( FDEV )
     CHARACTER(300) SEGMENT( 100 )
 
     !.......   Other local variables
-    INTEGER         I, L        ! counters and indices
+    INTEGER          I, L       ! counters and indices
+    INTEGER          ICNT       !  no. non-blank/non-comment lines
+    INTEGER          IOS        !  i/o status
+    INTEGER          IREC       !  record counter
+    INTEGER          N          !  no. segments in line
 
-    INTEGER      :: ICNT = 0        !  no. non-blank/non-comment lines
-    INTEGER          IOS         !  i/o status
-    INTEGER          IREC        !  record counter
-    INTEGER       :: N = 1       !  no. segments in line
+    LOGICAL          EFLAG      !  true: error found
+    LOGICAL          LCATSET    !  true: source category set
 
-    LOGICAL       :: EFLAG   = .FALSE.     !  true: error found
-    LOGICAL       :: LCATSET = .FALSE.     !  true: source category set
-
-    CHARACTER(1024)  BUFFER                !  line work buffer
-    CHARACTER(1024)  LINE                  !  line input buffer
-    CHARACTER(300)   MESG                  !  message buffer
+    CHARACTER(1024)  BUFFER     !  line work buffer
+    CHARACTER(1024)  LINE       !  line input buffer
+    CHARACTER(300)   MESG       !  message buffer
 
     CHARACTER(16), PARAMETER :: PROGNAME = 'SCANREPC'     ! program name
 
     !***********************************************************************
     !   begin body of subroutine SCANREPC
-
+    EFLAG   = .FALSE.
+    LCATSET = .FALSE. 
     !.......  Get the number of lines in the file
     NLINE_RC = GETFLINE( FDEV, 'Report configuration file' )
 
     !.......  Read lines of file to extract settings
     IREC = 0
+    ICNT = 0
+    N    = 1
     DO I = 1, NLINE_RC
 
         READ( FDEV, 93000, END=999, IOSTAT=IOS ) LINE

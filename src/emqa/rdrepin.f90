@@ -743,8 +743,7 @@ SUBROUTINE RDREPIN( NSLIN, NSSIN, RDEV, SDEV, GDEV, PDEV, TDEV,     &
 
             !.......  NV > 1 is not supported
             IF ( NV .NE. 1 ) THEN
-                MESG = 'Number of variables in ' //&
-                       'TSUP file is not supported.'
+                MESG = 'Number of variables in TSUP file is not supported.'
                 CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
             END IF
 

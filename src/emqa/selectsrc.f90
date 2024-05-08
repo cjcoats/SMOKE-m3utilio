@@ -129,7 +129,7 @@ SUBROUTINE SELECTSRC( RCNT )
 
         DO S = 1, NSRC
 
-    !.......  If using a region group, search for FIPS code in list
+            !.......  If using a region group, search for FIPS code in list
             IF( LREGION ) THEN
                 CFIP = CIFIP( S )
                 J = FINDC( CFIP, NREGREC( REGNIDX ), EXCLDRGN ( 1,REGNIDX )   )
@@ -138,7 +138,7 @@ SUBROUTINE SELECTSRC( RCNT )
 
             END IF
 
-    !.......  If selecting elevated srcs...
+            !.......  If selecting elevated srcs...
             SELECT CASE( RPT_%ELEVSTAT )
               CASE( PINGOUT3 )
                 IF ( .NOT. LPING( S ) ) INDEXA( S ) = 0
@@ -151,8 +151,8 @@ SUBROUTINE SELECTSRC( RCNT )
 
             END SELECT
 
-    !.......  NOTE - this should always be at end of select statements
-    !.......  Keep a count of the number of selected sources
+            !.......  NOTE - this should always be at end of select statements
+            !.......  Keep a count of the number of selected sources
             IF( INDEXA( S ) .EQ. 0 ) NSRCDROP = NSRCDROP + 1
 
         END DO       ! End loop through sources

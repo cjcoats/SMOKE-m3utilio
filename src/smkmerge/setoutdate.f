@@ -89,6 +89,7 @@ C           determine how error messages are printed
         ELSE
             ISLOGNAM = .FALSE.
         END IF
+        EFLAG = .FALSE.
 
 C.........  If different days can be merged, then check file consistency
 C           and confirm that environment settings for start date, start time,
@@ -199,8 +200,8 @@ C                   enough data to cover output duration
      &                        G_NSTEPS, '.'
                             CALL M3MSG2( MESG )
 
-                            WRITE( MESG,94010 ) BLANK5 // 'Data ' //
-     &                        'from the start date of the file ',
+                            WRITE( MESG,94010 ) BLANK5 //
+     &                        'Data from the start date of the file ',
      &                        SDATE( I ), 'will be used instead.'
                             CALL M3MSG2( MESG )
                         END IF

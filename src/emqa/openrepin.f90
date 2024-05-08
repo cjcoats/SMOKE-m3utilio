@@ -121,18 +121,18 @@ SUBROUTINE OPENREPIN( ENAME, ANAME, CUNAME, GNAME, LNAME,           &
 
     INTEGER         I, J, L, L1, L2, N, V           ! counters and indices
 
-    INTEGER         IOS               ! tmp I/O status
-    INTEGER         ISD               ! start time of ASCII elevated file
-    INTEGER         IED               ! end time of ASCII elevated file
-    INTEGER         TSTEP_T           ! unused time step from environment
+    INTEGER         IOS             ! tmp I/O status
+    INTEGER         ISD             ! start time of ASCII elevated file
+    INTEGER         IED             ! end time of ASCII elevated file
+    INTEGER         TSTEP_T         ! unused time step from environment
 
-    LOGICAL      :: EFLAG = .FALSE.      ! true: error found
-    LOGICAL      :: TIMEFLAG = .FALSE.      ! true: time info already init
+    LOGICAL         EFLAG           ! true: error found
+    LOGICAL         TIMEFLAG        ! true: time info already init
 
-    CHARACTER(16)   NAMBUF           ! tmp file name buffer
-    CHARACTER(16)   UNITS            ! units of ASCII elevated file
-    CHARACTER(256)  MESG             ! message buffer
-    CHARACTER(300)  LINE             ! tmp line buffer
+    CHARACTER(16)   NAMBUF          ! tmp file name buffer
+    CHARACTER(16)   UNITS           ! units of ASCII elevated file
+    CHARACTER(256)  MESG            ! message buffer
+    CHARACTER(300)  LINE            ! tmp line buffer
 
     CHARACTER(NAMLEN3) GRDENV          ! gridded output units from envrmt
 
@@ -141,6 +141,8 @@ SUBROUTINE OPENREPIN( ENAME, ANAME, CUNAME, GNAME, LNAME,           &
     !***********************************************************************
     !   begin body of subroutine OPENREPIN
 
+    EFLAG    = .FALSE.
+    TIMEFLAG = .FALSE.
     IF( .NOT. AFLAG ) THEN
         !.......  Get inventory file names given source category
         CALL GETINAME( CATEGORY, ENAME, ANAME )

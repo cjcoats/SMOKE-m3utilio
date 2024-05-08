@@ -28,11 +28,11 @@ For example, *make*-symbol `E132` now gives the compile-flags for the
 SMOKE (eliminating the previously-necessary compiler-dependency in
 *SMOKE/src/Makeinclude*).
 
-Argument-list bugs that were found, as well as the `FORMAT` bugs in
+Argument-list bugs were found and fixed, as well as the `FORMAT` bugs in
 *src/movesmrg/rdmrclist* and *lib/efsetup* (`MCREFIDX` and `VOLNAM` are
 `CHARACTER`, not `INTEGER` as `FORMAT 94010` demands; see 
-https://forum.cmascenter.org/t/error-running-movesmerg-for-rpd/4606/4) 
-have been fixed.  There is a greatly-simplified  *lib/efsetup.2.f90*.
+https://forum.cmascenter.org/t/error-running-movesmerg-for-rpd/4606/4). 
+There is a greatly-simplified  *lib/efsetup.2.f90*.
 
 
 ## Introduction
@@ -401,10 +401,11 @@ done using routines [`GRID2XY`](https://cjcoats.github.io/ioapi/GRID2XY.html)
 and [`XY2XY`](https://cjcoats.github.io/ioapi/XY2XY.html) from I/O API
 [`MODULE MODGCTP`](https://cjcoats.github.io/ioapi/MODGCTP.html).
 
-File timestep-consistency checks in the `TMPBEIS*` programs are bogus:
-they should be replaced by checks that ask "does this file contain the
-data" (formulated in terms, perhaps, of I/O API routine `JSTEP3()`)
-instead of "does this file have *exactly* the time steps I want?".
+File timestep-consistency checks in at least the `TMPBEIS*` and `SMKMERGE`
+programs are bogus: they should be replaced by checks that ask "does
+this file contain the data" (formulated in terms, perhaps, of I/O API
+routine `JSTEP3()`) instead of "does this file have *exactly* the time
+steps I want?".
 
 Likewise, hard-coded one-hour-timestep assumptions are inconsistent with
 many kinds of modeling and should be removed.  They are so pervasive
@@ -479,6 +480,13 @@ are more complicated **and much more expensive** than
     END IF
 </pre>
 The original coding should be preferred.
+
+The *src/smkmerge/mrggrid* log message
+<pre>
+    WRITE( MESG,94010 ) 'Mrggrid compiled with I/O API MXVARS3 =', MXVARS3
+</pre>
+is redundant: the log-message from the I/O API routine `INIT3` already
+contains this information. 
 
 
 

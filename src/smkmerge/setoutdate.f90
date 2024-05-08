@@ -90,12 +90,14 @@ SUBROUTINE SETOUTDATE( G_SDATE, G_STIME, G_NSTEPS,    &
         ISLOGNAM = .FALSE.
     END IF
 
+    EFLAG = .FALSE.
+
     !.....  If different days can be merged, then check file consistency
     !       and confirm that environment settings for start date, start time,
     !       and number of time steps match files
     IF( MRGDIFF ) THEN
 
-    !.....  Check that all files have the same start time
+        !.....  Check that all files have the same start time
         TMPTIME = STIME( 1 )
 
         DO I = 2, NFILE
@@ -254,8 +256,8 @@ SUBROUTINE SETOUTDATE( G_SDATE, G_STIME, G_NSTEPS,    &
 
         IF( G_NSTEPS <= 0 ) THEN
             MESG = 'ERROR: At least two input files contain ' //    &
-                   'data for time periods that do' //    &
-                   CRLF() // BLANK10 // 'not overlap. No output ' //    &
+                   'data for time periods that do' //               &
+                   CRLF() // BLANK10 // 'not overlap. No output '// &
                    'file can be created.'
             CALL M3MSG2( MESG )
 

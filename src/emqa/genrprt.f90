@@ -256,31 +256,31 @@ SUBROUTINE GENRPRT( FDEV, RCNT, ADEV, MDEV, ENAME, TNAME,&
             POLVAL = 0.
             DO I = 1, NSTEPS
                 DO V = 1, NIPPA
-                    DO S = 1, NSRC
+                DO S = 1, NSRC
 
-                        VBUF = EANAM( V )
-                        READ( ADEV, 93010 ) SRCNO, POL, EMISVAL
-                        ASCREC = ASCREC + 1
+                    VBUF = EANAM( V )
+                    READ( ADEV, 93010 ) SRCNO, POL, EMISVAL
+                    ASCREC = ASCREC + 1
 
-                        IF( SRCNO .NE. S ) THEN
-                            BACKSPACE( ADEV )
-                            CYCLE
+                    IF( SRCNO .NE. S ) THEN
+                        BACKSPACE( ADEV )
+                        CYCLE
 
-                        ELSE
-                            POLVAL( S, V ) = POLVAL( S, V ) + EMISVAL
+                    ELSE
+                        POLVAL( S, V ) = POLVAL( S, V ) + EMISVAL
 
-                        END IF
+                    END IF
 
-                        IF( POL .NE. VBUF ) THEN
-                            WRITE( MESG, '(A,I5)' )                 &
-                                'Reading in pollutant "' //         &
-                                TRIM( VBUF ) // '", but found ' //  &
-                                'pollutant "' // TRIM( POL ) //     &
-                                '" at line ', ASCREC
-                            CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
-                        END IF
+                    IF( POL .NE. VBUF ) THEN
+                        WRITE( MESG, '(A,I5)' )                 &
+                            'Reading in pollutant "' //         &
+                            TRIM( VBUF ) // '", but found ' //  &
+                            'pollutant "' // TRIM( POL ) //     &
+                            '" at line ', ASCREC
+                        CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
+                    END IF
 
-                    END DO
+                END DO
                 END DO
 
                 IF( I .NE. NSTEPS ) THEN
@@ -335,14 +335,12 @@ SUBROUTINE GENRPRT( FDEV, RCNT, ADEV, MDEV, ENAME, TNAME,&
 
                 !......  Determine index to projection matrix
                 KP = 1
-                IF( TODOUT( E,RCNT )%PRYN )&
-                    KP = MAX( 1, INVTOPRJ( E ) + 1 )
+                IF( TODOUT( E,RCNT )%PRYN )  KP = MAX( 1, INVTOPRJ( E ) + 1 )
 
                 !......  Determine index to mult control matrix
                 !......  Note that first columns is an array of ones
                 KM = 1
-                IF( TODOUT( E,RCNT )%CUYN )&
-                    KM = MAX( 1, INVTOCMU( E ) + 1 )
+                IF( TODOUT( E,RCNT )%CUYN )  KM = MAX( 1, INVTOCMU( E ) + 1 )
 
                 ! NOTE: Insert here for reactivity controls.  More formula changes will be needed in
                 !   N: the formulas below (may be a good idea to apply in separate section?)

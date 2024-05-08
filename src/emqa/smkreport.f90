@@ -76,8 +76,8 @@ PROGRAM SMKREPORT
     INTEGER, ALLOCATABLE :: SSMAT( :,: )     ! mass-based
 
     !.......   File units and logical/physical names
-    INTEGER :: ADEV = 0       !  ASCII elevated file
-    INTEGER :: CDEV = 0       !  reports configuration file
+    INTEGER :: ADEV           !  ASCII elevated file
+    INTEGER :: CDEV           !  reports configuration file
     INTEGER :: EDEV = 0       !  elevated source ID file
     INTEGER :: GDEV = 0       !  gridding supplemental file
     INTEGER :: LDEV = 0       !  log-device
@@ -115,7 +115,7 @@ PROGRAM SMKREPORT
     INTEGER      HWID                     ! header width
     INTEGER      IOS                      ! i/o status
     INTEGER      EDIDX                    ! ending index of loop
-    INTEGER   :: GDIM    = 0              ! dimension of contiguous gridding mat
+    INTEGER   :: GDIM                     ! dimension of contiguous gridding mat
     INTEGER   :: NSLIN   = 1              ! no. mole input speciation variables
     INTEGER   :: NSSIN   = 1              ! no. mass input speciation variables
 
@@ -123,7 +123,7 @@ PROGRAM SMKREPORT
     REAL         RNSECT                   ! real number of sections per report
 
     LOGICAL       :: EFLAG    = .FALSE.         ! true: error found
-    LOGICAL       :: ZEROFLAG = .FALSE.         ! true: report zero values
+    LOGICAL       :: ZEROFLAG                   ! true: report zero values
 
     CHARACTER(300)     MESG                 !  message buffer
     CHARACTER(QAFMTL3) OUTFMT               !  data output format string

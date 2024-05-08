@@ -985,20 +985,20 @@ PROGRAM ELEVPOINT
 
                     !.....  Evaluate PinG criteria again to get PGSTAT for writing;
                     !       if valid, then write report fields
-                    IF ( EVALCRIT( NEVPVAR, NPNGCRIT, MXPNGCHK, VALS,    &
-                                   VALS, RANK, CHRS, PNGVALS, PNGCHRS,    &
+                    IF ( EVALCRIT( NEVPVAR, NPNGCRIT, MXPNGCHK, VALS,   &
+                                   VALS, RANK, CHRS, PNGVALS, PNGCHRS,  &
                                    PNGTYPES, PGSTAT ) ) THEN
 
-                        CALL WRITE_REPORT( RDEV, S, OUTG, NEVPVAR,    &
-                             NPNGCRIT, MXPNGCHK, 'P', VALS, RANK, CHRS,    &
+                        CALL WRITE_REPORT( RDEV, S, OUTG, NEVPVAR,      &
+                             NPNGCRIT, MXPNGCHK, 'P', VALS, RANK, CHRS, &
                              PNGVALS, PNGCHRS, PNGTYPES, PGSTAT )
 
                     !.......  Otherwise, internal error
                     ELSE
                         EFLAG = .TRUE.
 
-                        WRITE( MESG,94010 ) 'INTERNAL ERROR: ' //    &
-                               'Second evaluation of PinG source ', S,    &
+                        WRITE( MESG,94010 ) 'INTERNAL ERROR: ' //       &
+                               'Second evaluation of PinG source ', S,  &
                                'inconsistent with first evaluation.'
                         CALL M3MESG( MESG )
 
@@ -1008,20 +1008,20 @@ PROGRAM ELEVPOINT
                 !       writing; if valid, then write report fields
                 ELSE
 
-                    IF ( EVALCRIT( NEVPVAR, NELVCRIT, MXELVCHK, VALS,    &
-                                   VALS, RANK, CHRS, ELVVALS, ELVCHRS,    &
+                    IF ( EVALCRIT( NEVPVAR, NELVCRIT, MXELVCHK, VALS,   &
+                                   VALS, RANK, CHRS, ELVVALS, ELVCHRS,  &
                                    ELVTYPES, EVSTAT )  ) THEN
 
                         !...........  Add source to report
-                        CALL WRITE_REPORT( RDEV, S, OUTG, NEVPVAR,    &
-                             NELVCRIT, MXELVCHK, 'E', VALS, RANK, CHRS,    &
+                        CALL WRITE_REPORT( RDEV, S, OUTG, NEVPVAR,      &
+                             NELVCRIT, MXELVCHK, 'E', VALS, RANK, CHRS, &
                              ELVVALS, ELVCHRS, ELVTYPES, EVSTAT )
 
                     !.......  Otherwise, internal error
                     ELSE
                         EFLAG = .TRUE.
-                        WRITE( MESG,94010 ) 'INTERNAL ERROR: ' //    &
-                               'Second evaluation of elevated source ',    &
+                        WRITE( MESG,94010 ) 'INTERNAL ERROR: ' //       &
+                               'Second evaluation of elevated source ', &
                                S, 'inconsistent with first evaluation.'
                         CALL M3MESG( MESG )
 

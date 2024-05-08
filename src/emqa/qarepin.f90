@@ -64,7 +64,7 @@ SUBROUTINE QAREPIN( RCNT, IOS )
     INTEGER          JDATE                  ! Julian date
     INTEGER          JTIME                  ! time
 
-    LOGICAL          EFLAG                   !  true: error found
+    LOGICAL          EFLAG                  !  true: error found
 
     CHARACTER(300)         MESG             !  message buffer
 

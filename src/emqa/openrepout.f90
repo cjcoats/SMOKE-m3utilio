@@ -71,7 +71,6 @@ SUBROUTINE OPENREPOUT( FILNAM, FDEV, MDEV )
     !***********************************************************************
     !   begin body of subroutine OPENREPOUT
 
-    IOS = -1
     !.......  If file name is less than 16 characters, check if file name is a
     !         defined environment variable
     IF( L .LE. 16 ) THEN
@@ -95,7 +94,7 @@ SUBROUTINE OPENREPOUT( FILNAM, FDEV, MDEV )
             !.......  If muliple files are being output then open them
             IF( RPT_%RPTMODE .EQ. 1 ) THEN
 
-            !.......  Create new file name
+                !.......  Create new file name
                 IF( I .GE. 10 ) THEN
                     FMT = '( A, I2 )'
                 ELSE IF( I .GE. 100 ) THEN
@@ -106,7 +105,7 @@ SUBROUTINE OPENREPOUT( FILNAM, FDEV, MDEV )
 
                 WRITE( NNAME, FMT ) TRIM( PNAME )//'_', I
 
-            !.......  Set logical file name to new file name
+                !.......  Set logical file name to new file name
                 IF( .NOT. SETENVVAR( FILNAM, NNAME ) ) THEN
                     MESG = 'Could not set logical file '//      &
                            'name for file ' // TRIM( NNAME )

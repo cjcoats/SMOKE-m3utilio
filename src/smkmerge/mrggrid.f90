@@ -265,11 +265,6 @@ PROGRAM MRGGRID
     !.....  Determine maximum number of input files in file
     MXNFIL = GETFLINE( IDEV, 'List of files to merge' )
 
-    !.....  Write message out about MXVARS3
-    WRITE( MESG,94010 ) 'Mrggrid compiled with I/O API MXVARS3 =',    &
-                        MXVARS3
-    CALL M3MSG2( MESG )
-
     !.....  Allocate memory for arrays that just depend on the maximum number
     !       of files
     ALLOCATE( NFILES( MXNFIL ),    &
@@ -338,8 +333,7 @@ PROGRAM MRGGRID
 
             ELSE
 
-                IO_NAM = TRIM( FNAME( F ) )
-                IONAME( F ) = IO_NAM
+                IONAME( F ) = TRIM( FNAME( F ) )
 
             ENDIF
 
