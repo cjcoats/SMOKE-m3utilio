@@ -8,7 +8,7 @@ SMOKE (`.0.f`), a `M3UTILIO`ized, I/O API 3.2-ized  (`.f`) of
 SMOKE, an *findent* (`.1.f90`) free-source-format reference version of
 SMOKE constructed from the `.f`, and a cleaned-up `.f90` version of
 SMOKE.  This work has been done entirely on my own time (because many
-of these changes should have been donelong ago, and because I hated
+of these changes should have been done long ago, and because I hated
 to see something I was originally responsible for in the shape SMOKE
 now is in).  I had no external support for this work whatsoever.
 -- Carlie J. Coats, Jr., Ph.D.
@@ -291,16 +291,17 @@ by those un-knowing of the actual problems.  These have been fixed.
 In the biogenics, the photolysis process needs the tangent of the zenith
 angle.  The code from the original biogenics authors computed the cosine
 `CZEN` of the zenith angle, then took the inverse cosine
-`ZEN=ARCCOS(CZEN)`, and finally used the tangent `TAN(ZEN)` of the
-zenith angle, with the effect of both added computational costs due to
-the use of extremely-expensive trigonometric and inverse-trigonometric
-functions, and additional round-off error.  The original SMOKE biogenics
-took advantage of the high-school trigonometry Pythagorean identities to
-compute this as
+`ZEN=ARCCOS(CZEN)`, used bounds on `ZEN` to detect day/night, and
+finally computed
 <pre>
-        TAN(ZEN) = SQRT( (1/CZEN)^2 - 1 )
+`SQRT( 1.0 + TAN(ZEN)**2 )`
 </pre>
-with both lower round-off error and much-reduced computational cost.
+which (by the Pythagorean identity) equals `1.0/CZEN`, with the effect
+of both added computational costs due to the use of extremely-expensive
+trigonometric and inverse-trigonometric functions, and additional
+round-off error.  The original SMOKE prototype biogenics took advantage
+of the high-school trigonometry Pythagorean identities to compute this 
+`1.0/CZEN`, with day/night detection re-phrased in terms of `CZEN`.
 Someone in the mean-time replaced the improved version with the (lower
 quality) original.  This has now been fixed.
 
